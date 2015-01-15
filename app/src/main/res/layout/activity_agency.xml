@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_normal"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".AgencyActivity">
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:layout_width="230dp"
+        android:layout_height="40dp"
+        android:drawableLeft="@drawable/logo_recommend"
+        android:gravity="center"
+        android:text=" 대리점\n문의"
+        android:textColor="#E94230"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center">
+
+        <EditText
+            android:id="@+id/id_phone"
+            android:layout_width="340dp"
+            android:layout_height="50dp"
+            android:background="@drawable/login_box"
+            android:digits="0123456789"
+            android:hint="연락처"
+            android:inputType="number"
+            android:lines="1"
+            android:paddingLeft="80dp"
+            android:singleLine="true"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="22dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/icon_phone_on" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center">
+
+        <EditText
+            android:id="@+id/id_local"
+            android:layout_width="340dp"
+            android:layout_height="50dp"
+            android:background="@drawable/login_box"
+            android:hint="지역"
+            android:lines="1"
+            android:paddingLeft="80dp"
+            android:singleLine="true"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="22dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/btn_gps" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center">
+
+        <EditText
+            android:id="@+id/id_comment"
+            android:layout_width="340dp"
+            android:layout_height="200dp"
+            android:background="@drawable/login_box"
+            android:hint="내용"
+            android:paddingLeft="80dp"
+            android:singleLine="false"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="22dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/icon_more_5_gray" />
+
+    </RelativeLayout>
+    <TextView
+        android:text="02-1599-9495"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/btn_agency"
+        android:layout_width="340dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/btn_black"
+        android:text="저장"
+        android:textColor="#FFFFFF" />
+
+</LinearLayout>

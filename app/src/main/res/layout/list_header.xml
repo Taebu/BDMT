@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@drawable/list_box"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <!--<ImageView-->
+        <!--android:scaleType=""-->
+        <!--android:id="@+id/separator_bar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="30dp"-->
+        <!--android:src="@drawable/gold_zone_bar" />-->
+
+    <ImageView
+    android:id="@+id/separator_img"
+    android:src="@drawable/list_title_red"
+    android:layout_width="10dp"
+    android:layout_height="30dp" />
+
+    <TextView
+    android:textStyle="bold"
+    android:id="@+id/separator_text"
+    android:layout_marginLeft="8dp"
+    android:layout_gravity="center"
+    android:text="캐시큐 가맹점"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
+
+</LinearLayout>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_popup_title"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="우편번호 찾기"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dialog"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_popup_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:singleLine="true"
+                android:id="@+id/dialog_address_field"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:background="@drawable/text_box_2"
+                android:hint="읍, 면, 동 입력"
+                android:paddingLeft="12dp" />
+
+            <ImageView
+                android:id="@+id/address_search"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:clickable="true"
+                android:src="@drawable/btn_search_2" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="290dp"
+            android:layout_height="1dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+            android:src="#E8E8E8" />
+
+        <ListView
+            android:id="@+id/address_list"
+            android:layout_width="290dp"
+            android:layout_height="240dp"/>
+
+        <Button
+            android:id="@+id/ok"
+            android:layout_width="226dp"
+            android:layout_height="43dp"
+            android:layout_gravity="center|bottom"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/btn_black"
+            android:gravity="center"
+            android:text="주소 입력"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+</LinearLayout>

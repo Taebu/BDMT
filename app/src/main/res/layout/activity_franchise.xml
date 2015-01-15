@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_normal"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".FranchiseActivity">
+
+    <LinearLayout
+        android:layout_width="350dp"
+        android:layout_height="460dp"
+        android:background="@drawable/bg_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="230dp"
+            android:layout_height="40dp"
+            android:drawableLeft="@drawable/logo_recommend"
+            android:gravity="center"
+            android:text=" 가맹점\n문의"
+            android:textColor="#E94230"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="지금 간단하게 음식점을 등록해 보세요!"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="- 자주 이용하던 음식점을 찾지 못하셨나요?"
+            android:textSize="11dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="- 우연히 발견한 맛집을 다른 이웃분들에게 추천하고 싶으신가요?"
+            android:textSize="11dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="28dp"
+                android:text="음식점 사장님이신가요?"
+                android:textSize="14dp" />
+
+            <RadioGroup
+                android:id="@+id/franchise_radio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/owner_on"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="예"
+                    android:textSize="14dp" />
+
+                <RadioButton
+                    android:id="@+id/owner_off"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="아니오"
+                    android:textSize="14dp" />
+
+            </RadioGroup>
+
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="310dp"
+            android:layout_height="1dp"
+            android:src="#E8E8E8" />
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="28dp"
+                android:text="메뉴 / 전단지 사진"
+                android:textSize="14dp" />
+
+            <ImageView
+                android:clickable="true"
+                android:onClick="mOnClick"
+                android:id="@+id/franchise_img1"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_marginLeft="50dp"
+                android:src="@drawable/btn_photo_1_nor" />
+
+            <ImageView
+                android:clickable="true"
+                android:onClick="mOnClick"
+                android:id="@+id/franchise_img2"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_marginLeft="8dp"
+                android:src="@drawable/btn_photo_1_nor" />
+
+            <ImageView
+                android:clickable="true"
+                android:onClick="mOnClick"
+                android:id="@+id/franchise_img3"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_marginLeft="8dp"
+                android:src="@drawable/btn_photo_1_nor" />
+
+            <ImageView
+                android:clickable="true"
+                android:onClick="mOnClick"
+                android:id="@+id/franchise_img4"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_marginLeft="8dp"
+                android:src="@drawable/btn_photo_1_nor" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="310dp"
+            android:layout_height="1dp"
+            android:src="#E8E8E8" />
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:drawableLeft="@drawable/icon_call"
+                android:id="@+id/franchise_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="28dp"
+                android:background="#00FF0000"
+                android:digits="0123456789"
+                android:hint="음식점 전화번호를 입력해주세요."
+                android:inputType="number"
+                android:lines="1"
+                android:singleLine="true"
+                android:textSize="14dp" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="310dp"
+            android:layout_height="1dp"
+            android:src="#E8E8E8" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:drawableLeft="@drawable/btn_location_2"
+                android:id="@+id/franchise_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="28dp"
+                android:background="#00FF0000"
+                android:digits="0123456789"
+                android:hint=" 음식점 주소를 입력해주세요."
+                android:lines="1"
+                android:singleLine="true"
+                android:textSize="14dp" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="310dp"
+            android:layout_height="1dp"
+            android:src="#E8E8E8" />
+        <TextView
+            android:text="02-1599-9495"
+            android:layout_marginTop="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/btn_franchise"
+        android:layout_width="340dp"
+        android:layout_height="50dp"
+        android:background="@drawable/btn_black"
+        android:text="저장"
+        android:textColor="#FFFFFF" />
+
+</LinearLayout>

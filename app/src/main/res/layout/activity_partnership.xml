@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_normal"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".PartnershipActivity">
+    <TextView
+        android:id="@+id/btn_join"
+        android:layout_width="230dp"
+        android:layout_height="100dp"
+        android:clickable="true"
+        android:drawableLeft="@drawable/logo_recommend"
+        android:gravity="center"
+        android:text="제휴"
+        android:textColor="#E94230"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btn_agency"
+        android:layout_width="340dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/btn_black"
+        android:text="대리점 문의"
+        android:textColor="#FFFFFF" />
+
+    <Button
+        android:id="@+id/btn_franchise"
+        android:layout_width="340dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/btn_black"
+        android:text="가맹점 문의"
+        android:textColor="#FFFFFF" />
+
+    <TextView
+        android:text="02-1599-9495"
+        android:layout_marginTop="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

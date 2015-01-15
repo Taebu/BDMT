@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_normal"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context=".CartActivity">
+
+    <LinearLayout
+        android:layout_width="350dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_content"
+        android:orientation="vertical"
+        android:weightSum="10">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <TextView
+                android:id="@+id/cart_shopname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="25dp"
+                android:layout_weight="9"
+                android:text="장바구니가 비어있어요."
+                android:textColor="#4b4b4b"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/cart_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="25dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:drawableLeft="@drawable/btn_plus"
+                android:onClick="mOnClick"
+                android:text="주문 추가"
+                android:textColor="#999999"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="310dp"
+            android:layout_height="1dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="1dp"
+            android:src="#E8E8E8" />
+
+        <ListView
+            android:id="@+id/cart_list"
+            android:layout_width="310dp"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="7.0"
+            android:divider="#d1d1d1"
+            android:dividerHeight="1dp"
+            android:scrollbars="none" />
+
+        <TextView
+            android:id="@+id/cart_total"
+            android:paddingRight="20dp"
+            android:layout_weight="1.0"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:gravity="right|center"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:text="총 주문 금액 23,000원" />
+
+        <Button
+            android:id="@+id/btn_cart_order"
+            android:layout_width="300dp"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_black"
+            android:text="주문 하기"
+            android:textColor="#FFFFFF" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="250dp"
+        android:layout_height="65dp"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_popup_title"
+        android:scaleType="center"
+
+        android:src="@drawable/logo_sub" />
+
+    <LinearLayout
+        android:weightSum="10"
+        android:id="@+id/dialog"
+        android:layout_width="250dp"
+        android:layout_height="400dp"
+        android:background="@drawable/bg_popup_content"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:layout_weight="8"
+            android:id="@+id/dialog_message"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="15dp"
+            android:text="우헤헤헤헤헤"
+            android:textSize="15sp" />
+
+        <LinearLayout
+            android:layout_weight="2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/dialog_play"
+                android:layout_width="70dp"
+                android:layout_height="43dp"
+                android:layout_gravity="center"
+                android:background="@drawable/btn_black"
+                android:gravity="center"
+                android:text="보기"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/dialog_cancel"
+                android:layout_width="70dp"
+                android:layout_height="43dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/btn_black"
+                android:gravity="center"
+                android:text="닫기"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/dialog_review"
+                android:layout_width="70dp"
+                android:layout_height="43dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/btn_black"
+                android:gravity="center"
+                android:text="별점주기"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>
