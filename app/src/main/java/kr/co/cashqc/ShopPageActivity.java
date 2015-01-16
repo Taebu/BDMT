@@ -487,7 +487,6 @@ public class ShopPageActivity extends BaseActivity {
             shop.setShopCode(jsonObject.getString("storecode"));
             shop.setShopPhone(jsonObject.getString("phone"));
             shop.setShopVPhone(jsonObject.getString("vphone"));
-            shop.setShopVPhone(jsonObject.getString("pay_type"));
         } catch (JSONException e) {
             e.printStackTrace();
         }

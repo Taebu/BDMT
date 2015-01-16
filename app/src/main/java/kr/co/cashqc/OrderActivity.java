@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class OrderActivity extends BaseActivity {
 
     private final String FIELD_CARD = "FIELD_CARD";
 
-    private TextView rbCashqCard, rbCashqPhone, rbSiteCash, rbSiteCard, tvTotal;
+    private TextView rbCashqCard, rbCashqPhone, rbSiteCash, rbSiteCard, tvTotal, tvShopName, tvShopPhone;
 
     private EditText etZipCode, etAddress1, etAddress2, etPhone, etComment;
 
@@ -89,6 +90,15 @@ public class OrderActivity extends BaseActivity {
 
         setListViewHeightBasedOnChildren(mListView);
 
+        tvShopName.setText(mOrderData.getShopName() + "   ");
+        tvShopName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO call
+            }
+        });
+
+        tvShopPhone.setText(mOrderData.getShopPhone());
         tvTotal.setText(String.format("%,d원", mOrderData.getTotal()));
 
     }
@@ -168,6 +178,8 @@ public class OrderActivity extends BaseActivity {
         btnOrder = (Button)findViewById(R.id.btn_order_pay);
 
         tvTotal = (TextView)findViewById(R.id.order_total);
+        tvShopName = (TextView) findViewById(R.id.order_shopname);
+        tvShopPhone = (TextView) findViewById(R.id.order_shopphone);
     }
 
     public void mOnClick(View view) {
@@ -272,6 +284,14 @@ public class OrderActivity extends BaseActivity {
 
             if (mDialog.isShowing())
                 mDialog.dismiss();
+
+            Log.e("order", "json result : " + jsonObject.toString());
+
+            try {
+                mOrderData.setTradeId(jsonObject.getString("Tradeid"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
             Intent i = new Intent();
 

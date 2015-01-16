@@ -109,9 +109,10 @@ public class BaseActivity extends SlidingFragmentActivity {
             }
         });
 
+
         //
-//        TV_CART_COUNT.setVisibility(View.INVISIBLE);
-//        findViewById(R.id.btn_cart).setVisibility(View.INVISIBLE);
+        TV_CART_COUNT.setVisibility(View.INVISIBLE);
+        findViewById(R.id.btn_cart).setVisibility(View.INVISIBLE);
 
 
 

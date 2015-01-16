@@ -54,7 +54,7 @@ public class ShopListData {
     private String seq; // 업체 번호
 
     public String getStoreCode() {
-        return bizCode.concat(seq);
+        return bizCode.concat("_"+seq);
     }
 
     public String getBizCode() {

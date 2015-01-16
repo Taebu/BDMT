@@ -23,109 +23,114 @@
     </LinearLayout>
 
     <LinearLayout
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
         android:id="@+id/dialog"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_popup_content"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
 
         <TextView
-            android:layout_marginTop="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:text="모두 읽어보신 후 동의하여 주세요"
             android:textStyle="bold" />
 
         <LinearLayout
-            android:orientation="horizontal"
-            android:layout_marginTop="24dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
 
             <CheckBox
-                android:layout_gravity="center_vertical"
                 android:id="@+id/point_terms1"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
-                android:button="@drawable/btn_check" />
-            <TextView
                 android:layout_gravity="center_vertical"
-                android:textSize="12sp"
-                android:textColor="#333333"
-                android:layout_marginLeft="14dp"
-                android:text="포인트는 사용기간이 지나면 자동으로 소멸됩니다."
+                android:button="@drawable/btn_check" />
+
+            <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="14dp"
+                android:text="동일업소 5개 주문시 현금 지급 불가."
+                android:textColor="#333333"
+                android:textSize="12sp" />
 
         </LinearLayout>
+
         <LinearLayout
-            android:orientation="horizontal"
-            android:layout_marginTop="24dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
 
             <CheckBox
-                android:layout_gravity="center_vertical"
                 android:id="@+id/point_terms2"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
-                android:button="@drawable/btn_check" />
-            <TextView
                 android:layout_gravity="center_vertical"
-                android:textSize="12sp"
-                android:textColor="#333333"
-                android:layout_marginLeft="14dp"
-                android:text="12000원 이상 주문 건만 적립이 가능합니다."
+                android:button="@drawable/btn_check" />
+
+            <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="14dp"
+                android:text="12000원 이상 주문 건만 적립 가능.\n중식, 한식/분식, 일식의 경우 14,000원 이상 주문시 적립가능."
+                android:textColor="#333333"
+                android:textSize="12sp" />
 
         </LinearLayout>
+
         <LinearLayout
-            android:orientation="horizontal"
-            android:layout_marginTop="24dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
 
             <CheckBox
-                android:layout_gravity="center_vertical"
                 android:id="@+id/point_terms3"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
-                android:button="@drawable/btn_check" />
-            <TextView
                 android:layout_gravity="center_vertical"
-                android:textSize="12sp"
-                android:textColor="#333333"
-                android:layout_marginLeft="14dp"
-                android:text="녹취록을 검토하여 3일 이내에 처리해드립니다."
+                android:button="@drawable/btn_check" />
+
+            <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="14dp"
+                android:text="사용기간 만료시 기존 포인트 소멸."
+                android:textColor="#333333"
+                android:textSize="12sp" />
 
         </LinearLayout>
+
         <LinearLayout
-            android:visibility="gone"
-            android:orientation="horizontal"
-            android:layout_marginTop="24dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
 
             <CheckBox
-                android:layout_gravity="center_vertical"
                 android:id="@+id/point_terms4"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
-                android:button="@drawable/btn_check" />
-            <TextView
                 android:layout_gravity="center_vertical"
-                android:textSize="12sp"
-                android:textColor="#333333"
-                android:layout_marginLeft="14dp"
-                android:text="서비스 약관 및 개인정보취급 동의"
+                android:button="@drawable/btn_check" />
+
+            <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="14dp"
+                android:text="녹취록을 검토하여 3일 이내에 처리해드립니다."
+                android:textColor="#333333"
+                android:textSize="12sp" />
 
         </LinearLayout>
 
@@ -134,8 +139,6 @@
             android:layout_width="250dp"
             android:layout_height="50dp"
             android:layout_gravity="center|bottom"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="32dp"
             android:background="@drawable/btn_black"
             android:gravity="center"
             android:text="현금 신청"

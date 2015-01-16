@@ -16,6 +16,7 @@ import android.webkit.WebViewClient;
 import org.apache.http.util.EncodingUtils;
 
 import java.net.URISyntaxException;
+import java.util.Arrays;
 
 /**
  * @author Jung-Hum Cho Created by anp on 15. 1. 6..
@@ -42,9 +43,37 @@ public class PayActivity extends BaseActivity {
         // mWebView.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
         // mWebView.setScrollBarStyle(ScrollView.SCROLLBARS_OUTSIDE_OVERLAY);
 
+        OrderData orderData = (OrderData)getIntent().getSerializableExtra("order");
+
+        byte[] postData = makePostData(orderData);
+
         String url = "http://cashq.co.kr/m/kg_json.php";
-        String postData = "Prdtnm=chicken&Prdtprice=13000&MSTR=1234|fried|central|on|empty|cho|410|816|seoulgangnam|123|010-1234-1234|02-123-1234|empty";
-        mWebView.postUrl(url, EncodingUtils.getBytes(postData, "BASE64"));
+
+        Log.e("pay", Arrays.toString(postData));
+        mWebView.postUrl(url, postData);
+
+    }
+
+    private byte[] makePostData(OrderData data) {
+
+        String menu = data.getMenu().get(0).getMenuName();
+        int quantity = data.getMenu().size() - 1;
+        String name = quantity < 1 ? menu : menu + " 외 " + quantity + "건";
+
+        String price = String.valueOf(data.getTotal());
+        String tradeId = data.getTradeId();
+        String payType = data.getPayType();
+        String seq = data.getShopCode().substring(data.getShopCode().indexOf("_")+1);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("Prdtprice=").append(price);
+        sb.append("&Prdtnm=").append(name);
+        sb.append("&Tradeid=").append(tradeId);
+        sb.append("&pay_type").append(payType);
+        sb.append("&MSTR=").append(seq);
+
+        Log.e("pay", sb.toString());
+        return EncodingUtils.getBytes(sb.toString(), "BASE64");
 
     }
 

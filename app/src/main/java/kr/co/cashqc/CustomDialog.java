@@ -178,7 +178,7 @@ public class CustomDialog extends Dialog {
         findViewById(R.id.ok).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (cb1.isChecked() && cb2.isChecked() && cb3.isChecked()) {
+                if (cb1.isChecked() && cb2.isChecked() && cb3.isChecked() && cb4.isChecked()) {
                     mRequestOnClickListener.onClick(v);
                     dismiss();
                 } else {

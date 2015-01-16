@@ -29,9 +29,19 @@ public class OrderData implements Serializable {
 
     private String comment;
 
+    private String tradeId;
+
     private int total;
 
     private ArrayList<CartData> menu;
+
+    public String getTradeId() {
+        return tradeId;
+    }
+
+    public void setTradeId(String tradeId) {
+        this.tradeId = tradeId;
+    }
 
     public String getShopVPhone() {
         return shopVPhone;
