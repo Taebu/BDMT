@@ -13,8 +13,6 @@ public class CartData implements Serializable {
 
     private int price;
 
-    private String orderCode;
-
     private String menuName;
 
     private String menuCode;
@@ -42,14 +40,6 @@ public class CartData implements Serializable {
 
     public void setPrice(int price) {
         this.price = price;
-    }
-
-    public String getOrderCode() {
-        return orderCode;
-    }
-
-    public void setOrderCode(String orderCode) {
-        this.orderCode = orderCode;
     }
 
     public String getMenuName() {

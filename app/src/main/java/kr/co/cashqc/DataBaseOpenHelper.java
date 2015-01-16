@@ -26,7 +26,10 @@ public class DataBaseOpenHelper extends android.database.sqlite.SQLiteOpenHelper
         sql.append(TABLE_NAME);
         sql.append(" (_id INTEGER PRIMARY KEY AUTOINCREMENT, ");
 
+        sql.append("shop_code VARCHAR(50), ");
         sql.append("shop_name VARCHAR(50), ");
+        sql.append("shop_phone VARCHAR(20), ");
+        sql.append("shop_vphone VARCHAR(20), ");
 
         sql.append("menu_code VARCHAR(50), ");
         sql.append("menu_name VARCHAR(255), ");

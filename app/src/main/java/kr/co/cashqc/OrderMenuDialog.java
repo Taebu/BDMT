@@ -4,6 +4,7 @@ package kr.co.cashqc;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -41,9 +42,9 @@ public class OrderMenuDialog extends Dialog {
 
         final MenuData level1 = data.getMenu().get(groupPosition);
 
-        final MenuData level2 = data.getMenu().get(groupPosition).getChild().get(childPosition);
-
         final ListView listView = (ListView)findViewById(R.id.order_dialog_list);
+
+        final MenuData level2 = data.getMenu().get(groupPosition).getChild().get(childPosition);
 
         OrderMenuAdapter adapter = new OrderMenuAdapter(context, level2);
 
@@ -57,29 +58,57 @@ public class OrderMenuDialog extends Dialog {
 
                 if (listView.getCheckedItemPosition() != AdapterView.INVALID_POSITION) {
 
+                    boolean hasMenu = false;
+                    boolean isDiffentShop = false;
+
                     DataBaseOpenHelper helper = new DataBaseOpenHelper(context);
 
                     SQLiteDatabase db = helper.getWritableDatabase();
 
-                    ContentValues values = new ContentValues();
-
                     MenuData level3 = level2.getChild().get(listView.getCheckedItemPosition());
 
-                    values.put("shop_name", data.getShopName());
+                    Cursor c = db.query(TABLE_NAME, null, null, null, null, null, null);
 
-                    values.put("menu_name", level1.getLabel() + "\n" + level2.getLabel() + "\n"
-                            + level3.getLabel());
+                    while (c.moveToNext()) {
+                        if ((c.getString(c.getColumnIndex("shop_code")).equals(data.getShopCode()))) {
+                            //TODO 다른 샵 처리
+                        }
 
-                    values.put("menu_code", level3.getCode());
+                        if ((c.getString(c.getColumnIndex("menu_code")).equals(level3.getCode()))) {
+                            hasMenu = true;
+                            helper.close();
+                            db.close();
+                            c.close();
+                            break;
+                        }
+                    }
 
-                    values.put("price", level3.getPrice());
+                    if (!hasMenu) {
 
-                    values.put("ea", 1);
+                        ContentValues values = new ContentValues();
 
-                    db.insert(TABLE_NAME, null, values);
-                    Log.i("cart_add", values.toString());
-                    Toast.makeText(context, "장바구니에 담았습니다.", Toast.LENGTH_SHORT).show();
-                    new BaseActivity().setCartCount(context);
+                        values.put("shop_code", data.getShopCode());
+                        values.put("shop_name", data.getShopName());
+                        values.put("shop_phone", data.getShopPhone());
+                        values.put("shop_vphone", data.getShopVPhone());
+
+                        values.put("menu_name", level1.getLabel() + "\n" + level2.getLabel() + "\n"
+                                + level3.getLabel());
+
+                        values.put("menu_code", level3.getCode());
+
+                        values.put("price", level3.getPrice());
+
+                        values.put("ea", 1);
+
+                        db.insert(TABLE_NAME, null, values);
+                        Log.i("cart_add", values.toString());
+                        Toast.makeText(context, "장바구니에 담았습니다.", Toast.LENGTH_SHORT).show();
+                        new BaseActivity().setCartCount(context);
+                    } else {
+                        Toast.makeText(context, "장바구니에 있는 메뉴입니다.", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
                 dismiss();
             }

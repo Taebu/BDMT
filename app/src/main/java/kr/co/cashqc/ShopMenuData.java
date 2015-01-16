@@ -12,7 +12,27 @@ public class ShopMenuData {
 
     private String shopName;
 
+    private String shopPhone;
+
+    private String shopVPhone;
+
     private ArrayList<MenuData> menu;
+
+    public String getShopVPhone() {
+        return shopVPhone;
+    }
+
+    public void setShopVPhone(String shopVPhone) {
+        this.shopVPhone = shopVPhone;
+    }
+
+    public String getShopPhone() {
+        return shopPhone;
+    }
+
+    public void setShopPhone(String shopPhone) {
+        this.shopPhone = shopPhone;
+    }
 
     public ArrayList<MenuData> getMenu() {
         return menu;

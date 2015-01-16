@@ -28,6 +28,8 @@ public class CartActivity extends BaseActivity {
 
     private CartListAdapter mAdapter;
 
+    private OrderData mOrderData;
+
     private ArrayList<CartData> mCartList;
 
     @Override
@@ -46,7 +48,11 @@ public class CartActivity extends BaseActivity {
         tvShop = (TextView)findViewById(R.id.cart_shopname);
         tvTotal = (TextView)findViewById(R.id.cart_total);
 
-        mCartList = select();
+        mOrderData = select();
+
+        mCartList = mOrderData.getMenu();
+
+        tvShop.setText(mOrderData.getShopName() + " tel: " + mOrderData.getShopPhone());
 
         setTotal();
 
@@ -60,11 +66,11 @@ public class CartActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                if(mCartList.isEmpty()) {
+                if (mCartList.isEmpty()) {
                     Toast.makeText(CartActivity.this, "장바구니가 비어있어요~", Toast.LENGTH_SHORT).show();
                 } else {
                     Intent intent = new Intent(CartActivity.this, OrderActivity.class);
-                    intent.putExtra("cart", mCartList);
+                    intent.putExtra("order", mOrderData);
                     startActivity(intent);
                 }
             }
@@ -116,7 +122,7 @@ public class CartActivity extends BaseActivity {
         mHelper.close();
     }
 
-    public ArrayList<CartData> select() {
+    public OrderData select() {
 
         // 1) db의 데이터를 읽어와서, 2) 결과 저장, 3)해당 데이터를 꺼내 사용
 
@@ -129,9 +135,17 @@ public class CartActivity extends BaseActivity {
          * selectionArgs, String groupBy, String having, String orderBy)
          */
 
+        OrderData orderData = new OrderData();
+
         ArrayList<CartData> list = new ArrayList<CartData>();
 
         while (c.moveToNext()) {
+
+            orderData.setShopPhone(c.getString(c.getColumnIndex("shop_phone")));
+            orderData.setShopName(c.getString(c.getColumnIndex("shop_name")));
+            orderData.setShopCode(c.getString(c.getColumnIndex("shop_code")));
+            orderData.setShopVPhone(c.getString(c.getColumnIndex("shop_vphone")));
+
             CartData data = new CartData();
 
             int ea = c.getInt(c.getColumnIndex("ea"));
@@ -144,14 +158,14 @@ public class CartActivity extends BaseActivity {
             data.setMenuName(c.getString(c.getColumnIndex("menu_name")));
 
             list.add(data);
-
-            tvShop.setText(c.getString(c.getColumnIndex("shop_name")));
         }
+
+        orderData.setMenu(list);
 
         mHelper.close();
         c.close();
 
-        return list;
+        return orderData;
     }
 
     public void mOnClick(View view) {
@@ -186,16 +200,12 @@ public class CartActivity extends BaseActivity {
             }
 
             mAdapter.notifyDataSetChanged();
+            mOrderData.setMenu(mCartList);
             setTotal();
         }
     };
 
     private void setTotal() {
-        int total = 0;
-        for (CartData data : mCartList) {
-            total += data.getEa() * data.getPrice();
-        }
-        String result = String.format("%,d원", total);
-        tvTotal.setText("총 주문 금액 " + result);
+        tvTotal.setText("총 주문 금액 " + String.format("%,d원", mOrderData.getTotal()));
     }
 }

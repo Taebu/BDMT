@@ -119,7 +119,6 @@
                     android:layout_marginBottom="8dp"
                     android:clickable="true"
                     android:drawableRight="@drawable/icon_call"
-                    android:onClick="mOnClick"
                     android:text="캐시큐나라 치킨공주   " />
 
                 <TextView
@@ -204,7 +203,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/order__result_total"
+                android:id="@+id/order_result_total"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center|right"

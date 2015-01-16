@@ -15,12 +15,16 @@ import java.util.ArrayList;
  */
 public class OrderResultActivity extends BaseActivity {
 
-    private TextView tvResult, tvShop, tvShopTel, tvPayment, tvComment, tvAddress1, tvAddress2,
+    private TextView tvResult, tvShop, tvPayment, tvComment, tvAddress1, tvAddress2,
             tvPhone, tvTotal;
 
     private ListView mListView;
 
     private OrderListAdapter mAdapter;
+
+    private OrderData mOrderData;
+
+    private ArrayList<CartData> mCartList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,8 +33,45 @@ public class OrderResultActivity extends BaseActivity {
         killer.addActivity(this);
 
         tvResult = (TextView)findViewById(R.id.order_result_text);
+        tvShop = (TextView) findViewById(R.id.order_result_shop);
+        tvPayment = (TextView) findViewById(R.id.order_result_payment);
+        tvAddress1 = (TextView) findViewById(R.id.order_result_address1);
+        tvAddress2 = (TextView) findViewById(R.id.order_result_address2);
+        tvPhone = (TextView) findViewById(R.id.order_result_phone);
+        tvComment = (TextView) findViewById(R.id.order_result_comment);
+        tvTotal = (TextView) findViewById(R.id.order_result_total);
 
-        tvTotal = (TextView) findViewById(R.id.order_result_text);
+        mOrderData = (OrderData) getIntent().getSerializableExtra("order");
+
+        mCartList = mOrderData.getMenu();
+
+        tvShop.setText(mOrderData.getShopName());
+        tvShop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        tvPayment.setText(mOrderData.getPayType());
+
+        tvAddress1.setText(mOrderData.getZipCode() + " " + mOrderData.getAddress1());
+
+        tvAddress2.setText(mOrderData.getAddress2());
+
+        tvPhone.setText(mOrderData.getUserPhone());
+
+        tvComment.setText(mOrderData.getComment());
+
+        mListView = (ListView)findViewById(R.id.order_result_listview);
+
+        mAdapter = new OrderListAdapter(this, mCartList);
+
+        mListView.setAdapter(mAdapter);
+
+        setListViewHeightBasedOnChildren(mListView);
+
+        tvTotal.setText(String.format("%,d원", mOrderData.getTotal()));
 
         findViewById(R.id.btn_order_finish).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,24 +79,6 @@ public class OrderResultActivity extends BaseActivity {
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
         });
-
-        ArrayList<CartData> dataList = (ArrayList<CartData>)getIntent().getSerializableExtra("cart");
-
-        mListView = (ListView)findViewById(R.id.order_result_listview);
-
-        mAdapter = new OrderListAdapter(this, dataList);
-
-        mListView.setAdapter(mAdapter);
-
-        setListViewHeightBasedOnChildren(mListView);
-
-        int total = 0;
-        for (int i = 0; i < dataList.size(); i++) {
-            total += dataList.get(i).getEa() * dataList.get(i).getPrice();
-        }
-
-        String result = String.format("%,d원", total);
-        tvTotal.setText(result);
     }
 
     public void mOnClick(View view) {

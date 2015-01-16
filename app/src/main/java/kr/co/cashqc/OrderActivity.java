@@ -2,9 +2,10 @@
 package kr.co.cashqc;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,32 +16,36 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 /**
  * @author Jung-Hum Cho Created by anp on 14. 12. 31..
  */
-public class OrderActivity extends BaseActivity implements DialogInterface.OnDismissListener {
+public class OrderActivity extends BaseActivity {
 
     private Activity mActivity = this;
 
-    private int mPayment = 0;
+    private String mPayType = "NOT_CHOOSE";
 
-    private final int NOT_CHOOSE = 0;
+    private final String NOT_CHOOSE = "NOT_CHOOSE";
 
-    private final int CASHQ_CARD = 1;
+    private final String CASHQ_CARD = "CASHQ_CARD";
 
-    private final int CASHQ_PHONE = 2;
+    private final String CASHQ_CELL = "CASHQ_CELL";
 
-    private final int SITE_CASH = 3;
+    private final String FIELD_CASH = "FIELD_CASH";
 
-    private final int SITE_CARD = 4;
+    private final String FIELD_CARD = "FIELD_CARD";
 
     private TextView rbCashqCard, rbCashqPhone, rbSiteCash, rbSiteCard, tvTotal;
 
     private EditText etZipCode, etAddress1, etAddress2, etPhone, etComment;
 
     private Button btnOrder;
+
+    private OrderData mOrderData;
 
     private ArrayList<CartData> mCartList;
 
@@ -67,11 +72,15 @@ public class OrderActivity extends BaseActivity implements DialogInterface.OnDis
 
         killer.addActivity(this);
 
-        setView();///
+        mDialog = new CustomDialog(this);
+
+        mOrderData = (OrderData)getIntent().getSerializableExtra("order");
+
+        mCartList = mOrderData.getMenu();
+
+        setView();
 
         setListener();
-
-        mCartList = (ArrayList<CartData>)getIntent().getSerializableExtra("cart");
 
         mAdapter = new OrderListAdapter(this, mCartList);
 
@@ -80,13 +89,7 @@ public class OrderActivity extends BaseActivity implements DialogInterface.OnDis
 
         setListViewHeightBasedOnChildren(mListView);
 
-        int total = 0;
-        for (int i = 0; i < mCartList.size(); i++) {
-            total += mCartList.get(i).getEa() * mCartList.get(i).getPrice();
-        }
-
-        String result = String.format("%,d원", total);
-        tvTotal.setText(result);
+        tvTotal.setText(String.format("%,d원", mOrderData.getTotal()));
 
     }
 
@@ -124,34 +127,25 @@ public class OrderActivity extends BaseActivity implements DialogInterface.OnDis
             @Override
             public void onClick(View v) {
 
-                if (mPayment == NOT_CHOOSE) {
+                if (mPayType == NOT_CHOOSE) {
                     Toast.makeText(mActivity, "결제 방법을 선택해 주세요.", Toast.LENGTH_SHORT).show();
+                } else if (etZipCode.getText().toString().equals("")) {
+                    Toast.makeText(mActivity, "우편번호를 입력해 주세요.", Toast.LENGTH_SHORT).show();
                 } else if (etAddress1.getText().toString().equals("")
                         || etAddress2.getText().toString().equals("")) {
                     Toast.makeText(mActivity, "주소를 모두 입력해 주세요.", Toast.LENGTH_SHORT).show();
                 } else if (etPhone.getText().toString().equals("")) {
                     Toast.makeText(mActivity, "연락처를 입력해 주세요.", Toast.LENGTH_SHORT).show();
                 } else {
-                    Intent intent = new Intent();
-                    switch (mPayment) {
-                        case CASHQ_CARD:
-                            intent = new Intent(mActivity, PayActivity.class);
-                            intent.putExtra("pay", "card");
-                            break;
-                        case CASHQ_PHONE:
-                            intent = new Intent(mActivity, PayActivity.class);
-                            intent.putExtra("pay", "phone");
-                            break;
-                        case SITE_CASH:
-                            intent = new Intent(mActivity, OrderResultActivity.class);
-                            intent.putExtra("cart", mCartList);
-                            break;
-                        case SITE_CARD:
-                            intent = new Intent(mActivity, OrderResultActivity.class);
-                            intent.putExtra("cart", mCartList);
-                            break;
-                    }
-                    startActivity(intent);
+
+                    mOrderData.setZipCode(etZipCode.getText().toString());
+                    mOrderData.setAddress1(etAddress1.getText().toString());
+                    mOrderData.setAddress2(etAddress2.getText().toString());
+                    mOrderData.setUserPhone(etPhone.getText().toString());
+                    mOrderData.setComment(etComment.getText().toString());
+                    mOrderData.setPayType(mPayType);
+
+                    new OrderTask().execute(mOrderData);
                 }
             }
         });
@@ -191,28 +185,28 @@ public class OrderActivity extends BaseActivity implements DialogInterface.OnDis
         switch (view.getId()) {
             case R.id.order_cashq_card:
                 btnOrder.setText("결제 하기");
-                mPayment = CASHQ_CARD;
+                mPayType = CASHQ_CARD;
                 rbCashqCard.setTextColor(Color.parseColor("#E94230"));
                 rbCashqCard.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.btn_pay_card_on,
                         0, 0);
                 break;
             case R.id.order_cashq_phone:
                 btnOrder.setText("결제 하기");
-                mPayment = CASHQ_PHONE;
+                mPayType = CASHQ_CELL;
                 rbCashqPhone.setTextColor(Color.parseColor("#E94230"));
                 rbCashqPhone.setCompoundDrawablesWithIntrinsicBounds(0,
                         R.drawable.btn_pay_phone_on, 0, 0);
                 break;
             case R.id.order_site_cash:
                 btnOrder.setText("주문 하기");
-                mPayment = SITE_CASH;
+                mPayType = FIELD_CASH;
                 rbSiteCash.setTextColor(Color.parseColor("#E94230"));
                 rbSiteCash.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.btn_pay_cash_on,
                         0, 0);
                 break;
             case R.id.order_site_card:
                 btnOrder.setText("주문 하기");
-                mPayment = SITE_CARD;
+                mPayType = FIELD_CARD;
                 rbSiteCard.setTextColor(Color.parseColor("#E94230"));
                 rbSiteCard.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.btn_pay_card_on,
                         0, 0);
@@ -230,9 +224,71 @@ public class OrderActivity extends BaseActivity implements DialogInterface.OnDis
         super.finish();
     }
 
-    @Override
-    public void onDismiss(DialogInterface dialog) {
+    private class OrderTask extends AsyncTask<OrderData, Void, JSONObject> {
 
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if (!mDialog.isShowing())
+                mDialog.show();
+        }
+
+        @Override
+        protected JSONObject doInBackground(OrderData... params) {
+
+            OrderData data = params[0];
+
+            Uri.Builder ub = Uri.parse("http://cashq.co.kr/m/ajax_data/set_ordtake.php")
+                    .buildUpon().appendQueryParameter("mb_zip", data.getZipCode())
+                    .appendQueryParameter("mb_addr1", data.getAddress1())
+                    .appendQueryParameter("mb_addr2", data.getAddress2())
+                    .appendQueryParameter("mb_hp", data.getUserPhone())
+                    .appendQueryParameter("comment", data.getComment())
+                    .appendQueryParameter("st_seq", data.getShopCode())
+                    .appendQueryParameter("st_name", data.getShopName())
+                    .appendQueryParameter("st_phone", data.getShopPhone())
+                    .appendQueryParameter("st_vphone", data.getShopVPhone())
+                    .appendQueryParameter("pay_type", data.getPayType())
+                    .appendQueryParameter("appamount", String.valueOf(data.getTotal()));
+
+            for (CartData c : data.getMenu()) {
+                ub.appendQueryParameter("ordmenu[]",
+                        c.getMenuName() + "_" + c.getEa() + "_" + c.getPrice())
+                        .appendQueryParameter("menucode[]", c.getMenuCode());
+            }
+            ub.build();
+
+            String url = ub.toString();
+
+            Log.e("order", "url : " + url);
+
+            return new JSONParser().getJSONObjectFromUrl(url);
+            // return null;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject jsonObject) {
+            super.onPostExecute(jsonObject);
+
+            if (mDialog.isShowing())
+                mDialog.dismiss();
+
+            Intent i = new Intent();
+
+            if (mOrderData.getPayType().equals(NOT_CHOOSE)) {
+                // ???
+            } else if (mOrderData.getPayType().equals(CASHQ_CARD)
+                    || mOrderData.getPayType().equals(CASHQ_CELL)) {
+                i.setClass(mActivity, PayActivity.class);
+
+            } else if (mOrderData.getPayType().equals(FIELD_CASH)
+                    || mOrderData.getPayType().equals(FIELD_CARD)) {
+                i.setClass(mActivity, OrderResultActivity.class);
+            }
+
+            i.putExtra("order", mOrderData);
+            startActivity(i);
+        }
     }
 
 }

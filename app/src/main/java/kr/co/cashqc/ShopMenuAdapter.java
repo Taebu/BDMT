@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class ShopMenuAdapter extends BaseExpandableListAdapter {
 
@@ -55,9 +54,9 @@ public class ShopMenuAdapter extends BaseExpandableListAdapter {
                 new OrderMenuDialog(inflater.getContext(), mData,
                         groupPosition, childPosition).show();
 
-                Toast.makeText(inflater.getContext(),
-                        "group : " + groupPosition + "\nchild : " + childPosition,
-                        Toast.LENGTH_SHORT).show();
+//                Toast.makeText(inflater.getContext(),
+//                        "group : " + groupPosition + "\nchild : " + childPosition,
+//                        Toast.LENGTH_SHORT).show();
             }
         });
 
