@@ -62,9 +62,7 @@ public class OrderListAdapter extends BaseAdapter {
 
         h.name.setText(item.getMenuName());
 
-        int total = item.getPrice() * item.getEa();
-        String result = String.format("%,d원", total);
-        h.price.setText(result);
+        h.price.setText(String.format("%,d원", item.getResultPrice()));
 
         h.ea.setText(String.valueOf(item.getEa()));
 

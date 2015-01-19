@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -43,6 +44,8 @@ public class OrderActivity extends BaseActivity {
     private TextView rbCashqCard, rbCashqPhone, rbSiteCash, rbSiteCard, tvTotal, tvShopName, tvShopPhone;
 
     private EditText etZipCode, etAddress1, etAddress2, etPhone, etComment;
+
+    private CheckBox cbMember;
 
     private Button btnOrder;
 
@@ -101,6 +104,8 @@ public class OrderActivity extends BaseActivity {
         tvShopPhone.setText(mOrderData.getShopPhone());
         tvTotal.setText(String.format("%,d원", mOrderData.getTotal()));
 
+        cbMember = (CheckBox) findViewById(R.id.order_member_address);
+
     }
 
     private void setListViewHeightBasedOnChildren(ListView listView) {
@@ -137,7 +142,7 @@ public class OrderActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                if (mPayType == NOT_CHOOSE) {
+                if (mPayType.equals(NOT_CHOOSE)) {
                     Toast.makeText(mActivity, "결제 방법을 선택해 주세요.", Toast.LENGTH_SHORT).show();
                 } else if (etZipCode.getText().toString().equals("")) {
                     Toast.makeText(mActivity, "우편번호를 입력해 주세요.", Toast.LENGTH_SHORT).show();

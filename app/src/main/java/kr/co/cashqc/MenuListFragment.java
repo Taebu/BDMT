@@ -38,6 +38,7 @@ public class MenuListFragment extends ListFragment {
         adapter.add(new SampleItem(login, R.drawable.icon_pw_off));
         adapter.add(new SampleItem("문의 사항", R.drawable.icon_more_3_gray));
         adapter.add(new SampleItem("공지 사항", R.drawable.icon_more_6_gray));
+        adapter.add(new SampleItem("가맹점", R.drawable.icon_more_6));
 //        adapter.add(new SampleItem("제휴 문의", R.drawable.icon_more_4_gray));
 
         setListAdapter(adapter);
@@ -111,6 +112,8 @@ public class MenuListFragment extends ListFragment {
                 intent = new Intent(getActivity(), WebViewActivity.class);
                 intent.putExtra("assort", "notice");
                 break;
+            case 5:
+                intent = new Intent(getActivity(), ShopAdminActivity.class);
         }
 
         if (intent != null) {

@@ -9,6 +9,8 @@ import java.util.ArrayList;
  */
 public class OrderData implements Serializable {
 
+    private String simpleMenu;
+
     private String payType;
 
     private String shopName;
@@ -33,7 +35,25 @@ public class OrderData implements Serializable {
 
     private int total;
 
+    private String date;
+
     private ArrayList<CartData> menu;
+
+    public String getSimpleMenu() {
+        return simpleMenu;
+    }
+
+    public void setSimpleMenu(String simpleMenu) {
+        this.simpleMenu = simpleMenu;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 
     public String getTradeId() {
         return tradeId;
@@ -57,6 +77,10 @@ public class OrderData implements Serializable {
 
     public void setPayType(String payType) {
         this.payType = payType;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
     }
 
     public int getTotal() {

@@ -19,21 +19,21 @@
         android:padding="4dp">
 
         <RatingBar
-            android:clickable="true"
-            android:isIndicator="true"
-            android:numStars="5"
             android:id="@+id/shoppage_rating"
             style="@style/starRatingBar"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:isIndicator="true"
+            android:numStars="5" />
 
         <TextView
-            android:layout_marginLeft="12dp"
-            android:layout_gravity="center_vertical"
             android:id="@+id/shoppage_ratingscore"
-            android:text="#점"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="12dp"
+            android:text="#점" />
 
         <TextView
             android:id="@+id/calllog"
@@ -46,14 +46,14 @@
 
         <TextView
             android:id="@+id/shoppage_reviewcount"
-            android:clickable="true"
-            android:paddingRight="12dp"
-            android:text="##개 리뷰 "
-            android:gravity="right"
-            android:layout_gravity="center_vertical"
-            android:drawableRight="@drawable/btn_list_open"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:clickable="true"
+            android:drawableRight="@drawable/btn_list_open"
+            android:gravity="right"
+            android:paddingRight="12dp"
+            android:text="##개 리뷰 " />
 
     </LinearLayout>
 

@@ -133,6 +133,9 @@
         <activity
             android:name=".OrderResultActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ShopAdminActivity"
+            android:screenOrientation="portrait" />
 
 
         <receiver

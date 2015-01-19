@@ -88,9 +88,8 @@ public class CartListAdapter extends BaseAdapter {
 //        h.parent.setText(item.getParentName());
 
         h.menu.setText(item.getMenuName());
-        int total = item.getPrice() * item.getEa();
-        String result = String.format("%,d원", total);
-        h.price.setText(result);
+
+        h.price.setText(String.format("%,d원", item.getResultPrice()));
 
         return v;
     }

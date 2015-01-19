@@ -274,6 +274,7 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
             mAdapter.notifyDataSetChanged();
 
             if (mPage > 1) {
+
                 mListView.setSelection((mPage - 1) * 9);
             }
             mDialog.dismiss();

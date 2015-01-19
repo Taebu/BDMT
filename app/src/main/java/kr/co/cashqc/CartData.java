@@ -17,6 +17,19 @@ public class CartData implements Serializable {
 
     private String menuCode;
 
+    private int resultPrice;
+
+    public int getResultPrice() {
+
+        resultPrice = price * ea;
+
+        return resultPrice;
+    }
+
+    public void setResultPrice(int resultPrice) {
+        this.resultPrice = resultPrice;
+    }
+
     public void plusEa() {
         ea++;
     }

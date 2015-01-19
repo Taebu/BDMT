@@ -484,7 +484,9 @@ public class ShopPageActivity extends BaseActivity {
 
         try {
             shop.setShopName(jsonObject.getString("name"));
-            shop.setShopCode(jsonObject.getString("storecode"));
+            String storeCode = jsonObject.getString("storecode");
+            String seq = storeCode.substring(storeCode.indexOf("_") + 1);
+            shop.setShopCode(seq);
             shop.setShopPhone(jsonObject.getString("phone"));
             shop.setShopVPhone(jsonObject.getString("vphone"));
         } catch (JSONException e) {

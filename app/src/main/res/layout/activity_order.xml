@@ -65,6 +65,7 @@
                     android:textColor="#999999" />
 
                 <EditText
+                    android:text="410-816"
                     android:id="@+id/order_zipcode"
                     android:layout_width="150dp"
                     android:layout_height="30dp"
@@ -98,6 +99,7 @@
                     android:textColor="#999999" />
 
                 <EditText
+                    android:text="경기도 고양시 일산동구"
                     android:id="@+id/order_address1"
                     android:layout_width="220dp"
                     android:layout_height="30dp"
@@ -125,6 +127,7 @@
                     android:visibility="invisible" />
 
                 <EditText
+                    android:text="강송로 49 401호"
                     android:id="@+id/order_address2"
                     android:layout_width="220dp"
                     android:layout_height="30dp"
@@ -152,6 +155,7 @@
                     android:textColor="#999999" />
 
                 <EditText
+                    android:text="010-3475-2742"
                     android:id="@+id/order_phone"
                     android:layout_width="220dp"
                     android:layout_height="30dp"
@@ -178,6 +182,7 @@
                     android:textColor="#999999" />
 
                 <EditText
+                    android:text="싸게싸게 갖다주쇼"
                     android:id="@+id/order_comment"
                     android:layout_width="220dp"
                     android:layout_height="70dp"
