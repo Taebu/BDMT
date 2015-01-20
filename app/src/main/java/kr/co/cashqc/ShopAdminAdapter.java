@@ -74,7 +74,7 @@ public class ShopAdminAdapter extends BaseExpandableListAdapter {
 
         h.tvDate.setText(item.getDate());
         h.tvSimpleMenu.setText(item.getSimpleMenu());
-        h.tvTotal.setText(String.valueOf(item.getTotal()));
+        h.tvTotal.setText(String.format("%,d원", item.getTotal()));
 
         return v;
     }

@@ -78,12 +78,12 @@ public class ShopAdminActivity extends BaseActivity {
             try {
                 JSONArray array = jsonObject.getJSONArray("posts");
 
-                OrderData orderData = new OrderData();
-
                 for (int i = 0; i < array.length(); i++) {
                     JSONObject orderObject = array.getJSONObject(i);
 
-                    orderData.setDate(orderObject.getString("insdate"));
+                    OrderData orderData = new OrderData();
+
+                    orderData.setDate(orderObject.getString("insdate").replace(" ", "\n"));
 
                     orderData.setTotal(Integer.parseInt(orderObject.getString("appamount")));
 
@@ -127,7 +127,6 @@ public class ShopAdminActivity extends BaseActivity {
                     orderData.setSimpleMenu(simpleMenu);
 
                     orderDataList.add(orderData);
-
                 }
 
                 return orderDataList;
