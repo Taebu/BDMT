@@ -17,20 +17,6 @@ package kr.co.cashqc;
  * limitations under the License.
  */
 
-import static kr.co.cashqc.CommonUtilities.SENDER_ID;
-import static kr.co.cashqc.ShopListFragment.adminFlag;
-
-import com.google.android.gcm.GCMRegistrar;
-import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.NotificationManager;
@@ -51,8 +37,20 @@ import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gcm.GCMRegistrar;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -63,6 +61,9 @@ import kr.co.cashqc.gcm.HttpRequest;
 import kr.co.cashqc.gcm.Timer.TimerListener;
 import kr.co.cashqc.gcm.Util;
 import kr.co.cashqc.view.CircleLayout;
+
+import static kr.co.cashqc.CommonUtilities.SENDER_ID;
+import static kr.co.cashqc.ShopListFragment.adminFlag;
 
 public class MainActivity extends BaseActivity implements CircleLayout.OnItemSelectedListener,
         CircleLayout.OnItemClickListener, CircleLayout.OnRotationFinishedListener,
@@ -91,7 +92,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
     private Handler mHandler = new Handler();
 
-    private LinearLayout mLinearLayout;
+    private RelativeLayout mBackgroundLayout;
 
     private TextView mPointText;
 
@@ -152,7 +153,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
         mDialog = new CustomDialog(this);
 
         // main bg init.
-        mLinearLayout = (LinearLayout)findViewById(R.id.bg_main);
+        mBackgroundLayout = (RelativeLayout)findViewById(R.id.bg_main);
 
         // circle menu init.
         CircleLayout mCircleMenu = (CircleLayout)findViewById(R.id.main_circle_layout);
@@ -278,7 +279,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                 Drawable topImage = new BitmapDrawable(loadedImage);
-                mLinearLayout.setBackgroundDrawable(topImage);
+                mBackgroundLayout.setBackgroundDrawable(topImage);
             }
         });
 
@@ -309,8 +310,8 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
     @Override
     public void onRotationFinished(View view, String name) {
         // Animation animation = new RotateAnimation(0, 360,
-        // mLinearLayout.getWidth() / 2,
-        // mLinearLayout.getHeight() / 2);
+        // mBackgroundLayout.getWidth() / 2,
+        // mBackgroundLayout.getHeight() / 2);
         // animation.setDuration(250);
         // view.startAnimation(animation);
     }

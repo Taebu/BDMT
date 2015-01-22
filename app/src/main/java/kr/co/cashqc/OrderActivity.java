@@ -273,9 +273,8 @@ public class OrderActivity extends BaseActivity {
                         c.getMenuName() + "_" + c.getEa() + "_" + c.getPrice())
                         .appendQueryParameter("menucode[]", c.getMenuCode());
             }
-            ub.build();
 
-            String url = ub.toString();
+            String url = ub.build().toString();
 
             Log.e("order", "url : " + url);
 

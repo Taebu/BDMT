@@ -2,47 +2,177 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:gravity="center_vertical"
-    android:padding="16dp">
+    android:padding="4dp">
 
+    <LinearLayout
+        android:id="@+id/row_group_shopadmin_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="10.0">
 
         <TextView
+            android:textColor="#000000"
             android:id="@+id/row_group_shopadmin_num"
-            android:text="1."
-            android:layout_marginRight="16dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:gravity="center_vertical" />
 
         <TextView
-            android:layout_toRightOf="@id/row_group_shopadmin_num"
-            android:text="YYYY/MM/DD"
-            android:layout_marginRight="16dp"
+            android:textColor="#000000"
             android:id="@+id/row_group_shopadmin_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:gravity="center_vertical" />
 
         <TextView
-            android:layout_toRightOf="@id/row_group_shopadmin_date"
-            android:text="치킨 외 1건"
+            android:textColor="#000000"
             android:id="@+id/row_group_shopadmin_simplemenu"
-            android:layout_marginRight="16dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:gravity="center_vertical" />
 
         <TextView
-            android:layout_toRightOf="@id/row_group_shopadmin_simplemenu"
-            android:text="##,###원"
+            android:textColor="#000000"
             android:id="@+id/row_group_shopadmin_total"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2.5"
+            android:gravity="center" />
 
         <ImageView
             android:id="@+id/row_group_shopadmin_switch"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/btn_list_open"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent"
+            android:gravity="center_vertical" />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_below="@+id/row_group_shopadmin_layout"
+        android:id="@+id/row_group_shopadmin_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:src="#E8E8E8" />
+
+    <LinearLayout
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/row_group_shopadmin_line"
+        android:id="@+id/row_group_shopadmin_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:weightSum="10">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="주문 업체"
+                android:textColor="#999999" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="결제 방식"
+                android:textColor="#999999" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="배달 주소"
+                android:textColor="#999999" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="배달 주소"
+                android:textColor="#999999"
+                android:visibility="invisible" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="연락처"
+                android:textColor="#999999" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="요청사항"
+                android:textColor="#999999" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="8"
+            android:orientation="vertical"
+            android:paddingLeft="8dp">
+
+            <TextView
+                android:id="@+id/row_group_shopadmin_shop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:clickable="true"
+                android:drawableRight="@drawable/icon_call"
+                android:text="캐시큐나라 치킨공주   " />
+
+            <TextView
+                android:id="@+id/row_group_shopadmin_payment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="현장결제 / 카드" />
+
+            <TextView
+                android:id="@+id/row_group_shopadmin_address1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="410-816 경기도 고양시 일산동구" />
+
+            <TextView
+                android:id="@+id/row_group_shopadmin_address2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="강송로 49 404호" />
+
+            <TextView
+                android:id="@+id/row_group_shopadmin_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="010-1234-1234" />
+
+            <TextView
+                android:id="@+id/row_group_shopadmin_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="빨리갖다주셈" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/row_group_shopadmin_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible" />
 
 </RelativeLayout>

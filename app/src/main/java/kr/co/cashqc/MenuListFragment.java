@@ -113,7 +113,7 @@ public class MenuListFragment extends ListFragment {
                 intent.putExtra("assort", "notice");
                 break;
             case 5:
-                intent = new Intent(getActivity(), ShopAdminActivity.class);
+                intent = new Intent(getActivity(), CallLogLoginActivity.class);
         }
 
         if (intent != null) {

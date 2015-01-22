@@ -76,6 +76,8 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/explain"
+        android:layout_below="@+id/gps_layout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="20dp"
@@ -123,6 +125,7 @@
     </LinearLayout>
 
     <kr.co.cashqc.view.CircleLayout
+        android:layout_below="@id/explain"
         android:id="@+id/main_circle_layout"
         android:layout_width="match_parent"
         android:layout_height="350dp"

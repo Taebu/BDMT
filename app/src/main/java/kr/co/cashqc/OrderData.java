@@ -33,6 +33,16 @@ public class OrderData implements Serializable {
 
     private String tradeId;
 
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    private int number;
+
     private int total;
 
     private String date;

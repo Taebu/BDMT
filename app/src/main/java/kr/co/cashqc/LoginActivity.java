@@ -15,7 +15,7 @@ import org.json.JSONObject;
 import kr.co.cashqc.gcm.Util;
 
 /**
- * Created by anp on 14. 11. 18..
+ * @author Jung-Hum Cho Created by anp on 14. 11. 18..
  */
 public class LoginActivity extends BaseActivity {
 
@@ -50,19 +50,21 @@ public class LoginActivity extends BaseActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (Util.loadSharedPreferencesBoolean(LoginActivity.this, "login")) {
-//                    Util.saveSharedPreferences_boolean(LoginActivity.this, "login", false);
-//                    btnLogin.setText("로그인");
-//                } else {
+                // if (Util.loadSharedPreferencesBoolean(LoginActivity.this,
+                // "login")) {
+                // Util.saveSharedPreferences_boolean(LoginActivity.this,
+                // "login", false);
+                // btnLogin.setText("로그인");
+                // } else {
 
-                    if (cbAutoLogin.isChecked()) {
-                        Util.saveSharedPreferences_boolean(LoginActivity.this, "auto_login", true);
-                    } else {
-                        Util.saveSharedPreferences_boolean(LoginActivity.this, "auto_login", false);
-                    }
+                if (cbAutoLogin.isChecked()) {
+                    Util.saveSharedPreferences_boolean(LoginActivity.this, "auto_login", true);
+                } else {
+                    Util.saveSharedPreferences_boolean(LoginActivity.this, "auto_login", false);
+                }
 
-                    new LoginTask().execute(etPhoneNum.getText().toString());
-//                }
+                new LoginTask().execute(etPhoneNum.getText().toString());
+                // }
             }
         });
     }
@@ -119,11 +121,10 @@ public class LoginActivity extends BaseActivity {
 
                 Intent intent = new Intent(LoginActivity.this, JoinActivity.class);
                 intent.putExtra("phoneNum", etPhoneNum.getText().toString());
-                CustomDialog joinDialog = new CustomDialog(LoginActivity.this, msg, LoginActivity.this, intent);
+                CustomDialog joinDialog = new CustomDialog(LoginActivity.this, msg,
+                        LoginActivity.this, intent);
                 joinDialog.show();
             }
-
-
 
             if (dialog.isShowing())
                 dialog.dismiss();

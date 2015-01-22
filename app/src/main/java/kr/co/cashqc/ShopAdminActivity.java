@@ -3,6 +3,7 @@ package kr.co.cashqc;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
@@ -12,6 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * @author Jung-Hum Cho Created by anp on 15. 1. 19..
@@ -76,60 +78,78 @@ public class ShopAdminActivity extends BaseActivity {
             ArrayList<OrderData> orderDataList = new ArrayList<OrderData>();
 
             try {
+
                 JSONArray array = jsonObject.getJSONArray("posts");
 
                 for (int i = 0; i < array.length(); i++) {
+
                     JSONObject orderObject = array.getJSONObject(i);
 
-                    OrderData orderData = new OrderData();
+                    if (true) {
+                        // if (orderObject.getString("seq").equals("2")) {
 
-                    orderData.setDate(orderObject.getString("insdate").replace(" ", "\n"));
+                        OrderData orderData = new OrderData();
 
-                    orderData.setTotal(Integer.parseInt(orderObject.getString("appamount")));
+                        // orderData.setNumber(i);
 
-                    orderData.setShopName(orderObject.getString("st_name"));
+                        orderData.setNumber(Integer.parseInt(orderObject.getString("seq")));
 
-                    orderData.setPayType(orderObject.getString("pay_type"));
+                        orderData.setDate(orderObject.getString("insdate").replace(" ", "\n"));
 
-                    orderData.setZipCode(orderObject.getString("mb_zip"));
+                        orderData.setTotal(Integer.parseInt(orderObject.getString("appamount")));
 
-                    orderData.setAddress1(orderObject.getString("mb_addr1"));
+                        orderData.setShopName(orderObject.getString("st_name"));
 
-                    orderData.setAddress2(orderObject.getString("mb_addr2"));
+                        orderData.setPayType(orderObject.getString("pay_type"));
 
-                    orderData.setUserPhone(orderObject.getString("mb_hp"));
+                        orderData.setZipCode(orderObject.getString("mb_zip"));
 
-                    orderData.setComment(orderObject.getString("comment"));
+                        orderData.setAddress1(orderObject.getString("mb_addr1"));
 
-                    ArrayList<CartData> cartDataList = new ArrayList<CartData>();
-                    CartData cartData = new CartData();
-                    int total = 0;
-                    String[] menus = orderObject.getString("ordmenu").split("&");
+                        orderData.setAddress2(orderObject.getString("mb_addr2"));
 
-                    for (int y = 0; y < menus.length; y++) {
+                        orderData.setUserPhone(orderObject.getString("mb_hp"));
 
-                        String[] menu = menus[y].split("_");
+                        orderData.setComment(orderObject.getString("comment"));
 
-                        cartData.setMenuName(menu[0]);
-                        // cartData.setEa(Integer.parseInt(menu[1]));
-                        // cartData.setPrice(Integer.parseInt(menu[2]));
+                        ArrayList<CartData> cartDataList = new ArrayList<CartData>();
 
-                        cartDataList.add(cartData);
+                        int total = 0;
 
+                        String[] menus = orderObject.getString("ordmenu").split("&");
+                        Log.e("shopadmin", "menus : " + Arrays.toString(menus));
+                        for (int y = 0; y < menus.length; y++) {
+                            CartData cartData = new CartData();
+                            String[] menu = menus[y].split("_");
+                            Log.e("shopadmin", "menu : " + Arrays.toString(menu));
+
+                            try {
+                                cartData.setMenuName(menu[0]);
+                                cartData.setEa(Integer.parseInt(menu[1]));
+                                cartData.setPrice(Integer.parseInt(menu[2]));
+                            } catch (ArrayIndexOutOfBoundsException e) {
+                                e.printStackTrace();
+                            }
+
+//                            Log.e("shopadmin", "\ncartData : " + cartData.getMenuName() + "\nea : "
+//                                    + cartData.getEa() + "\nprice : " + cartData.getMenuName());
+                            cartDataList.add(cartData);
+                        }
+
+                        orderData.setMenu(cartDataList);
+
+                        String menu = orderData.getMenu().get(0).getMenuName();
+                        int quantity = orderData.getMenu().size() - 1;
+                        String simpleMenu = quantity < 1 ? menu : menu + " 외 " + quantity + "건";
+
+                        orderData.setSimpleMenu(simpleMenu);
+
+                        orderDataList.add(orderData);
                     }
-
-                    orderData.setMenu(cartDataList);
-
-                    String menu = orderData.getMenu().get(0).getMenuName();
-                    int quantity = orderData.getMenu().size() - 1;
-                    String simpleMenu = quantity < 1 ? menu : menu + " 외 " + quantity + "건";
-
-                    orderData.setSimpleMenu(simpleMenu);
-
-                    orderDataList.add(orderData);
                 }
 
                 return orderDataList;
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -140,7 +160,8 @@ public class ShopAdminActivity extends BaseActivity {
     }
 
     private void setListViewHeight(ExpandableListView listView) {
-        ShopAdminAdapter adapter = (ShopAdminAdapter) listView.getExpandableListAdapter();
+
+        ShopAdminAdapter adapter = (ShopAdminAdapter)listView.getExpandableListAdapter();
 
         if (adapter == null) {
             return;
