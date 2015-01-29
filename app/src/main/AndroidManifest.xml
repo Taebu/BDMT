@@ -144,6 +144,9 @@
         <activity
             android:name=".CallLogActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".GCMActivity"
+            android:screenOrientation="portrait" />
 
 
         <receiver

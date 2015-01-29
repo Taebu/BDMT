@@ -38,7 +38,8 @@ public class MenuListFragment extends ListFragment {
         adapter.add(new SampleItem(login, R.drawable.icon_pw_off));
         adapter.add(new SampleItem("문의 사항", R.drawable.icon_more_3_gray));
         adapter.add(new SampleItem("공지 사항", R.drawable.icon_more_6_gray));
-        adapter.add(new SampleItem("가맹점", R.drawable.icon_more_6));
+        adapter.add(new SampleItem("가맹점", R.drawable.icon_more_5_gray));
+        adapter.add(new SampleItem("푸시로그", R.drawable.icon_more_8_gray));
 //        adapter.add(new SampleItem("제휴 문의", R.drawable.icon_more_4_gray));
 
         setListAdapter(adapter);
@@ -114,6 +115,9 @@ public class MenuListFragment extends ListFragment {
                 break;
             case 5:
                 intent = new Intent(getActivity(), CallLogLoginActivity.class);
+                break;
+            case 6:
+                intent = new Intent(getActivity(), GCMActivity.class);
         }
 
         if (intent != null) {
