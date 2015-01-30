@@ -5,8 +5,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_normal"
     android:gravity="center_horizontal"
-    android:orientation="vertical"
-    tools:context=".PointActivity">
+    android:orientation="vertical">
 
     <LinearLayout
         android:weightSum="10"
@@ -72,6 +71,19 @@
             <!--android:textSize="13sp" />-->
 
         </LinearLayout>
+
+        <Button
+            android:layout_marginBottom="8dp"
+            android:layout_gravity="center"
+            android:id="@+id/point_logout"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
+            android:background="@drawable/btn_black"
+            android:clickable="true"
+            android:textSize="10sp"
+            android:text="로그아웃"
+            android:textColor="#FFFFFF" />
+
 
         <ImageView
             android:layout_width="310dp"

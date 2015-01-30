@@ -1,7 +1,10 @@
 package kr.co.cashqc;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,6 +25,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import kr.co.cashqc.gcm.Util;
 
 /**
  * Created by anp on 14. 11. 18..
@@ -58,6 +63,8 @@ public class PointActivity extends BaseActivity {
 
     private static Button sBtnRequest;
 
+    private Activity mThis = this;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +89,14 @@ public class PointActivity extends BaseActivity {
 
         if (Build.VERSION.SDK_INT > 10)
             sBtnRequest.setAlpha(0.1f);
+
+        findViewById(R.id.point_logout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.saveSharedPreferences_boolean(mThis, "point_autologin", false);
+                startActivity(new Intent(mThis, MainActivity.class));
+            }
+        });
 
         if (mPhoneNum != null) {
             new LoadPointTask().execute(mPhoneNum);
@@ -239,6 +254,9 @@ public class PointActivity extends BaseActivity {
             datas.setEventcode(object.getString("eventcode"));
             datas.setBiz_code(object.getString("biz_code"));
 
+            if(object.has("pre_pay"))
+            datas.setGrade(object.getString("pre_pay"));
+
             return datas;
         } catch (JSONException e) {
             e.printStackTrace();
@@ -388,7 +406,7 @@ public class PointActivity extends BaseActivity {
 
         private class ViewHolder {
 
-            private TextView tvDate, tvName, tvStatus, tvDeadline, tvComment, tvPoint;
+            private TextView tvDate, tvName, tvStatus, tvDeadline, tvComment, tvPoint, tvGrade;
 
             private CheckBox checkBox;
 
@@ -410,6 +428,7 @@ public class PointActivity extends BaseActivity {
                 h.tvComment = (TextView) convertView.findViewById(R.id.tv_comment);
                 h.tvPoint = (TextView) convertView.findViewById(R.id.tv_point);
                 h.checkBox = (CheckBox) convertView.findViewById(R.id.check_point);
+                h.tvGrade = (TextView) convertView.findViewById(R.id.row_point_grade);
 
                 convertView.setTag(h);
 
@@ -461,6 +480,28 @@ public class PointActivity extends BaseActivity {
 
             datas = getItem(position);
 
+            if(datas.getGrade().equals("gl")) {
+
+                h.tvGrade.setText("GOLD");
+                h.tvGrade.setTextColor(Color.parseColor("#daa520"));
+
+            } else if (datas.getGrade().equals("sl")) {
+
+                h.tvGrade.setText("SILVER");
+                h.tvGrade.setTextColor(Color.parseColor("#C0C0C0"));
+
+            } else if (datas.getGrade().equals("on")) {
+
+                h.tvGrade.setText("CASHQ");
+                h.tvGrade.setTextColor(Color.parseColor("#E94230"));
+
+            } else if (datas.getGrade().equals("")) {
+
+                h.tvGrade.setText("일반");
+                h.tvGrade.setTextColor(Color.parseColor("#CCCCCC"));
+
+            }
+
             h.tvName.setText(datas.getName());
             h.tvDate.setText(datas.getDate());
             h.tvPoint.setText(datas.getPoint());
@@ -478,6 +519,8 @@ public class PointActivity extends BaseActivity {
             } else {
                 h.checkBox.setVisibility(View.INVISIBLE);
             }
+
+
 
             // PointData data = objects.get(position);
             datas.setPosition(position);

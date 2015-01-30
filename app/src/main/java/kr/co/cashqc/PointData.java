@@ -6,6 +6,16 @@ package kr.co.cashqc;
  */
 public class PointData {
 
+    private String grade;
+
+    public String getGrade() {
+        return grade;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
+    }
+
     private String seq;
 
     public String getType() {
