@@ -1,4 +1,3 @@
-
 package kr.co.cashqc;
 
 import android.app.Activity;
@@ -89,17 +88,20 @@ public class CallLogActivity extends BaseActivity {
                 JSONArray array = jsonObject.getJSONArray("posts");
 
                 for (int i = 0; i < array.length(); i++) {
+
                     JSONObject object = array.getJSONObject(i);
 
-                    callList.add("날짜 : " + object.getString("END_DT") + "\n번호 : "
-                            + object.getString("CALLER_NUM"));
+                    String item = "날짜 : " + object.getString("END_DT") + "\n번호 : "
+                            + object.getString("CALLER_NUM");
+
+                    callList.add(item);
                 }
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-            ListView listView = (ListView)findViewById(R.id.calllog_listview);
+            ListView listView = (ListView) findViewById(R.id.calllog_listview);
 
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(mThis,
                     android.R.layout.simple_list_item_1, callList);

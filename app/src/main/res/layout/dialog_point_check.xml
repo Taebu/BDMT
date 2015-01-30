@@ -35,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:text="모두 읽어보신 후 동의하여 주세요"
+            android:text="모두 읽어보신 후 동의하여 주세요\n (공지사항 참조)"
             android:textStyle="bold" />
 
         <LinearLayout
@@ -134,6 +134,15 @@
 
         </LinearLayout>
 
+        <TextView
+            android:textColor="#E94230"
+            android:textStyle="bold"
+            android:id="@+id/dialog_point_check_give_money"
+            android:layout_marginBottom="8dp"
+            android:text="지급 예정 금액 : "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
         <Button
             android:id="@+id/ok"
             android:layout_width="250dp"
@@ -145,6 +154,7 @@
             android:textColor="@android:color/white"
             android:textSize="16sp" />
     </LinearLayout>
+
 
 
 </LinearLayout>

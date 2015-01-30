@@ -149,7 +149,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
             }
         }, 3000);
 
-        // custom dialog init.
+        // custom mDialog init.
         mDialog = new CustomDialog(this);
 
         // main bg init.

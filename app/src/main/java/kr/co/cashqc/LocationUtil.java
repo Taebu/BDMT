@@ -127,7 +127,7 @@ public class LocationUtil {
                                     dialog.dismiss();
                                 } catch (IllegalArgumentException e) {
                                     // if orientation change, thread
-                                    // continue but the dialog cannot be
+                                    // continue but the mDialog cannot be
                                     // dismissed without exception
                                 }
                                 mActivity.startActivity(new Intent(
@@ -137,7 +137,7 @@ public class LocationUtil {
                 /*
                  * .setNegativeButton("취소", new
                  * DialogInterface.OnClickListener() { public void
-                 * onClick(DialogInterface dialog, int id) { dialog.cancel(); }
+                 * onClick(DialogInterface mDialog, int id) { mDialog.cancel(); }
                  * })
                  */
                 ;

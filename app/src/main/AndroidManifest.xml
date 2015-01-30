@@ -50,9 +50,13 @@
         <!--<meta-data android:name="com.google.android.maps.v2.API_KEY"-->
         <!--android:value="AIzaSyBT832WC4150B4FY6l9xhcTPZ7Ewt15_sY"/>-->
 
+        <!--<meta-data-->
+            <!--android:name="com.google.android.maps.v2.API_KEY"-->
+            <!--android:value="AIzaSyAV__aLUK0PYr4DL95TemFI4Nt22h8cz34" />-->
+
         <meta-data
-            android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyAV__aLUK0PYr4DL95TemFI4Nt22h8cz34" />
+        android:name="com.google.android.maps.v2.API_KEY"
+        android:value="AIzaSyAV__aLUK0PYr4DL95TemFI4Nt22h8cz34" />
 
         <activity
             android:name=".MainActivity"
@@ -145,7 +149,10 @@
             android:name=".CallLogActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".GCMActivity"
+            android:name=".SPLActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SPLLoginActivity"
             android:screenOrientation="portrait" />
 
 

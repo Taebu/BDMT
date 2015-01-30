@@ -1,4 +1,3 @@
-
 package kr.co.cashqc;
 
 import android.app.Activity;
@@ -23,7 +22,7 @@ import kr.co.cashqc.gcm.Util;
 /**
  * @author Jung-Hum Cho Created by anp on 15. 1. 23..
  */
-public class GCMActivity extends BaseActivity {
+public class SPLActivity extends BaseActivity {
 
     private Activity mThis = this;
 
@@ -41,7 +40,7 @@ public class GCMActivity extends BaseActivity {
         findViewById(R.id.calllog_logout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Util.saveSharedPreferences_boolean(mThis, "calllog_autologin", false);
+                Util.saveSharedPreferences_boolean(mThis, "spl_autologin", false);
                 startActivity(new Intent(mThis, MainActivity.class));
             }
         });
@@ -77,16 +76,20 @@ public class GCMActivity extends BaseActivity {
                 JSONArray array = jsonObject.getJSONArray("posts");
 
                 for (int i = 0; i < array.length(); i++) {
+
                     JSONObject object = array.getJSONObject(i);
 
-                    callList.add(object.toString());
+                    String item = "No. : " + (array.length() - i) + "\n날짜 : " + object.getString("regdate") + "\n수신번호 : "
+                            + object.getString("called") + "\n내용 : " + object.getString("wr_subject");
+
+                    callList.add(item);
                 }
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-            ListView listView = (ListView)findViewById(R.id.calllog_listview);
+            ListView listView = (ListView) findViewById(R.id.calllog_listview);
 
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(mThis,
                     android.R.layout.simple_list_item_1, callList);

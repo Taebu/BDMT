@@ -78,7 +78,7 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
 
         View view = inflater.inflate(R.layout.list_shop, container, false);
 
-        // custom dialog init.
+        // custom mDialog init.
         mDialog = new CustomDialog(getActivity());
 
         // list dataset init

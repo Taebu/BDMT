@@ -21,7 +21,7 @@
             android:layout_weight="1"
             android:button="@drawable/btn_check" />
 
-        <TextView
+        f<TextView
             android:textColor="@android:color/black"
             android:textStyle="bold"
             android:layout_marginLeft="10dp"
@@ -30,6 +30,12 @@
             android:layout_height="wrap_content"
             android:layout_weight="9"
             android:text="store_name" />
+
+        <TextView
+            android:textStyle="bold"
+            android:text="GOLD"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
 
     </LinearLayout>

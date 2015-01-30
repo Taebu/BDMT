@@ -160,7 +160,7 @@ public class CustomDialog extends Dialog {
         msg.setText(message);
     }
 
-    public CustomDialog(final Context context, final View.OnClickListener mRequestOnClickListener) {
+    public CustomDialog(final Context context, final View.OnClickListener mRequestOnClickListener, int total) {
         super(context);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -174,6 +174,10 @@ public class CustomDialog extends Dialog {
         final CheckBox cb2 = (CheckBox)findViewById(R.id.point_terms2);
         final CheckBox cb3 = (CheckBox)findViewById(R.id.point_terms3);
         final CheckBox cb4 = (CheckBox)findViewById(R.id.point_terms4);
+
+        TextView give = (TextView) findViewById(R.id.dialog_point_check_give_money);
+
+        give.setText(String.format("지급 예정 금액 : %,d원", total));
 
         findViewById(R.id.ok).setOnClickListener(new View.OnClickListener() {
             @Override

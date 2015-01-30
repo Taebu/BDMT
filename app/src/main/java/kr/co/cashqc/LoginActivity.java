@@ -1,13 +1,13 @@
-
 package kr.co.cashqc;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,7 +23,7 @@ public class LoginActivity extends BaseActivity {
 
     private CheckBox cbAutoLogin;
 
-    private Button btnLogin;
+    private Activity mThis = this;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,42 +31,41 @@ public class LoginActivity extends BaseActivity {
         setContentView(R.layout.activity_login);
 
         killer.addActivity(this);
+        mDialog = new CustomDialog(this);
 
-        cbAutoLogin = (CheckBox)findViewById(R.id.auto_login);
+        cbAutoLogin = (CheckBox) findViewById(R.id.auto_login);
+        etPhoneNum = (EditText) findViewById(R.id.field_phone);
+        etPhoneNum.setText(getPhoneNumber());
 
-        etPhoneNum = (EditText)findViewById(R.id.field_phone);
+        if (Util.loadSharedPreferencesBoolean(this, "point_autologin")) {
 
-        btnLogin = (Button)findViewById(R.id.btn_login);
-
-        if (!(getPhoneNumber().isEmpty())) {
-            etPhoneNum.setText(getPhoneNumber());
+            cbAutoLogin.setChecked(true);
+            loginWork();
         }
 
-        cbAutoLogin.setChecked(true);
-        if (Util.loadSharedPreferencesBoolean(LoginActivity.this, "login")) {
-            // btnLogin.setText("로그아웃");
-        }
-
-        btnLogin.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btn_login).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // if (Util.loadSharedPreferencesBoolean(LoginActivity.this,
-                // "login")) {
-                // Util.saveSharedPreferences_boolean(LoginActivity.this,
-                // "login", false);
-                // btnLogin.setText("로그인");
-                // } else {
-
-                if (cbAutoLogin.isChecked()) {
-                    Util.saveSharedPreferences_boolean(LoginActivity.this, "auto_login", true);
-                } else {
-                    Util.saveSharedPreferences_boolean(LoginActivity.this, "auto_login", false);
-                }
-
-                new LoginTask().execute(etPhoneNum.getText().toString());
-                // }
+                loginWork();
             }
         });
+    }
+
+    private void loginWork() {
+
+        String phoneNum = etPhoneNum.getText().toString();
+
+        boolean isAutoLogin = cbAutoLogin.isChecked();
+
+        if ("".equals(phoneNum)) {
+
+            Toast.makeText(mThis, "핸드폰번호를 입력해주세요.", Toast.LENGTH_SHORT).show();
+
+        } else {
+
+            new LoginTask(isAutoLogin).execute(phoneNum);
+
+        }
     }
 
     public void onClick(View view) {
@@ -78,13 +77,18 @@ public class LoginActivity extends BaseActivity {
     }
 
     private class LoginTask extends AsyncTask<String, Void, JSONObject> {
-        CustomDialog dialog = new CustomDialog(LoginActivity.this);
+
+        private LoginTask(boolean isAutoLogin) {
+            this.isAutoLogin = isAutoLogin;
+        }
+
+        private boolean isAutoLogin;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (!dialog.isShowing())
-                dialog.show();
+            if (!mDialog.isShowing())
+                mDialog.show();
         }
 
         @Override
@@ -109,15 +113,14 @@ public class LoginActivity extends BaseActivity {
             }
 
             if ("true".equals(success)) {
-                Util.saveSharedPreferences_boolean(LoginActivity.this, "login", true);
-                Util.saveSharedPreferences_string(LoginActivity.this, "phoneNum", etPhoneNum
-                        .getText().toString());
+
+                Util.saveSharedPreferences_boolean(mThis, "point_autologin", isAutoLogin);
 
                 Intent intent = new Intent(LoginActivity.this, PointActivity.class);
                 intent.putExtra("phoneNum", etPhoneNum.getText().toString());
                 startActivity(intent);
+
             } else {
-                Util.saveSharedPreferences_boolean(LoginActivity.this, "login", false);
 
                 Intent intent = new Intent(LoginActivity.this, JoinActivity.class);
                 intent.putExtra("phoneNum", etPhoneNum.getText().toString());
@@ -126,8 +129,8 @@ public class LoginActivity extends BaseActivity {
                 joinDialog.show();
             }
 
-            if (dialog.isShowing())
-                dialog.dismiss();
+            if (mDialog.isShowing())
+                mDialog.dismiss();
         }
 
     }

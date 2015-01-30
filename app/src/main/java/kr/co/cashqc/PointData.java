@@ -1,8 +1,8 @@
-
 package kr.co.cashqc;
 
 /**
- * Created by anp on 14. 11. 19..
+ * @author Jung-Hum Cho
+ *         Created by anp on 14. 11. 19..
  */
 public class PointData {
 
@@ -25,7 +25,6 @@ public class PointData {
     }
 
     private String type;
-
 
     public int getPosition() {
         return position;
