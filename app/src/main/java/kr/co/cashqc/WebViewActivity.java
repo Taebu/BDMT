@@ -102,6 +102,13 @@ public class WebViewActivity extends BaseActivity {
     @Override
     public void finish() {
         super.finish();
-        activityAnimation(false);
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        killer.removeActivity(this);
+    }
+
+
 }
