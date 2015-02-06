@@ -250,7 +250,7 @@ public class ShopListAdapter extends BaseAdapter {
                     ribbon = BitmapFactory.decodeResource(mContext.getResources(),
                             R.drawable.img_ribbon_po);
 
-                    h.imgPoint.setImageResource(R.drawable.point_1500);
+                    h.imgPoint.setImageResource(R.drawable.point_2000);
 
                 } else if ("on".equals(pre_pay)) {
 
@@ -286,7 +286,7 @@ public class ShopListAdapter extends BaseAdapter {
 
             } else if (type == TYPE_SILVER) {
 
-                h.separatorText.setText("실버 가맹점 - 1500 포인트 적립");
+                h.separatorText.setText("실버 가맹점 - 2000 포인트 적립");
                 h.separatorImage.setImageResource(R.drawable.list_title_silver);
 
             } else if (type == TYPE_CASHQ) {

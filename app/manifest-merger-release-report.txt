@@ -1,8 +1,6 @@
 -- Merging decision tree log ---
 manifest
 ADDED from AndroidManifest.xml:2:1
-	xmlns:android
-		ADDED from AndroidManifest.xml:2:11
 	package
 		ADDED from AndroidManifest.xml:3:5
 		INJECTED from AndroidManifest.xml:0:0
@@ -13,6 +11,8 @@ ADDED from AndroidManifest.xml:2:1
 		ADDED from AndroidManifest.xml:4:5
 		INJECTED from AndroidManifest.xml:0:0
 		INJECTED from AndroidManifest.xml:0:0
+	xmlns:android
+		ADDED from AndroidManifest.xml:2:11
 uses-permission#android.permission.CALL_PHONE
 ADDED from AndroidManifest.xml:7:5
 	android:name
@@ -85,10 +85,10 @@ ADDED from AndroidManifest.xml:29:5
 		ADDED from AndroidManifest.xml:29:22
 uses-feature#0x00020000
 ADDED from AndroidManifest.xml:32:5
-	android:required
-		ADDED from AndroidManifest.xml:34:9
 	android:glEsVersion
 		ADDED from AndroidManifest.xml:33:9
+	android:required
+		ADDED from AndroidManifest.xml:34:9
 application
 ADDED from AndroidManifest.xml:36:5
 MERGED from com.actionbarsherlock:actionbarsherlock:4.4.0:4:3
@@ -102,201 +102,249 @@ MERGED from com.google.android.gms:play-services:6.5.87:20:5
 MERGED from com.android.support:support-v4:21.0.0:16:5
 	android:label
 		ADDED from AndroidManifest.xml:39:9
+	android:hardwareAccelerated
+		ADDED from com.github.chrisbanes.photoview:library:1.2.3:4:45
 	android:allowBackup
 		ADDED from AndroidManifest.xml:37:9
 	android:icon
 		ADDED from AndroidManifest.xml:38:9
-	android:hardwareAccelerated
-		ADDED from com.github.chrisbanes.photoview:library:1.2.3:4:45
-	android:theme
-		ADDED from AndroidManifest.xml:41:9
 	android:largeHeap
 		ADDED from AndroidManifest.xml:40:9
+	android:theme
+		ADDED from AndroidManifest.xml:41:9
 meta-data#com.google.android.gms.version
 ADDED from AndroidManifest.xml:43:9
 MERGED from com.google.android.gms:play-services:6.5.87:21:9
-	android:name
-		ADDED from AndroidManifest.xml:44:13
 	android:value
 		ADDED from AndroidManifest.xml:45:13
+	android:name
+		ADDED from AndroidManifest.xml:44:13
 meta-data#com.google.android.maps.v2.API_KEY
-ADDED from AndroidManifest.xml:53:9
-	android:name
-		ADDED from AndroidManifest.xml:54:13
-	android:value
-		ADDED from AndroidManifest.xml:55:13
-activity#kr.co.cashqc.MainActivity
 ADDED from AndroidManifest.xml:57:9
-	android:screenOrientation
-		ADDED from AndroidManifest.xml:59:13
+	android:value
+		ADDED from AndroidManifest.xml:59:9
 	android:name
-		ADDED from AndroidManifest.xml:58:13
+		ADDED from AndroidManifest.xml:58:9
+activity#kr.co.cashqc.MainActivity
+ADDED from AndroidManifest.xml:61:9
+	android:screenOrientation
+		ADDED from AndroidManifest.xml:63:13
+	android:name
+		ADDED from AndroidManifest.xml:62:13
 intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
-ADDED from AndroidManifest.xml:61:13
+ADDED from AndroidManifest.xml:65:13
 action#android.intent.action.MAIN
-ADDED from AndroidManifest.xml:62:13
+ADDED from AndroidManifest.xml:66:13
 	android:name
-		ADDED from AndroidManifest.xml:62:21
+		ADDED from AndroidManifest.xml:66:21
 category#android.intent.category.LAUNCHER
-ADDED from AndroidManifest.xml:63:13
+ADDED from AndroidManifest.xml:67:13
 	android:name
-		ADDED from AndroidManifest.xml:63:23
+		ADDED from AndroidManifest.xml:67:23
 activity#kr.co.cashqc.PayActivity
-ADDED from AndroidManifest.xml:68:9
+ADDED from AndroidManifest.xml:72:9
 	android:screenOrientation
-		ADDED from AndroidManifest.xml:70:13
+		ADDED from AndroidManifest.xml:74:13
 	android:name
-		ADDED from AndroidManifest.xml:69:13
+		ADDED from AndroidManifest.xml:73:13
+intent-filter#android.intent.action.VIEW+android.intent.category.BROWSABLE+android.intent.category.DEFAULT
+ADDED from AndroidManifest.xml:76:13
+action#android.intent.action.VIEW
+ADDED from AndroidManifest.xml:77:17
+	android:name
+		ADDED from AndroidManifest.xml:77:25
+category#android.intent.category.DEFAULT
+ADDED from AndroidManifest.xml:78:17
+	android:name
+		ADDED from AndroidManifest.xml:78:27
+category#android.intent.category.BROWSABLE
+ADDED from AndroidManifest.xml:79:17
+	android:name
+		ADDED from AndroidManifest.xml:79:27
+data
+ADDED from AndroidManifest.xml:80:17
+	android:scheme
+		ADDED from AndroidManifest.xml:80:23
 activity#kr.co.cashqc.IntroActivity
-ADDED from AndroidManifest.xml:79:9
+ADDED from AndroidManifest.xml:85:9
 	android:screenOrientation
-		ADDED from AndroidManifest.xml:81:13
+		ADDED from AndroidManifest.xml:87:13
 	android:theme
-		ADDED from AndroidManifest.xml:82:13
-	android:name
-		ADDED from AndroidManifest.xml:80:13
-activity#kr.co.cashqc.ShopListActivity
-ADDED from AndroidManifest.xml:84:9
-	android:screenOrientation
-		ADDED from AndroidManifest.xml:86:13
-	android:name
-		ADDED from AndroidManifest.xml:85:13
-activity#kr.co.cashqc.ShopPageActivity
-ADDED from AndroidManifest.xml:87:9
-	android:screenOrientation
-		ADDED from AndroidManifest.xml:89:13
-	android:name
 		ADDED from AndroidManifest.xml:88:13
-activity#kr.co.cashqc.WebViewActivity
+	android:name
+		ADDED from AndroidManifest.xml:86:13
+activity#kr.co.cashqc.ShopListActivity
 ADDED from AndroidManifest.xml:90:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:92:13
 	android:name
 		ADDED from AndroidManifest.xml:91:13
-activity#kr.co.cashqc.FakeActivity
+activity#kr.co.cashqc.ShopPageActivity
 ADDED from AndroidManifest.xml:93:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:95:13
 	android:name
 		ADDED from AndroidManifest.xml:94:13
-activity#kr.co.cashqc.InfoActivity
+activity#kr.co.cashqc.WebViewActivity
 ADDED from AndroidManifest.xml:96:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:98:13
 	android:name
 		ADDED from AndroidManifest.xml:97:13
-activity#kr.co.cashqc.LoginActivity
+activity#kr.co.cashqc.FakeActivity
 ADDED from AndroidManifest.xml:99:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:101:13
 	android:name
 		ADDED from AndroidManifest.xml:100:13
-activity#kr.co.cashqc.PointActivity
+activity#kr.co.cashqc.InfoActivity
 ADDED from AndroidManifest.xml:102:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:104:13
 	android:name
 		ADDED from AndroidManifest.xml:103:13
-activity#kr.co.cashqc.JoinActivity
+activity#kr.co.cashqc.LoginActivity
 ADDED from AndroidManifest.xml:105:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:107:13
 	android:name
 		ADDED from AndroidManifest.xml:106:13
-activity#kr.co.cashqc.ModifyActivity
+activity#kr.co.cashqc.PointActivity
 ADDED from AndroidManifest.xml:108:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:110:13
 	android:name
 		ADDED from AndroidManifest.xml:109:13
-activity#kr.co.cashqc.MailActivity
+activity#kr.co.cashqc.JoinActivity
 ADDED from AndroidManifest.xml:111:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:113:13
 	android:name
 		ADDED from AndroidManifest.xml:112:13
-activity#kr.co.cashqc.MapActivity
+activity#kr.co.cashqc.ModifyActivity
 ADDED from AndroidManifest.xml:114:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:116:13
 	android:name
 		ADDED from AndroidManifest.xml:115:13
-activity#kr.co.cashqc.AgencyActivity
+activity#kr.co.cashqc.MailActivity
 ADDED from AndroidManifest.xml:117:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:119:13
 	android:name
 		ADDED from AndroidManifest.xml:118:13
-activity#kr.co.cashqc.PartnershipActivity
-ADDED from AndroidManifest.xml:121:9
+activity#kr.co.cashqc.MapActivity
+ADDED from AndroidManifest.xml:120:9
 	android:screenOrientation
-		ADDED from AndroidManifest.xml:123:13
-	android:name
 		ADDED from AndroidManifest.xml:122:13
-activity#kr.co.cashqc.FranchiseActivity
-ADDED from AndroidManifest.xml:124:9
-	android:screenOrientation
-		ADDED from AndroidManifest.xml:126:13
 	android:name
+		ADDED from AndroidManifest.xml:121:13
+activity#kr.co.cashqc.AgencyActivity
+ADDED from AndroidManifest.xml:123:9
+	android:screenOrientation
 		ADDED from AndroidManifest.xml:125:13
-activity#kr.co.cashqc.OrderActivity
+	android:name
+		ADDED from AndroidManifest.xml:124:13
+activity#kr.co.cashqc.PartnershipActivity
 ADDED from AndroidManifest.xml:127:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:129:13
 	android:name
 		ADDED from AndroidManifest.xml:128:13
-activity#kr.co.cashqc.CartActivity
+activity#kr.co.cashqc.FranchiseActivity
 ADDED from AndroidManifest.xml:130:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:132:13
 	android:name
 		ADDED from AndroidManifest.xml:131:13
-activity#kr.co.cashqc.OrderResultActivity
+activity#kr.co.cashqc.OrderActivity
 ADDED from AndroidManifest.xml:133:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:135:13
 	android:name
 		ADDED from AndroidManifest.xml:134:13
-receiver#com.google.android.gcm.GCMBroadcastReceiver
-ADDED from AndroidManifest.xml:138:9
-	android:permission
-		ADDED from AndroidManifest.xml:140:13
-	android:name
-		ADDED from AndroidManifest.xml:139:13
-intent-filter#com.google.android.c2dm.intent.RECEIVE+com.google.android.c2dm.intent.REGISTRATION+kr.co.cashqc
-ADDED from AndroidManifest.xml:141:13
-action#com.google.android.c2dm.intent.RECEIVE
-ADDED from AndroidManifest.xml:142:17
-	android:name
-		ADDED from AndroidManifest.xml:142:25
-action#com.google.android.c2dm.intent.REGISTRATION
-ADDED from AndroidManifest.xml:143:17
-	android:name
-		ADDED from AndroidManifest.xml:143:25
-category#kr.co.cashqc
-ADDED from AndroidManifest.xml:145:17
-	android:name
-		ADDED from AndroidManifest.xml:145:27
-activity#kr.co.cashqc.showMsg
-ADDED from AndroidManifest.xml:149:9
+activity#kr.co.cashqc.CartActivity
+ADDED from AndroidManifest.xml:136:9
 	android:screenOrientation
-		ADDED from AndroidManifest.xml:152:13
-	android:theme
+		ADDED from AndroidManifest.xml:138:13
+	android:name
+		ADDED from AndroidManifest.xml:137:13
+activity#kr.co.cashqc.OrderResultActivity
+ADDED from AndroidManifest.xml:139:9
+	android:screenOrientation
+		ADDED from AndroidManifest.xml:141:13
+	android:name
+		ADDED from AndroidManifest.xml:140:13
+activity#kr.co.cashqc.ShopAdminActivity
+ADDED from AndroidManifest.xml:142:9
+	android:screenOrientation
+		ADDED from AndroidManifest.xml:144:13
+	android:name
+		ADDED from AndroidManifest.xml:143:13
+activity#kr.co.cashqc.CallLogLoginActivity
+ADDED from AndroidManifest.xml:145:9
+	android:screenOrientation
+		ADDED from AndroidManifest.xml:147:13
+	android:name
+		ADDED from AndroidManifest.xml:146:13
+activity#kr.co.cashqc.CallLogActivity
+ADDED from AndroidManifest.xml:148:9
+	android:screenOrientation
+		ADDED from AndroidManifest.xml:150:13
+	android:name
+		ADDED from AndroidManifest.xml:149:13
+activity#kr.co.cashqc.SPLActivity
+ADDED from AndroidManifest.xml:151:9
+	android:screenOrientation
 		ADDED from AndroidManifest.xml:153:13
 	android:name
-		ADDED from AndroidManifest.xml:150:13
+		ADDED from AndroidManifest.xml:152:13
+activity#kr.co.cashqc.SPLLoginActivity
+ADDED from AndroidManifest.xml:154:9
+	android:screenOrientation
+		ADDED from AndroidManifest.xml:156:13
+	android:name
+		ADDED from AndroidManifest.xml:155:13
+receiver#com.google.android.gcm.GCMBroadcastReceiver
+ADDED from AndroidManifest.xml:159:9
+	android:permission
+		ADDED from AndroidManifest.xml:161:13
+	android:name
+		ADDED from AndroidManifest.xml:160:13
+intent-filter#com.google.android.c2dm.intent.RECEIVE+com.google.android.c2dm.intent.REGISTRATION+kr.co.cashqc
+ADDED from AndroidManifest.xml:162:13
+action#com.google.android.c2dm.intent.RECEIVE
+ADDED from AndroidManifest.xml:163:17
+	android:name
+		ADDED from AndroidManifest.xml:163:25
+action#com.google.android.c2dm.intent.REGISTRATION
+ADDED from AndroidManifest.xml:164:17
+	android:name
+		ADDED from AndroidManifest.xml:164:25
+category#kr.co.cashqc
+ADDED from AndroidManifest.xml:166:17
+	android:name
+		ADDED from AndroidManifest.xml:166:27
+activity#kr.co.cashqc.showMsg
+ADDED from AndroidManifest.xml:170:9
+	android:screenOrientation
+		ADDED from AndroidManifest.xml:173:13
 	android:launchMode
-		ADDED from AndroidManifest.xml:151:13
+		ADDED from AndroidManifest.xml:172:13
+	android:theme
+		ADDED from AndroidManifest.xml:174:13
+	android:name
+		ADDED from AndroidManifest.xml:171:13
 intent-filter#android.intent.action.AlertDialogs+android.intent.category.LAUNCHER
-ADDED from AndroidManifest.xml:155:13
+ADDED from AndroidManifest.xml:176:13
 action#android.intent.action.AlertDialogs
-ADDED from AndroidManifest.xml:156:17
+ADDED from AndroidManifest.xml:177:17
 	android:name
-		ADDED from AndroidManifest.xml:156:25
+		ADDED from AndroidManifest.xml:177:25
 service#kr.co.cashqc.GCMIntentService
-ADDED from AndroidManifest.xml:163:9
+ADDED from AndroidManifest.xml:184:9
 	android:name
-		ADDED from AndroidManifest.xml:163:18
+		ADDED from AndroidManifest.xml:184:18
 uses-sdk
 INJECTED from AndroidManifest.xml:0:0 reason: use-sdk injection requested
 MERGED from com.actionbarsherlock:actionbarsherlock:4.4.0:3:3
