@@ -1,4 +1,3 @@
-
 package kr.co.cashqc;
 
 import android.content.Intent;
@@ -6,10 +5,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.net.http.SslError;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -40,6 +41,8 @@ import java.util.ArrayList;
 import kr.co.cashqc.gcm.Util;
 
 import static kr.co.cashqc.Global.IMG_URL;
+import static kr.co.cashqc.Global.setDisplayName;
+import static kr.co.cashqc.PhoneBook.getContactList;
 
 /**
  * @author Jung-Hum Cho Created by Administrator on 2014-10-16.
@@ -82,7 +85,7 @@ public class ShopPageActivity extends BaseActivity {
 
         setRowLayout();
 
-        mRatingBar = (RatingBar)findViewById(R.id.shoppage_rating);
+        mRatingBar = (RatingBar) findViewById(R.id.shoppage_rating);
 
         mRatingBar.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -92,7 +95,7 @@ public class ShopPageActivity extends BaseActivity {
             }
         });
 
-        tvReviewCount = (TextView)findViewById(R.id.shoppage_reviewcount);
+        tvReviewCount = (TextView) findViewById(R.id.shoppage_reviewcount);
 
         tvReviewCount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -201,19 +204,19 @@ public class ShopPageActivity extends BaseActivity {
 
     private void setRowLayout() {
 
-        final ImageView thm = (ImageView)findViewById(R.id.list_thm);
-        TextView name = (TextView)findViewById(R.id.cashq_list_name);
-        TextView time1 = (TextView)findViewById(R.id.cashq_list_time1);
-        TextView time2 = (TextView)findViewById(R.id.cashq_list_time2);
-        TextView minPay = (TextView)findViewById(R.id.min_pay);
-        TextView distance = (TextView)findViewById(R.id.cashq_list_distance);
-        TextView dong = (TextView)findViewById(R.id.dong);
-        Button btnTel = (Button)findViewById(R.id.tel_btn);
-        TextView callcnt = (TextView)findViewById(R.id.calllog);
+        final ImageView thm = (ImageView) findViewById(R.id.list_thm);
+        TextView name = (TextView) findViewById(R.id.cashq_list_name);
+        TextView time1 = (TextView) findViewById(R.id.cashq_list_time1);
+        TextView time2 = (TextView) findViewById(R.id.cashq_list_time2);
+        TextView minPay = (TextView) findViewById(R.id.min_pay);
+        TextView distance = (TextView) findViewById(R.id.cashq_list_distance);
+        TextView dong = (TextView) findViewById(R.id.dong);
+        Button btnTel = (Button) findViewById(R.id.tel_btn);
+        TextView callcnt = (TextView) findViewById(R.id.calllog);
         // ImageView iconCalllog = (ImageView)findViewById(R.id.icon_calllog);
-        ImageView score = (ImageView)findViewById(R.id.score);
-        ImageView separatorRow = (ImageView)findViewById(R.id.separator_row);
-        ImageView img2000 = (ImageView)findViewById(R.id.row_img_point);
+        ImageView score = (ImageView) findViewById(R.id.score);
+        ImageView separatorRow = (ImageView) findViewById(R.id.separator_row);
+        ImageView img2000 = (ImageView) findViewById(R.id.row_img_point);
 
         callcnt.setVisibility(View.VISIBLE);
         // iconCalllog.setVisibility(View.VISIBLE);
@@ -227,7 +230,7 @@ public class ShopPageActivity extends BaseActivity {
         callcnt.setText(mIntent.getStringExtra("callcnt") + " 건 주문");
 
         if ("".equals(mIntent.getStringExtra("pre_pay"))) {
-            LinearLayout ll = (LinearLayout)findViewById(R.id.thm_layout);
+            LinearLayout ll = (LinearLayout) findViewById(R.id.thm_layout);
             ll.setVisibility(View.GONE);
             score.setVisibility(View.GONE);
             btnTel.setText("일반\n주문");
@@ -254,10 +257,27 @@ public class ShopPageActivity extends BaseActivity {
         findViewById(R.id.tel_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mNum = "tel:" + mIntent.getStringExtra("tel");
+
+                if (v.getId() == R.id.tel_btn) {
+
+
+                    String num = mIntent.getStringExtra("tel");
+                    String name = mIntent.getStringExtra("name");
+
+                    checkContact(name, num);
+
+                    Intent intent = new Intent(Intent.ACTION_CALL);
+                    intent.putExtra(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME,
+                            "디스플레이 네임");
+                    intent.setData(Uri.parse("tel:" + num));
+
+                    startActivity(intent);
+                }
+
+//                mNum = "tel:" + mIntent.getStringExtra("tel");
                 // startActivity(new Intent(Intent.ACTION_CALL,
                 // Uri.parse("tel:010-3745-2742")));
-                PhoneCall.call(mNum, mThis);
+//                PhoneCall.call(mNum, mThis);
             }
         });
 
@@ -271,8 +291,31 @@ public class ShopPageActivity extends BaseActivity {
 
     }
 
+    private void checkContact(String name, String num) {
+
+        ArrayList<ContactData> contactDataList = getContactList(mThis);
+
+        boolean hasContact = true;
+
+        if (contactDataList.size() == 0) {
+            setDisplayName(mThis, name, num);
+        } else {
+            for (ContactData a : contactDataList) {
+                if (a.getName().equals(name) && a.getNum().equals(num)) {
+                    hasContact = true;
+                    break;
+                } else {
+                    hasContact = false;
+                }
+            }
+            if (!hasContact) {
+                setDisplayName(mThis, name, num);
+            }
+        }
+    }
+
     private void setWebView() {
-        WebView webView = (WebView)findViewById(R.id.shoppage_webview);
+        WebView webView = (WebView) findViewById(R.id.shoppage_webview);
         webView.setVisibility(View.VISIBLE);
         webView.setWebViewClient(new WebViewClientClass());
         WebSettings set = webView.getSettings();
@@ -284,7 +327,7 @@ public class ShopPageActivity extends BaseActivity {
         } else {
             ZoomButtonsController zoomButtonsController;
             try {
-                zoomButtonsController = (ZoomButtonsController)webView.getClass()
+                zoomButtonsController = (ZoomButtonsController) webView.getClass()
                         .getMethod("getZoomButtonsController").invoke(webView, null);
                 zoomButtonsController.getContainer().setVisibility(View.GONE);
             } catch (IllegalAccessException e) {
@@ -312,7 +355,7 @@ public class ShopPageActivity extends BaseActivity {
     }
 
     private void setListView() {
-        mListView = (ExpandableListView)findViewById(R.id.shoppage_listview);
+        mListView = (ExpandableListView) findViewById(R.id.shoppage_listview);
 
         mListView.setVisibility(View.VISIBLE);
 
@@ -353,7 +396,7 @@ public class ShopPageActivity extends BaseActivity {
 //            makeShopMenuData(object);
 
             mListView.setAdapter(new ShopMenuAdapter(ShopPageActivity.this,
-            makeShopMenuData(object)));
+                    makeShopMenuData(object)));
 
             if (mDialog.isShowing())
                 mDialog.dismiss();
@@ -507,18 +550,18 @@ public class ShopPageActivity extends BaseActivity {
                                 .size(); j++) {
                             Log.e("fucking_tree", "level 3 : "
                                     + shop.getMenu().get(i).getChild().get(y).getChild().get(j)
-                                            .getCode()
+                                    .getCode()
                                     + shop.getMenu().get(i).getChild().get(y).getChild().get(j)
-                                            .getLabel());
+                                    .getLabel());
                             if (shop.getMenu().get(i).getChild().get(y).getChild().get(j)
                                     .getChild() != null) {
                                 for (int k = 0; k < shop.getMenu().get(i).getChild().get(y)
                                         .getChild().get(j).getChild().size(); k++) {
                                     Log.e("fucking_tree", "level 4 : "
                                             + shop.getMenu().get(i).getChild().get(y).getChild()
-                                                    .get(j).getChild().get(k).getCode()
+                                            .get(j).getChild().get(k).getCode()
                                             + shop.getMenu().get(i).getChild().get(y).getChild()
-                                                    .get(j).getChild().get(k).getLabel());
+                                            .get(j).getChild().get(k).getLabel());
                                 }
                             }
                         }
