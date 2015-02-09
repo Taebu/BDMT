@@ -35,7 +35,7 @@ public class SPLActivity extends BaseActivity {
 
         String phoneNum = getIntent().getStringExtra("phoneNum");
 
-        new SPLTask().execute("phoneNum");
+        new SPLTask().execute(phoneNum);
 
         findViewById(R.id.calllog_logout).setOnClickListener(new View.OnClickListener() {
             @Override

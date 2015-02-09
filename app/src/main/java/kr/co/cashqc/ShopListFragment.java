@@ -411,6 +411,8 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
                 intent.setData(Uri.parse("tel:" + num));
 
                 startActivity(intent);
+
+
             }
         }
     };
