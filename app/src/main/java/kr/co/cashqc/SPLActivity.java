@@ -1,3 +1,4 @@
+
 package kr.co.cashqc;
 
 import android.app.Activity;
@@ -79,8 +80,9 @@ public class SPLActivity extends BaseActivity {
 
                     JSONObject object = array.getJSONObject(i);
 
-                    String item = "No. : " + (array.length() - i) + "\n날짜 : " + object.getString("regdate") + "\n수신번호 : "
-                            + object.getString("called") + "\n내용 : " + object.getString("wr_subject");
+                    String item = "No. : " + (array.length() - i) + "\n날짜 : "
+                            + object.getString("regdate") + "\n내용 : "
+                            + object.getString("wr_subject");
 
                     callList.add(item);
                 }
@@ -89,7 +91,7 @@ public class SPLActivity extends BaseActivity {
                 e.printStackTrace();
             }
 
-            ListView listView = (ListView) findViewById(R.id.calllog_listview);
+            ListView listView = (ListView)findViewById(R.id.calllog_listview);
 
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(mThis,
                     android.R.layout.simple_list_item_1, callList);
