@@ -137,7 +137,7 @@ public class ShopPageActivity extends BaseActivity {
     private String getHtml(String url1, String url2) {
         Log.e("JAY", "params url : " + url1 + "\n" + url2);
         StringBuilder sb = new StringBuilder("<HTML>");
-        sb.append("<HEAD>").append("</HEAD").append("<BODY>");
+        sb.append("<HEAD>").append("</HEAD>").append("<BODY>");
 
         if (url1.endsWith("null") && url2.endsWith("null")) {
             sb.append("<p style='text-align:center; margin-top:250px'>");
