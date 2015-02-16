@@ -1,9 +1,9 @@
+
 package kr.co.cashqc;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -77,15 +77,15 @@ public class PointActivity extends BaseActivity {
         dialog = new CustomDialog(PointActivity.this);
 
         // resource init
-        checkBox = (CheckBox) findViewById(R.id.check_point);
+        checkBox = (CheckBox)findViewById(R.id.check_point);
 
-        mListView = (ListView) findViewById(R.id.list_point);
+        mListView = (ListView)findViewById(R.id.list_point);
 
         //
         mPhoneNum = getIntent().getStringExtra("phoneNum");
 
         //
-        sBtnRequest = (Button) findViewById(R.id.btn_cashrequest);
+        sBtnRequest = (Button)findViewById(R.id.btn_cashrequest);
 
         if (Build.VERSION.SDK_INT > 10)
             sBtnRequest.setAlpha(0.1f);
@@ -122,12 +122,13 @@ public class PointActivity extends BaseActivity {
 
                             int total = 0;
 
-                            for(PointData p: mCheckedDatas) {
+                            for (PointData p : mCheckedDatas) {
                                 int point = Integer.parseInt(p.getPoint());
                                 total += point;
                             }
 
-                            new CustomDialog(PointActivity.this, mRequestOnClickListener, total).show();
+                            new CustomDialog(PointActivity.this, mRequestOnClickListener, total)
+                                    .show();
                         }
 
                     } else {
@@ -211,7 +212,7 @@ public class PointActivity extends BaseActivity {
                 Log.e("JAY", "else if");
             }
 
-            TextView tvAccrue = (TextView) findViewById(R.id.tv_accrue);
+            TextView tvAccrue = (TextView)findViewById(R.id.tv_accrue);
             int point = 0;
             for (int i = 0; i < mPointDatas.size(); i++) {
                 try {
@@ -223,7 +224,8 @@ public class PointActivity extends BaseActivity {
 
             tvAccrue.append(String.valueOf(point));
 
-            mAdapter = new PointListAdapter(getApplicationContext(), R.layout.row_point, mPointDatas);
+            mAdapter = new PointListAdapter(getApplicationContext(), R.layout.row_point,
+                    mPointDatas);
             mListView.setAdapter(mAdapter);
 
             mUserDatas.add(getUserData(object));
@@ -254,8 +256,8 @@ public class PointActivity extends BaseActivity {
             datas.setEventcode(object.getString("eventcode"));
             datas.setBiz_code(object.getString("biz_code"));
 
-            if(object.has("pre_pay"))
-            datas.setGrade(object.getString("pre_pay"));
+            if (object.has("pre_pay"))
+                datas.setGrade(object.getString("pre_pay"));
 
             return datas;
         } catch (JSONException e) {
@@ -421,14 +423,14 @@ public class PointActivity extends BaseActivity {
 
                 h = new ViewHolder();
 
-                h.tvDate = (TextView) convertView.findViewById(R.id.tv_date);
-                h.tvName = (TextView) convertView.findViewById(R.id.tv_name);
-                h.tvStatus = (TextView) convertView.findViewById(R.id.tv_status);
-                h.tvDeadline = (TextView) convertView.findViewById(R.id.tv_deadline);
-                h.tvComment = (TextView) convertView.findViewById(R.id.tv_comment);
-                h.tvPoint = (TextView) convertView.findViewById(R.id.tv_point);
-                h.checkBox = (CheckBox) convertView.findViewById(R.id.check_point);
-                h.tvGrade = (TextView) convertView.findViewById(R.id.row_point_grade);
+                h.tvDate = (TextView)convertView.findViewById(R.id.tv_date);
+                h.tvName = (TextView)convertView.findViewById(R.id.tv_name);
+                h.tvStatus = (TextView)convertView.findViewById(R.id.tv_status);
+                h.tvDeadline = (TextView)convertView.findViewById(R.id.tv_deadline);
+                h.tvComment = (TextView)convertView.findViewById(R.id.tv_comment);
+                h.tvPoint = (TextView)convertView.findViewById(R.id.tv_point);
+                h.checkBox = (CheckBox)convertView.findViewById(R.id.check_point);
+                h.tvGrade = (TextView)convertView.findViewById(R.id.row_point_grade);
 
                 convertView.setTag(h);
 
@@ -441,9 +443,9 @@ public class PointActivity extends BaseActivity {
                         }
 
                         mLastClickTime = SystemClock.elapsedRealtime();
-                        LinearLayout ll = (LinearLayout) v;
-                        CheckBox cb = (CheckBox) ll.findViewById(R.id.check_point);
-                        PointData data = (PointData) cb.getTag();
+                        LinearLayout ll = (LinearLayout)v;
+                        CheckBox cb = (CheckBox)ll.findViewById(R.id.check_point);
+                        PointData data = (PointData)cb.getTag();
 
                         if (data.getStatus().equals("사용가능")) {
                             if (cb.isChecked() && sCheckedCount <= 5) {
@@ -475,12 +477,12 @@ public class PointActivity extends BaseActivity {
                 });
 
             } else {
-                h = (ViewHolder) convertView.getTag();
+                h = (ViewHolder)convertView.getTag();
             }
 
             datas = getItem(position);
 
-            if(datas.getGrade().equals("gl")) {
+            if (datas.getGrade().equals("gl")) {
 
                 h.tvGrade.setText("GOLD");
                 h.tvGrade.setTextColor(Color.parseColor("#daa520"));
@@ -512,15 +514,13 @@ public class PointActivity extends BaseActivity {
 
             h.checkBox.setEnabled(false);
 
-            String stauts = (String) h.tvStatus.getTag();
+            String stauts = (String)h.tvStatus.getTag();
 
             if ("사용가능".equals(stauts)) {
                 h.checkBox.setVisibility(View.VISIBLE);
             } else {
                 h.checkBox.setVisibility(View.INVISIBLE);
             }
-
-
 
             // PointData data = objects.get(position);
             datas.setPosition(position);
