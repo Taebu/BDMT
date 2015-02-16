@@ -40,6 +40,8 @@
 
     <item type="id" name="num"/>
     <item type="id" name="name"/>
+    <item type="id" name="img1"/>
+    <item type="id" name="img2"/>
 
     <item name="zipcode" type="id"/>
     <item name="address1" type="id"/>

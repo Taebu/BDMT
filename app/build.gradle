@@ -7,11 +7,9 @@ android {
     defaultConfig {
         applicationId "kr.co.cashqc"
         minSdkVersion 10
-        targetSdkVersion 18
+        targetSdkVersion 15
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_6
-        targetCompatibility JavaVersion.VERSION_1_6
     }
 }
 

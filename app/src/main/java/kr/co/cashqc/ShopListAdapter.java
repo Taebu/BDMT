@@ -190,6 +190,8 @@ public class ShopListAdapter extends BaseAdapter {
             if (mOnClickListener != null) {
                 h.btnTel.setTag(R.id.num, data.getTel());
                 h.btnTel.setTag(R.id.name, data.getName());
+                h.btnTel.setTag(R.id.img1, data.getImg1());
+                h.btnTel.setTag(R.id.img2, data.getImg2());
                 h.btnTel.setOnClickListener(mOnClickListener);
             }
 

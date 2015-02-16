@@ -401,18 +401,24 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
             if (v.getId() == R.id.tel_btn) {
                 String num = v.getTag(R.id.num).toString();
                 String name = v.getTag(R.id.name).toString();
+                String img1 = v.getTag(R.id.img1).toString();
+                String img2 = v.getTag(R.id.img2).toString();
+
                 // PhoneCall.call(num, getActivity());
 
                 checkContact(name, num);
 
-                Intent intent = new Intent(Intent.ACTION_CALL);
-                intent.putExtra(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME,
+                Intent call = new Intent(Intent.ACTION_CALL);
+                call.putExtra(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME,
                         "디스플레이 네임");
-                intent.setData(Uri.parse("tel:" + num));
+                call.setData(Uri.parse("tel:" + num));
 
-                startActivity(intent);
+                startActivity(call);
 
-
+                Intent menu = new Intent(new Intent(getActivity(), CallService.class));
+                menu.putExtra("img1", img1);
+                menu.putExtra("img2", img2);
+                getActivity().startService(menu);
             }
         }
     };

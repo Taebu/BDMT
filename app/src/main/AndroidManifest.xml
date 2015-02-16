@@ -4,7 +4,11 @@
     android:versionCode="68"
     android:versionName="2.5.3">
 
-    <uses-permission android:name="android.permission.CALL_PHONE" />
+
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -182,7 +186,7 @@
         </activity>
 
         <service android:name=".GCMIntentService" />
-
+        <service android:name=".CallService"/>
 
     </application>
 

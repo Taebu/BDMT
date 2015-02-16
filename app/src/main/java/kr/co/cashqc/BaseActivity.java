@@ -58,6 +58,8 @@ public class BaseActivity extends SlidingFragmentActivity {
 
         killer = ActivityKiller.getInstance();
 
+        stopService(new Intent(this, CallService.class));
+
         // set the Behind View
         setBehindContentView(R.layout.menu_frame);
         if (savedInstanceState == null) {
@@ -197,6 +199,7 @@ public class BaseActivity extends SlidingFragmentActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        stopService(new Intent(this, CallService.class));
     }
 
     @Override
