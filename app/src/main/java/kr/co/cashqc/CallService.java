@@ -20,7 +20,6 @@ import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import android.widget.ZoomButtonsController;
@@ -34,11 +33,9 @@ public class CallService extends Service {
 
     public static final String IMG_URL = "http://cashq.co.kr/adm/upload/";
 
-    private ImageView img;
-
     private LinearLayout ll;
 
-    private Button speaker, end;
+    private Button expand, speaker, end;
 
     private WebView webView;
 
@@ -48,14 +45,15 @@ public class CallService extends Service {
 
     private TelephonyManager telephonyManager;
 
-    StatePhoneReceiver myPhoneStateListener;
+    private StatePhoneReceiver myPhoneStateListener;
 
-    boolean callFromApp=false; // 전화가 어플에서부터 걸린건지 확인하기 위함
+    boolean callFromApp = false; // 전화가 어플에서부터 걸린건지 확인하기 위함
 
-    boolean callFromOffHook=false; // idle 변화를 체크하기 위함
+    boolean callFromOffHook = false; // idle 변화를 체크하기 위함
 
-    String img1;
-    String img2;
+    private String img1;
+
+    private String img2;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -89,7 +87,7 @@ public class CallService extends Service {
 
         webView = (WebView)v.findViewById(R.id.webview);
 
-        img = (ImageView)v.findViewById(R.id.expand);
+        expand = (Button)v.findViewById(R.id.expand);
 
         speaker = (Button)v.findViewById(R.id.speaker);
 
@@ -100,19 +98,22 @@ public class CallService extends Service {
         telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
 
         myPhoneStateListener = new StatePhoneReceiver(this);
-//        telephonyManager.listen(myPhoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
+        // telephonyManager.listen(myPhoneStateListener,
+        // PhoneStateListener.LISTEN_CALL_STATE);
         callFromApp = true;
 
-        img.setOnClickListener(new View.OnClickListener() {
+        expand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "EE!", Toast.LENGTH_SHORT).show();
                 if (isExpand) {
                     webView.setVisibility(View.GONE);
-//                    ll.setVisibility(View.GONE);
+                    // ll.setVisibility(View.GONE);
+                    expand.setText("메뉴 보기");
                     isExpand = false;
                 } else {
-//                    ll.setVisibility(View.VISIBLE);
+                    expand.setText("메뉴 닫기");
+                    // ll.setVisibility(View.VISIBLE);
                     webView.setVisibility(View.VISIBLE);
                     isExpand = true;
                 }
@@ -125,11 +126,14 @@ public class CallService extends Service {
 
                 if (isSpeaker) {
 
+                    speaker.setText("한뼘 통화 켜기");
+                    telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
                     audioManager.setMode(AudioManager.MODE_IN_CALL);
                     audioManager.setSpeakerphoneOn(false);
 
                 } else {
 
+                    speaker.setText("한뼘 통화 끄기");
                     audioManager.setMode(AudioManager.MODE_IN_CALL);
                     audioManager.setSpeakerphoneOn(true);
 
@@ -162,8 +166,9 @@ public class CallService extends Service {
             }
         });
 
-        WindowManager.LayoutParams params = new WindowManager.LayoutParams((int)(point.x / 1.5),
-                point.y, WindowManager.LayoutParams.TYPE_PHONE,
+        int yPos = 150;
+        WindowManager.LayoutParams params = new WindowManager.LayoutParams((int)(point.x),
+                (int)(point.y - yPos), 0, yPos, WindowManager.LayoutParams.TYPE_PHONE,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, PixelFormat.TRANSLUCENT);
 
         params.gravity = Gravity.LEFT | Gravity.TOP;
@@ -275,7 +280,8 @@ public class CallService extends Service {
                         final AudioManager audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
                         audioManager.setMode(AudioManager.MODE_NORMAL); // Deactivate
 
-                        telephonyManager.listen(myPhoneStateListener, // Remove listener
+                        telephonyManager.listen(myPhoneStateListener, // Remove
+                                                                      // listener
                                 PhoneStateListener.LISTEN_NONE);
                     }
                     break;

@@ -4,40 +4,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="10">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-        <ImageView
+        <Button
             android:id="@+id/expand"
-            android:layout_width="wrap_content"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:clickable="true"
-            android:src="@drawable/ic_launcher" />
+            android:background="@drawable/btn_black"
+            android:text="메뉴 닫기"
+            android:textColor="#ffffff" />
 
         <Button
             android:id="@+id/speaker"
-            android:layout_width="wrap_content"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="speaker" />
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/btn_black"
+            android:text="한뼘 통화 켜기"
+            android:textColor="#ffffff" />
 
         <Button
             android:id="@+id/end"
-            android:layout_width="wrap_content"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_gravity="right"
-            android:text="end" />
+            android:background="#ff0000"
+            android:text="통화종료"
+            android:textColor="#ffffff" />
 
     </RelativeLayout>
 
     <WebView
         android:id="@+id/webview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="9"
         android:clickable="true" />
 
 </LinearLayout>
