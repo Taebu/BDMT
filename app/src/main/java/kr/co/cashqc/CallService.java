@@ -4,6 +4,7 @@ package kr.co.cashqc;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.media.AudioManager;
@@ -13,15 +14,14 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Display;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.Toast;
+import android.widget.RelativeLayout;
 import android.widget.ZoomButtonsController;
 
 import java.lang.reflect.Method;
@@ -33,7 +33,7 @@ public class CallService extends Service {
 
     public static final String IMG_URL = "http://cashq.co.kr/adm/upload/";
 
-    private LinearLayout ll;
+    private RelativeLayout ll;
 
     private Button expand, speaker, end;
 
@@ -74,16 +74,17 @@ public class CallService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        Point point = new Point();
-        WindowManager windowManager = (WindowManager)getSystemService(WINDOW_SERVICE);
+        final Point point = new Point();
+        final WindowManager windowManager = (WindowManager)getSystemService(WINDOW_SERVICE);
         Display display = windowManager.getDefaultDisplay();
-        display.getSize(point);
+//        display.getSize(point);
+        display.getRealSize(point);
 
         LayoutInflater layoutInflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
 
         View v = layoutInflater.inflate(R.layout.overlay_layout, null);
 
-        ll = (LinearLayout)v.findViewById(R.id.ll);
+        ll = (RelativeLayout)v.findViewById(R.id.ll);
 
         webView = (WebView)v.findViewById(R.id.webview);
 
@@ -98,25 +99,30 @@ public class CallService extends Service {
         telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
 
         myPhoneStateListener = new StatePhoneReceiver(this);
-        // telephonyManager.listen(myPhoneStateListener,
-        // PhoneStateListener.LISTEN_CALL_STATE);
+        telephonyManager.listen(myPhoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
         callFromApp = true;
+
+        addTopView(point, windowManager, isExpand);
 
         expand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "EE!", Toast.LENGTH_SHORT).show();
+
+                windowManager.removeViewImmediate(ll);
+
                 if (isExpand) {
-                    webView.setVisibility(View.GONE);
-                    // ll.setVisibility(View.GONE);
+
                     expand.setText("메뉴 보기");
+                    webView.setVisibility(View.GONE);
                     isExpand = false;
+
                 } else {
+
                     expand.setText("메뉴 닫기");
-                    // ll.setVisibility(View.VISIBLE);
                     webView.setVisibility(View.VISIBLE);
                     isExpand = true;
                 }
+                addTopView(point, windowManager, isExpand);
             }
         });
 
@@ -127,15 +133,23 @@ public class CallService extends Service {
                 if (isSpeaker) {
 
                     speaker.setText("한뼘 통화 켜기");
-                    telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-                    audioManager.setMode(AudioManager.MODE_IN_CALL);
+                    // telephonyManager =
+                    // (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+                    // audioManager.setMode(AudioManager.MODE_IN_CALL);
+                    // audioManager.setSpeakerphoneOn(false);
+                    speaker.setBackgroundResource(R.drawable.btn_black);
+                    audioManager.setMode(AudioManager.MODE_NORMAL); // Deactivate
                     audioManager.setSpeakerphoneOn(false);
+                    telephonyManager.listen(myPhoneStateListener, PhoneStateListener.LISTEN_NONE);
+                    isSpeaker = false;
 
                 } else {
 
                     speaker.setText("한뼘 통화 끄기");
+                    speaker.setBackgroundColor(Color.GREEN);
                     audioManager.setMode(AudioManager.MODE_IN_CALL);
                     audioManager.setSpeakerphoneOn(true);
+                    isSpeaker = true;
 
                 }
             }
@@ -145,7 +159,6 @@ public class CallService extends Service {
             @Override
             public void onClick(View v) {
                 try {
-
                     Class c = Class.forName(telephonyManager.getClass().getName());
                     Method m = c.getDeclaredMethod("getITelephony");
                     m.setAccessible(true);
@@ -166,14 +179,28 @@ public class CallService extends Service {
             }
         });
 
-        int yPos = 150;
-        WindowManager.LayoutParams params = new WindowManager.LayoutParams((int)(point.x),
-                (int)(point.y - yPos), 0, yPos, WindowManager.LayoutParams.TYPE_PHONE,
+    }
+
+    private void addTopView(Point point, WindowManager windowManager, boolean isExpand) {
+
+        int yPos, height;
+
+        if (isExpand) {
+            yPos = (int) (point.y / 4.5);
+            height = point.y - yPos;
+        } else {
+            height = expand.getLayoutParams().height;
+            yPos = point.y - height;
+        }
+
+        WindowManager.LayoutParams params = new WindowManager.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, height, 0, yPos,
+                WindowManager.LayoutParams.TYPE_PHONE,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, PixelFormat.TRANSLUCENT);
 
-        params.gravity = Gravity.LEFT | Gravity.TOP;
-        windowManager.addView(ll, params);
+        Log.e("size", "params height : " + height);
 
+        windowManager.addView(ll, params);
     }
 
     @Override
@@ -187,7 +214,6 @@ public class CallService extends Service {
 
     private void setWebView(String img1, String img2) {
 
-        // webView.setWebViewClient(new WebViewClientClass());
         WebSettings set = webView.getSettings();
 
         // TODO 버전별 처리 할것
@@ -263,30 +289,16 @@ public class CallService extends Service {
                             Thread.sleep(500); // 0.5초 정도 딜레이를 줌으로 핸들링하기 쉽게
                         } catch (final InterruptedException e) {
                         }
-
-                        // Activate loudspeaker
-                        final AudioManager audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
-                        audioManager.setMode(AudioManager.MODE_IN_CALL);// AudioManager
-                                                                        // 를
-                                                                        // 전화모드로
-                                                                        // !
-                        audioManager.setSpeakerphoneOn(true); // 스피커폰을 ㄱㄱ!
                     }
                     break;
 
                 case TelephonyManager.CALL_STATE_IDLE: // Call is finished
                     if (callFromOffHook) {
                         callFromOffHook = false;
-                        final AudioManager audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
-                        audioManager.setMode(AudioManager.MODE_NORMAL); // Deactivate
-
-                        telephonyManager.listen(myPhoneStateListener, // Remove
-                                                                      // listener
-                                PhoneStateListener.LISTEN_NONE);
+                        stopSelf();
                     }
                     break;
             }
-
         }
     }
 }

@@ -272,6 +272,11 @@ public class ShopPageActivity extends BaseActivity {
                     intent.setData(Uri.parse("tel:" + num));
 
                     startActivity(intent);
+
+                    Intent menu = new Intent(new Intent(mThis, CallService.class));
+                    menu.putExtra("img1", getIntent().getStringExtra("img1"));
+                    menu.putExtra("img2", getIntent().getStringExtra("img2"));
+                    startService(menu);
                 }
 
 //                mNum = "tel:" + mIntent.getStringExtra("tel");
