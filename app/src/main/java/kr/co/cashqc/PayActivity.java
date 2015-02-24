@@ -63,7 +63,8 @@ public class PayActivity extends BaseActivity {
         String price = String.valueOf(data.getTotal());
         String tradeId = data.getTradeId();
         String payType = data.getPayType();
-//        String seq = data.getShopCode().substring(data.getShopCode().indexOf("_") + 1);
+        // String seq =
+        // data.getShopCode().substring(data.getShopCode().indexOf("_") + 1);
         String seq = data.getShopCode();
 
         StringBuilder sb = new StringBuilder();

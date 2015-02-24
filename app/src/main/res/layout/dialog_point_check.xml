@@ -80,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="14dp"
-                android:text="12000원 이상 주문 건만 적립 가능.\n중식, 한식/분식, 일식의 경우 14,000원 이상 주문시 적립가능."
+                android:text="12000원 이상 주문 건만 적립 가능."
                 android:textColor="#333333"
                 android:textSize="12sp" />
 
