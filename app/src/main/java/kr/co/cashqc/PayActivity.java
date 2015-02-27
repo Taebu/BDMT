@@ -50,8 +50,10 @@ public class PayActivity extends BaseActivity {
         String url = "http://cashq.co.kr/m/kg_json.php";
 
         Log.e("pay", Arrays.toString(postData));
-        mWebView.postUrl(url, postData);
 
+        // mWebView.postUrl(url, postData);
+        // mWebView.loadUrl("http://www.naver.com");
+        mWebView.loadUrl("http://cashq.co.kr/m/cn_web.php");
     }
 
     private byte[] makePostData(OrderData data) {
@@ -216,5 +218,4 @@ public class PayActivity extends BaseActivity {
             return true;
         }
     }
-
 }

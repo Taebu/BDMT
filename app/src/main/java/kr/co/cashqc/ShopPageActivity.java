@@ -1,3 +1,4 @@
+
 package kr.co.cashqc;
 
 import android.content.Intent;
@@ -25,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ZoomButtonsController;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -37,6 +39,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import kr.co.cashqc.gcm.Util;
 
@@ -65,6 +68,10 @@ public class ShopPageActivity extends BaseActivity {
 
     private boolean mIsReviewOpen = false;
 
+    private ArrayList<HashMap<String, String>> menuImgList;
+
+    private ShopMenuData mData;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,7 +92,7 @@ public class ShopPageActivity extends BaseActivity {
 
         setRowLayout();
 
-        mRatingBar = (RatingBar) findViewById(R.id.shoppage_rating);
+        mRatingBar = (RatingBar)findViewById(R.id.shoppage_rating);
 
         mRatingBar.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -95,7 +102,7 @@ public class ShopPageActivity extends BaseActivity {
             }
         });
 
-        tvReviewCount = (TextView) findViewById(R.id.shoppage_reviewcount);
+        tvReviewCount = (TextView)findViewById(R.id.shoppage_reviewcount);
 
         tvReviewCount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -204,19 +211,19 @@ public class ShopPageActivity extends BaseActivity {
 
     private void setRowLayout() {
 
-        final ImageView thm = (ImageView) findViewById(R.id.list_thm);
-        TextView name = (TextView) findViewById(R.id.cashq_list_name);
-        TextView time1 = (TextView) findViewById(R.id.cashq_list_time1);
-        TextView time2 = (TextView) findViewById(R.id.cashq_list_time2);
-        TextView minPay = (TextView) findViewById(R.id.min_pay);
-        TextView distance = (TextView) findViewById(R.id.cashq_list_distance);
-        TextView dong = (TextView) findViewById(R.id.dong);
-        Button btnTel = (Button) findViewById(R.id.tel_btn);
-        TextView callcnt = (TextView) findViewById(R.id.calllog);
+        final ImageView thm = (ImageView)findViewById(R.id.list_thm);
+        TextView name = (TextView)findViewById(R.id.cashq_list_name);
+        TextView time1 = (TextView)findViewById(R.id.cashq_list_time1);
+        TextView time2 = (TextView)findViewById(R.id.cashq_list_time2);
+        TextView minPay = (TextView)findViewById(R.id.min_pay);
+        TextView distance = (TextView)findViewById(R.id.cashq_list_distance);
+        TextView dong = (TextView)findViewById(R.id.dong);
+        Button btnTel = (Button)findViewById(R.id.tel_btn);
+        TextView callcnt = (TextView)findViewById(R.id.calllog);
         // ImageView iconCalllog = (ImageView)findViewById(R.id.icon_calllog);
-        ImageView score = (ImageView) findViewById(R.id.score);
-        ImageView separatorRow = (ImageView) findViewById(R.id.separator_row);
-        ImageView img2000 = (ImageView) findViewById(R.id.row_img_point);
+        ImageView score = (ImageView)findViewById(R.id.score);
+        ImageView separatorRow = (ImageView)findViewById(R.id.separator_row);
+        ImageView img2000 = (ImageView)findViewById(R.id.row_img_point);
 
         callcnt.setVisibility(View.VISIBLE);
         // iconCalllog.setVisibility(View.VISIBLE);
@@ -230,7 +237,7 @@ public class ShopPageActivity extends BaseActivity {
         callcnt.setText(mIntent.getStringExtra("callcnt") + " 건 주문");
 
         if ("".equals(mIntent.getStringExtra("pre_pay"))) {
-            LinearLayout ll = (LinearLayout) findViewById(R.id.thm_layout);
+            LinearLayout ll = (LinearLayout)findViewById(R.id.thm_layout);
             ll.setVisibility(View.GONE);
             score.setVisibility(View.GONE);
             btnTel.setText("일반\n주문");
@@ -260,7 +267,6 @@ public class ShopPageActivity extends BaseActivity {
 
                 if (v.getId() == R.id.tel_btn) {
 
-
                     String num = mIntent.getStringExtra("tel");
                     String name = mIntent.getStringExtra("name");
 
@@ -279,10 +285,10 @@ public class ShopPageActivity extends BaseActivity {
                     startService(menu);
                 }
 
-//                mNum = "tel:" + mIntent.getStringExtra("tel");
+                // mNum = "tel:" + mIntent.getStringExtra("tel");
                 // startActivity(new Intent(Intent.ACTION_CALL,
                 // Uri.parse("tel:010-3745-2742")));
-//                PhoneCall.call(mNum, mThis);
+                // PhoneCall.call(mNum, mThis);
             }
         });
 
@@ -320,7 +326,7 @@ public class ShopPageActivity extends BaseActivity {
     }
 
     private void setWebView() {
-        WebView webView = (WebView) findViewById(R.id.shoppage_webview);
+        WebView webView = (WebView)findViewById(R.id.shoppage_webview);
         webView.setVisibility(View.VISIBLE);
         webView.setWebViewClient(new WebViewClientClass());
         WebSettings set = webView.getSettings();
@@ -332,7 +338,7 @@ public class ShopPageActivity extends BaseActivity {
         } else {
             ZoomButtonsController zoomButtonsController;
             try {
-                zoomButtonsController = (ZoomButtonsController) webView.getClass()
+                zoomButtonsController = (ZoomButtonsController)webView.getClass()
                         .getMethod("getZoomButtonsController").invoke(webView, null);
                 zoomButtonsController.getContainer().setVisibility(View.GONE);
             } catch (IllegalAccessException e) {
@@ -360,13 +366,15 @@ public class ShopPageActivity extends BaseActivity {
     }
 
     private void setListView() {
-        mListView = (ExpandableListView) findViewById(R.id.shoppage_listview);
+        mListView = (ExpandableListView)findViewById(R.id.shoppage_listview);
 
         mListView.setVisibility(View.VISIBLE);
 
         String storeCode = getIntent().getStringExtra("store_code");
 
         new MenuTask().execute(storeCode);
+
+        new MenuImageTask().execute(storeCode);
 
     }
 
@@ -398,10 +406,9 @@ public class ShopPageActivity extends BaseActivity {
 
             Log.e("ShopMenuActivity", object.toString());
 
-//            makeShopMenuData(object);
+            mData = makeShopMenuData(object);
 
-            mListView.setAdapter(new ShopMenuAdapter(ShopPageActivity.this,
-                    makeShopMenuData(object)));
+            mListView.setAdapter(new ShopMenuAdapter(ShopPageActivity.this, mData));
 
             if (mDialog.isShowing())
                 mDialog.dismiss();
@@ -555,18 +562,18 @@ public class ShopPageActivity extends BaseActivity {
                                 .size(); j++) {
                             Log.e("fucking_tree", "level 3 : "
                                     + shop.getMenu().get(i).getChild().get(y).getChild().get(j)
-                                    .getCode()
+                                            .getCode()
                                     + shop.getMenu().get(i).getChild().get(y).getChild().get(j)
-                                    .getLabel());
+                                            .getLabel());
                             if (shop.getMenu().get(i).getChild().get(y).getChild().get(j)
                                     .getChild() != null) {
                                 for (int k = 0; k < shop.getMenu().get(i).getChild().get(y)
                                         .getChild().get(j).getChild().size(); k++) {
                                     Log.e("fucking_tree", "level 4 : "
                                             + shop.getMenu().get(i).getChild().get(y).getChild()
-                                            .get(j).getChild().get(k).getCode()
+                                                    .get(j).getChild().get(k).getCode()
                                             + shop.getMenu().get(i).getChild().get(y).getChild()
-                                            .get(j).getChild().get(k).getLabel());
+                                                    .get(j).getChild().get(k).getLabel());
                                 }
                             }
                         }
@@ -627,5 +634,120 @@ public class ShopPageActivity extends BaseActivity {
         }
 
         return null;
+    }
+
+    private class MenuImageTask extends AsyncTask<String, Void, JSONObject> implements
+            View.OnClickListener {
+
+        private MenuImageTask() {
+            img1 = (ImageView)findViewById(R.id.img1);
+            img2 = (ImageView)findViewById(R.id.img2);
+            img3 = (ImageView)findViewById(R.id.img3);
+            img4 = (ImageView)findViewById(R.id.img4);
+
+            text1 = (TextView)findViewById(R.id.text1);
+            text2 = (TextView)findViewById(R.id.text2);
+            text3 = (TextView)findViewById(R.id.text3);
+            text4 = (TextView)findViewById(R.id.text4);
+        }
+
+        private ImageView img1, img2, img3, img4;
+
+        private TextView text1, text2, text3, text4;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if (!mDialog.isShowing())
+                mDialog.show();
+        }
+
+        @Override
+        protected JSONObject doInBackground(String... params) {
+
+            StringBuilder sb = new StringBuilder(
+                    "http://cashq.co.kr/ajax/get_menu_img.php?store_code=");
+            sb.append(params[0]);
+
+            return new JSONParser().getJSONObjectFromUrl(sb.toString());
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject jsonObject) {
+            super.onPostExecute(jsonObject);
+
+            menuImgList = new ArrayList<HashMap<String, String>>();
+
+            try {
+                JSONArray jsonArray = jsonObject.getJSONArray("imglst");
+
+                for (int i = 0; i < jsonArray.length(); i++) {
+
+                    JSONObject object = jsonArray.getJSONObject(i);
+
+                    HashMap<String, String> hashMap = new HashMap<String, String>();
+
+                    if (object.has("wr_id"))
+                        hashMap.put("id", object.getString("wr_id"));
+
+                    if (object.has("bf_file"))
+                        hashMap.put("img", object.getString("bf_file"));
+
+                    if (object.has("bf_content"))
+                        hashMap.put("text", object.getString("bf_content"));
+
+                    menuImgList.add(hashMap);
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            String baseUrl = "http://cashq.co.kr/adm/upload/";
+
+            String[] img = new String[4];
+            String[] text = new String[4];
+
+            for (int i = 0; i < menuImgList.size(); i++) {
+                img[i] = baseUrl + menuImgList.get(i).get("img");
+                text[i] = menuImgList.get(i).get("text");
+            }
+
+            ImageLoader.getInstance().displayImage(img[0], img1);
+            ImageLoader.getInstance().displayImage(img[1], img2);
+            ImageLoader.getInstance().displayImage(img[2], img3);
+            ImageLoader.getInstance().displayImage(img[3], img4);
+
+            text1.setText(text[0]);
+            text2.setText(text[1]);
+            text3.setText(text[2]);
+            text4.setText(text[3]);
+
+            img1.setOnClickListener(this);
+            img2.setOnClickListener(this);
+            img3.setOnClickListener(this);
+            img4.setOnClickListener(this);
+
+            if (mDialog.isShowing())
+                mDialog.dismiss();
+        }
+
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.img1:
+                    Toast.makeText(mThis, "1", Toast.LENGTH_SHORT).show();
+                    break;
+                case R.id.img2:
+                    Toast.makeText(mThis, "2", Toast.LENGTH_SHORT).show();
+                    break;
+                case R.id.img3:
+                    Toast.makeText(mThis, "3", Toast.LENGTH_SHORT).show();
+                    break;
+                case R.id.img4:
+                    Toast.makeText(mThis, "4", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
     }
 }

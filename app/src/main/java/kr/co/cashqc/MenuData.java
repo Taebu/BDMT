@@ -8,6 +8,16 @@ import java.util.ArrayList;
  */
 public class MenuData {
 
+    private String thumb;
+
+    public String getThumb() {
+        return thumb;
+    }
+
+    public void setThumb(String thumb) {
+        this.thumb = thumb;
+    }
+
     private String label;
 
     private String id;

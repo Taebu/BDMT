@@ -34,9 +34,10 @@ public class ShopMenuAdapter extends BaseExpandableListAdapter {
 
         if (v == null) {
             h = new ViewHolder();
-            v = inflater.inflate(R.layout.list_menu_row, null);
+            v = inflater.inflate(R.layout.list_menuexpand_row, null);
             h.tvChildName = (TextView)v.findViewById(R.id.tv_child);
             h.tvChildValue = (TextView)v.findViewById(R.id.tv_value);
+            h.ivThumb = (ImageView)v.findViewById(R.id.iv_thumb);
             v.setTag(h);
         } else {
             h = (ViewHolder)v.getTag();
@@ -47,16 +48,19 @@ public class ShopMenuAdapter extends BaseExpandableListAdapter {
         h.tvChildName.setText(item.getLabel());
         h.tvChildValue.setText(item.getPrice());
 
+        String imgUrl = "http://cashq.co.kr/adm/upload/thumb/1424842254UWDWC.jpg";
+
+//        ImageLoader.getInstance().displayImage(imgUrl, h.ivThumb);
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                new OrderMenuDialog(inflater.getContext(), mData,
-                        groupPosition, childPosition).show();
+                new OrderMenuDialog(inflater.getContext(), mData, groupPosition, childPosition)
+                        .show();
 
-//                Toast.makeText(inflater.getContext(),
-//                        "group : " + groupPosition + "\nchild : " + childPosition,
-//                        Toast.LENGTH_SHORT).show();
+                // Toast.makeText(inflater.getContext(),
+                // "group : " + groupPosition + "\nchild : " + childPosition,
+                // Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -78,7 +82,6 @@ public class ShopMenuAdapter extends BaseExpandableListAdapter {
         }
 
         if (isExpanded) {
-
             h.ivImage.setBackgroundColor(Color.GREEN);
         } else {
             h.ivImage.setBackgroundColor(Color.WHITE);
@@ -130,7 +133,7 @@ public class ShopMenuAdapter extends BaseExpandableListAdapter {
     }
 
     private class ViewHolder {
-        private ImageView ivImage;
+        private ImageView ivImage, ivThumb;
 
         private TextView tvGroupName;
 

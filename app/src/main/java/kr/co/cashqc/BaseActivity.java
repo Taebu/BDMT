@@ -99,7 +99,7 @@ public class BaseActivity extends SlidingFragmentActivity {
         getSupportActionBar().setCustomView(view);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
 
-        TV_CART_COUNT = (TextView) findViewById(R.id.cart_count);
+        TV_CART_COUNT = (TextView)findViewById(R.id.cart_count);
         TV_CART_COUNT.setText(String.valueOf(CART_COUNT));
 
         setCartCount(this);
@@ -111,12 +111,8 @@ public class BaseActivity extends SlidingFragmentActivity {
             }
         });
 
-
-        //
-        TV_CART_COUNT.setVisibility(View.INVISIBLE);
-        findViewById(R.id.btn_cart).setVisibility(View.INVISIBLE);
-
-
+        // TV_CART_COUNT.setVisibility(View.INVISIBLE);
+        // findViewById(R.id.btn_cart).setVisibility(View.INVISIBLE);
 
         findViewById(R.id.btn_cart).setOnClickListener(new View.OnClickListener() {
             @Override
