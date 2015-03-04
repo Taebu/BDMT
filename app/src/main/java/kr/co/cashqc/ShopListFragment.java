@@ -160,7 +160,7 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
             // 본사 gps 37.636992, 126.775057
 
             // TODO 출시는 3km
-            int distance = 3;
+            int distance = 2;
             int listsize = 10;
 
             if (adminFlag) {

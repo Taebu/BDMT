@@ -77,6 +77,7 @@ public class MapActivity extends BaseActivity implements GoogleMap.OnMapClickLis
         }
 
         String address = mLocationUtil.getAddress(latLng.latitude, latLng.longitude);
+
         // String address = mLocationUtil.getAddress1(latLng.latitude,
         // latLng.longitude);
 
