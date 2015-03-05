@@ -6,11 +6,24 @@
     <ImageView
         android:id="@+id/iv_image"
         android:layout_width="10dp"
-        android:layout_height="10dp" />
+        android:layout_height="10dp"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/tv_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/iv_image" />
+        android:layout_marginLeft="12dp"
+        android:layout_toRightOf="@+id/iv_image"
+        android:textSize="17sp" />
+
+    <ImageView
+        android:layout_marginRight="12dp"
+        android:layout_centerVertical="true"
+        android:id="@+id/iv_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/btn_list_open" />
+
 </RelativeLayout>

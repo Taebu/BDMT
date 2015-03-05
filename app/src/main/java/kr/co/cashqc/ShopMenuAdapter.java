@@ -2,7 +2,7 @@
 package kr.co.cashqc;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,11 +46,14 @@ public class ShopMenuAdapter extends BaseExpandableListAdapter {
         final MenuData item = (MenuData)getChild(groupPosition, childPosition);
 
         h.tvChildName.setText(item.getLabel());
-        h.tvChildValue.setText(item.getPrice());
+
+        String price = String.format("%,d 원", Integer.parseInt(item.getPrice()));
+        Log.e("price", "" + item.getPrice());
+        h.tvChildValue.setText(price);
 
         String imgUrl = "http://cashq.co.kr/adm/upload/thumb/1424842254UWDWC.jpg";
 
-//        ImageLoader.getInstance().displayImage(imgUrl, h.ivThumb);
+        // ImageLoader.getInstance().displayImage(imgUrl, h.ivThumb);
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,15 +79,18 @@ public class ShopMenuAdapter extends BaseExpandableListAdapter {
             v = inflater.inflate(R.layout.list_menu_row, parent, false);
             h.tvGroupName = (TextView)v.findViewById(R.id.tv_group);
             h.ivImage = (ImageView)v.findViewById(R.id.iv_image);
+            h.ivIndicator = (ImageView) v.findViewById(R.id.iv_indicator);
             v.setTag(h);
         } else {
             h = (ViewHolder)v.getTag();
         }
 
         if (isExpanded) {
-            h.ivImage.setBackgroundColor(Color.GREEN);
+//            h.ivImage.setBackgroundColor(Color.GREEN);
+            h.ivIndicator.setImageResource(R.drawable.btn_list_close);
         } else {
-            h.ivImage.setBackgroundColor(Color.WHITE);
+//            h.ivImage.setBackgroundColor(Color.WHITE);
+            h.ivIndicator.setImageResource(R.drawable.btn_list_open);
         }
 
         h.tvGroupName.setText(((MenuData)getGroup(groupPosition)).getLabel());
@@ -133,7 +139,7 @@ public class ShopMenuAdapter extends BaseExpandableListAdapter {
     }
 
     private class ViewHolder {
-        private ImageView ivImage, ivThumb;
+        private ImageView ivImage, ivThumb, ivIndicator;
 
         private TextView tvGroupName;
 

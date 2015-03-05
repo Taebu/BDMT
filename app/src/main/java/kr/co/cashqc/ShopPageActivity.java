@@ -16,6 +16,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -408,7 +409,15 @@ public class ShopPageActivity extends BaseActivity {
 
             mData = makeShopMenuData(object);
 
-            mListView.setAdapter(new ShopMenuAdapter(ShopPageActivity.this, mData));
+            ShopMenuAdapter adapter = new ShopMenuAdapter(mThis, mData);
+
+            mListView.setAdapter(adapter);
+
+            for (int i = 0; i < adapter.getGroupCount(); i++) {
+                mListView.expandGroup(i);
+            }
+
+            setListViewHeight(mListView);
 
             if (mDialog.isShowing())
                 mDialog.dismiss();
@@ -749,5 +758,26 @@ public class ShopPageActivity extends BaseActivity {
                     break;
             }
         }
+    }
+
+    private void setListViewHeight(ExpandableListView listView) {
+
+        ShopMenuAdapter adapter = (ShopMenuAdapter) listView.getExpandableListAdapter();
+
+        if (adapter == null) {
+            return;
+        }
+
+        int totalHeight = 0;
+        for (int i = 0; i < adapter.getGroupCount(); i++) {
+            View listItem = adapter.getGroupView(i, false, listView.getChildAt(0), listView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (adapter.getGroupCount() - 1));
+        listView.setLayoutParams(params);
+        listView.requestLayout();
     }
 }
