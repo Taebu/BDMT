@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="kr.co.cashqc"
     android:versionCode="73"
-    android:versionName="2.6.3">
+    android:versionName="2.6.4">
 
 
     <uses-permission android:name="android.permission.CALL_PHONE"/>
