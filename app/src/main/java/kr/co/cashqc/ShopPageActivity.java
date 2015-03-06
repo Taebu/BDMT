@@ -762,7 +762,7 @@ public class ShopPageActivity extends BaseActivity {
 
     private void setListViewHeight(ExpandableListView listView) {
 
-        ShopMenuAdapter adapter = (ShopMenuAdapter) listView.getExpandableListAdapter();
+        ShopMenuAdapter adapter = (ShopMenuAdapter)listView.getExpandableListAdapter();
 
         if (adapter == null) {
             return;
@@ -770,9 +770,20 @@ public class ShopPageActivity extends BaseActivity {
 
         int totalHeight = 0;
         for (int i = 0; i < adapter.getGroupCount(); i++) {
-            View listItem = adapter.getGroupView(i, false, listView.getChildAt(0), listView);
-            listItem.measure(0, 0);
-            totalHeight += listItem.getMeasuredHeight();
+            View groupView = adapter.getGroupView(i, true, listView.getChildAt(i), listView);
+            if (adapter.getChildrenCount(i) > 0) {
+                for (int y = 0; y < adapter.getChildrenCount(i); y++) {
+                    View childView = adapter.getChildView(i, y, true, listView.getChildAt(i),
+                            listView);
+
+//                    childView.measure(0, 0);
+                    Log.e("listHeight", "y : " + y + " | childHeight : " + childView.getHeight());
+                    totalHeight += childView.getHeight();
+                }
+            }
+            groupView.measure(0, 0);
+            Log.e("listHeight", "i : " + i + " | groupHeight : " + groupView.getMeasuredHeight());
+            totalHeight += groupView.getMeasuredHeight();
         }
 
         ViewGroup.LayoutParams params = listView.getLayoutParams();

@@ -2,7 +2,6 @@
 package kr.co.cashqc;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +47,7 @@ public class ShopMenuAdapter extends BaseExpandableListAdapter {
         h.tvChildName.setText(item.getLabel());
 
         String price = String.format("%,d 원", Integer.parseInt(item.getPrice()));
-        Log.e("price", "" + item.getPrice());
+//        Log.e("price", "" + item.getPrice());
         h.tvChildValue.setText(price);
 
         String imgUrl = "http://cashq.co.kr/adm/upload/thumb/1424842254UWDWC.jpg";

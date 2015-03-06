@@ -64,6 +64,8 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
 
     private int mTypeDuplicator = 0;
 
+    private int mDistance = 2;
+
     // 관리자 모드
     public static boolean adminFlag = false;
 
@@ -160,7 +162,7 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
             // 본사 gps 37.636992, 126.775057
 
             // TODO 출시는 3km
-            int distance = 2;
+            int distance = mDistance;
             int listsize = 10;
 
             if (adminFlag) {

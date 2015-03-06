@@ -56,6 +56,8 @@
     </LinearLayout>
 
     <ScrollView
+        android:fillViewport="true"
+        android:gravity="center_horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -168,7 +170,7 @@
 
                 android:id="@+id/shoppage_listview"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:groupIndicator="@null"
                 android:visibility="gone" />
 

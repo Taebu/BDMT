@@ -32,9 +32,9 @@
         android:weightSum="10.0">
 
         <LinearLayout
+            android:gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="10dp"
             android:layout_weight="10"
             android:orientation="horizontal"
             android:weightSum="10">
@@ -43,8 +43,7 @@
                 android:id="@+id/btn_gps"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
-                android:layout_gravity="center|top"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="8dp"
                 android:layout_weight="1"
                 android:background="@drawable/location_pin" />
 
@@ -52,22 +51,34 @@
                 android:id="@+id/location_name1"
                 android:layout_width="0dp"
                 android:layout_height="20dp"
-                android:layout_gravity="center|top"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="8.5"
+                android:layout_marginLeft="0dp"
+                android:layout_weight="8.0"
                 android:text="위치"
                 android:textColor="#FFFFFF" />
 
             <TextView
                 android:id="@+id/manual_location"
                 android:layout_width="wrap_content"
-                android:layout_height="20dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="0.5"
                 android:clickable="true"
                 android:gravity="center"
                 android:onClick="mOnClick"
                 android:text="수동주소"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/manual_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.5"
+                android:clickable="true"
+                android:gravity="center"
+                android:onClick="mOnClick"
+                android:text="2km\n변경"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold" />
 

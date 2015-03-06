@@ -100,9 +100,9 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
     private double mLatitude, mLongitude;
 
-    private TextView mManualTextView;
+    private TextView mManualTextView, mManualDistance;
 
-    private static int mDistance;
+    public static int sDistance = 2;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -127,7 +127,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
             ll.setAlpha(0.5f);
         }
 
-        mManualTextView = (TextView) findViewById(R.id.manual_location);
+        mManualTextView = (TextView)findViewById(R.id.manual_location);
 
         mContext = getApplicationContext();
 
@@ -165,6 +165,8 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
         // address field init.
         mAddressText = (TextView)findViewById(R.id.location_name1);
 
+        mManualDistance = (TextView) findViewById(R.id.manual_distance);
+
         // gps util init.
         mLocationUtil = LocationUtil.getInstance(MainActivity.this);
 
@@ -178,11 +180,11 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
             mAddressText.setText(mLocationUtil.getAddress(mLatitude, mLongitude));
         }
 
-//        if(adminFlag) {
-            mManualTextView.setVisibility(View.VISIBLE);
-//        } else {
-//            mManualTextView.setVisibility(View.GONE);
-//        }
+        // if(adminFlag) {
+        mManualTextView.setVisibility(View.VISIBLE);
+        // } else {
+        // mManualTextView.setVisibility(View.GONE);
+        // }
 
         // gps btn set listener.
         findViewById(R.id.btn_gps).setOnClickListener(new View.OnClickListener() {
@@ -295,7 +297,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
             mIntent.putExtra("lat", mLatitude);
             mIntent.putExtra("lng", mLongitude);
-            mIntent.putExtra("distance", mDistance);
+            mIntent.putExtra("distance", sDistance);
 
             startActivity(mIntent);
             if (!mDialog.isShowing()) {
@@ -402,6 +404,16 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
                 i.putExtra("lat", mLatitude);
                 i.putExtra("lng", mLongitude);
                 startActivity(i);
+                break;
+            case R.id.manual_distance:
+                ManualDistanceDialog distanceDialog = new ManualDistanceDialog(this);
+                distanceDialog.show();
+                distanceDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        mManualDistance.setText(sDistance + "km\n변경");
+                    }
+                });
                 break;
         }
 
@@ -545,16 +557,16 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
                     adminFlag = true;
                     Toast.makeText(mContext, "관리자모드", Toast.LENGTH_SHORT).show();
                     // try {
-                    // mDistance =
+                    // sDistance =
                     // Integer.parseInt(distanceEditText.getText().toString());
                     // } catch (NumberFormatException e) {
                     // e.printStackTrace();
-                    // mDistance = 3;
+                    // sDistance = 3;
                     // }
                     mManualTextView.setVisibility(View.VISIBLE);
                 } else {
                     adminFlag = false;
-                    mDistance = 3;
+                    sDistance = 3;
                     // mManualTextView.setVisibility(View.GONE);
                 }
 
