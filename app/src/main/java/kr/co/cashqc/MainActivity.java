@@ -109,10 +109,10 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (introFlag) {
-            startActivity(new Intent(this, IntroActivity.class));
-            introFlag = false;
-        }
+//        if (introFlag) {
+//            startActivity(new Intent(this, IntroActivity.class));
+//            introFlag = false;
+//        }
 
         GoogleAnalytics.getInstance(getApplicationContext()).dispatchLocalHits();
 

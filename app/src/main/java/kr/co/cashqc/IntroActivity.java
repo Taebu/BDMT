@@ -20,7 +20,7 @@ public class IntroActivity extends Activity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-
+                startActivity(new Intent(IntroActivity.this, MainActivity.class));
                 finish();
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }

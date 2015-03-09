@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_normal"
@@ -8,18 +7,18 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:weightSum="10"
         android:layout_width="350dp"
         android:layout_height="match_parent"
         android:layout_marginTop="12dp"
         android:background="@drawable/bg_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:weightSum="10">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
             android:layout_marginTop="10dp"
+            android:layout_weight="1"
             android:orientation="horizontal"
             android:weightSum="10">
 
@@ -44,19 +43,6 @@
                 android:textColor="#E94320"
                 android:textSize="13sp" />
 
-            <TextView
-                android:id="@+id/btn_modify_member"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginRight="25dp"
-                android:layout_weight="2"
-                android:clickable="true"
-                android:gravity="right"
-                android:onClick="mOnClick"
-                android:text="정보수정"
-                android:textColor="#999999"
-                android:textSize="13sp" />
 
             <!--<TextView-->
             <!--android:layout_width="0dp"-->
@@ -72,18 +58,37 @@
 
         </LinearLayout>
 
-        <Button
-            android:layout_marginBottom="8dp"
-            android:layout_gravity="center"
-            android:id="@+id/point_logout"
-            android:layout_width="50dp"
-            android:layout_height="25dp"
-            android:background="@drawable/btn_black"
-            android:clickable="true"
-            android:textSize="10sp"
-            android:text="로그아웃"
-            android:textColor="#FFFFFF" />
+        <RelativeLayout
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
 
+            <Button
+                android:layout_alignParentLeft="true"
+                android:id="@+id/point_logout"
+                android:layout_width="60dp"
+                android:layout_height="30dp"
+                android:background="@drawable/btn_black"
+                android:clickable="true"
+                android:text="로그아웃"
+                android:textColor="#FFFFFF"
+                android:textSize="13sp" />
+
+            <Button
+                android:layout_alignParentRight="true"
+                android:id="@+id/btn_modify_member"
+                android:layout_width="60dp"
+                android:layout_height="30dp"
+                android:background="@drawable/btn_black"
+                android:clickable="true"
+                android:onClick="mOnClick"
+                android:text="계좌입력"
+                android:textColor="#FFFFFF"
+                android:textSize="13sp" />
+
+        </RelativeLayout>
 
         <ImageView
             android:layout_width="310dp"
@@ -93,24 +98,24 @@
             android:src="#E8E8E8" />
 
         <ListView
-            android:layout_weight="8"
             android:id="@+id/list_point"
             android:layout_width="310dp"
             android:layout_height="0dp"
             android:layout_gravity="center"
+            android:layout_weight="8"
             android:divider="#d1d1d1"
             android:dividerHeight="1dp"
             android:scrollbars="none" />
 
         <Button
 
-            android:layout_weight="1"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="5dp"
-            android:layout_gravity="center"
             android:id="@+id/btn_cashrequest"
             android:layout_width="300dp"
             android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
             android:background="@drawable/btn_black"
             android:text="현금 신청하기"
             android:textColor="#FFFFFF" />
