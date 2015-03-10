@@ -45,9 +45,11 @@ public class ShopMenuAdapter extends BaseExpandableListAdapter {
         final MenuData item = (MenuData)getChild(groupPosition, childPosition);
 
         h.tvChildName.setText(item.getLabel());
-
-        String price = String.format("%,d 원", Integer.parseInt(item.getPrice()));
-//        Log.e("price", "" + item.getPrice());
+        String price = "가격 정보 없음";
+        if (!item.getPrice().isEmpty()) {
+            price = String.format("%,d 원", Integer.parseInt(item.getPrice()));
+        }
+        // Log.e("price", "" + item.getPrice());
         h.tvChildValue.setText(price);
 
         String imgUrl = "http://cashq.co.kr/adm/upload/thumb/1424842254UWDWC.jpg";
@@ -78,17 +80,17 @@ public class ShopMenuAdapter extends BaseExpandableListAdapter {
             v = inflater.inflate(R.layout.list_menu_row, parent, false);
             h.tvGroupName = (TextView)v.findViewById(R.id.tv_group);
             h.ivImage = (ImageView)v.findViewById(R.id.iv_image);
-            h.ivIndicator = (ImageView) v.findViewById(R.id.iv_indicator);
+            h.ivIndicator = (ImageView)v.findViewById(R.id.iv_indicator);
             v.setTag(h);
         } else {
             h = (ViewHolder)v.getTag();
         }
 
         if (isExpanded) {
-//            h.ivImage.setBackgroundColor(Color.GREEN);
+            // h.ivImage.setBackgroundColor(Color.GREEN);
             h.ivIndicator.setImageResource(R.drawable.btn_list_close);
         } else {
-//            h.ivImage.setBackgroundColor(Color.WHITE);
+            // h.ivImage.setBackgroundColor(Color.WHITE);
             h.ivIndicator.setImageResource(R.drawable.btn_list_open);
         }
 

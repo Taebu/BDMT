@@ -26,6 +26,7 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ZoomButtonsController;
@@ -72,6 +73,10 @@ public class ShopPageActivity extends BaseActivity {
     private ArrayList<HashMap<String, String>> menuImgList;
 
     private ShopMenuData mData;
+
+    private ScrollView mScrollView;
+
+    private WebView mWebView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -327,10 +332,10 @@ public class ShopPageActivity extends BaseActivity {
     }
 
     private void setWebView() {
-        WebView webView = (WebView)findViewById(R.id.shoppage_webview);
-        webView.setVisibility(View.VISIBLE);
-        webView.setWebViewClient(new WebViewClientClass());
-        WebSettings set = webView.getSettings();
+        mWebView = (WebView)findViewById(R.id.shoppage_webview);
+        mWebView.setVisibility(View.VISIBLE);
+        mWebView.setWebViewClient(new WebViewClientClass());
+        WebSettings set = mWebView.getSettings();
 
         // TODO 버전별 처리 할것
 
@@ -339,8 +344,8 @@ public class ShopPageActivity extends BaseActivity {
         } else {
             ZoomButtonsController zoomButtonsController;
             try {
-                zoomButtonsController = (ZoomButtonsController)webView.getClass()
-                        .getMethod("getZoomButtonsController").invoke(webView, null);
+                zoomButtonsController = (ZoomButtonsController) mWebView.getClass()
+                        .getMethod("getZoomButtonsController").invoke(mWebView, null);
                 zoomButtonsController.getContainer().setVisibility(View.GONE);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
@@ -363,10 +368,12 @@ public class ShopPageActivity extends BaseActivity {
         String url = getHtml(IMG_URL + mIntent.getStringExtra("img1"),
                 IMG_URL + mIntent.getStringExtra("img2"));
 
-        webView.loadDataWithBaseURL(null, url, "text/html", "utf-8", null);
+        mWebView.loadDataWithBaseURL(null, url, "text/html", "utf-8", null);
     }
 
     private void setListView() {
+        mScrollView = (ScrollView) findViewById(R.id.shoppage_scrollview);
+        mScrollView.setVisibility(View.VISIBLE);
         mListView = (ExpandableListView)findViewById(R.id.shoppage_listview);
 
         mListView.setVisibility(View.VISIBLE);
@@ -778,7 +785,8 @@ public class ShopPageActivity extends BaseActivity {
 
 //                    childView.measure(0, 0);
                     Log.e("listHeight", "y : " + y + " | childHeight : " + childView.getHeight());
-                    totalHeight += childView.getHeight();
+//                    totalHeight += childView.getHeight();
+                    totalHeight += 92;
                 }
             }
             groupView.measure(0, 0);

@@ -13,8 +13,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="4dp">
+        android:background="#ffffff"
+        android:orientation="horizontal">
 
         <RatingBar
             android:id="@+id/shoppage_rating"
@@ -55,12 +55,19 @@
 
     </LinearLayout>
 
-    <ScrollView
-        android:visibility="gone"
-        android:fillViewport="true"
-        android:gravity="center_horizontal"
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="1dp"
+        android:layout_gravity="center_horizontal"
+        android:src="#E8E8E8" />
+
+    <ScrollView
+        android:id="@+id/shoppage_scrollview"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:gravity="center_horizontal">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -168,16 +175,16 @@
             </LinearLayout>
 
 
+            <ExpandableListView
+
+                android:id="@+id/shoppage_listview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:groupIndicator="@null"
+                android:visibility="gone" />
         </LinearLayout>
     </ScrollView>
 
-    <ExpandableListView
-
-        android:id="@+id/shoppage_listview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:groupIndicator="@null"
-        android:visibility="gone" />
     <WebView
         android:id="@+id/shoppage_webview"
         android:layout_width="match_parent"
