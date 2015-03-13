@@ -26,6 +26,7 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -78,6 +79,12 @@ public class ShopPageActivity extends BaseActivity {
 
     private WebView mWebView;
 
+    private RelativeLayout mRelativeLayout;
+
+    private String mPrePay;
+
+    private Button btnUp;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,6 +126,10 @@ public class ShopPageActivity extends BaseActivity {
                 tvReviewCount.setCompoundDrawablesWithIntrinsicBounds(0, 0, draw, 0);
             }
         });
+
+        mPrePay = mIntent.getStringExtra("pre_pay");
+
+        Log.e("ShopPageActivity", "prepay : " + mPrePay);
 
         if ("1".equals(mIntent.getStringExtra("pay"))) {
             setListView();
@@ -286,6 +297,9 @@ public class ShopPageActivity extends BaseActivity {
                     startActivity(intent);
 
                     Intent menu = new Intent(new Intent(mThis, CallService.class));
+
+                    menu.putExtra("pre_pay", mPrePay);
+                    menu.putExtra("pay", mIntent.getStringExtra("pay"));
                     menu.putExtra("img1", getIntent().getStringExtra("img1"));
                     menu.putExtra("img2", getIntent().getStringExtra("img2"));
                     startService(menu);
@@ -344,7 +358,7 @@ public class ShopPageActivity extends BaseActivity {
         } else {
             ZoomButtonsController zoomButtonsController;
             try {
-                zoomButtonsController = (ZoomButtonsController) mWebView.getClass()
+                zoomButtonsController = (ZoomButtonsController)mWebView.getClass()
                         .getMethod("getZoomButtonsController").invoke(mWebView, null);
                 zoomButtonsController.getContainer().setVisibility(View.GONE);
             } catch (IllegalAccessException e) {
@@ -359,7 +373,9 @@ public class ShopPageActivity extends BaseActivity {
         set.setLoadWithOverviewMode(true);
         set.setUseWideViewPort(true);
         // set.setJavaScriptEnabled(true);
+//        set.setBuiltInZoomControls(false);
         set.setBuiltInZoomControls(true);
+//        set.setSupportZoom(false);
         set.setSupportZoom(true);
         set.setCacheMode(WebSettings.LOAD_NO_CACHE);
 
@@ -372,10 +388,16 @@ public class ShopPageActivity extends BaseActivity {
     }
 
     private void setListView() {
-        mScrollView = (ScrollView) findViewById(R.id.shoppage_scrollview);
-        mScrollView.setVisibility(View.VISIBLE);
-        mListView = (ExpandableListView)findViewById(R.id.shoppage_listview);
+        // mScrollView = (ScrollView)findViewById(R.id.shoppage_scrollview);
+        // mScrollView.setVisibility(View.VISIBLE);
 
+        btnUp = (Button) findViewById(R.id.btn_up);
+        btnUp.setVisibility(View.VISIBLE);
+
+        mRelativeLayout = (RelativeLayout)findViewById(R.id.shoppage_menulist);
+        mRelativeLayout.setVisibility(View.VISIBLE);
+
+        mListView = (ExpandableListView)findViewById(R.id.shoppage_listview);
         mListView.setVisibility(View.VISIBLE);
 
         String storeCode = getIntent().getStringExtra("store_code");
@@ -661,15 +683,20 @@ public class ShopPageActivity extends BaseActivity {
             img3 = (ImageView)findViewById(R.id.img3);
             img4 = (ImageView)findViewById(R.id.img4);
 
-            text1 = (TextView)findViewById(R.id.text1);
-            text2 = (TextView)findViewById(R.id.text2);
-            text3 = (TextView)findViewById(R.id.text3);
-            text4 = (TextView)findViewById(R.id.text4);
+            content1 = (TextView)findViewById(R.id.text1);
+            content2 = (TextView)findViewById(R.id.text2);
+            content3 = (TextView)findViewById(R.id.text3);
+            content4 = (TextView)findViewById(R.id.text4);
+
+            price1 = (TextView)findViewById(R.id.price1);
+            price2 = (TextView)findViewById(R.id.price2);
+            price3 = (TextView)findViewById(R.id.price3);
+            price4 = (TextView)findViewById(R.id.price4);
         }
 
         private ImageView img1, img2, img3, img4;
 
-        private TextView text1, text2, text3, text4;
+        private TextView content1, content2, content3, content4, price1, price2, price3, price4;
 
         @Override
         protected void onPreExecute() {
@@ -692,12 +719,15 @@ public class ShopPageActivity extends BaseActivity {
         protected void onPostExecute(JSONObject jsonObject) {
             super.onPostExecute(jsonObject);
 
-            menuImgList = new ArrayList<HashMap<String, String>>();
+            menuImgList = new ArrayList<HashMap<String, String>>(4);
 
             try {
                 JSONArray jsonArray = jsonObject.getJSONArray("imglst");
 
                 for (int i = 0; i < jsonArray.length(); i++) {
+
+                    if (i == 4)
+                        break;
 
                     JSONObject object = jsonArray.getJSONObject(i);
 
@@ -722,11 +752,16 @@ public class ShopPageActivity extends BaseActivity {
             String baseUrl = "http://cashq.co.kr/adm/upload/";
 
             String[] img = new String[4];
-            String[] text = new String[4];
+            String[] content = new String[4];
+            String[] price = new String[4];
 
             for (int i = 0; i < menuImgList.size(); i++) {
                 img[i] = baseUrl + menuImgList.get(i).get("img");
-                text[i] = menuImgList.get(i).get("text");
+
+                String[] spliter = menuImgList.get(i).get("text").split("_");
+                content[i] = spliter[0];
+                price[i] = String.format("%,d 원", Integer.parseInt(spliter[1]));
+
             }
 
             ImageLoader.getInstance().displayImage(img[0], img1);
@@ -734,10 +769,15 @@ public class ShopPageActivity extends BaseActivity {
             ImageLoader.getInstance().displayImage(img[2], img3);
             ImageLoader.getInstance().displayImage(img[3], img4);
 
-            text1.setText(text[0]);
-            text2.setText(text[1]);
-            text3.setText(text[2]);
-            text4.setText(text[3]);
+            content1.setText(content[0]);
+            content2.setText(content[1]);
+            content3.setText(content[2]);
+            content4.setText(content[3]);
+
+            price1.setText(price[0]);
+            price2.setText(price[1]);
+            price3.setText(price[2]);
+            price4.setText(price[3]);
 
             img1.setOnClickListener(this);
             img2.setOnClickListener(this);
@@ -776,26 +816,30 @@ public class ShopPageActivity extends BaseActivity {
         }
 
         int totalHeight = 0;
+        int childCount = 0;
+        int height = 0;
         for (int i = 0; i < adapter.getGroupCount(); i++) {
-            View groupView = adapter.getGroupView(i, true, listView.getChildAt(i), listView);
-            if (adapter.getChildrenCount(i) > 0) {
-                for (int y = 0; y < adapter.getChildrenCount(i); y++) {
-                    View childView = adapter.getChildView(i, y, true, listView.getChildAt(i),
-                            listView);
 
-//                    childView.measure(0, 0);
-                    Log.e("listHeight", "y : " + y + " | childHeight : " + childView.getHeight());
-//                    totalHeight += childView.getHeight();
-                    totalHeight += 92;
-                }
-            }
+            childCount += adapter.getChildrenCount(i);
+            View groupView = adapter.getGroupView(i, false, listView.getChildAt(0), listView);
             groupView.measure(0, 0);
-            Log.e("listHeight", "i : " + i + " | groupHeight : " + groupView.getMeasuredHeight());
             totalHeight += groupView.getMeasuredHeight();
+            Log.e("listHeight", "i : " + i + " | groupHeight : " + groupView.getMeasuredHeight());
+            for (int y = 0; y < adapter.getChildrenCount(i); y++) {
+                Log.e("listHeight",
+                        "|                y : " + y + " | childHeight : "
+                                + groupView.getMeasuredHeight());
+                totalHeight += groupView.getMeasuredHeight();
+            }
+            height = groupView.getMeasuredHeight();
         }
 
         ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (adapter.getGroupCount() - 1));
+        params.height = height + totalHeight
+                + (listView.getDividerHeight() * (adapter.getGroupCount() + childCount + 3));
+
+        Log.e("listHeight", "totalHeight : " + totalHeight);
+        Log.e("listHeight", "params.height : " + params.height);
         listView.setLayoutParams(params);
         listView.requestLayout();
     }

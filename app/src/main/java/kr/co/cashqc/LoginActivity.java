@@ -1,3 +1,4 @@
+
 package kr.co.cashqc;
 
 import android.app.Activity;
@@ -33,8 +34,8 @@ public class LoginActivity extends BaseActivity {
         killer.addActivity(this);
         mDialog = new CustomDialog(this);
 
-        cbAutoLogin = (CheckBox) findViewById(R.id.auto_login);
-        etPhoneNum = (EditText) findViewById(R.id.field_phone);
+        cbAutoLogin = (CheckBox)findViewById(R.id.auto_login);
+        etPhoneNum = (EditText)findViewById(R.id.field_phone);
         etPhoneNum.setText(getPhoneNumber());
 
         if (Util.loadSharedPreferencesBoolean(this, "point_autologin")) {
@@ -106,7 +107,9 @@ public class LoginActivity extends BaseActivity {
             String msg = null;
 
             try {
-                success = object.getString("success");
+                if (object.has("success")) {
+                    success = object.getString("success");
+                }
                 msg = object.getString("msg");
             } catch (JSONException e) {
                 e.printStackTrace();

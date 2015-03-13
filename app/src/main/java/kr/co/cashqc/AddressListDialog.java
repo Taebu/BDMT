@@ -58,6 +58,7 @@ public class AddressListDialog extends Dialog {
                 AddressData item = (AddressData)listView.getItemAtPosition(position);
                 v.setTag(R.id.zipcode, item.getZipcode());
                 v.setTag(R.id.address1, item.getAddress());
+                v.setTag(R.id.address2, "");
                 onClickListener.onClick(v);
                 dismiss();
             }

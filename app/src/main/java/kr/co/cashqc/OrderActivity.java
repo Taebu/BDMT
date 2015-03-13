@@ -22,12 +22,15 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import static kr.co.cashqc.gcm.Util.loadSharedPreferences;
+import static kr.co.cashqc.gcm.Util.saveSharedPreferences_string;
+
 /**
  * @author Jung-Hum Cho Created by anp on 14. 12. 31..
  */
 public class OrderActivity extends BaseActivity {
 
-    private Activity mActivity = this;
+    private Activity mThis = this;
 
     private String mPayType = "NOT_CHOOSE";
 
@@ -41,7 +44,8 @@ public class OrderActivity extends BaseActivity {
 
     private final String FIELD_CARD = "FIELD_CARD";
 
-    private TextView rbCashqCard, rbCashqPhone, rbSiteCash, rbSiteCard, tvTotal, tvShopName, tvShopPhone;
+    private TextView rbCashqCard, rbCashqPhone, rbSiteCash, rbSiteCard, tvTotal, tvShopName,
+            tvShopPhone;
 
     private EditText etZipCode, etAddress1, etAddress2, etPhone, etComment;
 
@@ -57,15 +61,19 @@ public class OrderActivity extends BaseActivity {
 
     private OrderListAdapter mAdapter;
 
+    private Button btnAddressBook;
+
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             String zipCode = (String)v.getTag(R.id.zipcode);
-            String address = (String)v.getTag(R.id.address1);
+            String address1 = (String)v.getTag(R.id.address1);
+            String address2 = (String)v.getTag(R.id.address2);
 
             etZipCode.setText(zipCode);
-            etAddress1.setText(address);
-            Log.e("order", zipCode + address);
+            etAddress1.setText(address1);
+            etAddress2.setText(address2);
+            Log.e("order", zipCode + address1 + address2);
         }
     };
 
@@ -104,8 +112,6 @@ public class OrderActivity extends BaseActivity {
         tvShopPhone.setText(mOrderData.getShopPhone());
         tvTotal.setText(String.format("%,d원", mOrderData.getTotal()));
 
-        cbMember = (CheckBox) findViewById(R.id.order_member_address);
-
     }
 
     private void setListViewHeightBasedOnChildren(ListView listView) {
@@ -138,20 +144,40 @@ public class OrderActivity extends BaseActivity {
             }
         });
 
+        btnAddressBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                ArrayList<String> addressList = loadAddressBookList();
+
+                if (addressList.get(0) == null) {
+                    Toast.makeText(mThis, "최근 사용한 주소가 없습니다.", Toast.LENGTH_LONG).show();
+                } else {
+                    new AddressBookDialog(mThis, addressList, mOnClickListener).show();
+                }
+            }
+        });
+
         btnOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if (mPayType.equals(NOT_CHOOSE)) {
-                    Toast.makeText(mActivity, "결제 방법을 선택해 주세요.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mThis, "결제 방법을 선택해 주세요.", Toast.LENGTH_SHORT).show();
                 } else if (etZipCode.getText().toString().equals("")) {
-                    Toast.makeText(mActivity, "우편번호를 입력해 주세요.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mThis, "우편번호를 입력해 주세요.", Toast.LENGTH_SHORT).show();
                 } else if (etAddress1.getText().toString().equals("")
                         || etAddress2.getText().toString().equals("")) {
-                    Toast.makeText(mActivity, "주소를 모두 입력해 주세요.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mThis, "주소를 모두 입력해 주세요.", Toast.LENGTH_SHORT).show();
                 } else if (etPhone.getText().toString().equals("")) {
-                    Toast.makeText(mActivity, "연락처를 입력해 주세요.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mThis, "연락처를 입력해 주세요.", Toast.LENGTH_SHORT).show();
                 } else {
+
+                    String address = etZipCode.getText().toString() + "_"
+                            + etAddress1.getText().toString() + "_"
+                            + etAddress2.getText().toString();
+
+                    saveAddressBookList(address);
 
                     mOrderData.setZipCode(etZipCode.getText().toString());
                     mOrderData.setAddress1(etAddress1.getText().toString());
@@ -166,12 +192,60 @@ public class OrderActivity extends BaseActivity {
         });
     }
 
+    private ArrayList<String> loadAddressBookList() {
+
+        ArrayList<String> addressList = new ArrayList<String>();
+
+        for (int i = 0; i < 5; i++) {
+            String a = loadSharedPreferences(mThis, "addressBook" + i);
+            Log.e("sharedPreferences : ", "a : " + a);
+            Log.e("sharedPreferences : ", "addressBook" + i);
+            if (a != null) {
+                addressList.add(a);
+            }
+        }
+
+        return addressList;
+    }
+
+    private void saveAddressBookList(String address) {
+
+        ArrayList<String> addressList = loadAddressBookList();
+
+        boolean isDuplicate = false;
+
+        for (int i = 0; i < 5; i++) {
+
+            Log.e("i :", "" + i);
+            Log.e("address : ", address);
+            Log.e("address list  : ", addressList.get(i));
+
+            if (address.equals(addressList.get(i))) {
+                isDuplicate = true;
+                Log.e("!!true :", "!!");
+                break;
+            } else {
+                isDuplicate = false;
+                Log.e("!!false :", "!!");
+                break;
+            }
+        }
+
+        if (!isDuplicate) {
+            addressList.add(address);
+            for (int i = 0; i < addressList.size(); i++) {
+                saveSharedPreferences_string(mThis, "addressBook" + (i + 1), addressList.get(i));
+            }
+        }
+    }
+
     private void setView() {
 
         etZipCode = (EditText)findViewById(R.id.order_zipcode);
         etAddress1 = (EditText)findViewById(R.id.order_address1);
         etAddress2 = (EditText)findViewById(R.id.order_address2);
         etPhone = (EditText)findViewById(R.id.order_phone);
+        etPhone.setText(getPhoneNumber());
         etComment = (EditText)findViewById(R.id.order_comment);
 
         rbCashqCard = (TextView)findViewById(R.id.order_cashq_card);
@@ -183,8 +257,12 @@ public class OrderActivity extends BaseActivity {
         btnOrder = (Button)findViewById(R.id.btn_order_pay);
 
         tvTotal = (TextView)findViewById(R.id.order_total);
-        tvShopName = (TextView) findViewById(R.id.order_shopname);
-        tvShopPhone = (TextView) findViewById(R.id.order_shopphone);
+        tvShopName = (TextView)findViewById(R.id.order_shopname);
+        tvShopPhone = (TextView)findViewById(R.id.order_shopphone);
+
+        cbMember = (CheckBox)findViewById(R.id.order_member_address);
+
+        btnAddressBook = (Button)findViewById(R.id.order_addressbook);
     }
 
     public void mOnClick(View view) {
@@ -303,13 +381,14 @@ public class OrderActivity extends BaseActivity {
                 // ???
             } else if (mOrderData.getPayType().equals(CASHQ_CARD)
                     || mOrderData.getPayType().equals(CASHQ_CELL)) {
-                i.setClass(mActivity, PayActivity.class);
+                i.setClass(mThis, PayActivity.class);
 
             } else if (mOrderData.getPayType().equals(FIELD_CASH)
                     || mOrderData.getPayType().equals(FIELD_CARD)) {
-                i.setClass(mActivity, OrderResultActivity.class);
+                i.setClass(mThis, OrderResultActivity.class);
             }
 
+            i.putExtra("pay_type", mPayType);
             i.putExtra("order", mOrderData);
             startActivity(i);
         }

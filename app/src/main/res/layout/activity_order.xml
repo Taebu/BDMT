@@ -49,7 +49,10 @@
                 android:layout_height="wrap_content"
                 android:button="@drawable/btn_check"
                 android:text=" 회원 정보와 배송지가 같음"
-                android:textSize="13sp" />
+                android:textSize="13sp"
+                android:visibility="gone" />
+
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -65,7 +68,6 @@
                     android:textColor="#999999" />
 
                 <EditText
-                    android:text="410-816"
                     android:id="@+id/order_zipcode"
                     android:layout_width="150dp"
                     android:layout_height="30dp"
@@ -99,7 +101,6 @@
                     android:textColor="#999999" />
 
                 <EditText
-                    android:text="경기도 고양시 일산동구"
                     android:id="@+id/order_address1"
                     android:layout_width="220dp"
                     android:layout_height="30dp"
@@ -127,7 +128,6 @@
                     android:visibility="invisible" />
 
                 <EditText
-                    android:text="강송로 49 401호"
                     android:id="@+id/order_address2"
                     android:layout_width="220dp"
                     android:layout_height="30dp"
@@ -155,7 +155,6 @@
                     android:textColor="#999999" />
 
                 <EditText
-                    android:text="010-3475-2742"
                     android:id="@+id/order_phone"
                     android:layout_width="220dp"
                     android:layout_height="30dp"
@@ -165,6 +164,7 @@
                     android:inputType="number"
                     android:paddingLeft="8dp"
                     android:singleLine="true"
+                    android:text=""
                     android:textSize="13sp" />
 
             </LinearLayout>
@@ -182,7 +182,6 @@
                     android:textColor="#999999" />
 
                 <EditText
-                    android:text="싸게싸게 갖다주쇼"
                     android:id="@+id/order_comment"
                     android:layout_width="220dp"
                     android:layout_height="70dp"
@@ -192,12 +191,22 @@
                     android:lines="2"
                     android:paddingLeft="8dp"
                     android:singleLine="false"
+                    android:text=""
                     android:textSize="13sp" />
 
             </LinearLayout>
 
         </LinearLayout>
-
+        <Button
+            android:layout_marginBottom="8dp"
+            android:id="@+id/order_addressbook"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:background="@drawable/btn_black"
+            android:text="최근 주소"
+            android:textSize="13sp"
+            android:textColor="#FFFFFF" />
         <ImageView
             android:layout_width="310dp"
             android:layout_height="1dp"
@@ -333,22 +342,24 @@
             android:layout_gravity="center_vertical"
             android:layout_marginBottom="8dp"
             android:src="#E8E8E8" />
+
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <TextView
-                android:drawableRight="@drawable/icon_call"
                 android:id="@+id/order_shopname"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/icon_call" />
 
             <TextView
                 android:id="@+id/order_shopphone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
+
         <ImageView
             android:layout_width="310dp"
             android:layout_height="1dp"
@@ -358,12 +369,12 @@
 
 
         <ListView
-            android:clickable="false"
-            android:choiceMode="none"
             android:id="@+id/order_listview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            android:choiceMode="none"
+            android:clickable="false"
             android:visibility="visible" />
 
         <LinearLayout

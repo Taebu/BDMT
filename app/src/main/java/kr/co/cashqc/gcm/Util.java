@@ -51,6 +51,8 @@ import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.StringTokenizer;
 import java.util.regex.Pattern;
 
@@ -193,6 +195,7 @@ public class Util {
     // SharedPreferences
     public static void saveSharedPreferences_string(Context context, String key, String text) {
         Log.d("!!!Util.Class!!!", "--------------saveSharedPreferences----------------");
+        Log.d("!!!Util.Class!!!", "key : " + key + " text : " + text);
 
         SharedPreferences pref = context.getSharedPreferences(APP_SAVE_NAME, Service.MODE_PRIVATE);
         SharedPreferences.Editor edit = pref.edit();
@@ -243,9 +246,25 @@ public class Util {
 
     public static String loadSharedPreferences(Context context, String key) {
         Log.d("!!!Util.Class!!!", "--------------loadSharedPreferences----------------");
-
         SharedPreferences pref = context.getSharedPreferences(APP_SAVE_NAME, Service.MODE_PRIVATE);
         return pref.getString(key, null);
+    }
+
+    public static ArrayList<String> loadSharedPreferencesArrayList(Context context, String key) {
+        Log.d("!!!Util.Class!!!", "--------------loadSharedPreferences----------------");
+
+        SharedPreferences pref = context.getSharedPreferences(APP_SAVE_NAME, Service.MODE_PRIVATE);
+
+        ArrayList<String> addressList = new ArrayList<String>();
+
+        try {
+            String[] addresses = pref.getString(key, null).split("|");
+            Collections.addAll(addressList, addresses);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return addressList;
     }
 
     // read assets text

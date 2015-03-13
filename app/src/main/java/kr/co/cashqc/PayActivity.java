@@ -23,9 +23,13 @@ import java.util.Arrays;
  */
 public class PayActivity extends BaseActivity {
 
-    private WebView mWebView, webview;
+    private WebView mWebView;
 
     private boolean isISP_call = false;
+
+    private final String CASHQ_CARD = "CASHQ_CARD";
+
+    private final String CASHQ_CELL = "CASHQ_CELL";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,13 +51,19 @@ public class PayActivity extends BaseActivity {
 
         byte[] postData = makePostData(orderData);
 
-        String url = "http://cashq.co.kr/m/kg_json.php";
+        String payType = getIntent().getStringExtra("pay_type");
+
+        String url = "";
+
+        if (payType.equals(CASHQ_CARD)) {
+            url = "http://cashq.co.kr/m/cn_web.php";
+        } else if (payType.equals(CASHQ_CELL)) {
+            url = "http://cashq.co.kr/m/kg_json.php";
+        }
 
         Log.e("pay", Arrays.toString(postData));
 
-        // mWebView.postUrl(url, postData);
-        // mWebView.loadUrl("http://www.naver.com");
-        mWebView.loadUrl("http://cashq.co.kr/m/cn_web.php");
+        mWebView.postUrl(url, postData);
     }
 
     private byte[] makePostData(OrderData data) {
@@ -77,6 +87,7 @@ public class PayActivity extends BaseActivity {
         sb.append("&MSTR=").append(seq);
 
         Log.e("pay", sb.toString());
+
         return EncodingUtils.getBytes(sb.toString(), "BASE64");
 
     }

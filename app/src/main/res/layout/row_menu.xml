@@ -21,7 +21,6 @@
         android:paddingRight="20dp"
         android:gravity="right"
         android:layout_weight="5"
-        android:text="price"
         android:id="@+id/dialog_order_price"
         android:layout_width="0dp"
         android:layout_height="wrap_content" />
