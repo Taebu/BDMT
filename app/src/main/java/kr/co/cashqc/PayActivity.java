@@ -1,11 +1,13 @@
 
 package kr.co.cashqc;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.webkit.HttpAuthHandler;
@@ -14,6 +16,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import org.apache.http.util.EncodingUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.net.URISyntaxException;
 import java.util.Arrays;
@@ -23,6 +27,8 @@ import java.util.Arrays;
  */
 public class PayActivity extends BaseActivity {
 
+    private Activity mThis = this;
+
     private WebView mWebView;
 
     private boolean isISP_call = false;
@@ -30,6 +36,7 @@ public class PayActivity extends BaseActivity {
     private final String CASHQ_CARD = "CASHQ_CARD";
 
     private final String CASHQ_CELL = "CASHQ_CELL";
+    private OrderData mOrderData;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,16 +47,16 @@ public class PayActivity extends BaseActivity {
 
         mWebView = (WebView)findViewById(R.id.pay_webview);
         mWebView.setWebViewClient(new MyWebView());
-        mWebView.setWebChromeClient(new MyWebChromeClient());
+        mWebView.setWebChromeClient(new ChromeClient());
         mWebView.getSettings().setJavaScriptEnabled(true);
 
         // mWebView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
         // mWebView.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
         // mWebView.setScrollBarStyle(ScrollView.SCROLLBARS_OUTSIDE_OVERLAY);
 
-        OrderData orderData = (OrderData)getIntent().getSerializableExtra("order");
+        mOrderData = (OrderData)getIntent().getSerializableExtra("order");
 
-        byte[] postData = makePostData(orderData);
+        byte[] postData = makePostData();
 
         String payType = getIntent().getStringExtra("pay_type");
 
@@ -66,18 +73,18 @@ public class PayActivity extends BaseActivity {
         mWebView.postUrl(url, postData);
     }
 
-    private byte[] makePostData(OrderData data) {
+    private byte[] makePostData() {
 
-        String menu = data.getMenu().get(0).getMenuName();
-        int quantity = data.getMenu().size() - 1;
+        String menu = mOrderData.getMenu().get(0).getMenuName();
+        int quantity = mOrderData.getMenu().size() - 1;
         String name = quantity < 1 ? menu : menu + " 외 " + quantity + "건";
 
-        String price = String.valueOf(data.getTotal());
-        String tradeId = data.getTradeId();
-        String payType = data.getPayType();
+        String price = String.valueOf(mOrderData.getTotal());
+        String tradeId = mOrderData.getTradeId();
+        String payType = mOrderData.getPayType();
         // String seq =
-        // data.getShopCode().substring(data.getShopCode().indexOf("_") + 1);
-        String seq = data.getShopCode();
+        // mOrderData.getShopCode().substring(mOrderData.getShopCode().indexOf("_") + 1);
+        String seq = mOrderData.getShopCode();
 
         StringBuilder sb = new StringBuilder();
         sb.append("Prdtprice=").append(price);
@@ -86,13 +93,13 @@ public class PayActivity extends BaseActivity {
         sb.append("&pay_type=").append(payType);
         sb.append("&MSTR=").append(seq);
 
-        Log.e("pay", sb.toString());
+        Log.e("PayActivity.makePostData", sb.toString());
 
         return EncodingUtils.getBytes(sb.toString(), "BASE64");
 
     }
 
-    private class MyWebChromeClient extends WebChromeClient {
+    private class ChromeClient extends WebChromeClient {
 
         @Override
         public boolean onJsAlert(WebView view, String url, String message,
@@ -131,15 +138,54 @@ public class PayActivity extends BaseActivity {
     private class MyWebView extends WebViewClient {
 
         @Override
+        public void onPageFinished(WebView view, String url) {
+
+            Log.e("PayActivity.ChromeClient.onPageFinished", "url : " + url);
+
+            String content = view.getTitle();
+
+            Log.e("PayActivity.ChromeClient.onPageFinished", "content : " + content);
+
+            String okUrl = "http://cashq.co.kr/m/okjson.php";
+
+            if (okUrl.equals(url)) {
+
+                try {
+                    JSONObject jsonObject = new JSONObject(content);
+
+                    boolean success = false;
+
+                    if (jsonObject.has("success")) {
+                        success = jsonObject.getBoolean("success");
+                    }
+
+                    Intent intent = new Intent();
+                    intent.setClass(mThis, OrderResultActivity.class);
+                    intent.putExtra("order", mOrderData);
+                    intent.putExtra("success", success);
+                    startActivity(intent);
+                    finish();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            super.onPageFinished(view, url);
+        }
+
+        @Override
         public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host,
                 String realm) {
+            Log.e("PayActivity.onReceivedHttpAuthRequest", "host : " + host + "\nrealm : " + realm);
             super.onReceivedHttpAuthRequest(view, handler, host, realm);
         }
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
-            Log.e("test", "url : " + url);
+            Log.e("PayActivity.shouldOverrideUrlLoading", "url : " + url);
 
             // TODO Auto-generated method stub
             if (url.contains("market://") || url.endsWith(".apk")
@@ -227,6 +273,37 @@ public class PayActivity extends BaseActivity {
                 return true;
             }
             return true;
+        }
+    }
+
+    private class OKJsonTask extends AsyncTask<String, Void, JSONObject> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected JSONObject doInBackground(String... params) {
+
+            String url = params[0];
+
+            JSONParser jsonParser = new JSONParser();
+
+            return jsonParser.getJSONObjectFromUrl(url);
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject jsonObject) {
+            super.onPostExecute(jsonObject);
+
+            boolean success = false;
+
+            try {
+                success = jsonObject.getBoolean("success");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 }

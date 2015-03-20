@@ -749,7 +749,7 @@ public class ShopPageActivity extends BaseActivity {
                 e.printStackTrace();
             }
 
-            String baseUrl = "http://cashq.co.kr/adm/upload/";
+            String baseUrl = "http://cashq.co.kr/adm/upload/thumb/";
 
             String[] img = new String[4];
             String[] content = new String[4];

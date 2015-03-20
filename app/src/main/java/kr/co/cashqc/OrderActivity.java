@@ -214,7 +214,7 @@ public class OrderActivity extends BaseActivity {
 
         boolean isDuplicate = false;
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < addressList.size(); i++) {
 
             Log.e("i :", "" + i);
             Log.e("address : ", address);
@@ -232,9 +232,12 @@ public class OrderActivity extends BaseActivity {
         }
 
         if (!isDuplicate) {
+            if (addressList.size() == 5) {
+                addressList.remove(0);
+            }
             addressList.add(address);
             for (int i = 0; i < addressList.size(); i++) {
-                saveSharedPreferences_string(mThis, "addressBook" + (i + 1), addressList.get(i));
+                saveSharedPreferences_string(mThis, "addressBook" + i, addressList.get(i));
             }
         }
     }

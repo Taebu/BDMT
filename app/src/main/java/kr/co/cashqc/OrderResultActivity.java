@@ -15,8 +15,8 @@ import java.util.ArrayList;
  */
 public class OrderResultActivity extends BaseActivity {
 
-    private TextView tvResult, tvShop, tvPayment, tvComment, tvAddress1, tvAddress2,
-            tvPhone, tvTotal;
+    private TextView tvResult, tvShop, tvPayment, tvComment, tvAddress1, tvAddress2, tvPhone,
+            tvTotal;
 
     private ListView mListView;
 
@@ -32,46 +32,57 @@ public class OrderResultActivity extends BaseActivity {
         setContentView(R.layout.activity_order_result);
         killer.addActivity(this);
 
+        setView();
+        setData();
+
+    }
+
+    private void setView() {
         tvResult = (TextView)findViewById(R.id.order_result_text);
-        tvShop = (TextView) findViewById(R.id.order_result_shop);
-        tvPayment = (TextView) findViewById(R.id.order_result_payment);
-        tvAddress1 = (TextView) findViewById(R.id.order_result_address1);
-        tvAddress2 = (TextView) findViewById(R.id.order_result_address2);
-        tvPhone = (TextView) findViewById(R.id.order_result_phone);
-        tvComment = (TextView) findViewById(R.id.order_result_comment);
-        tvTotal = (TextView) findViewById(R.id.order_result_total);
+        tvShop = (TextView)findViewById(R.id.order_result_shop);
+        tvPayment = (TextView)findViewById(R.id.order_result_payment);
+        tvAddress1 = (TextView)findViewById(R.id.order_result_address1);
+        tvAddress2 = (TextView)findViewById(R.id.order_result_address2);
+        tvPhone = (TextView)findViewById(R.id.order_result_phone);
+        tvComment = (TextView)findViewById(R.id.order_result_comment);
+        tvTotal = (TextView)findViewById(R.id.order_result_total);
+    }
 
-        mOrderData = (OrderData) getIntent().getSerializableExtra("order");
+    private void setData() {
 
-        mCartList = mOrderData.getMenu();
+        mOrderData = (OrderData)getIntent().getSerializableExtra("order");
 
-        tvShop.setText(mOrderData.getShopName());
-        tvShop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        if (mOrderData != null) {
+            mCartList = mOrderData.getMenu();
+            tvShop.setText(mOrderData.getShopName());
 
-            }
-        });
+            tvShop.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-        tvPayment.setText(mOrderData.getPayType());
+                }
+            });
 
-        tvAddress1.setText(mOrderData.getZipCode() + " " + mOrderData.getAddress1());
+            tvPayment.setText(mOrderData.getPayType());
 
-        tvAddress2.setText(mOrderData.getAddress2());
+            tvAddress1.setText(mOrderData.getZipCode() + " " + mOrderData.getAddress1());
 
-        tvPhone.setText(mOrderData.getUserPhone());
+            tvAddress2.setText(mOrderData.getAddress2());
 
-        tvComment.setText(mOrderData.getComment());
+            tvPhone.setText(mOrderData.getUserPhone());
 
-        mListView = (ListView)findViewById(R.id.order_result_listview);
+            tvComment.setText(mOrderData.getComment());
 
-        mAdapter = new OrderListAdapter(this, mCartList);
+            mListView = (ListView)findViewById(R.id.order_result_listview);
 
-        mListView.setAdapter(mAdapter);
+            mAdapter = new OrderListAdapter(this, mCartList);
 
-        setListViewHeightBasedOnChildren(mListView);
+            mListView.setAdapter(mAdapter);
 
-        tvTotal.setText(String.format("%,d원", mOrderData.getTotal()));
+            setListViewHeightBasedOnChildren(mListView);
+
+            tvTotal.setText(String.format("%,d원", mOrderData.getTotal()));
+        }
 
         findViewById(R.id.btn_order_finish).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,10 +90,6 @@ public class OrderResultActivity extends BaseActivity {
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
         });
-    }
-
-    public void mOnClick(View view) {
-
     }
 
     private void setListViewHeightBasedOnChildren(ListView listView) {
