@@ -26,7 +26,7 @@ import java.util.ArrayList;
 
 import kr.co.cashqc.gcm.Util;
 
-import static kr.co.cashqc.Global.setDisplayName;
+import static kr.co.cashqc.Utils.setDisplayName;
 import static kr.co.cashqc.PhoneBook.getContactList;
 
 /**

@@ -4,11 +4,12 @@ package kr.co.cashqc;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import static kr.co.cashqc.Utils.setListViewHeightBasedOnChildren;
 
 /**
  * @author Jung-Hum Cho Created by anp on 15. 1. 7..
@@ -92,24 +93,30 @@ public class OrderResultActivity extends BaseActivity {
         });
     }
 
-    private void setListViewHeightBasedOnChildren(ListView listView) {
-        // mAdapter = listView.getAdapter();
+    // private void setListViewHeightBasedOnChildren(ListView listView) {
+    // OrderListAdapter adapter = listView.getAdapter();
+    //
+    // if (adapter == null) {
+    // return;
+    // }
+    //
+    // int totalHeight = 0;
+    // for (int i = 0; i < mAdapter.getCount(); i++) {
+    // View listItem = mAdapter.getView(i, listView.getChildAt(0), listView);
+    // listItem.measure(0, 0);
+    // totalHeight += listItem.getMeasuredHeight();
+    // }
+    //
+    // ViewGroup.LayoutParams params = listView.getLayoutParams();
+    // params.height = totalHeight + (listView.getDividerHeight() *
+    // (mAdapter.getCount() - 1));
+    // listView.setLayoutParams(params);
+    // listView.requestLayout();
+    // }
 
-        if (mAdapter == null) {
-            return;
-        }
-
-        int totalHeight = 0;
-        for (int i = 0; i < mAdapter.getCount(); i++) {
-            View listItem = mAdapter.getView(i, listView.getChildAt(0), listView);
-            listItem.measure(0, 0);
-            totalHeight += listItem.getMeasuredHeight();
-        }
-
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (mAdapter.getCount() - 1));
-        listView.setLayoutParams(params);
-        listView.requestLayout();
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+        killer.removeActivity(this);
     }
 }

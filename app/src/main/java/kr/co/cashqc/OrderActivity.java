@@ -122,6 +122,7 @@ public class OrderActivity extends BaseActivity {
         }
 
         int totalHeight = 0;
+
         for (int i = 0; i < mAdapter.getCount(); i++) {
             View listItem = mAdapter.getView(i, listView.getChildAt(0), listView);
             listItem.measure(0, 0);
@@ -150,7 +151,7 @@ public class OrderActivity extends BaseActivity {
 
                 ArrayList<String> addressList = loadAddressBookList();
 
-                if (addressList.get(0) == null) {
+                if (addressList.size() == 0) {
                     Toast.makeText(mThis, "최근 사용한 주소가 없습니다.", Toast.LENGTH_LONG).show();
                 } else {
                     new AddressBookDialog(mThis, addressList, mOnClickListener).show();
@@ -212,7 +213,7 @@ public class OrderActivity extends BaseActivity {
 
         ArrayList<String> addressList = loadAddressBookList();
 
-        boolean isDuplicate = false;
+        boolean isEqual = false;
 
         for (int i = 0; i < addressList.size(); i++) {
 
@@ -221,17 +222,16 @@ public class OrderActivity extends BaseActivity {
             Log.e("address list  : ", addressList.get(i));
 
             if (address.equals(addressList.get(i))) {
-                isDuplicate = true;
+                isEqual = true;
                 Log.e("!!true :", "!!");
                 break;
             } else {
-                isDuplicate = false;
+                isEqual = false;
                 Log.e("!!false :", "!!");
-                break;
             }
         }
 
-        if (!isDuplicate) {
+        if (!isEqual) {
             if (addressList.size() == 5) {
                 addressList.remove(0);
             }
@@ -397,4 +397,9 @@ public class OrderActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        killer.removeActivity(this);
+    }
 }

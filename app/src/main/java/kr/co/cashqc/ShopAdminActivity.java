@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 
 import org.json.JSONArray;
@@ -14,6 +13,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import static kr.co.cashqc.Utils.setExpandableListViewHeight;
 
 /**
  * @author Jung-Hum Cho Created by anp on 15. 1. 19..
@@ -67,7 +68,16 @@ public class ShopAdminActivity extends BaseActivity {
 
             listView.setAdapter(new ShopAdminAdapter(getApplicationContext(), dataList));
 
-            setListViewHeight(listView);
+            setExpandableListViewHeight(listView, 0);
+
+            listView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+                @Override
+                public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition,
+                        long id) {
+                    setExpandableListViewHeight(parent, groupPosition);
+                    return false;
+                }
+            });
 
             if (mDialog.isShowing())
                 mDialog.dismiss();
@@ -131,8 +141,10 @@ public class ShopAdminActivity extends BaseActivity {
                                 e.printStackTrace();
                             }
 
-//                            Log.e("shopadmin", "\ncartData : " + cartData.getMenuName() + "\nea : "
-//                                    + cartData.getEa() + "\nprice : " + cartData.getMenuName());
+                            // Log.e("shopadmin", "\ncartData : " +
+                            // cartData.getMenuName() + "\nea : "
+                            // + cartData.getEa() + "\nprice : " +
+                            // cartData.getMenuName());
                             cartDataList.add(cartData);
                         }
 
@@ -159,24 +171,27 @@ public class ShopAdminActivity extends BaseActivity {
 
     }
 
-    private void setListViewHeight(ExpandableListView listView) {
-
-        ShopAdminAdapter adapter = (ShopAdminAdapter)listView.getExpandableListAdapter();
-
-        if (adapter == null) {
-            return;
-        }
-
-        int totalHeight = 0;
-        for (int i = 0; i < adapter.getGroupCount(); i++) {
-            View listItem = adapter.getGroupView(i, false, listView.getChildAt(0), listView);
-            listItem.measure(0, 0);
-            totalHeight += listItem.getMeasuredHeight();
-        }
-
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (adapter.getGroupCount() - 1));
-        listView.setLayoutParams(params);
-        listView.requestLayout();
-    }
+    // private void setListViewHeight(ExpandableListView listView) {
+    //
+    // ShopAdminAdapter adapter =
+    // (ShopAdminAdapter)listView.getExpandableListAdapter();
+    //
+    // if (adapter == null) {
+    // return;
+    // }
+    //
+    // int totalHeight = 0;
+    // for (int i = 0; i < adapter.getGroupCount(); i++) {
+    // View listItem = adapter.getGroupView(i, false, listView.getChildAt(0),
+    // listView);
+    // listItem.measure(0, 0);
+    // totalHeight += listItem.getMeasuredHeight();
+    // }
+    //
+    // ViewGroup.LayoutParams params = listView.getLayoutParams();
+    // params.height = totalHeight + (listView.getDividerHeight() *
+    // (adapter.getGroupCount() - 1));
+    // listView.setLayoutParams(params);
+    // listView.requestLayout();
+    // }
 }

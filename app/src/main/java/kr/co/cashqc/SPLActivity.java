@@ -7,8 +7,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -19,6 +17,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import kr.co.cashqc.gcm.Util;
+
+import static kr.co.cashqc.Utils.setListViewHeightBasedOnChildren;
 
 /**
  * @author Jung-Hum Cho Created by anp on 15. 1. 23..
@@ -104,26 +104,26 @@ public class SPLActivity extends BaseActivity {
                 mDialog.dismiss();
         }
 
-        private void setListViewHeightBasedOnChildren(ListView listView) {
-            Adapter adapter = listView.getAdapter();
-
-            if (adapter == null) {
-                return;
-            }
-
-            int totalHeight = 0;
-            for (int i = 0; i < adapter.getCount(); i++) {
-                View listItem = adapter.getView(i, listView.getChildAt(0), listView);
-                listItem.measure(0, 0);
-                totalHeight += listItem.getMeasuredHeight();
-            }
-
-            ViewGroup.LayoutParams params = listView.getLayoutParams();
-            params.height = totalHeight + (listView.getDividerHeight() * (adapter.getCount() - 1));
-            listView.setLayoutParams(params);
-            listView.requestLayout();
-
-        }
+//        private void setListViewHeightBasedOnChildren(ListView listView) {
+//            Adapter adapter = listView.getAdapter();
+//
+//            if (adapter == null) {
+//                return;
+//            }
+//
+//            int totalHeight = 0;
+//            for (int i = 0; i < adapter.getCount(); i++) {
+//                View listItem = adapter.getView(i, listView.getChildAt(0), listView);
+//                listItem.measure(0, 0);
+//                totalHeight += listItem.getMeasuredHeight();
+//            }
+//
+//            ViewGroup.LayoutParams params = listView.getLayoutParams();
+//            params.height = totalHeight + (listView.getDividerHeight() * (adapter.getCount() - 1));
+//            listView.setLayoutParams(params);
+//            listView.requestLayout();
+//
+//        }
     }
 
     @Override

@@ -76,7 +76,14 @@ public class ShopListActivity extends BaseActivity implements ActionBar.TabListe
     }
 
     @Override
+    protected void onRestart() {
+        setCartCount(this);
+        super.onRestart();
+    }
+
+    @Override
     protected void onResume() {
+        setCartCount(this);
         super.onResume();
         // MainActivity.progressBar.setVisibility(View.GONE);
     }

@@ -109,10 +109,10 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        if (introFlag) {
-//            startActivity(new Intent(this, IntroActivity.class));
-//            introFlag = false;
-//        }
+        // if (introFlag) {
+        // startActivity(new Intent(this, IntroActivity.class));
+        // introFlag = false;
+        // }
 
         GoogleAnalytics.getInstance(getApplicationContext()).dispatchLocalHits();
 
@@ -165,7 +165,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
         // address field init.
         mAddressText = (TextView)findViewById(R.id.location_name1);
 
-        mManualDistance = (TextView) findViewById(R.id.manual_distance);
+        mManualDistance = (TextView)findViewById(R.id.manual_distance);
 
         // gps util init.
         mLocationUtil = LocationUtil.getInstance(MainActivity.this);
@@ -226,7 +226,6 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
     @Override
     public void finish() {
         super.finish();
-
     }
 
     @Override
@@ -368,9 +367,16 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
     }
 
     @Override
+    protected void onRestart() {
+        setCartCount(this);
+        super.onRestart();
+    }
+
+    @Override
     protected void onResume() {
         NotificationManager nm = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         nm.cancelAll();
+        setCartCount(this);
         super.onResume();
         // Check device for Play Services APK.
     }
@@ -490,7 +496,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
         try {
             String num = getPhoneNumber();
             String register = Util.loadSharedPreferences(getApplicationContext(),
-                    Global.RegisterKey222);
+                    Utils.RegisterKey222);
             Log.e("JAY", "loadshared = " + register);
             if (register != null) {
                 // if (true) {

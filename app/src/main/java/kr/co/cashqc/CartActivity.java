@@ -52,7 +52,7 @@ public class CartActivity extends BaseActivity {
 
         mCartList = mOrderData.getMenu();
 
-        tvShop.setText(mOrderData.getShopName() + " tel: " + mOrderData.getShopPhone());
+        tvShop.setText(mOrderData.getShopName() + "\ntel: " + mOrderData.getShopPhone());
 
         setTotal();
 
@@ -89,9 +89,15 @@ public class CartActivity extends BaseActivity {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        killer.removeActivity(this);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
-        killer.removeActivity(this);
+
     }
 
     public void update(String menuCode, int ea) {

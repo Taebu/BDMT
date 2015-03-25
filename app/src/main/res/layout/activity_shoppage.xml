@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/shoppage_scrollview"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="#ffffff"
     android:fillViewport="true"
     android:gravity="center_horizontal">
@@ -207,7 +207,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:src="#E8E8E8" />
+            android:src="#E8E8E8"             />
 
         <ExpandableListView
             android:id="@+id/shoppage_listview"
@@ -216,30 +216,31 @@
             android:groupIndicator="@null"
             android:visibility="gone" />
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="12dp"
-            android:src="#E8E8E8" />
+        <!--<ImageView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1dp"-->
+            <!--android:layout_marginBottom="12dp"-->
+            <!--android:src="#E8E8E8" />-->
 
         <Button
-            android:visibility="gone"
             android:id="@+id/btn_up"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_gravity="center"
-            android:layout_marginBottom="12dp"
+            android:layout_margin="12dp"
             android:background="@drawable/btn_black"
+            android:gravity="center"
             android:text="TOP"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            android:visibility="gone" />
 
         <WebView
-            android:clickable="false"
-            android:focusableInTouchMode="false"
-            android:focusable="false"
             android:id="@+id/shoppage_webview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:visibility="gone" />
 
     </LinearLayout>

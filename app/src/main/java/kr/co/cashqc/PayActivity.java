@@ -306,4 +306,9 @@ public class PayActivity extends BaseActivity {
 
         }
     }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        killer.removeActivity(this);
+    }
 }

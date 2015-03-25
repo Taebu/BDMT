@@ -16,7 +16,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -46,9 +45,11 @@ import java.util.HashMap;
 
 import kr.co.cashqc.gcm.Util;
 
-import static kr.co.cashqc.Global.IMG_URL;
-import static kr.co.cashqc.Global.setDisplayName;
 import static kr.co.cashqc.PhoneBook.getContactList;
+import static kr.co.cashqc.Utils.IMG_URL;
+import static kr.co.cashqc.Utils.initExpandableListViewHeight;
+import static kr.co.cashqc.Utils.setDisplayName;
+import static kr.co.cashqc.Utils.setExpandableListViewHeight;
 
 /**
  * @author Jung-Hum Cho Created by Administrator on 2014-10-16.
@@ -84,6 +85,12 @@ public class ShopPageActivity extends BaseActivity {
     private String mPrePay;
 
     private Button btnUp;
+
+    @Override
+    protected void onRestart() {
+        setCartCount(this);
+        super.onRestart();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -141,6 +148,7 @@ public class ShopPageActivity extends BaseActivity {
 
     @Override
     protected void onResume() {
+        setCartCount(this);
         super.onResume();
     }
 
@@ -373,9 +381,9 @@ public class ShopPageActivity extends BaseActivity {
         set.setLoadWithOverviewMode(true);
         set.setUseWideViewPort(true);
         // set.setJavaScriptEnabled(true);
-//        set.setBuiltInZoomControls(false);
+        // set.setBuiltInZoomControls(false);
         set.setBuiltInZoomControls(true);
-//        set.setSupportZoom(false);
+        // set.setSupportZoom(false);
         set.setSupportZoom(true);
         set.setCacheMode(WebSettings.LOAD_NO_CACHE);
 
@@ -388,14 +396,21 @@ public class ShopPageActivity extends BaseActivity {
     }
 
     private void setListView() {
-        // mScrollView = (ScrollView)findViewById(R.id.shoppage_scrollview);
+
+        mScrollView = (ScrollView)findViewById(R.id.shoppage_scrollview);
         // mScrollView.setVisibility(View.VISIBLE);
 
-        btnUp = (Button) findViewById(R.id.btn_up);
+        btnUp = (Button)findViewById(R.id.btn_up);
         btnUp.setVisibility(View.VISIBLE);
 
+        btnUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mScrollView.smoothScrollTo(0, 0);
+            }
+        });
+
         mRelativeLayout = (RelativeLayout)findViewById(R.id.shoppage_menulist);
-        mRelativeLayout.setVisibility(View.VISIBLE);
 
         mListView = (ExpandableListView)findViewById(R.id.shoppage_listview);
         mListView.setVisibility(View.VISIBLE);
@@ -434,19 +449,33 @@ public class ShopPageActivity extends BaseActivity {
         protected void onPostExecute(JSONObject object) {
             super.onPostExecute(object);
 
-            Log.e("ShopMenuActivity", object.toString());
+            try {
 
-            mData = makeShopMenuData(object);
+                Log.e("ShopMenuActivity", object.toString());
 
-            ShopMenuAdapter adapter = new ShopMenuAdapter(mThis, mData);
+                mData = makeShopMenuData(object);
 
-            mListView.setAdapter(adapter);
+                ShopMenuAdapter adapter = new ShopMenuAdapter(mThis, mData);
 
-            for (int i = 0; i < adapter.getGroupCount(); i++) {
-                mListView.expandGroup(i);
+                mListView.setAdapter(adapter);
+
+                for (int i = 0; i < adapter.getGroupCount(); i++) {
+                    mListView.expandGroup(i);
+                }
+
+                initExpandableListViewHeight(mListView);
+
+                mListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+                    @Override
+                    public boolean onGroupClick(ExpandableListView parent, View v,
+                            int groupPosition, long id) {
+                        setExpandableListViewHeight(parent, groupPosition);
+                        return false;
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
-            setListViewHeight(mListView);
 
             if (mDialog.isShowing())
                 mDialog.dismiss();
@@ -455,8 +484,6 @@ public class ShopPageActivity extends BaseActivity {
     }
 
     private ShopMenuData makeShopMenuData(JSONObject jsonObject) {
-
-        ShopMenuData shop = new ShopMenuData();
 
         // try {
         // shop.setShopName(jsonObject.getString("name"));
@@ -575,38 +602,53 @@ public class ShopPageActivity extends BaseActivity {
         // e.printStackTrace();
         // }
 
+        ShopMenuData shop = new ShopMenuData();
+
         try {
+
             shop.setShopName(jsonObject.getString("name"));
             String storeCode = jsonObject.getString("storecode");
             String seq = storeCode.substring(storeCode.indexOf("_") + 1);
             shop.setShopCode(seq);
             shop.setShopPhone(jsonObject.getString("phone"));
             shop.setShopVPhone(jsonObject.getString("vphone"));
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
         shop.setMenu(makeMenuData(jsonObject, shop.getShopCode()));
 
         for (int i = 0; i < shop.getMenu().size(); i++) {
+
             Log.e("fucking_tree", "level 1 : " + shop.getMenu().get(i).getCode()
                     + shop.getMenu().get(i).getLabel());
+
             if (shop.getMenu().get(i).getChild() != null) {
+
                 for (int y = 0; y < shop.getMenu().get(i).getChild().size(); y++) {
+
                     Log.e("fucking_tree", "level 2 : "
                             + shop.getMenu().get(i).getChild().get(y).getCode()
                             + shop.getMenu().get(i).getChild().get(y).getLabel());
+
                     if (shop.getMenu().get(i).getChild().get(y).getChild() != null) {
+
                         for (int j = 0; j < shop.getMenu().get(i).getChild().get(y).getChild()
                                 .size(); j++) {
+
                             Log.e("fucking_tree", "level 3 : "
                                     + shop.getMenu().get(i).getChild().get(y).getChild().get(j)
                                             .getCode()
                                     + shop.getMenu().get(i).getChild().get(y).getChild().get(j)
                                             .getLabel());
+
                             if (shop.getMenu().get(i).getChild().get(y).getChild().get(j)
                                     .getChild() != null) {
+
                                 for (int k = 0; k < shop.getMenu().get(i).getChild().get(y)
                                         .getChild().get(j).getChild().size(); k++) {
+
                                     Log.e("fucking_tree", "level 4 : "
                                             + shop.getMenu().get(i).getChild().get(y).getChild()
                                                     .get(j).getChild().get(k).getCode()
@@ -637,6 +679,7 @@ public class ShopPageActivity extends BaseActivity {
                 array = jsonObject.getJSONArray("children");
 
             if (array != null) {
+
                 for (int i = 0; i < array.length(); i++) {
 
                     JSONObject object = array.getJSONObject(i);
@@ -722,6 +765,9 @@ public class ShopPageActivity extends BaseActivity {
             menuImgList = new ArrayList<HashMap<String, String>>(4);
 
             try {
+
+                boolean hasImage = false;
+
                 JSONArray jsonArray = jsonObject.getJSONArray("imglst");
 
                 for (int i = 0; i < jsonArray.length(); i++) {
@@ -742,13 +788,28 @@ public class ShopPageActivity extends BaseActivity {
                     if (object.has("bf_content"))
                         hashMap.put("text", object.getString("bf_content"));
 
+                    hasImage = true;
+
                     menuImgList.add(hashMap);
                 }
 
+                if (hasImage) {
+                    setMenuImage();
+                    mRelativeLayout.setVisibility(View.VISIBLE);
+                } else {
+                    mRelativeLayout.setVisibility(View.GONE);
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
+
+
+            if (mDialog.isShowing())
+                mDialog.dismiss();
+        }
+
+        private void setMenuImage() {
             String baseUrl = "http://cashq.co.kr/adm/upload/thumb/";
 
             String[] img = new String[4];
@@ -783,64 +844,55 @@ public class ShopPageActivity extends BaseActivity {
             img2.setOnClickListener(this);
             img3.setOnClickListener(this);
             img4.setOnClickListener(this);
-
-            if (mDialog.isShowing())
-                mDialog.dismiss();
         }
 
         @Override
         public void onClick(View v) {
+            int num = 0;
             switch (v.getId()) {
                 case R.id.img1:
-                    Toast.makeText(mThis, "1", Toast.LENGTH_SHORT).show();
+                    num = 0;
                     break;
                 case R.id.img2:
-                    Toast.makeText(mThis, "2", Toast.LENGTH_SHORT).show();
+                    num = 1;
                     break;
                 case R.id.img3:
-                    Toast.makeText(mThis, "3", Toast.LENGTH_SHORT).show();
+                    num = 2;
                     break;
                 case R.id.img4:
-                    Toast.makeText(mThis, "4", Toast.LENGTH_SHORT).show();
+                    num = 3;
                     break;
             }
-        }
-    }
-
-    private void setListViewHeight(ExpandableListView listView) {
-
-        ShopMenuAdapter adapter = (ShopMenuAdapter)listView.getExpandableListAdapter();
-
-        if (adapter == null) {
-            return;
+            imageMenuOrder(num);
         }
 
-        int totalHeight = 0;
-        int childCount = 0;
-        int height = 0;
-        for (int i = 0; i < adapter.getGroupCount(); i++) {
+        private void imageMenuOrder(int num) {
 
-            childCount += adapter.getChildrenCount(i);
-            View groupView = adapter.getGroupView(i, false, listView.getChildAt(0), listView);
-            groupView.measure(0, 0);
-            totalHeight += groupView.getMeasuredHeight();
-            Log.e("listHeight", "i : " + i + " | groupHeight : " + groupView.getMeasuredHeight());
-            for (int y = 0; y < adapter.getChildrenCount(i); y++) {
-                Log.e("listHeight",
-                        "|                y : " + y + " | childHeight : "
-                                + groupView.getMeasuredHeight());
-                totalHeight += groupView.getMeasuredHeight();
+            String imageId = menuImgList.get(num).get("id");
+
+            ArrayList<MenuData> groupData = mData.getMenu();
+
+            for (int i = 0; i < groupData.size(); i++) {
+
+                ArrayList<MenuData> childData = groupData.get(i).getChild();
+
+                for (int y = 0; y < childData.size(); y++) {
+
+                    String level2Id = childData.get(y).getId();
+                    Log.e("ShopPageActivity.imageMenuOrder", "level2Id : " + level2Id
+                            + " imageId : " + imageId);
+
+                    if (level2Id.equals(imageId)) {
+
+                        Toast.makeText(mThis, i + ", " + y, Toast.LENGTH_SHORT).show();
+
+                        new OrderMenuDialog(mThis, mData, i, y).show();
+
+                    }
+                }
+
             }
-            height = groupView.getMeasuredHeight();
         }
-
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = height + totalHeight
-                + (listView.getDividerHeight() * (adapter.getGroupCount() + childCount + 3));
-
-        Log.e("listHeight", "totalHeight : " + totalHeight);
-        Log.e("listHeight", "params.height : " + params.height);
-        listView.setLayoutParams(params);
-        listView.requestLayout();
     }
+
 }
