@@ -12,8 +12,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import kr.co.cashqc.gcm.Util;
-
 /**
  * @author Jung-Hum Cho
  */
@@ -38,6 +36,7 @@ public class MenuListFragment extends ListFragment {
         adapter.add(new SampleItem("공지 사항", R.drawable.icon_more_6_gray));
 //        adapter.add(new SampleItem("가맹점", R.drawable.icon_more_5_gray));
         adapter.add(new SampleItem("가맹점 주문내역", R.drawable.icon_more_8_gray));
+        adapter.add(new SampleItem("캐시큐 주문내역", R.drawable.icon_more_5));
 //        adapter.add(new SampleItem("제휴 문의", R.drawable.icon_more_4_gray));
 
         setListAdapter(adapter);
@@ -107,6 +106,10 @@ public class MenuListFragment extends ListFragment {
                 break;
             case 4:
                 intent = new Intent(getActivity(), SPLLoginActivity.class);
+                break;
+
+            case 5:
+                intent = new Intent(getActivity(), OrderListLoginActivity.class);
                 break;
 //            case 6:
 //                intent = new Intent(getActivity(), SPLActivity.class);

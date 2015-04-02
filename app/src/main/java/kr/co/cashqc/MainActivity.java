@@ -71,6 +71,8 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
     private Toast toast = null;
 
+    private BackPressCloseHandler backPressCloseHandler;
+
     public MainActivity() {
         super();
         MainActivity.Instance = this;
@@ -133,6 +135,9 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
         // activity killer activity add.
         killer.addActivity(this);
+
+        // back press close handler
+        backPressCloseHandler = new BackPressCloseHandler(this);
 
         if (!Util.isOnline(this)) {
             Util.showDialog_normal(this, "네트워크 에러", "네트워크 연결 상태를 확인해주세요");
@@ -219,8 +224,9 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        killer.allKillActivity();
+        // super.onBackPressed();
+        // killer.allKillActivity();
+        backPressCloseHandler.onBackPressed();
     }
 
     @Override
@@ -237,6 +243,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
         } else {
             // toast.setText("ddd");
         }
+
         toast.show();
         mPointText.setText("음식 사진을 클릭하세요");
 
@@ -275,6 +282,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
                 drawable = R.drawable.bg_japanese;
                 break;
         }
+
         String uri = "drawable://" + drawable;
         ImageLoader.getInstance().loadImage(uri, new SimpleImageLoadingListener() {
             @Override

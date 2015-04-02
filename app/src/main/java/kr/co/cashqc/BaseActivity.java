@@ -1,9 +1,9 @@
 
 package kr.co.cashqc;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,6 +15,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
@@ -45,11 +46,18 @@ public class BaseActivity extends SlidingFragmentActivity {
 
     ActivityKiller killer;
 
+    private Activity mThis = this;
+
     public static int CART_COUNT;
 
     public static TextView TV_CART_COUNT;
 
     public BaseActivity() {
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 
     @Override
@@ -112,8 +120,8 @@ public class BaseActivity extends SlidingFragmentActivity {
         });
 
         // 장바구니 숨김
-//        TV_CART_COUNT.setVisibility(View.INVISIBLE);
-//        findViewById(R.id.btn_cart).setVisibility(View.INVISIBLE);
+        // TV_CART_COUNT.setVisibility(View.INVISIBLE);
+        // findViewById(R.id.btn_cart).setVisibility(View.INVISIBLE);
 
         findViewById(R.id.btn_cart).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -190,6 +198,8 @@ public class BaseActivity extends SlidingFragmentActivity {
 
     @Override
     protected void onResume() {
+
+        setCartCount(this);
         super.onResume();
     }
 
@@ -233,6 +243,7 @@ public class BaseActivity extends SlidingFragmentActivity {
     }
 
     public String getPhoneNumber() {
+
         TelephonyManager mgr = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
 
         try {
@@ -243,16 +254,24 @@ public class BaseActivity extends SlidingFragmentActivity {
                 return num;
             }
         } catch (NullPointerException e) {
+            e.printStackTrace();
             return "";
         }
     }
 
-    public void setCartCount(Context context) {
-        DataBaseOpenHelper helper = new DataBaseOpenHelper(context);
+    public static void setCartCount(Activity act) {
+
+        DataBaseOpenHelper helper = new DataBaseOpenHelper(act);
         SQLiteDatabase database = helper.getReadableDatabase();
         Cursor c = database.query(TABLE_NAME, null, null, null, null, null, null);
+
         CART_COUNT = c.getCount();
+        Log.i("cart_count", "" + CART_COUNT);
+
+        TV_CART_COUNT = (TextView) act.findViewById(R.id.cart_count);
         TV_CART_COUNT.setText(String.valueOf(CART_COUNT));
         c.close();
+        database.close();
+        helper.close();
     }
 }

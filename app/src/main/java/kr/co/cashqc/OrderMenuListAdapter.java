@@ -13,15 +13,15 @@ import java.util.ArrayList;
 /**
  * @author Jung-Hum Cho Created by anp on 15. 1. 9..
  */
-public class OrderListAdapter extends BaseAdapter {
+public class OrderMenuListAdapter extends BaseAdapter {
 
-    public OrderListAdapter(Context context, ArrayList<OrderData> datas) {
+    public OrderMenuListAdapter(Context context, ArrayList<CartData> datas) {
         mDataList = datas;
 
         inflater = LayoutInflater.from(context);
     }
 
-    private ArrayList<OrderData> mDataList;
+    private ArrayList<CartData> mDataList;
 
     private LayoutInflater inflater = null;
 
@@ -47,20 +47,25 @@ public class OrderListAdapter extends BaseAdapter {
         ViewHolder h;
         if (v == null) {
             h = new ViewHolder();
-            v = inflater.inflate(R.layout.row_orderlist, parent, false);
+            v = inflater.inflate(R.layout.row_order, parent, false);
 
-            h.price = (TextView) v.findViewById(R.id.price);
+            h.name = (TextView)v.findViewById(R.id.row_order_menu);
+            h.price = (TextView)v.findViewById(R.id.row_order_price);
+            h.ea = (TextView)v.findViewById(R.id.row_order_ea);
 
             v.setTag(h);
         } else {
             h = (ViewHolder)v.getTag();
         }
 
-        OrderData item = (OrderData)getItem(position);
+        CartData item = (CartData)getItem(position);
 
-//        h.price.setText(String.format("%,d원", item.getTotal()));
+        h.name.setText(item.getMenuName());
 
-        h.price.setText(item.getSimpleMenu());
+        h.price.setText(String.format("%,d원", item.getResultPrice()));
+
+        h.ea.setText(String.valueOf(item.getEa()));
+
         return v;
     }
 

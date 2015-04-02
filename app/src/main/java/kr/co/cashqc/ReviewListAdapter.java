@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -13,15 +14,15 @@ import java.util.ArrayList;
 /**
  * @author Jung-Hum Cho Created by anp on 15. 1. 9..
  */
-public class OrderListAdapter extends BaseAdapter {
+public class ReviewListAdapter extends BaseAdapter {
 
-    public OrderListAdapter(Context context, ArrayList<OrderData> datas) {
+    public ReviewListAdapter(Context context, ArrayList<ReviewData> datas) {
         mDataList = datas;
 
         inflater = LayoutInflater.from(context);
     }
 
-    private ArrayList<OrderData> mDataList;
+    private ArrayList<ReviewData> mDataList;
 
     private LayoutInflater inflater = null;
 
@@ -47,24 +48,36 @@ public class OrderListAdapter extends BaseAdapter {
         ViewHolder h;
         if (v == null) {
             h = new ViewHolder();
-            v = inflater.inflate(R.layout.row_orderlist, parent, false);
+            v = inflater.inflate(R.layout.row_review, parent, false);
 
-            h.price = (TextView) v.findViewById(R.id.price);
+            h.ratingBar = (RatingBar) v.findViewById(R.id.row_review_rating);
+            h.nick = (TextView) v.findViewById(R.id.row_review_nick);
+            h.phone = (TextView) v.findViewById(R.id.row_review_phone);
+            h.content = (TextView) v.findViewById(R.id.row_review_content);
 
             v.setTag(h);
         } else {
             h = (ViewHolder)v.getTag();
         }
 
-        OrderData item = (OrderData)getItem(position);
+        ReviewData item = (ReviewData) getItem(position);
 
-//        h.price.setText(String.format("%,d원", item.getTotal()));
+        int score = item.getRating();
 
-        h.price.setText(item.getSimpleMenu());
+//        h.ratingBar.setNumStars(score);
+        h.ratingBar.setRating(score);
+
+        h.nick.setText(item.getNick());
+        h.phone.setText(item.getPhone());
+        h.content.setText(item.getContent());
+
         return v;
     }
 
     private class ViewHolder {
-        private TextView name, price, ea;
+
+        private RatingBar ratingBar;
+        private TextView nick, phone, content;
+
     }
 }

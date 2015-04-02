@@ -21,7 +21,7 @@ public class OrderResultActivity extends BaseActivity {
 
     private ListView mListView;
 
-    private OrderListAdapter mAdapter;
+    private OrderMenuListAdapter mAdapter;
 
     private OrderData mOrderData;
 
@@ -76,7 +76,7 @@ public class OrderResultActivity extends BaseActivity {
 
             mListView = (ListView)findViewById(R.id.order_result_listview);
 
-            mAdapter = new OrderListAdapter(this, mCartList);
+            mAdapter = new OrderMenuListAdapter(this, mCartList);
 
             mListView.setAdapter(mAdapter);
 

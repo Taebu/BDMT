@@ -3,7 +3,11 @@ package kr.co.cashqc;
 
 import android.app.Activity;
 import android.content.ContentProviderOperation;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.OperationApplicationException;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.RemoteException;
 import android.provider.ContactsContract;
 import android.util.Log;
@@ -13,8 +17,11 @@ import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+
+import static kr.co.cashqc.DataBaseOpenHelper.TABLE_NAME;
 
 /**
  * @author Jung-Hum Cho Created by anp on 14. 10. 31..
@@ -231,6 +238,87 @@ public class Utils {
                 + (listView.getDividerHeight() * (adapter.getGroupCount() + childrenCount));
         listView.setLayoutParams(params);
         listView.requestLayout();
+
+    }
+
+    public static void insertMenuLevel2(Context context, ShopMenuData data, int groupPos, int childPos) {
+
+        DataBaseOpenHelper helper = new DataBaseOpenHelper(context);
+
+        SQLiteDatabase db = helper.getWritableDatabase();
+
+        Cursor c = db.query(TABLE_NAME, null, null, null, null, null, null);
+
+        MenuData level1 = data.getMenu().get(groupPos);
+
+        MenuData level2 = data.getMenu().get(groupPos).getChild().get(childPos);
+
+        String shopCode = data.getShopCode();
+
+        String menuCode = level2.getCode();
+
+        // 동일한 메뉴인지
+        boolean hasMenu = false;
+
+        // 같은 업체인지
+        boolean isDiffentShop = false;
+
+        while (c.moveToNext()) {
+
+            String preShopCode = c.getString(c.getColumnIndex("shop_code"));
+
+            String preMenuCode = c.getString(c.getColumnIndex("menu_code"));
+
+            if (!(preShopCode.equals(shopCode))) {
+                isDiffentShop = true;
+                helper.close();
+                db.close();
+                c.close();
+                break;
+            }
+
+            if (preMenuCode.equals(menuCode)) {
+                hasMenu = true;
+                helper.close();
+                db.close();
+                c.close();
+                break;
+            }
+        }
+
+        if (!hasMenu && !isDiffentShop) {
+            ContentValues values = new ContentValues();
+
+            values.put("shop_code", data.getShopCode());
+            values.put("shop_name", data.getShopName());
+            values.put("shop_phone", data.getShopPhone());
+            values.put("shop_vphone", data.getShopVPhone());
+
+            values.put("menu_name", level1.getLabel() + "\n" + level2.getLabel());
+
+            values.put("menu_code", level2.getCode());
+
+            int price2 = Integer.parseInt(level2.getPrice());
+
+            values.put("price", price2);
+
+            values.put("ea", 1);
+
+            db.insert(TABLE_NAME, null, values);
+
+            Log.i("cart_add", values.toString());
+
+            Toast.makeText(context, "장바구니에 담았습니다.", Toast.LENGTH_SHORT).show();
+
+            c.close();
+            db.close();
+            helper.close();
+
+        } else if (isDiffentShop) {
+            Toast.makeText(context, "다른 업체입니다. 장바구니를 비워주세요.", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, "장바구니에 있는 메뉴입니다.", Toast.LENGTH_SHORT).show();
+        }
 
     }
 }

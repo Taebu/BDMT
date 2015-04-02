@@ -1,4 +1,3 @@
-
 package kr.co.cashqc;
 
 import android.app.Dialog;
@@ -10,6 +9,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -22,7 +22,7 @@ public class ReviewDialog extends Dialog {
 
     private int mScore = 0;
 
-    public ReviewDialog(final Context context, String shopName) {
+    public ReviewDialog(final Context context, String shopName, final String seq, final String phone) {
         super(context);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -32,30 +32,33 @@ public class ReviewDialog extends Dialog {
 
         setContentView(R.layout.dialog_custom_review);
 
-        final HashMap<String, String> map = new HashMap<String, String>();
+        final EditText content = (EditText) findViewById(R.id.dialog_review_comment);
+        final RatingBar ratingBar = (RatingBar) findViewById(R.id.dialog_review_rating);
 
-        map.put("seq", "6867");
-        map.put("phone", "01037452742");
-        map.put("nick", "cho");
-        map.put("content", "goodgood chicken");
-        map.put("rating", "3");
-
-        TextView tvShopName = (TextView)findViewById(R.id.dialog_review_name);
+        TextView tvShopName = (TextView) findViewById(R.id.dialog_review_name);
 
         tvShopName.setText(shopName);
-
-        RatingBar ratingBar = (RatingBar)findViewById(R.id.dialog_review_rating);
 
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                mScore = (int)rating;
+                mScore = (int) rating;
             }
         });
 
         findViewById(R.id.ok).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                final HashMap<String, String> map = new HashMap<String, String>();
+
+                map.put("seq", seq);
+                map.put("phone", phone);
+                map.put("nick", "test");
+                map.put("content", content.getText().toString());
+                map.put("rating", String.valueOf(mScore));
+
+                Log.e("ReviewDialog", "content : " + content.getText().toString());
                 new ReviewTask().execute(map);
                 dismiss();
             }

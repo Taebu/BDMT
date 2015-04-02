@@ -87,7 +87,7 @@ public class AddressBookAdapter extends BaseAdapter {
         String[] splitAddress;
         try {
             splitAddress = address.split("_");
-            h.menu.setText(splitAddress[1] + " " + splitAddress[2]);
+            h.menu.setText(splitAddress[1] + "\n" + splitAddress[2]);
         } catch (Exception e) {
             e.printStackTrace();
         }

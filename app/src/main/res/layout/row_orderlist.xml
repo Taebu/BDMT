@@ -2,16 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:orientation="horizontal">
-
-    <RadioButton
-        android:id="@+id/dialog_addressbook_radio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    android:orientation="horizontal"
+    android:weightSum="10.0">
 
     <TextView
-        android:id="@+id/dialog_addressbook_menu"
+        android:id="@+id/price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

@@ -9,6 +9,26 @@ import java.util.ArrayList;
  */
 public class OrderData implements Serializable {
 
+    private String menuCode;
+
+    public String getMenuCode() {
+        return menuCode;
+    }
+
+    public void setMenuCode(String menuCode) {
+        this.menuCode = menuCode;
+    }
+
+    private String payStatus;
+
+    public String getPayStatus() {
+        return payStatus;
+    }
+
+    public void setPayStatus(String payStatus) {
+        this.payStatus = payStatus;
+    }
+
     private String simpleMenu;
 
     private String payType;

@@ -59,7 +59,7 @@ public class OrderActivity extends BaseActivity {
 
     private ListView mListView;
 
-    private OrderListAdapter mAdapter;
+    private OrderMenuListAdapter mAdapter;
 
     private Button btnAddressBook;
 
@@ -94,7 +94,7 @@ public class OrderActivity extends BaseActivity {
 
         setListener();
 
-        mAdapter = new OrderListAdapter(this, mCartList);
+        mAdapter = new OrderMenuListAdapter(this, mCartList);
 
         mListView = (ListView)findViewById(R.id.order_listview);
         mListView.setAdapter(mAdapter);

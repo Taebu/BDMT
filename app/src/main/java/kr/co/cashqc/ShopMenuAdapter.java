@@ -2,6 +2,7 @@
 package kr.co.cashqc;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,15 +10,22 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import static kr.co.cashqc.Utils.insertMenuLevel2;
+
 public class ShopMenuAdapter extends BaseExpandableListAdapter {
 
-    public ShopMenuAdapter(Context context, ShopMenuData data) {
+    public ShopMenuAdapter(Context context, ShopMenuData data,
+            DialogInterface.OnDismissListener onDismissListener) {
         super();
 
         mData = data;
 
         inflater = LayoutInflater.from(context);
+
+        mOnDismissListener = onDismissListener;
     }
+
+    private DialogInterface.OnDismissListener mOnDismissListener;
 
     private ShopMenuData mData;
 
@@ -59,8 +67,17 @@ public class ShopMenuAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View v) {
 
-                new OrderMenuDialog(inflater.getContext(), mData, groupPosition, childPosition)
-                        .show();
+                boolean hasLevel3 = !item.getChild().isEmpty();
+
+                if (hasLevel3) {
+
+                    OrderMenuDialog dialog = new OrderMenuDialog(inflater.getContext(), mData,
+                            groupPosition, childPosition);
+                    dialog.show();
+                    dialog.setOnDismissListener(mOnDismissListener);
+                } else {
+                    insertMenuLevel2(inflater.getContext(), mData, groupPosition, childPosition);
+                }
 
                 // Toast.makeText(inflater.getContext(),
                 // "group : " + groupPosition + "\nchild : " + childPosition,

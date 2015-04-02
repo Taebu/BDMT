@@ -1,6 +1,7 @@
 
 package kr.co.cashqc;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,6 +25,7 @@ import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -48,8 +50,10 @@ import kr.co.cashqc.gcm.Util;
 import static kr.co.cashqc.PhoneBook.getContactList;
 import static kr.co.cashqc.Utils.IMG_URL;
 import static kr.co.cashqc.Utils.initExpandableListViewHeight;
+import static kr.co.cashqc.Utils.insertMenuLevel2;
 import static kr.co.cashqc.Utils.setDisplayName;
 import static kr.co.cashqc.Utils.setExpandableListViewHeight;
+import static kr.co.cashqc.Utils.setListViewHeightBasedOnChildren;
 
 /**
  * @author Jung-Hum Cho Created by Administrator on 2014-10-16.
@@ -70,9 +74,9 @@ public class ShopPageActivity extends BaseActivity {
 
     private TextView tvReviewCount;
 
-    private boolean mIsReviewOpen = false;
+    private boolean mIsExpandedReview = false;
 
-    private ArrayList<HashMap<String, String>> menuImgList;
+    private ArrayList<HashMap<String, String>> mMenuImgList;
 
     private ShopMenuData mData;
 
@@ -86,11 +90,7 @@ public class ShopPageActivity extends BaseActivity {
 
     private Button btnUp;
 
-    @Override
-    protected void onRestart() {
-        setCartCount(this);
-        super.onRestart();
-    }
+    private ListView mReviewListView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -117,20 +117,29 @@ public class ShopPageActivity extends BaseActivity {
         mRatingBar.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                new ReviewDialog(mThis, "dddd").show();
+                String phoneNum = getPhoneNumber();
+
+                if(phoneNum.isEmpty())
+                    phoneNum = "4444444444";
+
+                new ReviewDialog(mThis, mIntent.getStringExtra("name"), mIntent
+                        .getStringExtra("seq"), phoneNum).show();
                 return false;
             }
         });
 
         tvReviewCount = (TextView)findViewById(R.id.shoppage_reviewcount);
 
+        mReviewListView = (ListView)findViewById(R.id.shoppage_reviewlistview);
+
         tvReviewCount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                mIsReviewOpen = !mIsReviewOpen;
-                int draw = mIsReviewOpen ? R.drawable.btn_list_close : R.drawable.btn_list_open;
-                tvReviewCount.setCompoundDrawablesWithIntrinsicBounds(0, 0, draw, 0);
+                mIsExpandedReview = !mIsExpandedReview;
+
+                setReviewView(mIsExpandedReview);
+
             }
         });
 
@@ -146,14 +155,116 @@ public class ShopPageActivity extends BaseActivity {
 
     }
 
+    private void setReviewView(boolean isExpanded) {
+
+        int draw;
+        int visibility;
+
+        if (isExpanded) {
+            new ReviewTask().execute("6867");
+            visibility = View.VISIBLE;
+            draw = R.drawable.btn_list_open;
+        } else {
+            visibility = View.GONE;
+            draw = R.drawable.btn_list_close;
+        }
+
+        mReviewListView.setVisibility(visibility);
+        tvReviewCount.setCompoundDrawablesWithIntrinsicBounds(0, 0, draw, 0);
+    }
+
+    private class ReviewTask extends AsyncTask<String, Void, JSONObject> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if (!mDialog.isShowing())
+                mDialog.show();
+        }
+
+        @Override
+        protected JSONObject doInBackground(String... params) {
+
+            String seq = params[0];
+
+            String url = Uri.parse("http://cashq.co.kr/m/ajax_data/get_review.php?seq=6867")
+                    .buildUpon().appendQueryParameter("seq", seq).toString();
+
+            return new JSONParser().getJSONObjectFromUrl(url);
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject jsonObject) {
+            super.onPostExecute(jsonObject);
+
+            try {
+                JSONArray array = jsonObject.getJSONArray("posts");
+
+                ArrayList<ReviewData> reviewDataList = new ArrayList<ReviewData>();
+
+                for (int i = 0; i < array.length(); i++) {
+
+                    JSONObject object = array.getJSONObject(i);
+
+                    ReviewData reviewData = new ReviewData();
+
+                    if (object.has("mb_hp"))
+                        reviewData.setPhone(object.getString("mb_hp"));
+
+                    if (object.has("mb_nick"))
+                        reviewData.setNick(object.getString("mb_nick"));
+
+                    if (object.has("content"))
+                        reviewData.setContent(object.getString("content"));
+
+                    if (object.has("rating"))
+                        reviewData.setRating(Integer.parseInt(object.getString("rating")));
+
+                    reviewDataList.add(reviewData);
+                }
+
+                ReviewListAdapter adapter = new ReviewListAdapter(mThis, reviewDataList);
+                mReviewListView.setAdapter(adapter);
+                setListViewHeightBasedOnChildren(mReviewListView);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            if (mDialog.isShowing())
+                mDialog.dismiss();
+        }
+    }
+
+    @Override
+    protected void onRestart() {
+        // setCartCount(this);
+        Log.e("life", "onRestart");
+        super.onRestart();
+    }
+
+    @Override
+    protected void onStart() {
+        Log.e("life", "onStart");
+        // setCartCount(this);
+        super.onStart();
+    }
+
     @Override
     protected void onResume() {
-        setCartCount(this);
+        Log.e("life", "onResume");
+        // setCartCount(this);
         super.onResume();
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
     protected void onStop() {
+        // setCartCount(this);
+        Log.e("life", "onStop");
         super.onStop();
         if (mDialog.isShowing()) {
             mDialog.dismiss();
@@ -162,6 +273,7 @@ public class ShopPageActivity extends BaseActivity {
 
     @Override
     public void finish() {
+        Log.e("life", "finish");
         super.finish();
         activityAnimation(false);
     }
@@ -455,7 +567,7 @@ public class ShopPageActivity extends BaseActivity {
 
                 mData = makeShopMenuData(object);
 
-                ShopMenuAdapter adapter = new ShopMenuAdapter(mThis, mData);
+                ShopMenuAdapter adapter = new ShopMenuAdapter(mThis, mData, mOnDismissListener);
 
                 mListView.setAdapter(adapter);
 
@@ -762,7 +874,7 @@ public class ShopPageActivity extends BaseActivity {
         protected void onPostExecute(JSONObject jsonObject) {
             super.onPostExecute(jsonObject);
 
-            menuImgList = new ArrayList<HashMap<String, String>>(4);
+            mMenuImgList = new ArrayList<HashMap<String, String>>(4);
 
             try {
 
@@ -790,7 +902,7 @@ public class ShopPageActivity extends BaseActivity {
 
                     hasImage = true;
 
-                    menuImgList.add(hashMap);
+                    mMenuImgList.add(hashMap);
                 }
 
                 if (hasImage) {
@@ -803,8 +915,6 @@ public class ShopPageActivity extends BaseActivity {
                 e.printStackTrace();
             }
 
-
-
             if (mDialog.isShowing())
                 mDialog.dismiss();
         }
@@ -816,10 +926,10 @@ public class ShopPageActivity extends BaseActivity {
             String[] content = new String[4];
             String[] price = new String[4];
 
-            for (int i = 0; i < menuImgList.size(); i++) {
-                img[i] = baseUrl + menuImgList.get(i).get("img");
+            for (int i = 0; i < mMenuImgList.size(); i++) {
+                img[i] = baseUrl + mMenuImgList.get(i).get("img");
 
-                String[] spliter = menuImgList.get(i).get("text").split("_");
+                String[] spliter = mMenuImgList.get(i).get("text").split("_");
                 content[i] = spliter[0];
                 price[i] = String.format("%,d 원", Integer.parseInt(spliter[1]));
 
@@ -868,7 +978,7 @@ public class ShopPageActivity extends BaseActivity {
 
         private void imageMenuOrder(int num) {
 
-            String imageId = menuImgList.get(num).get("id");
+            String imageId = mMenuImgList.get(num).get("id");
 
             ArrayList<MenuData> groupData = mData.getMenu();
 
@@ -886,7 +996,15 @@ public class ShopPageActivity extends BaseActivity {
 
                         Toast.makeText(mThis, i + ", " + y, Toast.LENGTH_SHORT).show();
 
-                        new OrderMenuDialog(mThis, mData, i, y).show();
+                        boolean hasLevel3 = !childData.get(y).getChild().isEmpty();
+
+                        if (hasLevel3) {
+                            OrderMenuDialog dialog = new OrderMenuDialog(mThis, mData, i, y);
+                            dialog.show();
+                            dialog.setOnDismissListener(mOnDismissListener);
+                        } else {
+                            insertMenuLevel2(mThis, mData, i, y);
+                        }
 
                     }
                 }
@@ -895,4 +1013,10 @@ public class ShopPageActivity extends BaseActivity {
         }
     }
 
+    private DialogInterface.OnDismissListener mOnDismissListener = new DialogInterface.OnDismissListener() {
+        @Override
+        public void onDismiss(DialogInterface dialog) {
+            setCartCount(mThis);
+        }
+    };
 }
