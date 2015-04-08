@@ -14,8 +14,6 @@ public class NoticeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notice);
 
-        
-
     }
 
 }
