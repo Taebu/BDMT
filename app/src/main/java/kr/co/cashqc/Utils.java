@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.RemoteException;
 import android.provider.ContactsContract;
 import android.util.Log;
@@ -27,6 +28,7 @@ import static kr.co.cashqc.DataBaseOpenHelper.TABLE_NAME;
  * @author Jung-Hum Cho Created by anp on 14. 10. 31..
  */
 public class Utils {
+
     public static double sLAT = 0;
 
     public static double sLNG = 0;
@@ -35,7 +37,30 @@ public class Utils {
 
     public static final String IMG_URL = "http://cashq.co.kr/adm/upload/";
 
-    public static void setDisplayName(Activity activity, String displayName, String phoneNumber) {
+    public static void checkContact(Activity activity, String name, String num) {
+
+        ArrayList<ContactData> contactDataList = getContactList(activity);
+
+        boolean hasContact = true;
+
+        if (contactDataList.size() == 0) {
+            setDisplayName(activity, name, num);
+        } else {
+            for (ContactData a : contactDataList) {
+                if (a.getName().equals(name) || a.getNum().equals(num)) {
+                    hasContact = true;
+                    break;
+                } else {
+                    hasContact = false;
+                }
+            }
+            if (!hasContact) {
+                setDisplayName(activity, name, num);
+            }
+        }
+    }
+
+    private static void setDisplayName(Activity activity, String displayName, String phoneNumber) {
 
         ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
         /* 2014-02-26 지우기 선행 */
@@ -98,6 +123,57 @@ public class Utils {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+    private static ArrayList<ContactData> getContactList(Activity activity) {
+
+        Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
+
+        String[] projection = new String[] {
+                ContactsContract.CommonDataKinds.Phone.CONTACT_ID, // 연락처 ID ->
+                // 사진 정보
+                // 가져오는데 사용
+                ContactsContract.CommonDataKinds.Phone.NUMBER, // 연락처
+                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+        }; // 연락처 이름.
+
+        String[] selectionArgs = null;
+
+        String sortOrder = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME
+                + " COLLATE LOCALIZED ASC";
+
+        Cursor contactCursor = activity.managedQuery(uri, projection, null, selectionArgs,
+                sortOrder);
+
+        ArrayList<ContactData> contactlist = new ArrayList<ContactData>();
+
+        if (contactCursor.moveToFirst()) {
+            do {
+                String phonenumber = contactCursor.getString(1).replaceAll("-", "");
+
+                // if (phonenumber.length() == 10) {
+                // phonenumber = phonenumber.substring(0, 3) + "-"
+                // + phonenumber.substring(3, 6) + "-"
+                // + phonenumber.substring(6);
+                // } else if (phonenumber.length() > 8) {
+                // phonenumber = phonenumber.substring(0, 3) + "-"
+                // + phonenumber.substring(3, 7) + "-"
+                // + phonenumber.substring(7);
+                // }
+
+                ContactData acontact = new ContactData();
+                acontact.setNum(phonenumber);
+                acontact.setName(contactCursor.getString(2));
+
+                Log.e("contact", "num : " + phonenumber);
+                Log.e("contact", "name : " + contactCursor.getString(2));
+
+                contactlist.add(acontact);
+            } while (contactCursor.moveToNext());
+        }
+
+        return contactlist;
+
     }
 
     public static void setListViewHeightBasedOnChildren(ListView listView) {
@@ -241,7 +317,8 @@ public class Utils {
 
     }
 
-    public static void insertMenuLevel2(Context context, ShopMenuData data, int groupPos, int childPos) {
+    public static void insertMenuLevel2(Context context, ShopMenuData data, int groupPos,
+            int childPos) {
 
         DataBaseOpenHelper helper = new DataBaseOpenHelper(context);
 

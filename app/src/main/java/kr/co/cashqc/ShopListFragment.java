@@ -26,8 +26,7 @@ import java.util.ArrayList;
 
 import kr.co.cashqc.gcm.Util;
 
-import static kr.co.cashqc.Utils.setDisplayName;
-import static kr.co.cashqc.PhoneBook.getContactList;
+import static kr.co.cashqc.Utils.checkContact;
 
 /**
  * @author Jung-Hum Cho
@@ -180,6 +179,8 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
             sb.append("&type=W0").append(type);
             sb.append("&page=").append(page);
 
+            Log.e("ShopListFragment.ShopList", "url : " + sb.toString());
+
             return new JSONParser().getJSONStringFromUrl(sb.toString());
         }
 
@@ -330,6 +331,12 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
             if (object.has("img2"))
                 cashq.setImg2(object.getString("img2"));
 
+            if (object.has("review_cnt"))
+                cashq.setReveiwCount(object.getString("review_cnt"));
+
+            if (object.has("review_rating"))
+                cashq.setReveiwRating(object.getString("review_rating"));
+
             cashq.setMinpay("12,000원 이상 주문시 적립가능");
 
             cashq.setSeq(object.getString("seq"));
@@ -369,7 +376,8 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
         if (data.getSeparatorType() == ShopListAdapter.TYPE_ITEM) {
 
             Intent intent = new Intent(getActivity(), ShopPageActivity.class);
-//            Intent intent = new Intent(getActivity(), ShopMenuActivity.class);
+            // Intent intent = new Intent(getActivity(),
+            // ShopMenuActivity.class);
 
             intent.putExtra("seq", data.getSeq());
             intent.putExtra("delivery_comment_cashq", data.getDelivery_comment());
@@ -393,11 +401,16 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
 
             intent.putExtra("pay", data.getPay());
 
+            intent.putExtra("review_cnt", data.getReveiwCount());
+
+            intent.putExtra("review_rating", data.getReveiwRating());
+
             startActivity(intent);
         }
     }
 
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
+
         @Override
         public void onClick(View v) {
             if (v.getId() == R.id.tel_btn) {
@@ -408,7 +421,7 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
 
                 // PhoneCall.call(num, getActivity());
 
-                checkContact(name, num);
+                checkContact(getActivity(), name, num);
 
                 Intent call = new Intent(Intent.ACTION_CALL);
                 call.putExtra(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME,
@@ -424,28 +437,5 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
             }
         }
     };
-
-    private void checkContact(String name, String num) {
-
-        ArrayList<ContactData> contactDataList = getContactList(getActivity());
-
-        boolean hasContact = true;
-
-        if (contactDataList.size() == 0) {
-            setDisplayName(getActivity(), name, num);
-        } else {
-            for (ContactData a : contactDataList) {
-                if (a.getName().equals(name) && a.getNum().equals(num)) {
-                    hasContact = true;
-                    break;
-                } else {
-                    hasContact = false;
-                }
-            }
-            if (!hasContact) {
-                setDisplayName(getActivity(), name, num);
-            }
-        }
-    }
 
 }

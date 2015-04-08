@@ -12,6 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -123,7 +124,7 @@ public class ShopListAdapter extends BaseAdapter {
 
         private TextView dong;
 
-        private ImageView score;
+        private RatingBar score;
 
         // separator view
         private ImageView separatorImage;
@@ -158,7 +159,7 @@ public class ShopListAdapter extends BaseAdapter {
                 h.thumbImg = (ImageView)v.findViewById(R.id.list_thm);
                 h.btnTel = (Button)v.findViewById(R.id.tel_btn);
                 h.dong = (TextView)v.findViewById(R.id.dong);
-                h.score = (ImageView)v.findViewById(R.id.score);
+                h.score = (RatingBar)v.findViewById(R.id.shoplist_rating);
 
                 h.ll = (RelativeLayout)v.findViewById(R.id.row_id);
 
@@ -207,6 +208,8 @@ public class ShopListAdapter extends BaseAdapter {
 
             h.time1.setText(data.getTime1() + " ~");
             h.time2.setText(data.getTime2());
+
+            h.score.setRating(Float.parseFloat(data.getReveiwRating()));
 
             String pre_pay = (String)h.minPay.getTag();
 

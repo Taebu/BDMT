@@ -7,6 +7,26 @@ package kr.co.cashqc;
 
 public class ShopListData {
 
+    private String reveiwCount;
+
+    private String reveiwRating;
+
+    public String getReveiwCount() {
+        return reveiwCount;
+    }
+
+    public void setReveiwCount(String reveiwCount) {
+        this.reveiwCount = reveiwCount;
+    }
+
+    public String getReveiwRating() {
+        return reveiwRating;
+    }
+
+    public void setReveiwRating(String reveiwRating) {
+        this.reveiwRating = reveiwRating;
+    }
+
     public String getCallcnt() {
         return callcnt;
     }

@@ -58,12 +58,13 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <ImageView
-                android:id="@+id/score"
+            <RatingBar
+                android:id="@+id/shoplist_rating"
+                style="@style/starRatingBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:src="@drawable/star5" />
+                android:isIndicator="true"
+                android:numStars="5" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -86,6 +87,7 @@
                     android:text="12,000원 이상 포인트 적립 가능"
                     android:textColor="#ed8179"
                     android:textSize="12sp" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -178,6 +180,7 @@
                 <!--android:text="11 건 주문"-->
                 <!--android:textSize="12sp"-->
                 <!--android:visibility="invisible" />-->
+
             </LinearLayout>
         </LinearLayout>
 

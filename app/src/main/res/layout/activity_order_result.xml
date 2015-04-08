@@ -49,113 +49,148 @@
             android:textStyle="bold" />
 
         <LinearLayout
-            android:layout_marginBottom="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="10"
-            android:baselineAligned="false">
+            android:layout_marginBottom="8dp"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:orientation="vertical">
+                android:layout_marginBottom="8dp"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+
                     android:text="주문 업체"
                     android:textColor="#999999" />
 
                 <TextView
+                    android:id="@+id/order_result_shop"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:clickable="true"
+                    android:drawableRight="@drawable/icon_call"
+                    android:text="캐시큐나라 치킨공주   " />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
                     android:text="결제 방식"
                     android:textColor="#999999" />
 
                 <TextView
+
+                    android:id="@+id/order_result_payment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:text="배달 주소"
-                    android:textColor="#999999" />
+                    android:layout_marginLeft="8dp"
+                    android:text="현장결제 / 카드" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+
+                    android:text="배달 주소"
+                    android:textColor="#999999" />
+
+                <TextView
+                    android:id="@+id/order_result_address1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text="410-816 경기도 고양시 일산동구" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
                     android:text="배달 주소"
                     android:textColor="#999999"
                     android:visibility="invisible" />
 
                 <TextView
+                    android:id="@+id/order_result_address2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:text="연락처"
+                    android:layout_marginLeft="8dp"
+                    android:text="강송로 49 404호" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="  연락처  "
                     android:textColor="#999999" />
+
+                <TextView
+                    android:id="@+id/order_result_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text="010-1234-1234" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="요청사항"
                     android:textColor="#999999" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="8"
-                android:orientation="vertical"
-                android:paddingLeft="8dp">
-
-                <TextView
-                    android:id="@+id/order_result_shop"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:clickable="true"
-                    android:drawableRight="@drawable/icon_call"
-                    android:text="캐시큐나라 치킨공주   " />
-
-                <TextView
-                    android:id="@+id/order_result_payment"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:text="현장결제 / 카드" />
-
-                <TextView
-                    android:id="@+id/order_result_address1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:text="410-816 경기도 고양시 일산동구" />
-
-                <TextView
-                    android:id="@+id/order_result_address2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:text="강송로 49 404호" />
-
-                <TextView
-                    android:id="@+id/order_result_phone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:text="010-1234-1234" />
 
                 <TextView
                     android:id="@+id/order_result_comment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
                     android:text="빨리갖다주셈" />
-
             </LinearLayout>
+
+
         </LinearLayout>
 
         <ImageView
@@ -174,6 +209,7 @@
             android:textColor="#4b4b4b"
             android:textSize="15sp"
             android:textStyle="bold" />
+
         <ListView
             android:id="@+id/order_result_listview"
             android:layout_width="match_parent"

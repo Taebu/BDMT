@@ -47,11 +47,10 @@ import java.util.HashMap;
 
 import kr.co.cashqc.gcm.Util;
 
-import static kr.co.cashqc.PhoneBook.getContactList;
 import static kr.co.cashqc.Utils.IMG_URL;
+import static kr.co.cashqc.Utils.checkContact;
 import static kr.co.cashqc.Utils.initExpandableListViewHeight;
 import static kr.co.cashqc.Utils.insertMenuLevel2;
-import static kr.co.cashqc.Utils.setDisplayName;
 import static kr.co.cashqc.Utils.setExpandableListViewHeight;
 import static kr.co.cashqc.Utils.setListViewHeightBasedOnChildren;
 
@@ -72,7 +71,7 @@ public class ShopPageActivity extends BaseActivity {
 
     private RatingBar mRatingBar;
 
-    private TextView tvReviewCount;
+    private TextView tvReviewCount, tvRatingScore;
 
     private boolean mIsExpandedReview = false;
 
@@ -112,14 +111,28 @@ public class ShopPageActivity extends BaseActivity {
 
         setRowLayout();
 
+        float reviewRating = Float.parseFloat(mIntent.getStringExtra("review_rating"));
+
         mRatingBar = (RatingBar)findViewById(R.id.shoppage_rating);
+        tvRatingScore = (TextView)findViewById(R.id.shoppage_ratingscore);
+        tvReviewCount = (TextView)findViewById(R.id.shoppage_reviewcount);
+
+        mReviewListView = (ListView)findViewById(R.id.shoppage_reviewlistview);
+
+        String reviewCount = mIntent.getStringExtra("review_cnt");
+
+        tvReviewCount.setText(reviewCount + "개 리뷰");
+
+        tvRatingScore.setText(String.valueOf(reviewRating));
+
+        mRatingBar.setRating(reviewRating);
 
         mRatingBar.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 String phoneNum = getPhoneNumber();
 
-                if(phoneNum.isEmpty())
+                if (phoneNum.isEmpty())
                     phoneNum = "4444444444";
 
                 new ReviewDialog(mThis, mIntent.getStringExtra("name"), mIntent
@@ -127,10 +140,6 @@ public class ShopPageActivity extends BaseActivity {
                 return false;
             }
         });
-
-        tvReviewCount = (TextView)findViewById(R.id.shoppage_reviewcount);
-
-        mReviewListView = (ListView)findViewById(R.id.shoppage_reviewlistview);
 
         tvReviewCount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,7 +170,7 @@ public class ShopPageActivity extends BaseActivity {
         int visibility;
 
         if (isExpanded) {
-            new ReviewTask().execute("6867");
+            new ReviewTask().execute(mIntent.getStringExtra("seq"));
             visibility = View.VISIBLE;
             draw = R.drawable.btn_list_open;
         } else {
@@ -358,7 +367,7 @@ public class ShopPageActivity extends BaseActivity {
         Button btnTel = (Button)findViewById(R.id.tel_btn);
         TextView callcnt = (TextView)findViewById(R.id.calllog);
         // ImageView iconCalllog = (ImageView)findViewById(R.id.icon_calllog);
-        ImageView score = (ImageView)findViewById(R.id.score);
+        RatingBar score = (RatingBar)findViewById(R.id.shoplist_rating);
         ImageView separatorRow = (ImageView)findViewById(R.id.separator_row);
         ImageView img2000 = (ImageView)findViewById(R.id.row_img_point);
 
@@ -407,7 +416,7 @@ public class ShopPageActivity extends BaseActivity {
                     String num = mIntent.getStringExtra("tel");
                     String name = mIntent.getStringExtra("name");
 
-                    checkContact(name, num);
+                    checkContact(mThis, name, num);
 
                     Intent intent = new Intent(Intent.ACTION_CALL);
                     intent.putExtra(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME,
@@ -440,29 +449,6 @@ public class ShopPageActivity extends BaseActivity {
                     }
                 });
 
-    }
-
-    private void checkContact(String name, String num) {
-
-        ArrayList<ContactData> contactDataList = getContactList(mThis);
-
-        boolean hasContact = true;
-
-        if (contactDataList.size() == 0) {
-            setDisplayName(mThis, name, num);
-        } else {
-            for (ContactData a : contactDataList) {
-                if (a.getName().equals(name) && a.getNum().equals(num)) {
-                    hasContact = true;
-                    break;
-                } else {
-                    hasContact = false;
-                }
-            }
-            if (!hasContact) {
-                setDisplayName(mThis, name, num);
-            }
-        }
     }
 
     private void setWebView() {
