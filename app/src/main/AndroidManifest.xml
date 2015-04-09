@@ -167,6 +167,12 @@
         <activity
             android:name=".OrderListLoginActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".NoticeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".QNAActivity"
+            android:screenOrientation="portrait" />
 
 
         <receiver

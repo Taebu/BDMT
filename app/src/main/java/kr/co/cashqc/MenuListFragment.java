@@ -97,11 +97,13 @@ public class MenuListFragment extends ListFragment {
 //                }
 //                break;
             case 2:
-                intent = new Intent(getActivity(), WebViewActivity.class);
+//                intent = new Intent(getActivity(), WebViewActivity.class);
+                intent = new Intent(getActivity(), QNAActivity.class);
                 intent.putExtra("assort", "qna");
                 break;
             case 3:
-                intent = new Intent(getActivity(), WebViewActivity.class);
+//                intent = new Intent(getActivity(), WebViewActivity.class);
+                intent = new Intent(getActivity(), NoticeActivity.class);
                 intent.putExtra("assort", "notice");
                 break;
             case 4:
