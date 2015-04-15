@@ -101,4 +101,23 @@ public class NoticeActivity extends BaseActivity {
                 mDialog.dismiss();
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        // startActivity(new Intent(this, MainActivity.class));
+        finish();
+        killer.removeActivity(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        killer.removeActivity(this);
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+    }
 }

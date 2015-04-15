@@ -6,6 +6,16 @@ package kr.co.cashqc;
  */
 public class PointData {
 
+    private String storeSeq;
+
+    public String getStoreSeq() {
+        return storeSeq;
+    }
+
+    public void setStoreSeq(String storeSeq) {
+        this.storeSeq = storeSeq;
+    }
+
     private String grade;
 
     public String getGrade() {

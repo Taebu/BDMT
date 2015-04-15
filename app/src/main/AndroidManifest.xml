@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="kr.co.cashqc"
-    android:versionCode="76"
-    android:versionName="2.6.7">
+    android:versionCode="77"
+    android:versionName="2.6.8">
 
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
 
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -56,12 +57,12 @@
         <!--android:value="AIzaSyBT832WC4150B4FY6l9xhcTPZ7Ewt15_sY"/>-->
 
         <!--<meta-data-->
-            <!--android:name="com.google.android.maps.v2.API_KEY"-->
-            <!--android:value="AIzaSyAV__aLUK0PYr4DL95TemFI4Nt22h8cz34" />-->
+        <!--android:name="com.google.android.maps.v2.API_KEY"-->
+        <!--android:value="AIzaSyAV__aLUK0PYr4DL95TemFI4Nt22h8cz34" />-->
 
         <meta-data
-        android:name="com.google.android.maps.v2.API_KEY"
-        android:value="AIzaSyAV__aLUK0PYr4DL95TemFI4Nt22h8cz34" />
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyAV__aLUK0PYr4DL95TemFI4Nt22h8cz34" />
 
         <activity
             android:name=".MainActivity"
@@ -76,9 +77,11 @@
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="dlpact"/>
+
+                <data android:scheme="dlpact" />
             </intent-filter>
 
         </activity>
@@ -92,7 +95,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            </activity>
+        </activity>
 
         <activity
             android:name=".ShopListActivity"
@@ -201,7 +204,7 @@
         </activity>
 
         <service android:name=".GCMIntentService" />
-        <service android:name=".CallService"/>
+        <service android:name=".CallService" />
 
     </application>
 

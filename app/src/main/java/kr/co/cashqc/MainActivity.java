@@ -23,6 +23,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -48,6 +49,8 @@ import com.google.android.gms.analytics.Tracker;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.rampo.updatechecker.UpdateChecker;
+import com.rampo.updatechecker.UpdateCheckerResult;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -111,10 +114,70 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        UpdateChecker checker = new UpdateChecker(this, new UpdateCheckerResult() {
+            @Override
+            public void foundUpdateAndShowIt(String s) {
+                Log.e("UpdateChecker", "foundUpdateAndShowIt : " + s + " getVersionInstalled : "
+                        + getVersionInstalled());
+                new UpdateCheckerDialog(MainActivity.this).show();
+                // com.rampo.updatechecker.notice.Dialog.show(MainActivity.this,
+                // Store.GOOGLE_PLAY, s,
+                // R.drawable.ic_launcher);
+            }
+
+            @Override
+            public void foundUpdateAndDontShowIt(String s) {
+                Log.e("UpdateChecker", "foundUpdateAndDontShowIt : " + s
+                        + " getVersionInstalled : " + getVersionInstalled());
+                new UpdateCheckerDialog(MainActivity.this).show();
+                // com.rampo.updatechecker.notice.Dialog.show(MainActivity.this,
+                // Store.GOOGLE_PLAY, s,
+                // R.drawable.ic_launcher);
+            }
+
+            @Override
+            public void returnUpToDate(String s) {
+                Log.e("UpdateChecker", "returnUpToDate : " + s + " getVersionInstalled : "
+                        + getVersionInstalled());
+            }
+
+            @Override
+            public void returnMultipleApksPublished() {
+                Log.e("UpdateChecker", "returnMultipleApksPublished" + " getVersionInstalled : "
+                        + getVersionInstalled());
+            }
+
+            @Override
+            public void returnNetworkError() {
+                Log.e("UpdateChecker", "returnNetworkError" + " getVersionInstalled : "
+                        + getVersionInstalled());
+            }
+
+            @Override
+            public void returnAppUnpublished() {
+                Log.e("UpdateChecker", "returnAppunpublished" + " getVersionInstalled : "
+                        + getVersionInstalled());
+            }
+
+            @Override
+            public void returnStoreError() {
+                Log.e("UpdateChecker", "returnStoreError");
+            }
+        });
+        checker.start();
+
         // if (introFlag) {
         // startActivity(new Intent(this, IntroActivity.class));
         // introFlag = false;
         // }
+
+        // Log.e("MainActivity", "getVersionName : " + getVersionName(this));
+
+        // getAndroidId(this);
+
+        // getMarketVersionName(this);
+
+        // new MarketVersionNameTask(this).execute();
 
         GoogleAnalytics.getInstance(getApplicationContext()).dispatchLocalHits();
 
@@ -310,10 +373,18 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
             if (!mDialog.isShowing()) {
                 mDialog.show();
             }
-            activityAnimation(true);
+            // activityAnimation(true);
         } else {
             Toast.makeText(mContext, "GPS위치를 잡아주세요", Toast.LENGTH_LONG).show();
         }
+    }
+
+    public String getVersionInstalled() {
+        try {
+            return getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException ignored) {
+        }
+        return null;
     }
 
     @Override

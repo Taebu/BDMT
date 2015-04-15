@@ -16,6 +16,9 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -226,7 +229,15 @@ public class ShopListAdapter extends BaseAdapter {
                 h.imgPoint.setVisibility(View.GONE);
 
             } else {
-                mLazy.DisplayImage(data.makeURL(), h.thumbImg);
+//                mLazy.DisplayImage(data.makeURL(), h.thumbImg);
+
+                com.nostra13.universalimageloader.core.ImageLoader.getInstance().displayImage(data.makeURL(), h.thumbImg,
+                        new SimpleImageLoadingListener() {
+                            @Override
+                            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                                h.thumbImg.setImageResource(R.drawable.img_no_image_80x120);
+                            }
+                        });
 
                 h.imgPoint.setVisibility(View.VISIBLE);
                 h.thmLayout.setVisibility(View.VISIBLE);

@@ -59,7 +59,8 @@ public class WebViewActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(this, MainActivity.class));
+//        startActivity(new Intent(this, MainActivity.class));
+        killer.removeActivity(this);
     }
 
     private class WebViewClientClass extends WebViewClient {

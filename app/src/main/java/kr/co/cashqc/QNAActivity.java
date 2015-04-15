@@ -13,7 +13,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import static kr.co.cashqc.Utils.initExpandableListViewHeight;
 import static kr.co.cashqc.Utils.setExpandableListViewHeight;
@@ -34,7 +33,7 @@ public class QNAActivity extends BaseActivity {
 
         String phoneNum = getPhoneNumber();
 
-        new QNATask().execute("010-7931-0141");
+        new QNATask().execute(phoneNum);
         // new QNATask().execute(phoneNum);
     }
 
@@ -50,10 +49,12 @@ public class QNAActivity extends BaseActivity {
         @Override
         protected JSONObject doInBackground(String... params) {
 
-            String phoneNum = params[0];
+            // String phone = params[0];
+            // String url =
+            // "http://cashq.co.kr/m/ajax_data/get_board.php?board=qna_1&mb_hp="
+            // + phone;
 
-            String url = "http://cashq.co.kr/m/ajax_data/get_board.php?board=qna_1&mb_hp="
-                    + phoneNum;
+            String url = "http://cashq.co.kr/m/ajax_data/get_board.php?board=qna_1&mb_hp=010-7931-0141";
 
             return new JSONParser().getJSONObjectFromUrl(url);
             // return null;
@@ -63,48 +64,12 @@ public class QNAActivity extends BaseActivity {
         protected void onPostExecute(JSONObject jsonObject) {
             super.onPostExecute(jsonObject);
 
-            try {
+            ArrayList<BoardData> articleList = makeBoardData(jsonObject);
 
-                JSONArray array = jsonObject.getJSONArray("posts");
+            if (articleList.size() != 0) {
 
-                ArrayList<HashMap<String, String>> dataList = new ArrayList<HashMap<String, String>>();
-
-                for (int i = 0; i < array.length(); i++) {
-
-                    HashMap<String, String> map = new HashMap<String, String>();
-
-                    JSONObject object = array.getJSONObject(i);
-
-                    Log.e("QNAActivity", "i : " + i);
-
-                    // 질문
-                    if (object.has("wr_subject"))
-                        map.put("q_subject", object.getString("wr_subject"));
-
-                    if (object.has("wr_content"))
-                        map.put("q_content", object.getString("wr_content"));
-
-                    if (object.has("wr_datetime"))
-                        map.put("q_datetime", object.getString("wr_datetime"));
-
-                    // 답변
-                    if (object.has("reply")) {
-                        JSONObject reply = object.getJSONObject("reply");
-
-                        if (reply.has("wr_content")) {
-                            map.put("a_content", reply.getString("wr_content"));
-
-                            if (reply.has("wr_datetime"))
-                                map.put("a_datetime", reply.getString("wr_datetime"));
-                        }
-                    }
-
-                    dataList.add(map);
-                }
-
-                Log.e("QNAActivity", "dataListSize : " + dataList.size());
                 ExpandableListView listView = (ExpandableListView)findViewById(R.id.qna_listview);
-                QNAListAdapter adapter = new QNAListAdapter(mThis, dataList);
+                QNAListAdapter adapter = new QNAListAdapter(mThis, articleList);
                 listView.setAdapter(adapter);
 
                 initExpandableListViewHeight(listView);
@@ -117,15 +82,70 @@ public class QNAActivity extends BaseActivity {
                         return false;
                     }
                 });
+            }
 
+            if (mDialog.isShowing())
+                mDialog.dismiss();
+        }
+
+        private ArrayList<BoardData> makeBoardData(JSONObject jsonObject) {
+
+            ArrayList<BoardData> dataList = new ArrayList<BoardData>();
+
+            try {
+
+                JSONArray array = null;
+
+                if (jsonObject.has("posts")) {
+                    array = jsonObject.getJSONArray("posts");
+                } else if (jsonObject.has("reply")) {
+                    array = jsonObject.getJSONArray("reply");
+                }
+
+                if (array != null) {
+
+                    for (int i = 0; i < array.length(); i++) {
+
+                        JSONObject object = array.getJSONObject(i);
+
+                        BoardData articleData = new BoardData();
+
+                        Log.e("QNAActivity", "i : " + i);
+
+                        // 질문
+                        if (object.has("wr_name"))
+                            articleData.setName(object.getString("wr_name"));
+
+                        if (object.has("wr_1"))
+                            articleData.setPhone(object.getString("wr_1"));
+
+                        if (object.has("wr_subject"))
+                            articleData.setSubject(object.getString("wr_subject"));
+
+                        if (object.has("wr_content"))
+                            articleData.setContent(object.getString("wr_content"));
+
+                        if (object.has("wr_datetime"))
+                            articleData.setDatetime(object.getString("wr_datetime"));
+
+                        ArrayList<BoardData> replyData = new ArrayList<BoardData>();
+
+                        if (object.has("reply")) {
+                            replyData = makeBoardData(object);
+                        }
+
+                        articleData.setReply(replyData);
+
+                        dataList.add(articleData);
+                    }
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            if (mDialog.isShowing())
-                mDialog.dismiss();
+            return dataList;
         }
     }
 }

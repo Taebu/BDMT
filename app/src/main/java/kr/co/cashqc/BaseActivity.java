@@ -4,11 +4,16 @@ package kr.co.cashqc;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,6 +27,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
+import com.gc.android.market.api.MarketSession;
+import com.gc.android.market.api.model.Market;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 
@@ -39,6 +46,10 @@ import static kr.co.cashqc.DataBaseOpenHelper.TABLE_NAME;
  */
 
 public class BaseActivity extends SlidingFragmentActivity {
+
+    private static final Uri URI = Uri.parse("content://com.google.android.gsf.gservices");
+
+    private static final String ID_KEY = "android_id";
 
     CustomDialog mDialog;
 
@@ -70,18 +81,21 @@ public class BaseActivity extends SlidingFragmentActivity {
 
         // set the Behind View
         setBehindContentView(R.layout.menu_frame);
+
         if (savedInstanceState == null) {
             FragmentTransaction t = this.getSupportFragmentManager().beginTransaction();
             mFrag = new MenuListFragment();
+
             t.replace(R.id.menu_frame, mFrag);
             t.commit();
+
         } else {
             mFrag = (ListFragment)this.getSupportFragmentManager()
                     .findFragmentById(R.id.menu_frame);
         }
 
         // customize the SlidingMenu
-        SlidingMenu sm = getSlidingMenu();
+        final SlidingMenu sm = getSlidingMenu();
         sm.setMode(SlidingMenu.LEFT);
         sm.setShadowWidthRes(R.dimen.shadow_width);
         sm.setShadowDrawable(R.drawable.shadow);
@@ -120,8 +134,8 @@ public class BaseActivity extends SlidingFragmentActivity {
         });
 
         // 장바구니 숨김
-        // TV_CART_COUNT.setVisibility(View.INVISIBLE);
-        // findViewById(R.id.btn_cart).setVisibility(View.INVISIBLE);
+        TV_CART_COUNT.setVisibility(View.INVISIBLE);
+        findViewById(R.id.btn_cart).setVisibility(View.INVISIBLE);
 
         findViewById(R.id.btn_cart).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -194,6 +208,9 @@ public class BaseActivity extends SlidingFragmentActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        new kr.co.cashqc.lazylist.ImageLoader(this).clearCache();
+//        toggle();
+        Log.e("BaseActivity", "!!! onStop !!!");
     }
 
     @Override
@@ -201,6 +218,7 @@ public class BaseActivity extends SlidingFragmentActivity {
 
         setCartCount(this);
         super.onResume();
+
     }
 
     @Override
@@ -268,10 +286,148 @@ public class BaseActivity extends SlidingFragmentActivity {
         CART_COUNT = c.getCount();
         Log.i("cart_count", "" + CART_COUNT);
 
-        TV_CART_COUNT = (TextView) act.findViewById(R.id.cart_count);
+        TV_CART_COUNT = (TextView)act.findViewById(R.id.cart_count);
         TV_CART_COUNT.setText(String.valueOf(CART_COUNT));
         c.close();
         database.close();
         helper.close();
+
+    }
+
+    public static String getVersionName(Context context) {
+        try {
+            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(
+                    context.getPackageName(), 0);
+            return packageInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static String getAndroidId(Context context) {
+
+        String[] params = {
+            ID_KEY
+        };
+
+        Cursor c = context.getContentResolver().query(URI, null, null, params, null);
+
+        if (!c.moveToFirst() || c.getColumnCount() < 2) {
+            return null;
+        }
+
+        try {
+            Log.e("BaseActivity",
+                    "getAndroidId() : " + Long.toHexString(Long.parseLong(c.getString(1))));
+            return Long.toHexString(Long.parseLong(c.getString(1)));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+    public static String getMarketVersionName(Context context) {
+
+        String email = "anptown";
+        String password = "town2151";
+
+        try {
+
+            MarketSession session = new MarketSession();
+            session.login(email, password);
+
+            session.getContext().setAndroidId(getAndroidId(context));
+            String query = "kr.co.cashqc";
+
+            Market.AppsRequest appsRequest = Market.AppsRequest.newBuilder().setQuery(query)
+                    .setStartIndex(0).setEntriesCount(1)
+                    .setOrderType(Market.AppsRequest.OrderType.NEWEST).setWithExtendedInfo(false)
+                    .build();
+
+            session.append(appsRequest, new MarketSession.Callback<Market.AppsResponse>() {
+                @Override
+                public void onResult(Market.ResponseContext responseContext,
+                        Market.AppsResponse appsResponse) {
+
+                    for (int i = 0; i < appsResponse.getAppCount(); i++) {
+
+                        Log.e("BaseActivity", "title : " + appsResponse.getApp(i).getTitle());
+                        Log.e("BaseActivity", "creator : " + appsResponse.getApp(i).getCreator());
+                        Log.e("BaseActivity", "pkgName : "
+                                + appsResponse.getApp(i).getPackageName());
+                        Log.e("BaseActivity", "version : " + appsResponse.getApp(i).getVersion());
+                        Log.e("BaseActivity", "versionCode : "
+                                + appsResponse.getApp(i).getVersionCode());
+
+                    }
+
+                }
+            });
+
+            session.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public class MarketVersionNameTask extends AsyncTask<String, Void, Void> {
+
+        public MarketVersionNameTask(Activity activity) {
+            mThis = activity;
+        }
+
+        private Activity mThis;
+
+        @Override
+        protected Void doInBackground(String... params) {
+            String email = "google_id";
+            String password = "google_pw";
+
+            try {
+
+                MarketSession session = new MarketSession();
+                session.login(email, password);
+
+                session.getContext().setAndroidId(getAndroidId(mThis));
+                String query = "kr.co.cashqc";
+
+                Market.AppsRequest appsRequest = Market.AppsRequest.newBuilder().setQuery(query)
+                        .setStartIndex(0).setEntriesCount(10)
+                        .setOrderType(Market.AppsRequest.OrderType.NEWEST)
+                        .setWithExtendedInfo(true).build();
+
+                session.append(appsRequest, new MarketSession.Callback<Market.AppsResponse>() {
+                    @Override
+                    public void onResult(Market.ResponseContext responseContext,
+                            Market.AppsResponse appsResponse) {
+
+                        for (int i = 0; i < appsResponse.getAppCount(); i++) {
+
+                            Log.e("BaseActivity", "title : " + appsResponse.getApp(i).getTitle());
+                            Log.e("BaseActivity", "creator : "
+                                    + appsResponse.getApp(i).getCreator());
+                            Log.e("BaseActivity", "pkgName : "
+                                    + appsResponse.getApp(i).getPackageName());
+                            Log.e("BaseActivity", "version : "
+                                    + appsResponse.getApp(i).getVersion());
+                            Log.e("BaseActivity", "versionCode : "
+                                    + appsResponse.getApp(i).getVersionCode());
+
+                        }
+
+                    }
+                });
+
+                session.flush();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
     }
 }

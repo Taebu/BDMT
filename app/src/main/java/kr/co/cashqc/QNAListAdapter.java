@@ -10,11 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class QNAListAdapter extends BaseExpandableListAdapter {
 
-    public QNAListAdapter(Context context, ArrayList<HashMap<String, String>> data) {
+    public QNAListAdapter(Context context, ArrayList<BoardData> data) {
         super();
 
         mData = data;
@@ -23,7 +22,7 @@ public class QNAListAdapter extends BaseExpandableListAdapter {
 
     }
 
-    private ArrayList<HashMap<String, String>> mData;
+    private ArrayList<BoardData> mData;
 
     private LayoutInflater inflater = null;
 
@@ -46,11 +45,10 @@ public class QNAListAdapter extends BaseExpandableListAdapter {
             h = (ViewHolder)v.getTag();
         }
 
-        HashMap<String, String> content = (HashMap<String, String>)getChild(groupPosition,
-                childPosition);
+        BoardData item = (BoardData)getChild(groupPosition, childPosition);
 
-        h.tvChildName.setText(content.get("q_content") + "\n" + content.get("q_datetime") + "\n"
-                + content.get("a_content") + "\n" + content.get("a_datetime"));
+        h.tvChildName.setText(item.getName() + " " + item.getPhone() + "\n" + item.getDatetime()
+                + "\n" + item.getSubject() + "\n" + item.getContent());
 
         return v;
     }
@@ -81,16 +79,17 @@ public class QNAListAdapter extends BaseExpandableListAdapter {
             h.ivIndicator.setImageResource(R.drawable.btn_list_open);
         }
 
-        String subject = (String)getGroup(groupPosition);
+        BoardData item = (BoardData)getGroup(groupPosition);
 
-        h.tvGroupName.setText(subject);
+        h.tvGroupName.setText(item.getName() + " " + item.getPhone() + "\n" + item.getDatetime()
+                + "\n" + item.getSubject() + "\n" + item.getContent());
 
         return v;
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return mData.get(groupPosition);
+        return mData.get(groupPosition).getReply().get(childPosition);
     }
 
     @Override
@@ -100,12 +99,12 @@ public class QNAListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return 1;
+        return mData.get(groupPosition).getReply().size();
     }
 
     @Override
     public Object getGroup(int groupPosition) {
-        return mData.get(groupPosition).get("q_subject");
+        return mData.get(groupPosition);
     }
 
     @Override

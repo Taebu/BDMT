@@ -125,6 +125,9 @@ public class PointActivity extends BaseActivity {
                             for (PointData p : mCheckedDatas) {
                                 int point = Integer.parseInt(p.getPoint());
                                 total += point;
+
+                                // 동일 업소 5개인지
+                                // mCheckedDatas.get(0)
                             }
 
                             new CustomDialog(PointActivity.this, mRequestOnClickListener, total)
@@ -240,6 +243,8 @@ public class PointActivity extends BaseActivity {
         try {
 
             PointData datas = new PointData();
+
+            datas.setStoreSeq(object.getString("store_seq"));
 
             datas.setName(object.getString("store_name"));
             datas.setDate(object.getString("ed_dt"));
