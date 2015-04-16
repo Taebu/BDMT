@@ -72,6 +72,8 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
         CircleLayout.OnItemClickListener, CircleLayout.OnRotationFinishedListener,
         CircleLayout.OnCenterClickListener {
 
+    public static String TOKEN_ID;
+
     private Toast toast = null;
 
     private BackPressCloseHandler backPressCloseHandler;
@@ -363,6 +365,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
     @Override
     public void onCenterClick() {
+
         if (mGpsFlag) {
 
             mIntent.putExtra("lat", mLatitude);
@@ -581,6 +584,9 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
                 // if (true) {
                 String url = "http://cashq.co.kr/m/set_tokenid_add.php" + "?biz_code=central"
                         + "&phone=" + num + "&token_id=" + getRegId();
+
+
+                TOKEN_ID = register;
 
                 Log.e("test", "register  :  " + register);
                 Log.e("test", "url  :  " + url);

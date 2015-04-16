@@ -43,6 +43,12 @@
     <item type="id" name="img1"/>
     <item type="id" name="img2"/>
 
+    <item type="id" name="seq"/>
+    <item type="id" name="rating"/>
+    <item type="id" name="content"/>
+    <item type="id" name="reviewdata"/>
+
+
     <item name="zipcode" type="id"/>
     <item name="address1" type="id"/>
     <item name="address2" type="id"/>

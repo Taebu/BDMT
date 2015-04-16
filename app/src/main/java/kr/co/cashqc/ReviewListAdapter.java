@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,11 +20,16 @@ public class ReviewListAdapter extends BaseAdapter {
 
     private final String TAG = this.getClass().getSimpleName();
 
-    public ReviewListAdapter(Context context, ArrayList<ReviewData> datas) {
+    public ReviewListAdapter(Context context, ArrayList<ReviewData> datas,
+            View.OnClickListener onClickListener) {
         mDataList = datas;
 
         inflater = LayoutInflater.from(context);
+
+        mOnClickListener = onClickListener;
     }
+
+    private View.OnClickListener mOnClickListener;
 
     private ArrayList<ReviewData> mDataList;
 
@@ -62,6 +68,11 @@ public class ReviewListAdapter extends BaseAdapter {
             h.star3 = (ImageView)v.findViewById(R.id.row_review_star3);
             h.star4 = (ImageView)v.findViewById(R.id.row_review_star4);
             h.star5 = (ImageView)v.findViewById(R.id.row_review_star5);
+
+            h.insdate = (TextView)v.findViewById(R.id.row_review_insdate);
+
+            h.modify = (Button) v.findViewById(R.id.row_review_modify);
+            h.remove = (Button) v.findViewById(R.id.row_review_remove);
 
             v.setTag(h);
         } else {
@@ -120,8 +131,10 @@ public class ReviewListAdapter extends BaseAdapter {
         // h.ratingBar.setNumStars(score);
 
         // h.nick.setText(item.getNick());
-//01037452742
-//1234567891011
+        // 01037452742
+        // 1234567891011
+
+        h.insdate.setText(item.getInsdate());
 
         Log.e(TAG, "item.getPhone() : " + item.getPhone());
 
@@ -135,19 +148,27 @@ public class ReviewListAdapter extends BaseAdapter {
 
             h.phone.setText(phoneCode);
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
 
         h.content.setText(item.getContent());
+
+        if (mOnClickListener != null) {
+            h.modify.setTag(R.id.seq, item.getSeq());
+            h.remove.setTag(R.id.seq, item.getSeq());
+            h.modify.setOnClickListener(mOnClickListener);
+            h.remove.setOnClickListener(mOnClickListener);
+        }
 
         return v;
     }
 
     private class ViewHolder {
 
-        private TextView nick, phone, content;
+        private TextView nick, phone, content, insdate;
 
         private ImageView star1, star2, star3, star4, star5;
 
+        private Button modify, remove;
     }
 }

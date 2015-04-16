@@ -12,6 +12,34 @@ public class ReviewData {
     private String insdate;
     private String update;
     private int rating;
+    private String tokenId;
+
+   private String seq;
+   private String stSeq;
+
+    public String getStSeq() {
+        return stSeq;
+    }
+
+    public void setStSeq(String stSeq) {
+        this.stSeq = stSeq;
+    }
+
+    public String getSeq() {
+        return seq;
+    }
+
+    public void setSeq(String seq) {
+        this.seq = seq;
+    }
+
+    public String getTokenId() {
+        return tokenId;
+    }
+
+    public void setTokenId(String tokenId) {
+        this.tokenId = tokenId;
+    }
 
     public String getNick() {
         return nick;
