@@ -27,6 +27,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -46,6 +47,9 @@ import com.google.android.gcm.GCMRegistrar;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
@@ -70,9 +74,12 @@ import static kr.co.cashqc.ShopListFragment.adminFlag;
 
 public class MainActivity extends BaseActivity implements CircleLayout.OnItemSelectedListener,
         CircleLayout.OnItemClickListener, CircleLayout.OnRotationFinishedListener,
-        CircleLayout.OnCenterClickListener {
+        CircleLayout.OnCenterClickListener, GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
 
     public static String TOKEN_ID;
+
+    public final String TAG = getClass().getSimpleName();
 
     private Toast toast = null;
 
@@ -111,10 +118,18 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
     public static int sDistance = 2;
 
+    // google api location service
+
+    private GoogleApiClient mGoogleApiClient;
+
+    private Location mLastLocation;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        buildGoogleApiClient();
 
         UpdateChecker checker = new UpdateChecker(this, new UpdateCheckerResult() {
             @Override
@@ -261,6 +276,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
             @Override
             public void onClick(View v) {
                 findLocation();
+//                mGoogleApiClient.connect();
             }
         });
 
@@ -285,6 +301,57 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
         // 네트워크 예외
 
+    }
+
+    private synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this).addApi(LocationServices.API)
+                .addOnConnectionFailedListener(this).build();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        // Provides a simple way of getting a device's location and is well
+        // suited for
+        // applications that do not require a fine-grained location and that do
+        // not need location
+        // updates. Gets the best and most recent location currently available,
+        // which may be null
+        // in rare cases when a location is not available.
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (mLastLocation != null) {
+
+            double latitude = mLastLocation.getLatitude();
+            double longitude = mLastLocation.getLongitude();
+
+            Log.e(TAG, "Lat : " + latitude + " Lon : " + longitude);
+//            mAddressText.setText(mLocationUtil.getAddress(latitude, longitude));
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        // The connection to Google Play services was lost for some reason. We
+        // call connect() to
+        // attempt to re-establish the connection.
+        Log.i(TAG, "Connection suspended");
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        // Refer to the javadoc for ConnectionResult to see what error codes
+        // might be returned in
+        // onConnectionFailed.
+        Log.i(TAG,
+                "Connection failed: ConnectionResult.getErrorCode() = "
+                        + connectionResult.getErrorCode());
     }
 
     @Override
@@ -466,6 +533,10 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
     @Override
     protected void onStop() {
         super.onStop();
+
+        if (mGoogleApiClient.isConnected())
+            mGoogleApiClient.disconnect();
+
         if (mDialog.isShowing()) {
             mDialog.dismiss();
         }
@@ -491,6 +562,8 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
                 Intent i = new Intent(this, MapActivity.class);
                 i.putExtra("lat", mLatitude);
                 i.putExtra("lng", mLongitude);
+                // i.addFlags()
+
                 startActivity(i);
                 break;
             case R.id.manual_distance:
@@ -584,7 +657,6 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
                 // if (true) {
                 String url = "http://cashq.co.kr/m/set_tokenid_add.php" + "?biz_code=central"
                         + "&phone=" + num + "&token_id=" + getRegId();
-
 
                 TOKEN_ID = register;
 

@@ -372,28 +372,35 @@ public class OrderActivity extends BaseActivity {
 
             Log.e("order", "json result : " + jsonObject.toString());
 
+
+            boolean success = false;
             try {
+                success = jsonObject.getBoolean("success");
                 mOrderData.setTradeId(jsonObject.getString("Tradeid"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-            Intent i = new Intent();
+            if (success) {
+                Intent i = new Intent();
 
-            if (mOrderData.getPayType().equals(NOT_CHOOSE)) {
-                // ???
-            } else if (mOrderData.getPayType().equals(CASHQ_CARD)
-                    || mOrderData.getPayType().equals(CASHQ_CELL)) {
-                i.setClass(mThis, PayActivity.class);
+                if (mOrderData.getPayType().equals(NOT_CHOOSE)) {
+                    // ???
+                } else if (mOrderData.getPayType().equals(CASHQ_CARD)
+                        || mOrderData.getPayType().equals(CASHQ_CELL)) {
+                    i.setClass(mThis, PayActivity.class);
 
-            } else if (mOrderData.getPayType().equals(FIELD_CASH)
-                    || mOrderData.getPayType().equals(FIELD_CARD)) {
-                i.setClass(mThis, OrderResultActivity.class);
+                } else if (mOrderData.getPayType().equals(FIELD_CASH)
+                        || mOrderData.getPayType().equals(FIELD_CARD)) {
+                    i.setClass(mThis, OrderResultActivity.class);
+                }
+
+                i.putExtra("pay_type", mPayType);
+                i.putExtra("order", mOrderData);
+                startActivity(i);
+            } else {
+
             }
-
-            i.putExtra("pay_type", mPayType);
-            i.putExtra("order", mOrderData);
-            startActivity(i);
         }
     }
 

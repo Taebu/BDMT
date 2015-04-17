@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -41,16 +42,22 @@ public class AddressBookDialog extends Dialog {
         findViewById(R.id.ok).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 int position = listView.getCheckedItemPosition();
-                String item = (String)listView.getItemAtPosition(position);
 
-                String[] address = item.split("_");
+                if (position != ListView.INVALID_POSITION) {
+                    String item = (String)listView.getItemAtPosition(position);
 
-                v.setTag(R.id.zipcode, address[0]);
-                v.setTag(R.id.address1, address[1]);
-                v.setTag(R.id.address2, address[2]);
-                onClickListener.onClick(v);
-                dismiss();
+                    String[] address = item.split("_");
+
+                    v.setTag(R.id.zipcode, address[0]);
+                    v.setTag(R.id.address1, address[1]);
+                    v.setTag(R.id.address2, address[2]);
+                    onClickListener.onClick(v);
+                    dismiss();
+                } else {
+                    Toast.makeText(context, "주소를 선택해 주세요.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

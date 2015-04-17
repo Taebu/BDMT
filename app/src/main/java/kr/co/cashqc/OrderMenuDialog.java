@@ -25,7 +25,7 @@ import static kr.co.cashqc.DataBaseOpenHelper.TABLE_NAME;
 public class OrderMenuDialog extends Dialog {
     // 메뉴 장바구니 선택
     public OrderMenuDialog(final Context context, final ShopMenuData data, final int groupPos,
-            final int childPos) {
+            final int childPos, final OnDismissListener listener) {
         super(context);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -69,7 +69,9 @@ public class OrderMenuDialog extends Dialog {
 
 //                    if (level4.size() == 0) {
                     if(hasLevel4){
-                        new OrderMenuDialog(context, data, level1, level2, level3).show();
+                        OrderMenuDialog level4 = new OrderMenuDialog(context, data, level1, level2, level3);
+                        level4.show();
+                        level4.setOnDismissListener(listener);
                     } else {
                         insertMenuLevel3(context, data, level1, level2, level3);
                     }

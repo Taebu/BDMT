@@ -134,20 +134,22 @@ public class BaseActivity extends SlidingFragmentActivity {
         });
 
         // 장바구니 숨김
-        TV_CART_COUNT.setVisibility(View.INVISIBLE);
-        findViewById(R.id.btn_cart).setVisibility(View.INVISIBLE);
-
-        findViewById(R.id.btn_cart).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (CART_COUNT > 0) {
-                    startActivity(new Intent(BaseActivity.this, CartActivity.class));
-                } else {
-                    Toast.makeText(getApplicationContext(), "장바구니가 비어있어요", Toast.LENGTH_SHORT)
-                            .show();
+//        if (false) {
+        if (true) {
+            TV_CART_COUNT.setVisibility(View.INVISIBLE);
+            findViewById(R.id.btn_cart).setVisibility(View.INVISIBLE);
+        }
+            findViewById(R.id.btn_cart).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (CART_COUNT > 0) {
+                        startActivity(new Intent(BaseActivity.this, CartActivity.class));
+                    } else {
+                        Toast.makeText(getApplicationContext(), "장바구니가 비어있어요", Toast.LENGTH_SHORT)
+                                .show();
+                    }
                 }
-            }
-        });
+            });
     }
 
     // @Override
@@ -209,7 +211,7 @@ public class BaseActivity extends SlidingFragmentActivity {
     protected void onStop() {
         super.onStop();
         new kr.co.cashqc.lazylist.ImageLoader(this).clearCache();
-//        toggle();
+        // toggle();
         Log.e("BaseActivity", "!!! onStop !!!");
     }
 

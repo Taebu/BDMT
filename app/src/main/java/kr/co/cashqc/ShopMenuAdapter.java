@@ -10,12 +10,13 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import static kr.co.cashqc.BaseActivity.setCartCount;
 import static kr.co.cashqc.Utils.insertMenuLevel2;
 
 public class ShopMenuAdapter extends BaseExpandableListAdapter {
 
     public ShopMenuAdapter(Context context, ShopMenuData data,
-            DialogInterface.OnDismissListener onDismissListener) {
+            DialogInterface.OnDismissListener onDismissListener, ShopPageActivity activity) {
         super();
 
         mData = data;
@@ -23,7 +24,11 @@ public class ShopMenuAdapter extends BaseExpandableListAdapter {
         inflater = LayoutInflater.from(context);
 
         mOnDismissListener = onDismissListener;
+
+        mActivity = activity;
     }
+
+    private ShopPageActivity mActivity;
 
     private DialogInterface.OnDismissListener mOnDismissListener;
 
@@ -63,28 +68,34 @@ public class ShopMenuAdapter extends BaseExpandableListAdapter {
         String imgUrl = "http://cashq.co.kr/adm/upload/thumb/1424842254UWDWC.jpg";
 
         // ImageLoader.getInstance().displayImage(imgUrl, h.ivThumb);
-        v.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        // if(true) {
+        if (false) {
 
-                boolean hasLevel3 = !item.getChild().isEmpty();
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                if (hasLevel3) {
+                    boolean hasLevel3 = !item.getChild().isEmpty();
 
-                    OrderMenuDialog dialog = new OrderMenuDialog(inflater.getContext(), mData,
-                            groupPosition, childPosition);
-                    dialog.show();
-                    dialog.setOnDismissListener(mOnDismissListener);
-                } else {
-                    insertMenuLevel2(inflater.getContext(), mData, groupPosition, childPosition);
+                    if (hasLevel3) {
+
+                        OrderMenuDialog dialog = new OrderMenuDialog(inflater.getContext(), mData,
+                                groupPosition, childPosition, mOnDismissListener);
+                        dialog.show();
+                        dialog.setOnDismissListener(mOnDismissListener);
+
+                    } else {
+                        insertMenuLevel2(inflater.getContext(), mData, groupPosition, childPosition);
+                        setCartCount(mActivity);
+                    }
+
+                    // Toast.makeText(inflater.getContext(),
+                    // "group : " + groupPosition + "\nchild : " +
+                    // childPosition,
+                    // Toast.LENGTH_SHORT).show();
                 }
-
-                // Toast.makeText(inflater.getContext(),
-                // "group : " + groupPosition + "\nchild : " + childPosition,
-                // Toast.LENGTH_SHORT).show();
-            }
-        });
-
+            });
+        }
         return v;
     }
 

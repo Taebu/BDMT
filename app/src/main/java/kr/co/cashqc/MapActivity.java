@@ -1,14 +1,6 @@
 
 package kr.co.cashqc;
 
-import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.EditText;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -16,6 +8,14 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
 
 import java.io.IOException;
 import java.util.List;
@@ -108,8 +108,9 @@ public class MapActivity extends BaseActivity implements GoogleMap.OnMapClickLis
         Intent i = new Intent(this, MainActivity.class);
         i.putExtra("lat", marker.getPosition().latitude);
         i.putExtra("lng", marker.getPosition().longitude);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(i);
-
+        // killer.removeActivity();
     }
 
     public void mOnClick(View view) {
@@ -146,5 +147,17 @@ public class MapActivity extends BaseActivity implements GoogleMap.OnMapClickLis
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }
