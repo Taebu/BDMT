@@ -32,7 +32,7 @@ public class MenuListFragment extends ListFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-//        mListener = (AdapterView.OnItemClickListener) activity;
+        // mListener = (AdapterView.OnItemClickListener) activity;
     }
 
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -52,7 +52,6 @@ public class MenuListFragment extends ListFragment {
         // adapter.add(new SampleItem("제휴 문의", R.drawable.icon_more_4_gray));
 
         setListAdapter(adapter);
-
 
     }
 
@@ -91,8 +90,6 @@ public class MenuListFragment extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
 
-
-
         Intent intent = null;
 
         switch (position) {
@@ -116,7 +113,7 @@ public class MenuListFragment extends ListFragment {
             // break;
             case 2:
                 intent = new Intent(getActivity(), WebViewActivity.class);
-                // intent = new Intent(getActivity(), QNAActivity.class);
+//                intent = new Intent(getActivity(), QNAActivity.class);
                 intent.putExtra("assort", "qna");
                 break;
             case 3:

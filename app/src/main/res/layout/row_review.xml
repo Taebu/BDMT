@@ -91,6 +91,7 @@
         android:orientation="vertical">
 
         <Button
+            android:visibility="gone"
             android:id="@+id/row_review_modify"
             android:layout_width="40dp"
             android:layout_height="30dp"
@@ -102,6 +103,7 @@
             android:textSize="13sp" />
 
         <Button
+            android:visibility="gone"
             android:id="@+id/row_review_remove"
             android:layout_width="40dp"
             android:layout_height="30dp"

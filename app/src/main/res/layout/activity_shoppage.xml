@@ -63,6 +63,23 @@
 
         </LinearLayout>
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:src="#E8E8E8" />
+
+        <Button
+            android:id="@+id/shoppage_switcher"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:background="@drawable/btn_black"
+            android:gravity="center"
+            android:textColor="#FFFFFF" />
+
         <ListView
             android:id="@+id/shoppage_reviewlistview"
             android:layout_width="match_parent"

@@ -153,11 +153,18 @@ public class ReviewListAdapter extends BaseAdapter {
 
         h.content.setText(item.getContent());
 
-        if (mOnClickListener != null) {
-            h.modify.setTag(R.id.seq, item.getSeq());
-            h.remove.setTag(R.id.seq, item.getSeq());
-            h.modify.setOnClickListener(mOnClickListener);
-            h.remove.setOnClickListener(mOnClickListener);
+        if(MainActivity.TOKEN_ID.equals(item.getTokenId())) {
+            h.modify.setVisibility(View.VISIBLE);
+            h.remove.setVisibility(View.VISIBLE);
+            if (mOnClickListener != null) {
+                h.modify.setTag(R.id.seq, item.getSeq());
+                h.remove.setTag(R.id.seq, item.getSeq());
+                h.modify.setOnClickListener(mOnClickListener);
+                h.remove.setOnClickListener(mOnClickListener);
+            }
+        } else {
+            h.modify.setVisibility(View.GONE);
+            h.remove.setVisibility(View.GONE);
         }
 
         return v;

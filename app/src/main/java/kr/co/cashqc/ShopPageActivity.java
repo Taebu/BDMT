@@ -93,6 +93,10 @@ public class ShopPageActivity extends BaseActivity {
 
     private ListView mReviewListView;
 
+    private Button switcher;
+
+    private boolean isList = false;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,11 +117,18 @@ public class ShopPageActivity extends BaseActivity {
 
         setRowLayout();
 
+        mWebView = (WebView)findViewById(R.id.shoppage_webview);
+        mListView = (ExpandableListView)findViewById(R.id.shoppage_listview);
+
+        btnUp = (Button)findViewById(R.id.btn_up);
+
         float reviewRating = Float.parseFloat(mIntent.getStringExtra("review_rating"));
 
         mRatingBar = (RatingBar)findViewById(R.id.shoppage_rating);
         tvRatingScore = (TextView)findViewById(R.id.shoppage_ratingscore);
         tvReviewCount = (TextView)findViewById(R.id.shoppage_reviewcount);
+
+        switcher = (Button)findViewById(R.id.shoppage_switcher);
 
         mReviewListView = (ListView)findViewById(R.id.shoppage_reviewlistview);
 
@@ -154,15 +165,40 @@ public class ShopPageActivity extends BaseActivity {
             }
         });
 
-        mPrePay = mIntent.getStringExtra("pre_pay");
+        // mPrePay = mIntent.getStringExtra("pre_pay");
+        // Log.e("ShopPageActivity", "prepay : " + mPrePay);
+        boolean hasList = "1".equals(getIntent().getStringExtra("pay"));
 
-        Log.e("ShopPageActivity", "prepay : " + mPrePay);
-
-        if ("1".equals(mIntent.getStringExtra("pay"))) {
+        if (hasList) {
             setListView();
+            switcher.setText("전단지 보기");
+            isList = true;
         } else {
             setWebView();
+            switcher.setVisibility(View.GONE);
+            btnUp.setVisibility(View.GONE);
+
         }
+
+        switcher.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                isList = !isList;
+
+                if (isList) {
+                    mWebView.setVisibility(View.GONE);
+                    setListView();
+                    switcher.setText("전단지 보기");
+                } else {
+                    mListView.setVisibility(View.GONE);
+                    mRelativeLayout.setVisibility(View.GONE);
+                    btnUp.setVisibility(View.GONE);
+                    setWebView();
+                    switcher.setText("현장 결제 보기");
+                }
+            }
+        });
 
     }
 
@@ -441,6 +477,8 @@ public class ShopPageActivity extends BaseActivity {
         dong.setText(mIntent.getStringExtra("delivery_comment_cashq"));
         callcnt.setText(mIntent.getStringExtra("callcnt") + " 건 주문");
 
+        score.setRating(Float.parseFloat(mIntent.getStringExtra("review_rating")));
+
         if ("".equals(mIntent.getStringExtra("pre_pay"))) {
             LinearLayout ll = (LinearLayout)findViewById(R.id.thm_layout);
             ll.setVisibility(View.GONE);
@@ -511,7 +549,7 @@ public class ShopPageActivity extends BaseActivity {
     }
 
     private void setWebView() {
-        mWebView = (WebView)findViewById(R.id.shoppage_webview);
+
         mWebView.setVisibility(View.VISIBLE);
         mWebView.setWebViewClient(new WebViewClientClass());
         WebSettings set = mWebView.getSettings();
@@ -557,7 +595,6 @@ public class ShopPageActivity extends BaseActivity {
         mScrollView = (ScrollView)findViewById(R.id.shoppage_scrollview);
         // mScrollView.setVisibility(View.VISIBLE);
 
-        btnUp = (Button)findViewById(R.id.btn_up);
         btnUp.setVisibility(View.VISIBLE);
 
         btnUp.setOnClickListener(new View.OnClickListener() {
@@ -569,7 +606,6 @@ public class ShopPageActivity extends BaseActivity {
 
         mRelativeLayout = (RelativeLayout)findViewById(R.id.shoppage_menulist);
 
-        mListView = (ExpandableListView)findViewById(R.id.shoppage_listview);
         mListView.setVisibility(View.VISIBLE);
 
         String storeCode = getIntent().getStringExtra("store_code");
@@ -1044,7 +1080,8 @@ public class ShopPageActivity extends BaseActivity {
 
                     if (level2Id.equals(imageId)) {
 
-//                        Toast.makeText(mThis, i + ", " + y, Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(mThis, i + ", " + y,
+                        // Toast.LENGTH_SHORT).show();
 
                         boolean hasLevel3 = !childData.get(y).getChild().isEmpty();
 

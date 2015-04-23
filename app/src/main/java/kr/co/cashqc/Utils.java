@@ -12,8 +12,10 @@ import android.net.Uri;
 import android.os.RemoteException;
 import android.provider.ContactsContract;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ListAdapter;
@@ -399,5 +401,22 @@ public class Utils {
 
     }
 
-//    public static void
+    // public static void
+
+    public static int getDisplayHeightSize(Activity activity) {
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        int displayHeight = display.getHeight();// 전체 스크리 사이즈 높이
+
+        Window window = activity.getWindow();
+        int topBarHeight = window.findViewById(Window.ID_ANDROID_CONTENT).getTop();// 상태바와
+        // 타이틀바의
+        // 높이
+        // 총합입니다.
+
+        return displayHeight - topBarHeight;
+    }
+
+    public static int getDisplayWidthSize(Activity activity) {
+        return activity.getWindowManager().getDefaultDisplay().getWidth();
+    }
 }

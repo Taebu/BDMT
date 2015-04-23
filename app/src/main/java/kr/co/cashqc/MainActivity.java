@@ -33,10 +33,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -276,7 +274,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
             @Override
             public void onClick(View v) {
                 findLocation();
-//                mGoogleApiClient.connect();
+                // mGoogleApiClient.connect();
             }
         });
 
@@ -331,7 +329,8 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
             double longitude = mLastLocation.getLongitude();
 
             Log.e(TAG, "Lat : " + latitude + " Lon : " + longitude);
-//            mAddressText.setText(mLocationUtil.getAddress(latitude, longitude));
+            // mAddressText.setText(mLocationUtil.getAddress(latitude,
+            // longitude));
         }
     }
 
@@ -371,7 +370,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
         if (toast == null) {
             toast = Toast.makeText(mContext, "음식사진 터치!~", Toast.LENGTH_SHORT);
-            // toast.setGravity(Gravity.CENTER, 0, getScreenSize()/4);
+            // toast.setGravity(Gravity.CENTER, 0, getDisplayHeightSize()/4);
         } else {
             // toast.setText("ddd");
         }
@@ -737,19 +736,6 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
         });
 
         return builder.create();
-    }
-
-    private int getScreenSize() {
-        Display display = MainActivity.this.getWindowManager().getDefaultDisplay();
-        int screenHeight = display.getHeight();// 전체 스크리 사이즈 높이
-
-        Window window = getWindow();
-        int topBarHeight = window.findViewById(Window.ID_ANDROID_CONTENT).getTop();// 상태바와
-                                                                                   // 타이틀바의
-                                                                                   // 높이
-                                                                                   // 총합입니다.
-
-        return screenHeight - topBarHeight;
     }
 
 }

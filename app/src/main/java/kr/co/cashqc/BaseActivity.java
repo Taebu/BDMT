@@ -38,6 +38,7 @@ import kr.co.cashqc.menu.Fragment3;
 import kr.co.cashqc.menu.Fragment4;
 
 import static kr.co.cashqc.DataBaseOpenHelper.TABLE_NAME;
+import static kr.co.cashqc.Utils.getDisplayWidthSize;
 
 /**
  * Created by anp on 14. 11. 4..
@@ -94,12 +95,15 @@ public class BaseActivity extends SlidingFragmentActivity {
                     .findFragmentById(R.id.menu_frame);
         }
 
+        int halfWidth = getDisplayWidthSize(this) / 2;
+
         // customize the SlidingMenu
         final SlidingMenu sm = getSlidingMenu();
         sm.setMode(SlidingMenu.LEFT);
         sm.setShadowWidthRes(R.dimen.shadow_width);
         sm.setShadowDrawable(R.drawable.shadow);
         sm.setBehindOffsetRes(R.dimen.slidingmenu_offset);
+        // sm.setBehindOffsetRes(halfWidth);
         sm.setFadeDegree(0.35f);
         sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
         setSlidingActionBarEnabled(false);
@@ -134,22 +138,22 @@ public class BaseActivity extends SlidingFragmentActivity {
         });
 
         // 장바구니 숨김
-//        if (false) {
+        // if (false) {
         if (true) {
             TV_CART_COUNT.setVisibility(View.INVISIBLE);
             findViewById(R.id.btn_cart).setVisibility(View.INVISIBLE);
         }
-            findViewById(R.id.btn_cart).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (CART_COUNT > 0) {
-                        startActivity(new Intent(BaseActivity.this, CartActivity.class));
-                    } else {
-                        Toast.makeText(getApplicationContext(), "장바구니가 비어있어요", Toast.LENGTH_SHORT)
-                                .show();
-                    }
+        findViewById(R.id.btn_cart).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (CART_COUNT > 0) {
+                    startActivity(new Intent(BaseActivity.this, CartActivity.class));
+                } else {
+                    Toast.makeText(getApplicationContext(), "장바구니가 비어있어요", Toast.LENGTH_SHORT)
+                            .show();
                 }
-            });
+            }
+        });
     }
 
     // @Override
