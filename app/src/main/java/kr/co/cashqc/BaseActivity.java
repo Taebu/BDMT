@@ -13,7 +13,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -380,60 +379,20 @@ public class BaseActivity extends SlidingFragmentActivity {
         return null;
     }
 
-    public class MarketVersionNameTask extends AsyncTask<String, Void, Void> {
+    public void mOnClick(View view) {
 
-        public MarketVersionNameTask(Activity activity) {
-            mThis = activity;
-        }
+        switch(view.getId()) {
 
-        private Activity mThis;
+            case R.id.actionbar_btn_gps:
+                break;
 
-        @Override
-        protected Void doInBackground(String... params) {
-            String email = "google_id";
-            String password = "google_pw";
+            case R.id.actionbar_manual_location:
+                break;
 
-            try {
+            case R.id.actionbar_manual_distance:
+                break;
 
-                MarketSession session = new MarketSession();
-                session.login(email, password);
 
-                session.getContext().setAndroidId(getAndroidId(mThis));
-                String query = "kr.co.cashqc";
-
-                Market.AppsRequest appsRequest = Market.AppsRequest.newBuilder().setQuery(query)
-                        .setStartIndex(0).setEntriesCount(10)
-                        .setOrderType(Market.AppsRequest.OrderType.NEWEST)
-                        .setWithExtendedInfo(true).build();
-
-                session.append(appsRequest, new MarketSession.Callback<Market.AppsResponse>() {
-                    @Override
-                    public void onResult(Market.ResponseContext responseContext,
-                            Market.AppsResponse appsResponse) {
-
-                        for (int i = 0; i < appsResponse.getAppCount(); i++) {
-
-                            Log.e("BaseActivity", "title : " + appsResponse.getApp(i).getTitle());
-                            Log.e("BaseActivity", "creator : "
-                                    + appsResponse.getApp(i).getCreator());
-                            Log.e("BaseActivity", "pkgName : "
-                                    + appsResponse.getApp(i).getPackageName());
-                            Log.e("BaseActivity", "version : "
-                                    + appsResponse.getApp(i).getVersion());
-                            Log.e("BaseActivity", "versionCode : "
-                                    + appsResponse.getApp(i).getVersionCode());
-
-                        }
-
-                    }
-                });
-
-                session.flush();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return null;
         }
     }
 }

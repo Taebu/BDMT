@@ -127,6 +127,8 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        findViewById(R.id.actionbar_gps_layout).setVisibility(View.GONE);
+
         buildGoogleApiClient();
 
         UpdateChecker checker = new UpdateChecker(this, new UpdateCheckerResult() {

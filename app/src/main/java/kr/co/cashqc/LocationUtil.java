@@ -137,8 +137,8 @@ public class LocationUtil {
                 /*
                  * .setNegativeButton("취소", new
                  * DialogInterface.OnClickListener() { public void
-                 * onClick(DialogInterface mDialog, int id) { mDialog.cancel(); }
-                 * })
+                 * onClick(DialogInterface mDialog, int id) { mDialog.cancel();
+                 * } })
                  */
                 ;
                 AlertDialog alert = builder.create();
@@ -274,6 +274,50 @@ public class LocationUtil {
                 }
             }
         }
+        return address;
+    }
+
+    public String getAddressShort(double latitude, double longitude) {
+
+        String address = "";
+        List<Address> addresses = null;
+        Address a = null;
+        Geocoder geoCoder = new Geocoder(mActivity, Locale.KOREAN);
+        try {
+            addresses = geoCoder.getFromLocation(latitude, longitude, 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (addresses != null) {
+            a = addresses.get(0);
+            Log.i("tag", "addresses : " + addresses.toString());
+            address = a.getThoroughfare() + a.getFeatureName();
+            for (Address addr : addresses) {
+                int index = addr.getMaxAddressLineIndex();
+
+                // Log.i("tag", "index : " + index);
+
+                for (int i = 0; i <= index; i++) {
+
+                    address = addr.getAddressLine(i);
+                    Log.i("tag", "address : " + address);
+                    String[] str = address.split(" ", 4);
+                    address = str[3];
+
+//                    address = "";
+                    // for (int j = 1; j < str.length; j++) {
+                    // if (!str[j].equals("")) {
+                    // address = address + str[j] + " ";
+                    // }
+                    // }
+                }
+            }
+
+
+        }
+        address = a.getThoroughfare() + " " + a.getFeatureName();
+
         return address;
     }
 

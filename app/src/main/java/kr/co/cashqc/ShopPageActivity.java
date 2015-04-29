@@ -119,7 +119,7 @@ public class ShopPageActivity extends BaseActivity {
 
         mWebView = (WebView)findViewById(R.id.shoppage_webview);
         mListView = (ExpandableListView)findViewById(R.id.shoppage_listview);
-
+        mRelativeLayout = (RelativeLayout)findViewById(R.id.shoppage_menulist);
         btnUp = (Button)findViewById(R.id.btn_up);
 
         float reviewRating = Float.parseFloat(mIntent.getStringExtra("review_rating"));
@@ -170,9 +170,11 @@ public class ShopPageActivity extends BaseActivity {
         boolean hasList = "1".equals(getIntent().getStringExtra("pay"));
 
         if (hasList) {
-            setListView();
-            switcher.setText("전단지 보기");
-            isList = true;
+//            setListView();
+//            switcher.setText("전단지 보기");
+            setWebView();
+            switcher.setText("메뉴 보기");
+//            isList = true;
         } else {
             setWebView();
             switcher.setVisibility(View.GONE);
@@ -195,7 +197,7 @@ public class ShopPageActivity extends BaseActivity {
                     mRelativeLayout.setVisibility(View.GONE);
                     btnUp.setVisibility(View.GONE);
                     setWebView();
-                    switcher.setText("현장 결제 보기");
+                    switcher.setText("메뉴 보기");
                 }
             }
         });

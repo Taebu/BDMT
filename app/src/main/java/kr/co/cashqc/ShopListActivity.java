@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
 
@@ -20,6 +21,10 @@ public class ShopListActivity extends BaseActivity implements ActionBar.TabListe
 
     private ActionBar mActionBar;
 
+    private TextView tvAddress;
+
+    private LocationUtil mLocationUtil;
+
     // Tab titles
     private String[] mTabs = {
             "치킨", "피자/햄버거", "중식/냉면", "한식/분식", "닭발/오리", "야식/기타", "족발/보쌈", "일식/돈가스"
@@ -33,14 +38,26 @@ public class ShopListActivity extends BaseActivity implements ActionBar.TabListe
         // activity killer activity add.
         killer.addActivity(this);
 
+        mLocationUtil = LocationUtil.getInstance(this);
+
+//        findViewById(R.id.logo).setVisibility(View.GONE);
+
+//        findViewById(R.id.actionbar_gps_layout).setVisibility(View.VISIBLE);
+
+        tvAddress = (TextView)findViewById(R.id.actionbar_location_name1);
+
         if (!Util.isOnline(this)) {
             Util.showDialog_normal(this, "네트워크 에러", "네트워크 연결 상태를 확인해주세요");
         }
 
-        double lat = getIntent().getDoubleExtra("lat", -1), lng = getIntent().getDoubleExtra(
-                "lng", -1);
+        double lat = getIntent().getDoubleExtra("lat", -1), lng = getIntent().getDoubleExtra("lng",
+                -1);
 
         int distance = getIntent().getIntExtra("distance", 2);
+
+        String address = mLocationUtil.getAddressShort(lat, lng);
+
+        tvAddress.setText(address);
 
         // Initialization
         ShopListPagerAdapter pagerAdapter = new ShopListPagerAdapter(getSupportFragmentManager(),
@@ -83,7 +100,7 @@ public class ShopListActivity extends BaseActivity implements ActionBar.TabListe
 
     @Override
     protected void onResume() {
-//        setCartCount(this);
+        // setCartCount(this);
         super.onResume();
         // MainActivity.progressBar.setVisibility(View.GONE);
     }

@@ -47,6 +47,8 @@ public class PointActivity extends BaseActivity {
 
     private ArrayList<PointData> mCheckedDatas;
 
+    private final int mCheckLimit = 3;
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -114,7 +116,7 @@ public class PointActivity extends BaseActivity {
 
                     Log.e("jaypoint", positionArray + "\r?" + sCheckedCount);
 
-                    if (sCheckedCount == 5) {
+                    if (sCheckedCount == mCheckLimit) {
                         if (mUserDatas.get(0).getHolder().isEmpty()
                                 || mUserDatas.get(0).getAccNum().isEmpty()) {
                             new CustomDialog(PointActivity.this, "계좌정보를 설정해주세요").show();
@@ -135,7 +137,7 @@ public class PointActivity extends BaseActivity {
                         }
 
                     } else {
-                        Toast.makeText(PointActivity.this, "포인트 5개 선택하여 주세요", Toast.LENGTH_SHORT)
+                        Toast.makeText(PointActivity.this, "포인트 "+mCheckLimit+"개 선택하여 주세요", Toast.LENGTH_SHORT)
                                 .show();
                     }
                 }
@@ -453,12 +455,12 @@ public class PointActivity extends BaseActivity {
                         PointData data = (PointData)cb.getTag();
 
                         if (data.getStatus().equals("사용가능")) {
-                            if (cb.isChecked() && sCheckedCount <= 5) {
+                            if (cb.isChecked() && sCheckedCount <= mCheckLimit) {
                                 sCheckedCount--;
                                 cb.setChecked(false);
                                 positionArray.set(data.getPosition(), false);
 
-                            } else if (!cb.isChecked() && sCheckedCount < 5) {
+                            } else if (!cb.isChecked() && sCheckedCount < mCheckLimit) {
                                 sCheckedCount++;
                                 cb.setChecked(true);
                                 positionArray.set(data.getPosition(), true);
@@ -466,7 +468,7 @@ public class PointActivity extends BaseActivity {
                             }
                         }
 
-                        if (sCheckedCount == 5) {
+                        if (sCheckedCount == mCheckLimit) {
                             if (Build.VERSION.SDK_INT > 10)
                                 sBtnRequest.setAlpha(1.0f);
                             h.checkBox.setEnabled(false);
