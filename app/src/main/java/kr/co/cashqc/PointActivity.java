@@ -47,7 +47,7 @@ public class PointActivity extends BaseActivity {
 
     private ArrayList<PointData> mCheckedDatas;
 
-    private final int mCheckLimit = 3;
+    private final int mCheckLimit = 5;
 
     @Override
     protected void onDestroy() {
