@@ -68,8 +68,8 @@ public class ShopMenuAdapter extends BaseExpandableListAdapter {
         String imgUrl = "http://cashq.co.kr/adm/upload/thumb/1424842254UWDWC.jpg";
 
         // ImageLoader.getInstance().displayImage(imgUrl, h.ivThumb);
-        if(true) {
-//        if (false) {
+//        if(true) {
+        if (false) {
 
             v.setOnClickListener(new View.OnClickListener() {
                 @Override

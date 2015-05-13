@@ -1035,7 +1035,7 @@ public class ShopPageActivity extends BaseActivity {
             price3.setText(price[2]);
             price4.setText(price[3]);
 
-            // if(true){
+//            if(true){
             if (false) {
                 img1.setOnClickListener(this);
                 img2.setOnClickListener(this);
