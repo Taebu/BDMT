@@ -95,7 +95,7 @@ public class NoticeListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return mData.get(groupPosition).size();
+        return 1;
     }
 
     @Override

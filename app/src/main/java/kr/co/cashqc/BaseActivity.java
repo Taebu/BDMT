@@ -137,8 +137,8 @@ public class BaseActivity extends SlidingFragmentActivity {
         });
 
         // 장바구니 숨김
-        // if (false) {
-        if (true) {
+        if (false) {
+//        if (true) {
             TV_CART_COUNT.setVisibility(View.INVISIBLE);
             findViewById(R.id.btn_cart).setVisibility(View.INVISIBLE);
         }
