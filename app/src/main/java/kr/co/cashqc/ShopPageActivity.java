@@ -65,8 +65,6 @@ public class ShopPageActivity extends BaseActivity {
 
     private CustomDialog mDialog;
 
-    private Intent mIntent;
-
     private String mNum = null;
 
     private ExpandableListView mListView;
@@ -85,17 +83,17 @@ public class ShopPageActivity extends BaseActivity {
 
     private WebView mWebView;
 
-    private RelativeLayout mRelativeLayout;
+    private RelativeLayout mMenuImgLayout;
 
     private String mPrePay;
 
-    private Button btnUp;
-
     private ListView mReviewListView;
+
+    private LinearLayout mListMenu;
 
     private Button switcher;
 
-    private boolean isList = false;
+    private boolean isWeb = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -113,26 +111,12 @@ public class ShopPageActivity extends BaseActivity {
 
         mDialog = new CustomDialog(this);
 
-        mIntent = getIntent();
-
         setRowLayout();
+        setLayout();
 
-        mWebView = (WebView)findViewById(R.id.shoppage_webview);
-        mListView = (ExpandableListView)findViewById(R.id.shoppage_listview);
-        mRelativeLayout = (RelativeLayout)findViewById(R.id.shoppage_menulist);
-        btnUp = (Button)findViewById(R.id.btn_up);
+        float reviewRating = Float.parseFloat(getIntent().getStringExtra("review_rating"));
 
-        float reviewRating = Float.parseFloat(mIntent.getStringExtra("review_rating"));
-
-        mRatingBar = (RatingBar)findViewById(R.id.shoppage_rating);
-        tvRatingScore = (TextView)findViewById(R.id.shoppage_ratingscore);
-        tvReviewCount = (TextView)findViewById(R.id.shoppage_reviewcount);
-
-        switcher = (Button)findViewById(R.id.shoppage_switcher);
-
-        mReviewListView = (ListView)findViewById(R.id.shoppage_reviewlistview);
-
-        String reviewCount = mIntent.getStringExtra("review_cnt");
+        String reviewCount = getIntent().getStringExtra("review_cnt");
 
         tvReviewCount.setText(reviewCount + "개 리뷰");
 
@@ -148,7 +132,7 @@ public class ShopPageActivity extends BaseActivity {
                 if (phoneNum.isEmpty())
                     phoneNum = "4444444444";
 
-                new ReviewDialog(mThis, mIntent.getStringExtra("name"), mIntent
+                new ReviewDialog(mThis, getIntent().getStringExtra("name"), getIntent()
                         .getStringExtra("seq"), phoneNum).show();
                 return false;
             }
@@ -165,43 +149,56 @@ public class ShopPageActivity extends BaseActivity {
             }
         });
 
-        // mPrePay = mIntent.getStringExtra("pre_pay");
+        setWebView();
+
+        // mPrePay = getIntent().getStringExtra("pre_pay");
         // Log.e("ShopPageActivity", "prepay : " + mPrePay);
+
         boolean hasList = "1".equals(getIntent().getStringExtra("pay"));
 
         if (hasList) {
-//            setListView();
-//            switcher.setText("전단지 보기");
-            setWebView();
-            switcher.setText("메뉴 보기");
-//            isList = true;
-        } else {
-            setWebView();
-            switcher.setVisibility(View.GONE);
-            btnUp.setVisibility(View.GONE);
+            setListView();
+            switcher.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
+                    isWeb = !isWeb;
+
+                    isVisibilityWebView(isWeb);
+
+                }
+            });
+        } else {
+            switcher.setVisibility(View.GONE);
         }
 
-        switcher.setOnClickListener(new View.OnClickListener() {
+        isVisibilityWebView(isWeb);
+
+    }
+
+    private void setLayout() {
+
+        mListMenu = (LinearLayout)findViewById(R.id.shoppage_listmenu);
+
+        mWebView = (WebView)findViewById(R.id.shoppage_webview);
+        mListView = (ExpandableListView)findViewById(R.id.shoppage_listview);
+        mMenuImgLayout = (RelativeLayout)findViewById(R.id.shoppage_menulist);
+        mScrollView = (ScrollView)findViewById(R.id.shoppage_scrollview);
+
+        mRatingBar = (RatingBar)findViewById(R.id.shoppage_rating);
+        tvRatingScore = (TextView)findViewById(R.id.shoppage_ratingscore);
+        tvReviewCount = (TextView)findViewById(R.id.shoppage_reviewcount);
+
+        switcher = (Button)findViewById(R.id.shoppage_switcher);
+
+        mReviewListView = (ListView)findViewById(R.id.shoppage_reviewlistview);
+
+        findViewById(R.id.btn_up).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                isList = !isList;
-
-                if (isList) {
-                    mWebView.setVisibility(View.GONE);
-                    setListView();
-                    switcher.setText("전단지 보기");
-                } else {
-                    mListView.setVisibility(View.GONE);
-                    mRelativeLayout.setVisibility(View.GONE);
-                    btnUp.setVisibility(View.GONE);
-                    setWebView();
-                    switcher.setText("메뉴 보기");
-                }
+                mScrollView.smoothScrollTo(0, 0);
             }
         });
-
     }
 
     private void setReviewView(boolean isExpanded) {
@@ -210,7 +207,7 @@ public class ShopPageActivity extends BaseActivity {
         int visibility;
 
         if (isExpanded) {
-            new ReviewTask().execute(mIntent.getStringExtra("seq"));
+            new ReviewTask().execute(getIntent().getStringExtra("seq"));
             visibility = View.VISIBLE;
             draw = R.drawable.btn_list_open;
         } else {
@@ -301,7 +298,7 @@ public class ShopPageActivity extends BaseActivity {
             String seq = v.getTag(R.id.seq).toString();
             switch (v.getId()) {
                 case R.id.row_review_modify:
-                    new ReviewDialog(mThis, mIntent.getStringExtra("name"), seq).show();
+                    new ReviewDialog(mThis, getIntent().getStringExtra("name"), seq).show();
                     break;
                 case R.id.row_review_remove:
                     new ReviewRemoveTask().execute(seq);
@@ -384,27 +381,6 @@ public class ShopPageActivity extends BaseActivity {
         activityAnimation(false);
     }
 
-    private String getHtml(String url1, String url2) {
-        Log.e("JAY", "params url : " + url1 + "\n" + url2);
-        StringBuilder sb = new StringBuilder("<HTML>");
-        sb.append("<HEAD>").append("</HEAD>").append("<BODY>");
-
-        if (url1.endsWith("null") && url2.endsWith("null")) {
-            sb.append("<p style='text-align:center; margin-top:250px'>");
-            sb.append("<img src='http://cashq.co.kr/m/img/img_no_image.png'></p>");
-        } else {
-            if (!url1.endsWith("null")) {
-                sb.append("<img width='100%' src='").append(url1).append("'>");
-            }
-            if (!url2.endsWith("null")) {
-                sb.append("<img width='100%' src='").append(url2).append("'>");
-            }
-        }
-        sb.append("</BODY>").append("</HTML>");
-        Log.e("JAY", "html : " + sb.toString());
-        return sb.toString();
-    }
-
     public Bitmap combineImage(Bitmap bmp1, Bitmap bmp2) {
         BitmapFactory.Options option = new BitmapFactory.Options();
         option.inDither = true;
@@ -471,17 +447,17 @@ public class ShopPageActivity extends BaseActivity {
         callcnt.setVisibility(View.VISIBLE);
         // iconCalllog.setVisibility(View.VISIBLE);
 
-        name.setText(mIntent.getStringExtra("name"));
-        time1.setText(mIntent.getStringExtra("time1") + " ~");
-        time2.setText(mIntent.getStringExtra("time2"));
-        minPay.setText(mIntent.getStringExtra("minpay"));
-        distance.setText(mIntent.getStringExtra("distance"));
-        dong.setText(mIntent.getStringExtra("delivery_comment_cashq"));
-        callcnt.setText(mIntent.getStringExtra("callcnt") + " 건 주문");
+        name.setText(getIntent().getStringExtra("name"));
+        time1.setText(getIntent().getStringExtra("time1") + " ~");
+        time2.setText(getIntent().getStringExtra("time2"));
+        minPay.setText(getIntent().getStringExtra("minpay"));
+        distance.setText(getIntent().getStringExtra("distance"));
+        dong.setText(getIntent().getStringExtra("delivery_comment_cashq"));
+        callcnt.setText(getIntent().getStringExtra("callcnt") + " 건 주문");
 
-        score.setRating(Float.parseFloat(mIntent.getStringExtra("review_rating")));
+        score.setRating(Float.parseFloat(getIntent().getStringExtra("review_rating")));
 
-        if ("".equals(mIntent.getStringExtra("pre_pay"))) {
+        if ("".equals(getIntent().getStringExtra("pre_pay"))) {
             LinearLayout ll = (LinearLayout)findViewById(R.id.thm_layout);
             ll.setVisibility(View.GONE);
             score.setVisibility(View.GONE);
@@ -491,11 +467,11 @@ public class ShopPageActivity extends BaseActivity {
 
             separatorRow.setBackgroundResource(R.drawable.list_title_gray);
             img2000.setVisibility(View.GONE);
-        } else if ("gl".equals(mIntent.getStringExtra("pre_pay"))) {
+        } else if ("gl".equals(getIntent().getStringExtra("pre_pay"))) {
             separatorRow.setBackgroundResource(R.drawable.list_title_gold);
             btnTel.setText("골드\n주문");
             btnTel.setBackgroundResource(R.drawable.btn_list_gold);
-        } else if ("sl".equals(mIntent.getStringExtra("pre_pay"))) {
+        } else if ("sl".equals(getIntent().getStringExtra("pre_pay"))) {
             separatorRow.setBackgroundResource(R.drawable.list_title_silver);
             btnTel.setBackgroundResource(R.drawable.btn_list_silver);
             btnTel.setText("실버\n주문");
@@ -512,8 +488,8 @@ public class ShopPageActivity extends BaseActivity {
 
                 if (v.getId() == R.id.tel_btn) {
 
-                    String num = mIntent.getStringExtra("tel");
-                    String name = mIntent.getStringExtra("name");
+                    String num = getIntent().getStringExtra("tel");
+                    String name = getIntent().getStringExtra("name");
 
                     checkContact(mThis, name, num);
 
@@ -527,20 +503,20 @@ public class ShopPageActivity extends BaseActivity {
                     Intent menu = new Intent(new Intent(mThis, CallService.class));
 
                     menu.putExtra("pre_pay", mPrePay);
-                    menu.putExtra("pay", mIntent.getStringExtra("pay"));
+                    menu.putExtra("pay", getIntent().getStringExtra("pay"));
                     menu.putExtra("img1", getIntent().getStringExtra("img1"));
                     menu.putExtra("img2", getIntent().getStringExtra("img2"));
                     startService(menu);
                 }
 
-                // mNum = "tel:" + mIntent.getStringExtra("tel");
+                // mNum = "tel:" + getIntent().getStringExtra("tel");
                 // startActivity(new Intent(Intent.ACTION_CALL,
                 // Uri.parse("tel:010-3745-2742")));
                 // PhoneCall.call(mNum, mThis);
             }
         });
 
-        ImageLoader.getInstance().displayImage(IMG_URL + mIntent.getStringExtra("thumb"), thm,
+        ImageLoader.getInstance().displayImage(IMG_URL + getIntent().getStringExtra("thumb"), thm,
                 new SimpleImageLoadingListener() {
                     @Override
                     public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
@@ -552,7 +528,7 @@ public class ShopPageActivity extends BaseActivity {
 
     private void setWebView() {
 
-        mWebView.setVisibility(View.VISIBLE);
+        // mWebView.setVisibility(View.VISIBLE);
         mWebView.setWebViewClient(new WebViewClientClass());
         WebSettings set = mWebView.getSettings();
 
@@ -586,29 +562,77 @@ public class ShopPageActivity extends BaseActivity {
 
         // set.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
 
-        String url = getHtml(IMG_URL + mIntent.getStringExtra("img1"),
-                IMG_URL + mIntent.getStringExtra("img2"));
+        String url;
+
+        if ("".equals(getIntent().getStringExtra("pre_pay"))) {
+            url = getNoImage();
+        } else {
+            url = getHtml(IMG_URL + getIntent().getStringExtra("img1"), IMG_URL
+                    + getIntent().getStringExtra("img2"));
+        }
 
         mWebView.loadDataWithBaseURL(null, url, "text/html", "utf-8", null);
     }
 
+    private String getHtml(String url1, String url2) {
+        Log.e("JAY", "params url : " + url1 + "\n" + url2);
+        StringBuilder sb = new StringBuilder("<HTML>");
+        sb.append("<HEAD>").append("</HEAD>").append("<BODY>");
+
+        if (url1.endsWith("null") && url2.endsWith("null")) {
+            sb.append("<p style='text-align:center; margin-top:250px'>");
+            sb.append("<img src='http://cashq.co.kr/m/img/img_no_image.png'></p>");
+        } else {
+            if (!url1.endsWith("null")) {
+                sb.append("<img width='100%' src='").append(url1).append("'>");
+            }
+            if (!url2.endsWith("null")) {
+                sb.append("<img width='100%' src='").append(url2).append("'>");
+            }
+        }
+        sb.append("</BODY>").append("</HTML>");
+        Log.e("JAY", "html : " + sb.toString());
+        return sb.toString();
+    }
+
+    private String getNoImage() {
+        return String.valueOf(new StringBuilder("<HTML>").append("<HEAD>").append("</HEAD>")
+                .append("<BODY>").append("<p style='text-align:center; margin-top:250px'>")
+                .append("<img src='http://cashq.co.kr/m/img/img_no_image.png'></p>")
+                .append("</BODY>").append("</HTML>"));
+    }
+
+    private void isVisibilityWebView(boolean isWebView) {
+
+        int webViewVisibility;
+        int listViewVisibility;
+        String content;
+
+        if (isWebView) {
+            webViewVisibility = View.VISIBLE;
+            listViewVisibility = View.GONE;
+            content = "메뉴 보기";
+        } else {
+            webViewVisibility = View.GONE;
+            listViewVisibility = View.VISIBLE;
+            content = "전단지 보기";
+        }
+
+        // btnUp.setVisibility(listViewVisibility);
+        // mListView.setVisibility(listViewVisibility);
+        // mMenuImgLayout.setVisibility(listViewVisibility);
+        mListMenu.setVisibility(listViewVisibility);
+        mWebView.setVisibility(webViewVisibility);
+
+        switcher.setText(content);
+
+    }
+
     private void setListView() {
 
-        mScrollView = (ScrollView)findViewById(R.id.shoppage_scrollview);
-        // mScrollView.setVisibility(View.VISIBLE);
-
-        btnUp.setVisibility(View.VISIBLE);
-
-        btnUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mScrollView.smoothScrollTo(0, 0);
-            }
-        });
-
-        mRelativeLayout = (RelativeLayout)findViewById(R.id.shoppage_menulist);
-
-        mListView.setVisibility(View.VISIBLE);
+        // btnUp.setVisibility(View.VISIBLE);
+        // mListView.setVisibility(View.VISIBLE);
+        // mMenuImgLayout.setVisibility(View.VISIBLE);
 
         String storeCode = getIntent().getStringExtra("store_code");
 
@@ -992,9 +1016,9 @@ public class ShopPageActivity extends BaseActivity {
 
                 if (hasImage) {
                     setMenuImage();
-                    mRelativeLayout.setVisibility(View.VISIBLE);
+                    mMenuImgLayout.setVisibility(View.VISIBLE);
                 } else {
-                    mRelativeLayout.setVisibility(View.GONE);
+                    mMenuImgLayout.setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -1035,7 +1059,7 @@ public class ShopPageActivity extends BaseActivity {
             price3.setText(price[2]);
             price4.setText(price[3]);
 
-//            if(true){
+            // if(true){
             if (false) {
                 img1.setOnClickListener(this);
                 img2.setOnClickListener(this);
