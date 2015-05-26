@@ -19,7 +19,7 @@ import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static kr.co.cashqc.gcm.Util.getDevicePhoneNumber;
+import static kr.co.cashqc.gcm.Util.getPhoneNumber;
 
 /**
  * @author Jung-Hum Cho
@@ -53,7 +53,7 @@ public class MenuListFragment extends ListFragment {
 
         Log.e(TAG, "onActivityCreated");
 
-        String phoneNum = getDevicePhoneNumber(getActivity());
+        String phoneNum = getPhoneNumber(getActivity());
 
         if (sIsInitAdminCheck) {
             if (phoneNum != null)

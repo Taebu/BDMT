@@ -88,10 +88,12 @@
         android:layout_marginRight="-4dp"
         android:layout_toLeftOf="@+id/btn_cart"
         android:text="0"
+        android:visibility="invisible"
         android:textColor="#FFFFFF"
         android:textStyle="bold" />
 
     <ImageView
+        android:visibility="invisible"
         android:id="@+id/btn_cart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

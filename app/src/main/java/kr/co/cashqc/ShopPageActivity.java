@@ -53,6 +53,7 @@ import static kr.co.cashqc.Utils.initExpandableListViewHeight;
 import static kr.co.cashqc.Utils.insertMenuLevel2;
 import static kr.co.cashqc.Utils.setExpandableListViewHeight;
 import static kr.co.cashqc.Utils.setListViewHeightBasedOnChildren;
+import static kr.co.cashqc.gcm.Util.getPhoneNumber;
 
 /**
  * @author Jung-Hum Cho Created by Administrator on 2014-10-16.
@@ -127,7 +128,7 @@ public class ShopPageActivity extends BaseActivity {
         mRatingBar.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                String phoneNum = getPhoneNumber();
+                String phoneNum = getPhoneNumber(mThis);
 
                 if (phoneNum.isEmpty())
                     phoneNum = "4444444444";
@@ -232,8 +233,8 @@ public class ShopPageActivity extends BaseActivity {
 
             String seq = params[0];
 
-            String url = Uri.parse("http://cashq.co.kr/m/ajax_data/get_review.php?")
-                    .buildUpon().appendQueryParameter("seq", seq).toString();
+            String url = Uri.parse("http://cashq.co.kr/m/ajax_data/get_review.php?").buildUpon()
+                    .appendQueryParameter("seq", seq).toString();
 
             return new JSONParser().getJSONObjectFromUrl(url);
         }
@@ -1059,8 +1060,8 @@ public class ShopPageActivity extends BaseActivity {
             price3.setText(price[2]);
             price4.setText(price[3]);
 
-            // if(true){
-            if (false) {
+            if (sIsTTSmode) {
+                // if (false) {
                 img1.setOnClickListener(this);
                 img2.setOnClickListener(this);
                 img3.setOnClickListener(this);

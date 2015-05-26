@@ -95,7 +95,7 @@ public class ShopAdminActivity extends BaseActivity {
 
                     JSONObject orderObject = array.getJSONObject(i);
 
-                    if (true) {
+                    if (sIsTTSmode) {
                         // if (orderObject.getString("seq").equals("2")) {
 
                         OrderData orderData = new OrderData();

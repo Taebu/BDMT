@@ -15,6 +15,8 @@ import org.json.JSONObject;
 
 import kr.co.cashqc.gcm.Util;
 
+import static kr.co.cashqc.gcm.Util.getPhoneNumber;
+
 /**
  * @author Jung-Hum Cho Created by anp on 15. 1. 22..
  */
@@ -36,7 +38,7 @@ public class OrderListLoginActivity extends BaseActivity {
 
         cbAutoLogin = (CheckBox)findViewById(R.id.calllog_autologin);
         etPhone = (EditText)findViewById(R.id.calllog_phone);
-        etPhone.setText(getPhoneNumber());
+        etPhone.setText(getPhoneNumber(this));
 
         if (Util.loadSharedPreferencesBoolean(mThis, "orderlist_autologin")) {
 

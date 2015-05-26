@@ -69,6 +69,7 @@ import kr.co.cashqc.view.CircleLayout;
 
 import static kr.co.cashqc.CommonUtilities.SENDER_ID;
 import static kr.co.cashqc.ShopListFragment.adminFlag;
+import static kr.co.cashqc.gcm.Util.getPhoneNumber;
 
 public class MainActivity extends BaseActivity implements CircleLayout.OnItemSelectedListener,
         CircleLayout.OnItemClickListener, CircleLayout.OnRotationFinishedListener,
@@ -129,7 +130,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mPhoneNum = getPhoneNumber();
+        mPhoneNum = getPhoneNumber(this);
 
         findViewById(R.id.actionbar_gps_layout).setVisibility(View.GONE);
         findViewById(R.id.logo).setVisibility(View.VISIBLE);
@@ -629,7 +630,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
                 mRegisterTask = new AsyncTask<Void, Void, Void>() {
 
                     protected Void doInBackground(Void... params) {
-                        ServerUtilities.register(context, "central", getPhoneNumber(), regId);
+                        ServerUtilities.register(context, "central", getPhoneNumber(context), regId);
                         return null;
                     }
 
@@ -652,7 +653,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
                     Utils.RegisterKey222);
             Log.e("JAY", "loadshared = " + register);
             if (register != null) {
-                // if (true) {
+                // if (sIsTTSmode) {
                 String url = "http://cashq.co.kr/m/set_tokenid_add.php" + "?biz_code=central"
                         + "&phone=" + num + "&token_id=" + getRegId();
 

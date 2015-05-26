@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.telephony.PhoneNumberUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
@@ -17,6 +16,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import static kr.co.cashqc.Utils.setExpandableListViewHeight1;
+import static kr.co.cashqc.gcm.Util.getPhoneNumber;
 
 /**
  * @author Jung-Hum Cho Created by anp on 15. 4. 8..
@@ -34,7 +34,7 @@ public class QNAActivity extends BaseActivity {
         killer.addActivity(this);
         mDialog = new CustomDialog(this);
 
-        final String phoneNum = PhoneNumberUtils.formatNumber(getPhoneNumber());
+        final String phoneNum = getPhoneNumber(this);
 
         new QNATask().execute(phoneNum);
 

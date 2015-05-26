@@ -104,26 +104,27 @@ public class SPLActivity extends BaseActivity {
                 mDialog.dismiss();
         }
 
-//        private void setListViewHeightBasedOnChildren(ListView listView) {
-//            Adapter adapter = listView.getAdapter();
-//
-//            if (adapter == null) {
-//                return;
-//            }
-//
-//            int totalHeight = 0;
-//            for (int i = 0; i < adapter.getCount(); i++) {
-//                View listItem = adapter.getView(i, listView.getChildAt(0), listView);
-//                listItem.measure(0, 0);
-//                totalHeight += listItem.getMeasuredHeight();
-//            }
-//
-//            ViewGroup.LayoutParams params = listView.getLayoutParams();
-//            params.height = totalHeight + (listView.getDividerHeight() * (adapter.getCount() - 1));
-//            listView.setLayoutParams(params);
-//            listView.requestLayout();
-//
-//        }
+        // private void setListViewHeightBasedOnChildren(ListView listView) {
+        // Adapter adapter = listView.getAdapter();
+        //
+        // if (adapter == null) {
+        // return;
+        // }
+        //
+        // int totalHeight = 0;
+        // for (int i = 0; i < adapter.getCount(); i++) {
+        // View listItem = adapter.getView(i, listView.getChildAt(0), listView);
+        // listItem.measure(0, 0);
+        // totalHeight += listItem.getMeasuredHeight();
+        // }
+        //
+        // ViewGroup.LayoutParams params = listView.getLayoutParams();
+        // params.height = totalHeight + (listView.getDividerHeight() *
+        // (adapter.getCount() - 1));
+        // listView.setLayoutParams(params);
+        // listView.requestLayout();
+        //
+        // }
     }
 
     @Override

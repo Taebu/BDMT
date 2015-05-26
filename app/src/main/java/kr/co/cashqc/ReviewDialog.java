@@ -1,6 +1,8 @@
 
 package kr.co.cashqc;
 
+import static kr.co.cashqc.MainActivity.TOKEN_ID;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -14,8 +16,6 @@ import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import static kr.co.cashqc.MainActivity.TOKEN_ID;
 
 /**
  * @author Jung-Hum Cho Created by anp on 15. 1. 5..

@@ -872,6 +872,30 @@ public class Util {
         return flag;
     }
 
+    public static String getPhoneNumber(Context context) {
+
+        TelephonyManager mgr = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+
+        try {
+
+            String num = mgr.getLine1Number();
+
+            if (num.startsWith("+82")) {
+                num = num.replace("+82", "0");
+            }
+
+            if (num.contains("-")) {
+                num = num.replaceAll("-", "");
+            }
+
+            return num.trim();
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
     /**
      * 휴대폰 번호 가져오기
      * 

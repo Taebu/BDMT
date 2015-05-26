@@ -22,6 +22,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import static kr.co.cashqc.gcm.Util.getPhoneNumber;
 import static kr.co.cashqc.gcm.Util.loadSharedPreferences;
 import static kr.co.cashqc.gcm.Util.saveSharedPreferences_string;
 
@@ -248,7 +249,7 @@ public class OrderActivity extends BaseActivity {
         etAddress1 = (EditText)findViewById(R.id.order_address1);
         etAddress2 = (EditText)findViewById(R.id.order_address2);
         etPhone = (EditText)findViewById(R.id.order_phone);
-        etPhone.setText(getPhoneNumber());
+        etPhone.setText(getPhoneNumber(this));
         etComment = (EditText)findViewById(R.id.order_comment);
 
         rbCashqCard = (TextView)findViewById(R.id.order_cashq_card);

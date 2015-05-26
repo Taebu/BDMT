@@ -15,6 +15,8 @@ import org.json.JSONObject;
 
 import kr.co.cashqc.gcm.Util;
 
+import static kr.co.cashqc.gcm.Util.getPhoneNumber;
+
 /**
  * @author Jung-Hum Cho Created by anp on 14. 11. 18..
  */
@@ -36,7 +38,7 @@ public class LoginActivity extends BaseActivity {
 
         cbAutoLogin = (CheckBox)findViewById(R.id.auto_login);
         etPhoneNum = (EditText)findViewById(R.id.field_phone);
-        etPhoneNum.setText(getPhoneNumber());
+        etPhoneNum.setText(getPhoneNumber(this));
 
         if (Util.loadSharedPreferencesBoolean(this, "point_autologin")) {
 

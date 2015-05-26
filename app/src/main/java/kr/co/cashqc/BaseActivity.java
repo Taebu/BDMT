@@ -18,7 +18,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -47,7 +46,7 @@ import static kr.co.cashqc.Utils.getDisplayWidthSize;
 
 public class BaseActivity extends SlidingFragmentActivity {
 
-
+    public static final boolean sIsTTSmode = true;
 
     private final String TAG = getClass().getSimpleName();
 
@@ -82,8 +81,6 @@ public class BaseActivity extends SlidingFragmentActivity {
         killer = ActivityKiller.getInstance();
 
         stopService(new Intent(this, CallService.class));
-
-
 
         // set the Behind View
         setBehindContentView(R.layout.menu_frame);
@@ -143,10 +140,9 @@ public class BaseActivity extends SlidingFragmentActivity {
         });
 
         // 장바구니 숨김
-        // if (false) {
-        if (true) {
-            TV_CART_COUNT.setVisibility(View.INVISIBLE);
-            findViewById(R.id.btn_cart).setVisibility(View.INVISIBLE);
+        if (sIsTTSmode) {
+            TV_CART_COUNT.setVisibility(View.VISIBLE);
+            findViewById(R.id.btn_cart).setVisibility(View.VISIBLE);
         }
         findViewById(R.id.btn_cart).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -271,23 +267,6 @@ public class BaseActivity extends SlidingFragmentActivity {
         }
     }
 
-    public String getPhoneNumber() {
-
-        TelephonyManager mgr = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
-
-        try {
-            String num = mgr.getLine1Number();
-            if (num.startsWith("+82")) {
-                return num.replace("+82", "0");
-            } else {
-                return num;
-            }
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-            return "";
-        }
-    }
-
     public static void setCartCount(Activity act) {
 
         DataBaseOpenHelper helper = new DataBaseOpenHelper(act);
@@ -400,6 +379,5 @@ public class BaseActivity extends SlidingFragmentActivity {
 
         }
     }
-
 
 }

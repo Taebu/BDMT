@@ -3,6 +3,7 @@ package kr.co.cashqc;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,7 @@ import android.widget.TextView;
 
 import static kr.co.cashqc.BaseActivity.setCartCount;
 import static kr.co.cashqc.Utils.insertMenuLevel2;
-
+import static kr.co.cashqc.BaseActivity.sIsTTSmode;
 public class ShopMenuAdapter extends BaseExpandableListAdapter {
 
     public ShopMenuAdapter(Context context, ShopMenuData data,
@@ -68,8 +69,8 @@ public class ShopMenuAdapter extends BaseExpandableListAdapter {
         String imgUrl = "http://cashq.co.kr/adm/upload/thumb/1424842254UWDWC.jpg";
 
         // ImageLoader.getInstance().displayImage(imgUrl, h.ivThumb);
-//        if(true) {
-        if (false) {
+        if (sIsTTSmode) {
+            // if (false) {
 
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -106,6 +107,7 @@ public class ShopMenuAdapter extends BaseExpandableListAdapter {
         if (v == null) {
             h = new ViewHolder();
             v = inflater.inflate(R.layout.list_menu_row, parent, false);
+            v.setBackgroundColor(Color.rgb(237, 237, 237));
             h.tvGroupName = (TextView)v.findViewById(R.id.tv_group);
             h.ivImage = (ImageView)v.findViewById(R.id.iv_image);
             h.ivIndicator = (ImageView)v.findViewById(R.id.iv_indicator);

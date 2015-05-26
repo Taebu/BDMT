@@ -11,6 +11,8 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static kr.co.cashqc.gcm.Util.getPhoneNumber;
+
 /**
  * Created by anp on 14. 11. 19..
  */
@@ -31,9 +33,7 @@ public class JoinActivity extends BaseActivity {
         cbTerms2 = (CheckBox)findViewById(R.id.terms2);
         etNum = (EditText)findViewById(R.id.field_phone);
 
-        if (!(getPhoneNumber().isEmpty())) {
-            etNum.setText(getPhoneNumber());
-        }
+        etNum.setText(getPhoneNumber(this));
 
         findViewById(R.id.btn_joinok).setOnClickListener(new View.OnClickListener() {
 
