@@ -16,6 +16,7 @@
         android:src="@drawable/btn_menu_new" />
 
     <ImageView
+
         android:id="@+id/logo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -50,6 +51,7 @@
             android:textColor="#FFFFFF" />
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/actionbar_manual_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -62,6 +64,7 @@
             android:textStyle="bold" />
 
         <TextView
+
             android:id="@+id/actionbar_manual_distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

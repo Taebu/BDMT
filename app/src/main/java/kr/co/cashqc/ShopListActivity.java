@@ -40,9 +40,8 @@ public class ShopListActivity extends BaseActivity implements ActionBar.TabListe
 
         mLocationUtil = LocationUtil.getInstance(this);
 
-//        findViewById(R.id.logo).setVisibility(View.GONE);
-
 //        findViewById(R.id.actionbar_gps_layout).setVisibility(View.VISIBLE);
+//        findViewById(R.id.logo).setVisibility(View.GONE);
 
         tvAddress = (TextView)findViewById(R.id.actionbar_location_name1);
 

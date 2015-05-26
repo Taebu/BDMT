@@ -2,8 +2,10 @@
 package kr.co.cashqc;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.telephony.PhoneNumberUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
@@ -14,13 +16,14 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import static kr.co.cashqc.Utils.initExpandableListViewHeight;
-import static kr.co.cashqc.Utils.setExpandableListViewHeight;
+import static kr.co.cashqc.Utils.setExpandableListViewHeight1;
 
 /**
  * @author Jung-Hum Cho Created by anp on 15. 4. 8..
  */
 public class QNAActivity extends BaseActivity {
+
+    private final String TAG = getClass().getSimpleName();
 
     private Activity mThis = this;
 
@@ -31,10 +34,25 @@ public class QNAActivity extends BaseActivity {
         killer.addActivity(this);
         mDialog = new CustomDialog(this);
 
-        String phoneNum = getPhoneNumber();
+        final String phoneNum = PhoneNumberUtils.formatNumber(getPhoneNumber());
 
         new QNATask().execute(phoneNum);
-        // new QNATask().execute(phoneNum);
+
+        findViewById(R.id.qna_write).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                QNADialog qnaDialog = new QNADialog(mThis, phoneNum);
+                qnaDialog.show();
+                qnaDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        new QNATask().execute(phoneNum);
+                    }
+                });
+            }
+        });
+
     }
 
     private class QNATask extends AsyncTask<String, Void, JSONObject> {
@@ -49,12 +67,13 @@ public class QNAActivity extends BaseActivity {
         @Override
         protected JSONObject doInBackground(String... params) {
 
-            // String phone = params[0];
+            String phone = params[0];
             // String url =
             // "http://cashq.co.kr/m/ajax_data/get_board.php?board=qna_1&mb_hp="
             // + phone;
+            String url = "http://cashq.co.kr/m/ajax_data/get_board.php?board=qna_1&mb_hp=" + phone;
 
-            String url = "http://cashq.co.kr/m/ajax_data/get_board.php?board=qna_1&mb_hp=010-7931-0141";
+            Log.e(TAG, "url : " + url);
 
             return new JSONParser().getJSONObjectFromUrl(url);
             // return null;
@@ -63,6 +82,7 @@ public class QNAActivity extends BaseActivity {
         @Override
         protected void onPostExecute(JSONObject jsonObject) {
             super.onPostExecute(jsonObject);
+            Log.e(TAG, "JsonParse : " + jsonObject);
 
             ArrayList<BoardData> articleList = makeBoardData(jsonObject);
 
@@ -72,13 +92,13 @@ public class QNAActivity extends BaseActivity {
                 QNAListAdapter adapter = new QNAListAdapter(mThis, articleList);
                 listView.setAdapter(adapter);
 
-                initExpandableListViewHeight(listView);
+                setExpandableListViewHeight1(listView, -1);
 
                 listView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
                     @Override
                     public boolean onGroupClick(ExpandableListView parent, View v,
                             int groupPosition, long id) {
-                        setExpandableListViewHeight(parent, groupPosition);
+                        setExpandableListViewHeight1(parent, groupPosition);
                         return false;
                     }
                 });
@@ -103,7 +123,6 @@ public class QNAActivity extends BaseActivity {
                 }
 
                 if (array != null) {
-
                     for (int i = 0; i < array.length(); i++) {
 
                         JSONObject object = array.getJSONObject(i);
@@ -128,17 +147,29 @@ public class QNAActivity extends BaseActivity {
                         if (object.has("wr_datetime"))
                             articleData.setDatetime(object.getString("wr_datetime"));
 
-                        ArrayList<BoardData> replyData = new ArrayList<BoardData>();
+                        ArrayList<BoardData> replyDataList = new ArrayList<BoardData>();
 
-                        if (object.has("reply")) {
-                            replyData = makeBoardData(object);
+//                        Log.e(TAG, "reply : " + object.getString("reply"));
+
+                        if(object.has("reply")) {
+                            if ("[]".equals(object.getString("reply"))) {
+                                Log.e(TAG, "reply hasnt'");
+                                BoardData replyData = new BoardData();
+                                replyData.setDatetime("");
+                                replyData.setContent("미답변 상태입니다.");
+                                replyDataList.add(replyData);
+                            } else {
+                                Log.e(TAG, "reply has");
+                                replyDataList = makeBoardData(object);
+                            }
                         }
 
-                        articleData.setReply(replyData);
+                        articleData.setReply(replyDataList);
 
                         dataList.add(articleData);
                     }
                 }
+
             } catch (JSONException e) {
                 e.printStackTrace();
             } catch (Exception e) {

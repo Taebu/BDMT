@@ -419,4 +419,43 @@ public class Utils {
     public static int getDisplayWidthSize(Activity activity) {
         return activity.getWindowManager().getDefaultDisplay().getWidth();
     }
+
+    public static void setExpandableListViewHeight1(ExpandableListView listView, int group) {
+        ExpandableListAdapter listAdapter = listView.getExpandableListAdapter();
+        if (listAdapter == null) {
+            return;
+        }
+
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(),
+                View.MeasureSpec.UNSPECIFIED);
+        int totalHeight = 0;
+        View view = null;
+        for (int i = 0; i < listAdapter.getGroupCount(); i++) {
+            view = listAdapter.getGroupView(i, false, view, listView);
+            if (i == 0) {
+                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth,
+                        ViewGroup.LayoutParams.WRAP_CONTENT));
+            }
+            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += view.getMeasuredHeight();
+            if (((listView.isGroupExpanded(i)) && (i != group))
+                    || ((!listView.isGroupExpanded(i)) && (i == group))) {
+                View listItem = null;
+                for (int j = 0; j < listAdapter.getChildrenCount(i); j++) {
+                    listItem = listAdapter.getChildView(i, j, false, listItem, listView);
+                    listItem.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth,
+                            View.MeasureSpec.UNSPECIFIED));
+                    listItem.measure(
+                            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+                    totalHeight += listItem.getMeasuredHeight();
+                }
+            }
+        }
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight
+                + (listView.getDividerHeight() * (listAdapter.getGroupCount() - 1));
+        listView.setLayoutParams(params);
+        listView.requestLayout();
+    }
 }

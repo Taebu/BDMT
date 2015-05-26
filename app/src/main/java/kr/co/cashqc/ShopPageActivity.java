@@ -232,7 +232,7 @@ public class ShopPageActivity extends BaseActivity {
 
             String seq = params[0];
 
-            String url = Uri.parse("http://cashq.co.kr/m/ajax_data/get_review.php?seq=6867")
+            String url = Uri.parse("http://cashq.co.kr/m/ajax_data/get_review.php?")
                     .buildUpon().appendQueryParameter("seq", seq).toString();
 
             return new JSONParser().getJSONObjectFromUrl(url);

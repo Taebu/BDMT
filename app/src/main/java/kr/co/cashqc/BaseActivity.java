@@ -41,11 +41,15 @@ import static kr.co.cashqc.Utils.getDisplayWidthSize;
 
 /**
  * Created by anp on 14. 11. 4..
- * 
+ *
  * @author Jung-Hum Cho
  */
 
 public class BaseActivity extends SlidingFragmentActivity {
+
+
+
+    private final String TAG = getClass().getSimpleName();
 
     private static final Uri URI = Uri.parse("content://com.google.android.gsf.gservices");
 
@@ -78,6 +82,8 @@ public class BaseActivity extends SlidingFragmentActivity {
         killer = ActivityKiller.getInstance();
 
         stopService(new Intent(this, CallService.class));
+
+
 
         // set the Behind View
         setBehindContentView(R.layout.menu_frame);
@@ -137,7 +143,7 @@ public class BaseActivity extends SlidingFragmentActivity {
         });
 
         // 장바구니 숨김
-//        if (false) {
+        // if (false) {
         if (true) {
             TV_CART_COUNT.setVisibility(View.INVISIBLE);
             findViewById(R.id.btn_cart).setVisibility(View.INVISIBLE);
@@ -381,7 +387,7 @@ public class BaseActivity extends SlidingFragmentActivity {
 
     public void mOnClick(View view) {
 
-        switch(view.getId()) {
+        switch (view.getId()) {
 
             case R.id.actionbar_btn_gps:
                 break;
@@ -392,7 +398,8 @@ public class BaseActivity extends SlidingFragmentActivity {
             case R.id.actionbar_manual_distance:
                 break;
 
-
         }
     }
+
+
 }

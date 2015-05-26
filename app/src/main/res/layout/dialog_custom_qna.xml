@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="문의 사항"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold" />
+
+
+    <LinearLayout
+        android:id="@+id/dialog"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_popup_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_marginTop="-4dp"
+            android:background="@drawable/bg_popup_title"
+            android:scaleType="center"
+            android:src="@drawable/logo_sub" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="문의 사항"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/dialog_qna_content"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/text_box_1"
+            android:gravity="top"
+            android:hint="여기를 눌러 문의 사항을 작성해 주세요."
+            android:padding="12dp"
+            android:textSize="13sp" />
+
+        <Button
+            android:id="@+id/qna_ok"
+            android:layout_width="226dp"
+            android:layout_height="43dp"
+            android:layout_gravity="center|bottom"
+            android:background="@drawable/btn_black"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+</LinearLayout>

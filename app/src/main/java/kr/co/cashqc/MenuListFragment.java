@@ -27,6 +27,12 @@ import static kr.co.cashqc.gcm.Util.getDevicePhoneNumber;
 
 public class MenuListFragment extends ListFragment {
 
+    public static boolean sIsAdmin = false;
+
+    public static boolean sIsInitAdminCheck = true;
+
+    private final String TAG = getClass().getSimpleName();
+
     // 업데이트 모드 (false)
     final boolean updateFlag = true;
 
@@ -38,26 +44,45 @@ public class MenuListFragment extends ListFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
+        Log.e(TAG, "onAttach");
         // mListener = (AdapterView.OnItemClickListener) activity;
     }
 
-    private class AdminCheckTask extends AsyncTask<Void, Void, JSONObject> {
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
-        public AdminCheckTask(Context context) {
-            mContext = context;
+        Log.e(TAG, "onActivityCreated");
+
+        String phoneNum = getDevicePhoneNumber(getActivity());
+
+        if (sIsInitAdminCheck) {
+            if (phoneNum != null)
+                new AdminCheckTask().execute(phoneNum);
+        } else {
+
+            SampleAdapter adapter = new SampleAdapter(getActivity());
+
+            adapter.add(new SampleItem("홈", R.drawable.icon_more_1_gray));
+            adapter.add(new SampleItem("포인트", R.drawable.icon_more_2_gray));
+            adapter.add(new SampleItem("문의 사항", R.drawable.icon_more_3_gray));
+            adapter.add(new SampleItem("공지 사항", R.drawable.icon_more_6_gray));
+
+            if (sIsAdmin)
+                adapter.add(new SampleItem("가맹점 주문내역", R.drawable.icon_more_8_gray));
+
+            setListAdapter(adapter);
         }
+    }
 
-        private Context mContext;
-
-        private boolean isAdmin = false;
+    private class AdminCheckTask extends AsyncTask<String, Void, JSONObject> {
 
         @Override
-        protected JSONObject doInBackground(Void... params) {
+        protected JSONObject doInBackground(String... params) {
 
-            String phoneNumber = getDevicePhoneNumber(mContext);
+            String phoneNumber = params[0];
 
             String url = "http://cashq.co.kr/m/ajax_data/get_isadmin.php?phone=" + phoneNumber;
-
+            Log.e(TAG, "MenuListFragment isadmin url : " + url);
             return new JSONParser().getJSONObjectFromUrl(url);
         }
 
@@ -66,32 +91,28 @@ public class MenuListFragment extends ListFragment {
             super.onPostExecute(jsonObject);
 
             try {
-                isAdmin = jsonObject.getBoolean("success");
+                sIsAdmin = jsonObject.getBoolean("success");
+                sIsInitAdminCheck = false;
                 Log.e("isAdminPhone", "async!");
+
+                SampleAdapter adapter = new SampleAdapter(getActivity());
+
+                adapter.add(new SampleItem("홈", R.drawable.icon_more_1_gray));
+                adapter.add(new SampleItem("포인트", R.drawable.icon_more_2_gray));
+                adapter.add(new SampleItem("문의 사항", R.drawable.icon_more_3_gray));
+                adapter.add(new SampleItem("공지 사항", R.drawable.icon_more_6_gray));
+
+                if (sIsAdmin)
+                    adapter.add(new SampleItem("가맹점 주문내역", R.drawable.icon_more_8_gray));
+
+                setListAdapter(adapter);
+
             } catch (JSONException e) {
                 e.printStackTrace();
+            } catch (NullPointerException e) {
+                e.printStackTrace();
             }
-
-            SampleAdapter adapter = new SampleAdapter(mContext);
-
-            adapter.add(new SampleItem("홈", R.drawable.icon_more_1_gray));
-            adapter.add(new SampleItem("포인트", R.drawable.icon_more_2_gray));
-            adapter.add(new SampleItem("문의 사항", R.drawable.icon_more_3_gray));
-            adapter.add(new SampleItem("공지 사항", R.drawable.icon_more_6_gray));
-
-            if (isAdmin)
-                adapter.add(new SampleItem("가맹점 주문내역", R.drawable.icon_more_8_gray));
-
-            setListAdapter(adapter);
         }
-
-    }
-
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        new AdminCheckTask(getActivity()).execute();
-
     }
 
     private class SampleItem {
@@ -139,20 +160,9 @@ public class MenuListFragment extends ListFragment {
                 intent = new Intent(getActivity(), LoginActivity.class);
 
                 break;
-            // case 2:
-            // if (Util.loadSharedPreferencesBoolean(getActivity(), "login")) {
-            // Util.saveSharedPreferences_boolean(getActivity(), "login",
-            // false);
-            // Toast.makeText(getActivity(), "로그아웃 되었습니다.",
-            // Toast.LENGTH_SHORT).show();
-            // intent = new Intent(getActivity(), MainActivity.class);
-            // } else {
-            // intent = new Intent(getActivity(), LoginActivity.class);
-            // }
-            // break;
             case 2:
-                intent = new Intent(getActivity(), WebViewActivity.class);
-                // intent = new Intent(getActivity(), QNAActivity.class);
+                // intent = new Intent(getActivity(), WebViewActivity.class);
+                intent = new Intent(getActivity(), QNAActivity.class);
                 intent.putExtra("assort", "qna");
                 break;
             case 3:

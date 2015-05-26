@@ -83,6 +83,8 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
     private BackPressCloseHandler backPressCloseHandler;
 
+    private String mPhoneNum;
+
     public MainActivity() {
         super();
         MainActivity.Instance = this;
@@ -127,74 +129,14 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mPhoneNum = getPhoneNumber();
+
         findViewById(R.id.actionbar_gps_layout).setVisibility(View.GONE);
+        findViewById(R.id.logo).setVisibility(View.VISIBLE);
 
         buildGoogleApiClient();
 
-        UpdateChecker checker = new UpdateChecker(this, new UpdateCheckerResult() {
-            @Override
-            public void foundUpdateAndShowIt(String s) {
-                Log.e("UpdateChecker", "foundUpdateAndShowIt : " + s + " getVersionInstalled : "
-                        + getVersionInstalled());
-                new UpdateCheckerDialog(MainActivity.this).show();
-                // com.rampo.updatechecker.notice.Dialog.show(MainActivity.this,
-                // Store.GOOGLE_PLAY, s,
-                // R.drawable.ic_launcher);
-            }
-
-            @Override
-            public void foundUpdateAndDontShowIt(String s) {
-                Log.e("UpdateChecker", "foundUpdateAndDontShowIt : " + s
-                        + " getVersionInstalled : " + getVersionInstalled());
-                new UpdateCheckerDialog(MainActivity.this).show();
-                // com.rampo.updatechecker.notice.Dialog.show(MainActivity.this,
-                // Store.GOOGLE_PLAY, s,
-                // R.drawable.ic_launcher);
-            }
-
-            @Override
-            public void returnUpToDate(String s) {
-                Log.e("UpdateChecker", "returnUpToDate : " + s + " getVersionInstalled : "
-                        + getVersionInstalled());
-            }
-
-            @Override
-            public void returnMultipleApksPublished() {
-                Log.e("UpdateChecker", "returnMultipleApksPublished" + " getVersionInstalled : "
-                        + getVersionInstalled());
-            }
-
-            @Override
-            public void returnNetworkError() {
-                Log.e("UpdateChecker", "returnNetworkError" + " getVersionInstalled : "
-                        + getVersionInstalled());
-            }
-
-            @Override
-            public void returnAppUnpublished() {
-                Log.e("UpdateChecker", "returnAppunpublished" + " getVersionInstalled : "
-                        + getVersionInstalled());
-            }
-
-            @Override
-            public void returnStoreError() {
-                Log.e("UpdateChecker", "returnStoreError");
-            }
-        });
-        checker.start();
-
-        // if (introFlag) {
-        // startActivity(new Intent(this, IntroActivity.class));
-        // introFlag = false;
-        // }
-
-        // Log.e("MainActivity", "getVersionName : " + getVersionName(this));
-
-        // getAndroidId(this);
-
-        // getMarketVersionName(this);
-
-        // new MarketVersionNameTask(this).execute();
+        updateChecker();
 
         GoogleAnalytics.getInstance(getApplicationContext()).dispatchLocalHits();
 
@@ -301,6 +243,60 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
         // 네트워크 예외
 
+    }
+
+    private void updateChecker() {
+        UpdateChecker checker = new UpdateChecker(this, new UpdateCheckerResult() {
+            @Override
+            public void foundUpdateAndShowIt(String s) {
+                Log.e("UpdateChecker", "foundUpdateAndShowIt : " + s + " getVersionInstalled : "
+                        + getVersionInstalled());
+                new UpdateCheckerDialog(MainActivity.this).show();
+                // com.rampo.updatechecker.notice.Dialog.show(MainActivity.this,
+                // Store.GOOGLE_PLAY, s,
+                // R.drawable.ic_launcher);
+            }
+
+            @Override
+            public void foundUpdateAndDontShowIt(String s) {
+                Log.e("UpdateChecker", "foundUpdateAndDontShowIt : " + s
+                        + " getVersionInstalled : " + getVersionInstalled());
+                new UpdateCheckerDialog(MainActivity.this).show();
+                // com.rampo.updatechecker.notice.Dialog.show(MainActivity.this,
+                // Store.GOOGLE_PLAY, s,
+                // R.drawable.ic_launcher);
+            }
+
+            @Override
+            public void returnUpToDate(String s) {
+                Log.e("UpdateChecker", "returnUpToDate : " + s + " getVersionInstalled : "
+                        + getVersionInstalled());
+            }
+
+            @Override
+            public void returnMultipleApksPublished() {
+                Log.e("UpdateChecker", "returnMultipleApksPublished" + " getVersionInstalled : "
+                        + getVersionInstalled());
+            }
+
+            @Override
+            public void returnNetworkError() {
+                Log.e("UpdateChecker", "returnNetworkError" + " getVersionInstalled : "
+                        + getVersionInstalled());
+            }
+
+            @Override
+            public void returnAppUnpublished() {
+                Log.e("UpdateChecker", "returnAppunpublished" + " getVersionInstalled : "
+                        + getVersionInstalled());
+            }
+
+            @Override
+            public void returnStoreError() {
+                Log.e("UpdateChecker", "returnStoreError");
+            }
+        });
+        checker.start();
     }
 
     private synchronized void buildGoogleApiClient() {
@@ -468,7 +464,9 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
     }
 
     public void findLocation() {
-        mDialog.show();
+        if (!mDialog.isShowing()) {
+            mDialog.show();
+        }
         mLocationUtil.start();
         TimerTask timerTask = new TimerTask() {
             public void run() {
@@ -596,8 +594,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
             JSONParser parser = new JSONParser();
 
-            String pointURL = "http://cashq.co.kr/m/ajax_data/get_point.php?phone="
-                    + getPhoneNumber();
+            String pointURL = "http://cashq.co.kr/m/ajax_data/get_point.php?phone=" + mPhoneNum;
 
             return parser.getJSONObjectFromUrl(pointURL);
         }
@@ -650,7 +647,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
     public void setHttpRequest() {
         try {
-            String num = getPhoneNumber();
+            String num = mPhoneNum;
             String register = Util.loadSharedPreferences(getApplicationContext(),
                     Utils.RegisterKey222);
             Log.e("JAY", "loadshared = " + register);
