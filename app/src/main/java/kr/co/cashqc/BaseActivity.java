@@ -46,7 +46,8 @@ import static kr.co.cashqc.Utils.getDisplayWidthSize;
 
 public class BaseActivity extends SlidingFragmentActivity {
 
-    public static final boolean sIsTTSmode = true;
+    //    public static final boolean sIsTTSmode = true;
+    public static final boolean sIsTTSmode = false;
 
     private final String TAG = getClass().getSimpleName();
 

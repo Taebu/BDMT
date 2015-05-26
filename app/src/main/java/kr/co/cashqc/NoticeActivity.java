@@ -14,9 +14,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static kr.co.cashqc.Utils.initExpandableListViewHeight;
-import static kr.co.cashqc.Utils.setExpandableListViewHeight;
-
 /**
  * @author Jung-Hum Cho Created by anp on 15. 4. 8..
  */
@@ -80,13 +77,13 @@ public class NoticeActivity extends BaseActivity {
                 NoticeListAdapter adapter = new NoticeListAdapter(mThis, dataList);
                 listView.setAdapter(adapter);
 
-                initExpandableListViewHeight(listView);
+//                setExpandableListViewHeight1(listView, -1);
 
                 listView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
                     @Override
                     public boolean onGroupClick(ExpandableListView parent, View v,
                             int groupPosition, long id) {
-                        setExpandableListViewHeight(parent, groupPosition);
+//                        setExpandableListViewHeight1(parent, groupPosition);
                         return false;
                     }
                 });

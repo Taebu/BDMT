@@ -15,7 +15,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import static kr.co.cashqc.Utils.setExpandableListViewHeight1;
 import static kr.co.cashqc.gcm.Util.getPhoneNumber;
 
 /**
@@ -92,13 +91,13 @@ public class QNAActivity extends BaseActivity {
                 QNAListAdapter adapter = new QNAListAdapter(mThis, articleList);
                 listView.setAdapter(adapter);
 
-                setExpandableListViewHeight1(listView, -1);
+//                setExpandableListViewHeight1(listView, -1);
 
                 listView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
                     @Override
                     public boolean onGroupClick(ExpandableListView parent, View v,
                             int groupPosition, long id) {
-                        setExpandableListViewHeight1(parent, groupPosition);
+//                        setExpandableListViewHeight1(parent, groupPosition);
                         return false;
                     }
                 });
