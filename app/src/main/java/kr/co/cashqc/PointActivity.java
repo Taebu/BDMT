@@ -615,7 +615,7 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
 
             if (item.isFreePoint()) {
                 h.value.setText(item.getPointRuleContent());
-//                h.value.setTextColor(Color.parseColor("#E94230"));
+                // h.value.setTextColor(Color.parseColor("#E94230"));
                 h.grade.setText(item.getLocation());
             } else {
 
@@ -699,7 +699,7 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
         @Override
         public void onClick(View v) {
 
-            if (SystemClock.elapsedRealtime() - mLastClickTime < 300) {
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 500) {
                 return;
             }
 
@@ -709,19 +709,8 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
 
             if (clickData.getStatus().equals("사용가능")) {
 
-                boolean pointClickable;
-
-                if (POINT_STATUS == NOT_SELECT) {
-                    pointClickable = true;
-                } else if (POINT_STATUS == DONGDAEMUN_POINT && clickData.isFreePoint()) {
-                    pointClickable = true;
-                } else if (POINT_STATUS == JOONGRANG_POINT && clickData.isFreePoint()) {
-                    pointClickable = true;
-                } else if (POINT_STATUS == FIVE_POINT && !clickData.isFreePoint()) {
-                    pointClickable = true;
-                } else {
-                    pointClickable = false;
-                }
+                boolean pointClickable = POINT_STATUS == NOT_SELECT
+                        || POINT_STATUS == clickData.getPointType();
 
                 if (pointClickable) {
 
