@@ -54,9 +54,9 @@ public class ShopListActivity extends BaseActivity implements ActionBar.TabListe
 
         int distance = getIntent().getIntExtra("distance", 2);
 
-        String address = mLocationUtil.getAddress(lat, lng);
+//        String address = mLocationUtil.getAddress(lat, lng);
 
-        tvAddress.setText(address);
+//        tvAddress.setText(address);
 
         // Initialization
         ShopListPagerAdapter pagerAdapter = new ShopListPagerAdapter(getSupportFragmentManager(),

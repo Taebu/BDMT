@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="14dp"
-                android:text="동일업소 5개 주문시 현금 지급 불가."
+                android:text="동일 업소 주문시 현금 지급 불가."
                 android:textColor="#333333"
                 android:textSize="12sp" />
 
@@ -80,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="14dp"
-                android:text="12000원 이상 주문 건만 적립 가능."
+                android:text="12000원 이상 주문 건만 적립 가능.\n(일부 지역, 일부 음식 14,000원 이상)"
                 android:textColor="#333333"
                 android:textSize="12sp" />
 
@@ -129,6 +129,30 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="14dp"
                 android:text="녹취록을 검토하여 3일 이내에 처리해드립니다."
+                android:textColor="#333333"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/point_terms5"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_gravity="center_vertical"
+                android:button="@drawable/btn_check" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="14dp"
+                android:text="유효기간 내 최대 20,000원 까지만 지급합니다."
                 android:textColor="#333333"
                 android:textSize="12sp" />
 

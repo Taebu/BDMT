@@ -22,7 +22,7 @@ import java.util.Locale;
 
 public class LocationUtil {
 
-    private static final String TAG = "tag";
+    private final String TAG = getClass().getSimpleName();
 
     boolean mFlag = true;
 
@@ -246,6 +246,7 @@ public class LocationUtil {
         String address = "";
         List<Address> addresses = null;
         Geocoder geoCoder = new Geocoder(mActivity, Locale.KOREAN);
+
         try {
             addresses = geoCoder.getFromLocation(latitude, longitude, 1);
         } catch (IOException e) {
@@ -305,7 +306,7 @@ public class LocationUtil {
                     String[] str = address.split(" ", 4);
                     address = str[3];
 
-//                    address = "";
+                    // address = "";
                     // for (int j = 1; j < str.length; j++) {
                     // if (!str[j].equals("")) {
                     // address = address + str[j] + " ";
@@ -313,7 +314,6 @@ public class LocationUtil {
                     // }
                 }
             }
-
 
         }
         address = a.getThoroughfare() + " " + a.getFeatureName();

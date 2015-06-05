@@ -19,9 +19,9 @@ import org.json.JSONObject;
  */
 public class ModifyActivity extends BaseActivity {
 
-    private Spinner mSpinner;
-
     private TextView tvPhone, tvZone, tvProvided;
+
+    private Spinner mSpinner;
 
     private EditText etAccNum, etHolder;
 
@@ -164,9 +164,17 @@ public class ModifyActivity extends BaseActivity {
                 dialog.dismiss();
             Intent intent = new Intent(ModifyActivity.this, PointActivity.class);
             intent.putExtra("phoneNum", getIntent().getStringExtra("phoneNum"));
+
             startActivity(intent);
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        finish();
+    }
+
     @Override
     protected void onStop() {
         super.onStop();

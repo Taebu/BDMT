@@ -46,8 +46,8 @@ import static kr.co.cashqc.Utils.getDisplayWidthSize;
 
 public class BaseActivity extends SlidingFragmentActivity {
 
-    //    public static final boolean sIsTTSmode = true;
-    public static final boolean sIsTTSmode = false;
+//        public static final boolean TTS_MODE = true;
+    public static final boolean TTS_MODE = false;
 
     private final String TAG = getClass().getSimpleName();
 
@@ -141,7 +141,7 @@ public class BaseActivity extends SlidingFragmentActivity {
         });
 
         // 장바구니 숨김
-        if (sIsTTSmode) {
+        if (TTS_MODE) {
             TV_CART_COUNT.setVisibility(View.VISIBLE);
             findViewById(R.id.btn_cart).setVisibility(View.VISIBLE);
         }

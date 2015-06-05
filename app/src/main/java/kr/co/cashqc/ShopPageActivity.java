@@ -10,7 +10,6 @@ import android.graphics.Paint;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
@@ -30,7 +29,6 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.ZoomButtonsController;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -40,7 +38,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -62,7 +59,7 @@ public class ShopPageActivity extends BaseActivity {
 
     private final String TAG = this.getClass().getSimpleName();
 
-    private ShopPageActivity mThis = this;
+    private ShopPageActivity mActivity = this;
 
     private CustomDialog mDialog;
 
@@ -96,12 +93,14 @@ public class ShopPageActivity extends BaseActivity {
 
     private boolean isWeb = true;
 
+    private Intent mZoomIntent;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shoppage);
 
-        // mThis killer mThis add.
+        // mActivity killer mActivity add.
         killer.addActivity(this);
 
         if (!Util.isOnline(this)) {
@@ -128,12 +127,12 @@ public class ShopPageActivity extends BaseActivity {
         mRatingBar.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                String phoneNum = getPhoneNumber(mThis);
+                String phoneNum = getPhoneNumber(mActivity);
 
                 if (phoneNum.isEmpty())
                     phoneNum = "4444444444";
 
-                new ReviewDialog(mThis, getIntent().getStringExtra("name"), getIntent()
+                new ReviewDialog(mActivity, getIntent().getStringExtra("name"), getIntent()
                         .getStringExtra("seq"), phoneNum).show();
                 return false;
             }
@@ -278,7 +277,7 @@ public class ShopPageActivity extends BaseActivity {
                     reviewDataList.add(reviewData);
                 }
 
-                ReviewListAdapter adapter = new ReviewListAdapter(mThis, reviewDataList,
+                ReviewListAdapter adapter = new ReviewListAdapter(mActivity, reviewDataList,
                         mOnClickListener);
                 mReviewListView.setAdapter(adapter);
                 setListViewHeightBasedOnChildren(mReviewListView);
@@ -299,7 +298,7 @@ public class ShopPageActivity extends BaseActivity {
             String seq = v.getTag(R.id.seq).toString();
             switch (v.getId()) {
                 case R.id.row_review_modify:
-                    new ReviewDialog(mThis, getIntent().getStringExtra("name"), seq).show();
+                    new ReviewDialog(mActivity, getIntent().getStringExtra("name"), seq).show();
                     break;
                 case R.id.row_review_remove:
                     new ReviewRemoveTask().execute(seq);
@@ -358,6 +357,8 @@ public class ShopPageActivity extends BaseActivity {
         Log.e("life", "onResume");
         // setCartCount(this);
         super.onResume();
+        if (isWeb)
+            startService(mZoomIntent);
     }
 
     @Override
@@ -370,6 +371,7 @@ public class ShopPageActivity extends BaseActivity {
         // setCartCount(this);
         Log.e("life", "onStop");
         super.onStop();
+        stopService(mZoomIntent);
         if (mDialog.isShowing()) {
             mDialog.dismiss();
         }
@@ -492,7 +494,7 @@ public class ShopPageActivity extends BaseActivity {
                     String num = getIntent().getStringExtra("tel");
                     String name = getIntent().getStringExtra("name");
 
-                    checkContact(mThis, name, num);
+                    checkContact(mActivity, name, num);
 
                     Intent intent = new Intent(Intent.ACTION_CALL);
                     intent.putExtra(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME,
@@ -501,19 +503,20 @@ public class ShopPageActivity extends BaseActivity {
 
                     startActivity(intent);
 
-                    Intent menu = new Intent(new Intent(mThis, CallService.class));
+                    Intent menu = new Intent(new Intent(mActivity, CallService.class));
 
                     menu.putExtra("pre_pay", mPrePay);
                     menu.putExtra("pay", getIntent().getStringExtra("pay"));
                     menu.putExtra("img1", getIntent().getStringExtra("img1"));
                     menu.putExtra("img2", getIntent().getStringExtra("img2"));
+
                     startService(menu);
                 }
 
                 // mNum = "tel:" + getIntent().getStringExtra("tel");
                 // startActivity(new Intent(Intent.ACTION_CALL,
                 // Uri.parse("tel:010-3745-2742")));
-                // PhoneCall.call(mNum, mThis);
+                // PhoneCall.call(mNum, mActivity);
             }
         });
 
@@ -529,39 +532,55 @@ public class ShopPageActivity extends BaseActivity {
 
     private void setWebView() {
 
+        mZoomIntent = new Intent(new Intent(mActivity, ZoomService.class));
+
+        mZoomIntent.putExtra("img1", getIntent().getStringExtra("img1"));
+        mZoomIntent.putExtra("img2", getIntent().getStringExtra("img2"));
+
+        startService(mZoomIntent);
+
         // mWebView.setVisibility(View.VISIBLE);
         mWebView.setWebViewClient(new WebViewClientClass());
         WebSettings set = mWebView.getSettings();
 
         // TODO 버전별 처리 할것
 
-        if (Build.VERSION.SDK_INT > 10) {
-            set.setDisplayZoomControls(false);
-        } else {
-            ZoomButtonsController zoomButtonsController;
-            try {
-                zoomButtonsController = (ZoomButtonsController)mWebView.getClass()
-                        .getMethod("getZoomButtonsController").invoke(mWebView, null);
-                zoomButtonsController.getContainer().setVisibility(View.GONE);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            }
-        }
+        // if (Build.VERSION.SDK_INT > 10) {
+        // set.setDisplayZoomControls(false);
+        // } else {
+        // ZoomButtonsController zoomButtonsController;
+        // try {
+        // zoomButtonsController = (ZoomButtonsController)mWebView.getClass()
+        // .getMethod("getZoomButtonsController").invoke(mWebView, null);
+        // zoomButtonsController.getContainer().setVisibility(View.GONE);
+        // } catch (IllegalAccessException e) {
+        // e.printStackTrace();
+        // } catch (InvocationTargetException e) {
+        // e.printStackTrace();
+        // } catch (NoSuchMethodException e) {
+        // e.printStackTrace();
+        // }
+        // }
 
         set.setLoadWithOverviewMode(true);
         set.setUseWideViewPort(true);
         // set.setJavaScriptEnabled(true);
-        // set.setBuiltInZoomControls(false);
-        set.setBuiltInZoomControls(true);
-        // set.setSupportZoom(false);
-        set.setSupportZoom(true);
+
+        // 내장 줌 사용여부
+        // set.setBuiltInZoomControls(true);
+        set.setBuiltInZoomControls(false);
+
+        // 내장 줌 사용시 줌 컨트롤 표시 여부
+        // set.setDisplayZoomControls(true);
+        // set.setDisplayZoomControls(false);
+
+        // 줌 컨트롤과 제스처를 지원할지 여부
+        // set.setSupportZoom(true);
+        set.setSupportZoom(false);
+
         set.setCacheMode(WebSettings.LOAD_NO_CACHE);
 
-        // set.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        set.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
 
         String url;
 
@@ -612,10 +631,12 @@ public class ShopPageActivity extends BaseActivity {
         if (isWebView) {
             webViewVisibility = View.VISIBLE;
             listViewVisibility = View.GONE;
+            startService(mZoomIntent);
             content = "메뉴 보기";
         } else {
             webViewVisibility = View.GONE;
             listViewVisibility = View.VISIBLE;
+            stopService(mZoomIntent);
             content = "전단지 보기";
         }
 
@@ -675,8 +696,8 @@ public class ShopPageActivity extends BaseActivity {
 
                 mData = makeShopMenuData(object);
 
-                ShopMenuAdapter adapter = new ShopMenuAdapter(mThis, mData, mOnDismissListener,
-                        mThis);
+                ShopMenuAdapter adapter = new ShopMenuAdapter(mActivity, mData, mOnDismissListener,
+                        mActivity);
 
                 mListView.setAdapter(adapter);
 
@@ -1060,7 +1081,7 @@ public class ShopPageActivity extends BaseActivity {
             price3.setText(price[2]);
             price4.setText(price[3]);
 
-            if (sIsTTSmode) {
+            if (TTS_MODE) {
                 // if (false) {
                 img1.setOnClickListener(this);
                 img2.setOnClickListener(this);
@@ -1107,18 +1128,18 @@ public class ShopPageActivity extends BaseActivity {
 
                     if (level2Id.equals(imageId)) {
 
-                        // Toast.makeText(mThis, i + ", " + y,
+                        // Toast.makeText(mActivity, i + ", " + y,
                         // Toast.LENGTH_SHORT).show();
 
                         boolean hasLevel3 = !childData.get(y).getChild().isEmpty();
 
                         if (hasLevel3) {
-                            OrderMenuDialog dialog = new OrderMenuDialog(mThis, mData, i, y,
+                            OrderMenuDialog dialog = new OrderMenuDialog(mActivity, mData, i, y,
                                     mOnDismissListener);
                             dialog.show();
                             dialog.setOnDismissListener(mOnDismissListener);
                         } else {
-                            insertMenuLevel2(mThis, mData, i, y);
+                            insertMenuLevel2(mActivity, mData, i, y);
                         }
 
                     }
@@ -1131,7 +1152,13 @@ public class ShopPageActivity extends BaseActivity {
     private DialogInterface.OnDismissListener mOnDismissListener = new DialogInterface.OnDismissListener() {
         @Override
         public void onDismiss(DialogInterface dialog) {
-            setCartCount(mThis);
+            setCartCount(mActivity);
         }
     };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopService(mZoomIntent);
+    }
 }

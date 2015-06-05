@@ -3,8 +3,7 @@
     android:id="@+id/shoppage_scrollview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
-    android:fillViewport="true">
+    android:background="#ffffff">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -249,10 +248,10 @@
         <WebView
             android:id="@+id/shoppage_webview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="false"
-            android:focusable="false"
-            android:focusableInTouchMode="false" />
+            android:layout_height="match_parent" />
+        <!--android:clickable="false"-->
+        <!--android:focusable="false"-->
+        <!--android:focusableInTouchMode="false" />-->
 
         <Button
             android:id="@+id/btn_up"

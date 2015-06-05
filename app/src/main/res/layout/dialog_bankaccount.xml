@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_popup_title"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="계좌 정보 수정"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dialog"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_popup_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="310dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="14dp"
+                android:src="#E8E8E8" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|left"
+                    android:layout_marginLeft="36dp"
+                    android:layout_weight="2.5"
+                    android:text="은행명"
+                    android:textColor="#999999"
+                    android:textSize="13sp" />
+
+                <Spinner
+                    android:id="@+id/spinner_bank"
+                    android:layout_width="0dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="right"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="28dp"
+                    android:layout_weight="8"
+                    android:background="@drawable/text_box_2"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="12dp"
+                    android:text="캐시큐은행" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|left"
+                    android:layout_marginLeft="36dp"
+                    android:layout_weight="2.5"
+                    android:text="계좌번호"
+                    android:textColor="#999999"
+                    android:textSize="13sp" />
+
+                <EditText
+                    android:text="불러오는 중 ..."
+                    android:id="@+id/acc_num"
+                    android:layout_width="0dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="right"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="28dp"
+                    android:layout_weight="8"
+                    android:background="@drawable/text_box_2"
+                    android:digits="0123456789"
+                    android:gravity="center_vertical"
+                    android:hint="계좌번호"
+                    android:inputType="number"
+                    android:paddingLeft="12dp"
+                    android:singleLine="true"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|left"
+                    android:layout_marginLeft="36dp"
+                    android:layout_weight="2.5"
+                    android:text="예금주"
+                    android:textColor="#999999"
+                    android:textSize="13sp" />
+
+                <EditText
+                    android:text="불러오는 중 ..."
+                    android:id="@+id/holder"
+                    android:layout_width="0dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="right"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="28dp"
+                    android:layout_weight="8"
+                    android:background="@drawable/text_box_2"
+                    android:gravity="center_vertical"
+                    android:hint="예금주"
+                    android:inputType="text"
+                    android:paddingLeft="12dp"
+                    android:singleLine="true"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/ok"
+            android:layout_marginBottom="12dp"
+            android:layout_width="226dp"
+            android:layout_height="43dp"
+            android:layout_gravity="center|bottom"
+            android:background="@drawable/btn_black"
+            android:gravity="center"
+            android:text="계좌 정보 저장"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+</LinearLayout>

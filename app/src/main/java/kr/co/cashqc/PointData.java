@@ -1,10 +1,72 @@
 package kr.co.cashqc;
 
+import java.util.ArrayList;
+
 /**
  * @author Jung-Hum Cho
  *         Created by anp on 14. 11. 19..
  */
 public class PointData {
+
+    private int pointType;
+
+    public int getPointType() {
+        return pointType;
+    }
+
+    public void setPointType(int pointType) {
+        this.pointType = pointType;
+    }
+
+    private String location;
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    private String pointRuleContent;
+
+    public String getPointRuleContent() {
+        return pointRuleContent;
+    }
+
+    public void setPointRuleContent(String pointRuleContent) {
+        this.pointRuleContent = pointRuleContent;
+    }
+
+    private ArrayList<PointRuleData> pointRuleList;
+
+    public ArrayList<PointRuleData> getPointRuleList() {
+        return pointRuleList;
+    }
+
+    public void setPointRuleList(ArrayList<PointRuleData> pointRuleList) {
+        this.pointRuleList = pointRuleList;
+    }
+
+    private String borough;
+
+    public String getBorough() {
+        return borough;
+    }
+
+    public void setBorough(String borough) {
+        this.borough = borough;
+    }
+
+    private boolean isFreePoint;
+
+    public boolean isFreePoint() {
+        return isFreePoint;
+    }
+
+    public void setIsFreePoint(boolean isFreePoint) {
+        this.isFreePoint = isFreePoint;
+    }
 
     private String storeSeq;
 

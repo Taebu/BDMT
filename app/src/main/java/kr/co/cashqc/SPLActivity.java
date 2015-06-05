@@ -112,7 +112,7 @@ public class SPLActivity extends BaseActivity {
         // }
         //
         // int totalHeight = 0;
-        // for (int i = 0; i < adapter.getCount(); i++) {
+        // for (int i = 0; i < adapter.getFreeCount(); i++) {
         // View listItem = adapter.getView(i, listView.getChildAt(0), listView);
         // listItem.measure(0, 0);
         // totalHeight += listItem.getMeasuredHeight();
@@ -120,7 +120,7 @@ public class SPLActivity extends BaseActivity {
         //
         // ViewGroup.LayoutParams params = listView.getLayoutParams();
         // params.height = totalHeight + (listView.getDividerHeight() *
-        // (adapter.getCount() - 1));
+        // (adapter.getFreeCount() - 1));
         // listView.setLayoutParams(params);
         // listView.requestLayout();
         //

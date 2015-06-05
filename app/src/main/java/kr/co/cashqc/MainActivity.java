@@ -28,6 +28,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -54,9 +55,11 @@ import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListene
 import com.rampo.updatechecker.UpdateChecker;
 import com.rampo.updatechecker.UpdateCheckerResult;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -205,7 +208,9 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
             findLocation();
         } else {
             mGpsFlag = true;
-            mAddressText.setText(mLocationUtil.getAddress(mLatitude, mLongitude));
+            new AddressJsonTask(mAddressText).execute(mLatitude, mLongitude);
+            // mAddressText.setText(mLocationUtil.getAddress(mLatitude,
+            // mLongitude));
         }
 
         // if(adminFlag) {
@@ -327,7 +332,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
             double latitude = mLastLocation.getLatitude();
             double longitude = mLastLocation.getLongitude();
 
-            Log.e(TAG, "Lat : " + latitude + " Lon : " + longitude);
+            Log.e(TAG, "Lat : " + latitude + " lng : " + longitude);
             // mAddressText.setText(mLocationUtil.getAddress(latitude,
             // longitude));
         }
@@ -464,6 +469,171 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
         // view.startAnimation(animation);
     }
 
+    class AddressJsonTask extends AsyncTask<Double, Void, JSONObject> {
+
+        public AddressJsonTask(TextView textView) {
+            tvAddress = textView;
+        }
+
+        private TextView tvAddress;
+
+        private final String TAG = getClass().getSimpleName();
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if (!mDialog.isShowing())
+                mDialog.show();
+        }
+
+        @Override
+        protected JSONObject doInBackground(Double... params) {
+
+            double lat = params[0];
+            double lng = params[1];
+
+            String url = Uri.parse("http://maps.googleapis.com/maps/api/geocode/json").buildUpon()
+                    .appendQueryParameter("language", "ko")
+                    .appendQueryParameter("latlng", lat + "," + lng)
+                    .appendQueryParameter("sensor", "false").build().toString();
+
+            Log.e(TAG, "URL : " + url);
+
+            return new JSONParser().getJSONObjectFromUrl(url);
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject jsonObject) {
+            super.onPostExecute(jsonObject);
+
+            String json = jsonObject.toString();
+
+            try {
+                json = new String(json.getBytes("8859_1"), "UTF-8");
+
+                String address = getAddress(json);
+
+                tvAddress.setText(address);
+
+                Log.e(TAG, "address : " + address);
+
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } finally {
+                if (mDialog.isShowing())
+                    mDialog.dismiss();
+            }
+
+        }
+
+        private String getAddress(String json) {
+            try {
+
+                JSONObject jsonObject = new JSONObject(json);
+
+                JSONArray resultsArray = jsonObject.getJSONArray("results");
+
+                String sublocalityLevel1 = "";
+                String sublocalityLevel2 = "";
+
+                for (int i = 0; i < resultsArray.length(); i++) {
+
+                    JSONObject resultsObject = resultsArray.getJSONObject(i);
+
+                    JSONArray addressComponentsArray = resultsObject
+                            .getJSONArray("address_components");
+
+                    String resultsTypes = resultsObject.getString("types");
+
+                    if (resultsTypes.contains("postal_code")) {
+                        for (int y = 0; y < addressComponentsArray.length(); y++) {
+                            JSONObject addressComponentsObject = addressComponentsArray
+                                    .getJSONObject(y);
+
+                            String types = addressComponentsObject.getString("types");
+
+                            if (types.contains("sublocality_level_1")) {
+                                sublocalityLevel1 = addressComponentsObject.getString("long_name");
+                            }
+                            if (types.contains("sublocality_level_2")) {
+                                sublocalityLevel2 = addressComponentsObject.getString("long_name");
+                            }
+                        }
+                        break;
+                    }
+                }
+                return sublocalityLevel1 + " " + sublocalityLevel2;
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return "";
+        }
+
+        private String getAddress1(String json) {
+            try {
+
+                JSONObject jsonObject = new JSONObject(json);
+
+                JSONArray resultsArray = jsonObject.getJSONArray("results");
+
+                for (int i = 0; i < resultsArray.length(); i++) {
+
+                    JSONObject resultsObject = resultsArray.getJSONObject(i);
+
+                    JSONArray addressComponentsArray = resultsObject
+                            .getJSONArray("address_components");
+
+                    String resultsTypes = resultsObject.getString("types");
+
+                    if (resultsTypes.contains("postal_code")) {
+
+                        for (int y = 0; y < addressComponentsArray.length(); y++) {
+
+                            JSONObject addressComponentsObject = addressComponentsArray
+                                    .getJSONObject(y);
+
+                            JSONArray addressComponentsTypesArray = addressComponentsObject
+                                    .getJSONArray("types");
+
+                            for (int j = 0; j < addressComponentsTypesArray.length(); j++) {
+
+                                String types = addressComponentsTypesArray.getString(j);
+
+                                if (types.contains("sublocality_level_2")) {
+
+                                    // String resultsTypes =
+                                    // resultsObject.getString("types");
+
+                                    Log.e(TAG, "addressComponentsArray : " + i + y
+                                            + addressComponentsArray.get(y));
+
+                                    Log.e(TAG, "resultsTypes : " + resultsTypes);
+
+                                    if (resultsTypes.contains("postal_code")) {
+
+                                        // Log.e(TAG, "resultsTypes : " +
+                                        // resultsTypes);
+
+                                        // String sublocalityLevel2 =
+                                        // addressComponentsObject.getString("");
+                                        // Log.e(TAG, "sublocalityLevel2 : " + i
+                                        // + y
+                                        // + sublocalityLevel2);
+
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
     public void findLocation() {
         if (!mDialog.isShowing()) {
             mDialog.show();
@@ -473,25 +643,23 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
             public void run() {
                 mHandler.post(new Runnable() {
                     public void run() {
+
                         try {
-                            String address;
-                            address = mLocationUtil.getAddress(mLocationUtil.getLastLocation()
-                                    .getLatitude(), mLocationUtil.getLastLocation().getLongitude());
-
-                            // Log.d("tag", mAddressText.getText().toString() +
-                            // " "
-                            // + mAddressText.getText().toString().length());
-
-                            mAddressText.setVisibility(View.VISIBLE);
 
                             mLatitude = mLocationUtil.getLastLocation().getLatitude();
                             mLongitude = mLocationUtil.getLastLocation().getLongitude();
 
-                            mAddressText.setText(address);
+                            new AddressJsonTask(mAddressText).execute(mLatitude, mLongitude);
+
+                            String address;
+                            // address = mLocationUtil.getAddress(mLatitude,
+                            // mLongitude);
+
+                            mAddressText.setVisibility(View.VISIBLE);
+                            // mAddressText.setText(address);
 
                             mGpsFlag = true;
 
-                            mDialog.dismiss();
                         } catch (NullPointerException e) {
                             Log.d("JAY", "gps exception");
                             e.printStackTrace();
@@ -630,7 +798,8 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
                 mRegisterTask = new AsyncTask<Void, Void, Void>() {
 
                     protected Void doInBackground(Void... params) {
-                        ServerUtilities.register(context, "central", getPhoneNumber(context), regId);
+                        ServerUtilities
+                                .register(context, "central", getPhoneNumber(context), regId);
                         return null;
                     }
 
@@ -653,7 +822,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
                     Utils.RegisterKey222);
             Log.e("JAY", "loadshared = " + register);
             if (register != null) {
-                // if (sIsTTSmode) {
+                // if (TTS_MODE) {
                 String url = "http://cashq.co.kr/m/set_tokenid_add.php" + "?biz_code=central"
                         + "&phone=" + num + "&token_id=" + getRegId();
 

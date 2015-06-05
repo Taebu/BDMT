@@ -101,7 +101,7 @@ public class OrderResultActivity extends BaseActivity {
     // }
     //
     // int totalHeight = 0;
-    // for (int i = 0; i < mAdapter.getCount(); i++) {
+    // for (int i = 0; i < mAdapter.getFreeCount(); i++) {
     // View listItem = mAdapter.getView(i, listView.getChildAt(0), listView);
     // listItem.measure(0, 0);
     // totalHeight += listItem.getMeasuredHeight();
@@ -109,7 +109,7 @@ public class OrderResultActivity extends BaseActivity {
     //
     // ViewGroup.LayoutParams params = listView.getLayoutParams();
     // params.height = totalHeight + (listView.getDividerHeight() *
-    // (mAdapter.getCount() - 1));
+    // (mAdapter.getFreeCount() - 1));
     // listView.setLayoutParams(params);
     // listView.requestLayout();
     // }
