@@ -68,7 +68,10 @@ public class CartActivity extends BaseActivity {
 
                 if (mCartList.isEmpty()) {
                     Toast.makeText(CartActivity.this, "장바구니가 비어있어요~", Toast.LENGTH_SHORT).show();
-                } else {
+                } else if(mOrderData.getTotal() < 12000) {
+                    Toast.makeText(CartActivity.this, "12,000원 이상 주문만 가능합니다", Toast.LENGTH_SHORT).show();
+
+                }else {
                     Intent intent = new Intent(CartActivity.this, OrderActivity.class);
                     intent.putExtra("order", mOrderData);
                     startActivity(intent);

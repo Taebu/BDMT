@@ -55,10 +55,10 @@ public class MenuListFragment extends ListFragment {
 
         String phoneNum = getPhoneNumber(getActivity());
 
-        if (sIsInitAdminCheck) {
-            if (phoneNum != null)
-                new AdminCheckTask().execute(phoneNum);
-        } else {
+//        if (sIsInitAdminCheck) {
+//            if (phoneNum != null)
+//                new AdminCheckTask().execute(phoneNum);
+//        } else {
 
             SampleAdapter adapter = new SampleAdapter(getActivity());
 
@@ -67,11 +67,11 @@ public class MenuListFragment extends ListFragment {
             adapter.add(new SampleItem("문의 사항", R.drawable.icon_more_3_gray));
             adapter.add(new SampleItem("공지 사항", R.drawable.icon_more_6_gray));
 
-            if (sIsAdmin)
-                adapter.add(new SampleItem("가맹점 주문내역", R.drawable.icon_more_8_gray));
+//            if (sIsAdmin)
+                adapter.add(new SampleItem("주문내역", R.drawable.icon_more_8_gray));
 
             setListAdapter(adapter);
-        }
+//        }
     }
 
     private class AdminCheckTask extends AsyncTask<String, Void, JSONObject> {

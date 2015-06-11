@@ -45,11 +45,11 @@ public class showMsg extends Activity {
         Log.d("JAY", "msg : " + msg);
 
         CustomDialog dialog;
-        if (msg.startsWith(auth)) {
-            dialog = new CustomDialog(this, msg);
-        } else {
-            dialog = new CustomDialog(this, msg, false, this, MainActivity.class);
-        }
+        // if (msg.startsWith(auth)) {
+        // dialog = new CustomDialog(this, msg);
+        // } else {
+        dialog = new CustomDialog(this, msg, false, this, MainActivity.class);
+        // }
 
         dialog.show();
 

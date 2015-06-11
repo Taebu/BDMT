@@ -3,6 +3,7 @@ package kr.co.cashqc;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 import static kr.co.cashqc.gcm.Util.getPhoneNumber;
 import static kr.co.cashqc.gcm.Util.loadSharedPreferences;
 import static kr.co.cashqc.gcm.Util.saveSharedPreferences_string;
+import static kr.co.cashqc.DataBaseOpenHelper.TABLE_NAME;
 
 /**
  * @author Jung-Hum Cho Created by anp on 14. 12. 31..
@@ -399,9 +401,19 @@ public class OrderActivity extends BaseActivity {
                 i.putExtra("pay_type", mPayType);
                 i.putExtra("order", mOrderData);
                 startActivity(i);
+
+                clear();
+
             } else {
 
             }
+        }
+
+        private void clear() {
+            DataBaseOpenHelper helper = new DataBaseOpenHelper(mThis);
+            SQLiteDatabase database = helper.getWritableDatabase();
+            String sql = "DELETE FROM " + TABLE_NAME;
+            database.execSQL(sql);
         }
     }
 

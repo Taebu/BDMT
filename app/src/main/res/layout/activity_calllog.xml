@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_normal"
@@ -35,7 +35,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="8dp"
             android:gravity="center_vertical"
-            android:text="0508 주문 내역"
+            android:text="주문 내역"
             android:textColor="#4b4b4b"
             android:textSize="15sp"
             android:textStyle="bold" />
@@ -48,8 +48,8 @@
         <ListView
             android:id="@+id/calllog_listview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:groupIndicator="@null" />
 
     </LinearLayout>
-</ScrollView>
+</LinearLayout>

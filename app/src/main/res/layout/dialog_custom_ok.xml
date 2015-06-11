@@ -22,6 +22,7 @@
             android:layout_height="65dp"/>
 
         <TextView
+            android:autoLink="web|phone"
             android:id="@+id/dialog_message"
             android:paddingTop="15dp"
             android:paddingLeft="12dp"

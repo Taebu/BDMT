@@ -94,6 +94,8 @@ public class CustomDialog extends Dialog {
         // 배경 투명하게
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
+        setCancelable(false);
+
         if (b) {
             setContentView(R.layout.dialog_custom_ok);
 

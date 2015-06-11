@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -18,13 +19,12 @@ import java.util.ArrayList;
 
 import kr.co.cashqc.gcm.Util;
 
-import static kr.co.cashqc.Utils.setListViewHeightBasedOnChildren;
-
 /**
  * @author Jung-Hum Cho Created by anp on 15. 1. 23..
  */
 public class SPLActivity extends BaseActivity {
 
+    private final String TAG = getClass().getSimpleName();
     private Activity mThis = this;
 
     @Override
@@ -64,6 +64,8 @@ public class SPLActivity extends BaseActivity {
             String url = Uri.parse("http://cashq.co.kr/m/ajax_data/get_spl.php").buildUpon()
                     .appendQueryParameter("called", phoneNum).build().toString();
 
+            Log.e(TAG, "URL : " + url);
+
             return new JSONParser().getJSONObjectFromUrl(url);
         }
 
@@ -91,14 +93,14 @@ public class SPLActivity extends BaseActivity {
                 e.printStackTrace();
             }
 
-            ListView listView = (ListView)findViewById(R.id.calllog_listview);
+            ListView listView = (ListView) findViewById(R.id.calllog_listview);
 
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(mThis,
-                    android.R.layout.simple_list_item_1, callList);
+                    R.layout.row_spl, callList);
 
             listView.setAdapter(adapter);
 
-            setListViewHeightBasedOnChildren(listView);
+//            setListViewHeightBasedOnChildren(listView);
 
             if (mDialog.isShowing())
                 mDialog.dismiss();

@@ -32,7 +32,7 @@ import kr.co.cashqc.gcm.Util;
  *
  * @author Jung-Hum Cho
  */
-public class PointActivity extends BaseActivity implements View.OnClickListener {
+public class PointNewActivity extends BaseActivity implements View.OnClickListener {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -88,7 +88,7 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
         killer.addActivity(this);
 
         // loading mDialog init.
-        dialog = new CustomDialog(PointActivity.this);
+        dialog = new CustomDialog(PointNewActivity.this);
 
         // resource init
         checkBox = (CheckBox)findViewById(R.id.row_point_check);
@@ -136,7 +136,7 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
             case R.id.point_init:
                 POINT_STATUS = NOT_SELECT;
                 sCheckedCount = 0;
-                intent = new Intent(PointActivity.this, PointActivity.class);
+                intent = new Intent(PointNewActivity.this, PointNewActivity.class);
                 break;
 
         }
@@ -156,45 +156,23 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
     public void onClick(View v) {
 
         if (mUserDatas.get(0).getHolder().isEmpty() || mUserDatas.get(0).getAccNum().isEmpty()) {
-            new CustomDialog(PointActivity.this, "계좌 정보를 설정해주세요").show();
-            return;
-        }
+            new CustomDialog(PointNewActivity.this, "계좌정보를 설정해주세요").show();
+        } else {
 
-        mCheckedDataList = new ArrayList<PointData>();
+            mCheckedDataList = new ArrayList<PointData>();
 
-        for (int i = 0; i < sPositionArray.size(); i++) {
-            if (sPositionArray.get(i)) {
+            boolean isDuplicate = false;
 
-                mCheckedDataList.add(mPointDataList.get(i));
+            for (int i = 0; i < sPositionArray.size(); i++) {
+                if (sPositionArray.get(i)) {
 
-                Log.e(TAG, "pointSeq : " + mPointDataList.get(i).getSeq() + ", pointName : "
-                        + mPointDataList.get(i).getName() + ", pointDate : "
-                        + mPointDataList.get(i).getDate());
-            }
-        }
-
-        int total = 0;
-
-        if (POINT_STATUS == JOONGRANG_POINT || POINT_STATUS == DONGDAEMUN_POINT) {
-
-            for (PointRuleData p : mCheckedDataList.get(0).getPointRuleList()) {
-                if (sCheckedCount == p.getCount()) {
-                    total = p.getAmount();
-                    break;
+                    mCheckedDataList.add(mPointDataList.get(i));
+                    Log.e(TAG, "pointName : " + mPointDataList.get(i).getName() + " pointDate : "
+                            + mPointDataList.get(i).getDate());
                 }
             }
 
-            new CustomDialog(PointActivity.this, mRequestOnClickListener, total).show();
-
-        } else if (POINT_STATUS == FIVE_POINT) {
-
-            if (mCheckedDataList.size() == 0) {
-
-                new CustomDialog(mThis, "포인트 오류 입니다.\n02-1599-9495로 문의 주세요.");
-
-            } else {
-
-                boolean isDuplicate = false;
+            if (mCheckedDataList.size() != 0) {
 
                 String storeSeq = mCheckedDataList.get(0).getStoreSeq();
 
@@ -210,24 +188,38 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
                     }
 
                 }
+            } else {
+                new CustomDialog(mThis, "포인트 에러 입니다.\n02-1599-9495로 문의 주세요.");
+            }
 
+            Log.e(TAG, "isDuplicate : " + isDuplicate);
+            int total = 0;
+
+            if (POINT_STATUS == JOONGRANG_POINT || POINT_STATUS == DONGDAEMUN_POINT) {
+                for (PointRuleData p : mCheckedDataList.get(0).getPointRuleList()) {
+                    if (sCheckedCount == p.getCount()) {
+                        total = p.getAmount();
+                        break;
+                    }
+                }
+                CustomDialog requestDialog = new CustomDialog(PointNewActivity.this,
+                        mRequestOnClickListener, total);
+                requestDialog.show();
+            } else if (POINT_STATUS == FIVE_POINT) {
                 if (isDuplicate) {
-
                     // Toast.makeText(this, "동일 업소 주문 건은 적립이 불가합니다.",
                     // Toast.LENGTH_LONG).show();
                     new CustomDialog(this, "동일 업소 주문 건은 적립이 불가합니다.").show();
-
                 } else {
-
                     for (PointData p : mCheckedDataList) {
                         total += Integer.parseInt(p.getPoint());
                     }
-
-                    new CustomDialog(PointActivity.this, mRequestOnClickListener, total).show();
+                    CustomDialog requestDialog = new CustomDialog(PointNewActivity.this,
+                            mRequestOnClickListener, total);
+                    requestDialog.show();
                 }
 
             }
-
         }
 
     }
@@ -281,6 +273,8 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
                 TextView tvAccrue = (TextView)findViewById(R.id.tv_accrue);
 
                 tvAccrue.setText("포인트를 선택해주세요");
+
+                mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
                 mAdapter = new PointListAdapter(getApplicationContext(), R.layout.row_point,
                         mPointDataList);
@@ -560,9 +554,9 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
             sCheckedCount = 0;
             POINT_STATUS = NOT_SELECT;
 
-            Intent intent = new Intent(PointActivity.this, PointActivity.class);
+            Intent intent = new Intent(PointNewActivity.this, PointNewActivity.class);
             intent.putExtra("phoneNum", mPhoneNum);
-            new CustomDialog(PointActivity.this, msg, PointActivity.this, intent).show();
+            new CustomDialog(PointNewActivity.this, msg, PointNewActivity.this, intent).show();
         }
     }
 

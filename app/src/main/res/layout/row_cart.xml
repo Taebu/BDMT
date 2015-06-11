@@ -11,17 +11,17 @@
         android:text="네네치킨 한마리세트 후라이드(중)" />
 
     <TextView
-        android:layout_centerInParent="true"
         android:id="@+id/row_cart_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:layout_marginLeft="20dp"
         android:text="2000won" />
 
     <Button
         android:id="@+id/row_cart_minus"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_below="@+id/row_cart_order"
         android:background="@drawable/btn_ea_minus" />
 
@@ -29,24 +29,28 @@
         android:id="@+id/row_cart_ea"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/row_cart_minus"
         android:layout_below="@+id/row_cart_order"
+        android:layout_marginLeft="4dp"
         android:layout_toRightOf="@+id/row_cart_minus"
-        android:text="ea" />
+        android:text="ea"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/row_cart_plus"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_below="@+id/row_cart_order"
+        android:layout_marginLeft="4dp"
         android:layout_toRightOf="@+id/row_cart_ea"
         android:background="@drawable/btn_ea_plus" />
 
     <TextView
-        android:layout_centerVertical="true"
         android:id="@+id/row_cart_remove"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
         android:clickable="true"
         android:text="삭제" />
 </RelativeLayout>

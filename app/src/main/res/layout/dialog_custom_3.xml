@@ -25,6 +25,7 @@
 
 
         <TextView
+            android:autoLink="web|phone"
             android:layout_weight="8"
             android:id="@+id/dialog_message"
             android:layout_width="match_parent"
