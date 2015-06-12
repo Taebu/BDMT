@@ -256,7 +256,11 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
                             mTypeDuplicator = 4;
                         }
 
-                        mAdapter.addItem(getRowData(object));
+                        ShopListData data = getRowData(object);
+
+                        if (data != null) {
+                            mAdapter.addItem(data);
+                        }
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -292,6 +296,19 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
 
             ShopListData cashq = new ShopListData();
 
+            if (object.has("r_tel")) {
+                String r_tel = object.getString("r_tel");
+
+                if (r_tel.startsWith("del_")) {
+                    return null;
+                } else {
+                    cashq.setTel(r_tel);
+                }
+            }
+
+            if (object.has("tel"))
+                cashq.setTel(object.getString("tel"));
+
             if (object.has("name"))
                 cashq.setName(object.getString("name"));
 
@@ -321,9 +338,6 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
 
             if (object.has("time2"))
                 cashq.setTime2(object.getString("time2").substring(6));
-
-            if (object.has("tel"))
-                cashq.setTel(object.getString("tel"));
 
             if (object.has("img1"))
                 cashq.setImg1(object.getString("img1"));
