@@ -1140,6 +1140,7 @@ public class ShopPageActivity extends BaseActivity {
                             dialog.setOnDismissListener(mOnDismissListener);
                         } else {
                             insertMenuLevel2(mActivity, mData, i, y);
+                            setCartCount(mActivity);
                         }
 
                     }
