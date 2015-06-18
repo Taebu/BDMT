@@ -14,6 +14,7 @@ import android.webkit.HttpAuthHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import org.apache.http.util.EncodingUtils;
 import org.json.JSONException;
@@ -31,11 +32,14 @@ public class PayActivity extends BaseActivity {
 
     private WebView mWebView;
 
+    private final String TAG = getClass().getSimpleName();
+
     private boolean isISP_call = false;
 
     private final String CASHQ_CARD = "CASHQ_CARD";
 
     private final String CASHQ_CELL = "CASHQ_CELL";
+
     private OrderData mOrderData;
 
     @Override
@@ -45,7 +49,7 @@ public class PayActivity extends BaseActivity {
 
         killer.addActivity(this);
 
-        mWebView = (WebView)findViewById(R.id.pay_webview);
+        mWebView = (WebView) findViewById(R.id.pay_webview);
         mWebView.setWebViewClient(new MyWebView());
         mWebView.setWebChromeClient(new ChromeClient());
         mWebView.getSettings().setJavaScriptEnabled(true);
@@ -54,7 +58,7 @@ public class PayActivity extends BaseActivity {
         // mWebView.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
         // mWebView.setScrollBarStyle(ScrollView.SCROLLBARS_OUTSIDE_OVERLAY);
 
-        mOrderData = (OrderData)getIntent().getSerializableExtra("order");
+        mOrderData = (OrderData) getIntent().getSerializableExtra("order");
 
         byte[] postData = makePostData();
 
@@ -83,7 +87,8 @@ public class PayActivity extends BaseActivity {
         String tradeId = mOrderData.getTradeId();
         String payType = mOrderData.getPayType();
         // String seq =
-        // mOrderData.getShopCode().substring(mOrderData.getShopCode().indexOf("_") + 1);
+        // mOrderData.getShopCode().substring(mOrderData.getShopCode().indexOf("_")
+        // + 1);
         String seq = mOrderData.getShopCode();
 
         StringBuilder sb = new StringBuilder();
@@ -103,20 +108,20 @@ public class PayActivity extends BaseActivity {
 
         @Override
         public boolean onJsAlert(WebView view, String url, String message,
-                final android.webkit.JsResult result) {
+                                 final android.webkit.JsResult result) {
             new AlertDialog.Builder(PayActivity.this).setTitle("알림").setMessage(message)
                     .setPositiveButton(android.R.string.ok, new AlertDialog.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             result.confirm();
                         }
                     }).setCancelable(false).create().show();
-
+//            view.getContext().startActivity(new Intent(PayActivity.this, MainActivity.class));
             return true;
         }
 
         @Override
         public boolean onJsConfirm(WebView view, String url, String message,
-                final android.webkit.JsResult result) {
+                                   final android.webkit.JsResult result) {
             new AlertDialog.Builder(PayActivity.this)
                     .setTitle("알림")
                     .setMessage(message)
@@ -125,12 +130,14 @@ public class PayActivity extends BaseActivity {
                             result.confirm();
                         }
                     })
+
                     .setNegativeButton(android.R.string.cancel,
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     result.cancel();
                                 }
                             }).setCancelable(false).create().show();
+
             return true;
         }
     }
@@ -140,13 +147,20 @@ public class PayActivity extends BaseActivity {
         @Override
         public void onPageFinished(WebView view, String url) {
 
-            Log.e("PayActivity.ChromeClient.onPageFinished", "url : " + url);
+            Log.e(TAG, "onPageFinished url : " + url);
 
             String content = view.getTitle();
 
-            Log.e("PayActivity.ChromeClient.onPageFinished", "content : " + content);
+            Log.e(TAG, "onPageFinished content : " + content);
 
-            String okUrl = "http://cashq.co.kr/m/okjson.php";
+            // 결제 성공
+            final String okUrl = "http://cashq.co.kr/m/okjson.php";
+
+            // 결제 취소
+            final String cancelUrl = "https://test.mobilians.co.kr/MUP/goCashMain.mcash2";
+
+            // 결제 실패
+            final String failUrl = "http://cashq.co.kr/m/result.php";
 
             if (okUrl.equals(url)) {
 
@@ -170,6 +184,12 @@ public class PayActivity extends BaseActivity {
                     e.printStackTrace();
                 }
 
+            }else if(cancelUrl.equals(url)) {
+                Toast.makeText(mThis,"PHONE CANCEL !!!", Toast.LENGTH_SHORT).show();
+                finish();
+            } else if(url.startsWith(failUrl)){
+                Toast.makeText(mThis,"CARD CANCEL !!!", Toast.LENGTH_SHORT).show();
+                finish();
             }
 
             super.onPageFinished(view, url);
@@ -177,15 +197,15 @@ public class PayActivity extends BaseActivity {
 
         @Override
         public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host,
-                String realm) {
-            Log.e("PayActivity.onReceivedHttpAuthRequest", "host : " + host + "\nrealm : " + realm);
+                                              String realm) {
+            Log.e(TAG, "host : " + host + "\nrealm : " + realm);
             super.onReceivedHttpAuthRequest(view, handler, host, realm);
         }
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
-            Log.e("PayActivity.shouldOverrideUrlLoading", "url : " + url);
+            Log.e(TAG, "shouldOverrideUrlLoading url : " + url);
 
             // TODO Auto-generated method stub
             if (url.contains("market://") || url.endsWith(".apk")
@@ -209,13 +229,13 @@ public class PayActivity extends BaseActivity {
                     || url.contains("shinhan-sr-ansimclick://") || url.contains("SAMSUNG")) {
                 Intent intent = null;
                 try {
-                    Log.e("URL ==>", url);
+                    Log.e(TAG, "URL ==> " + url);
                     intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME);
-                    Log.e("get Scheme ==>", intent.getScheme());
-                    Log.e("get Scheme ==>", intent.getDataString());
+                    Log.e(TAG, "get Scheme ==> " + intent.getScheme());
+                    Log.e(TAG, "get Scheme ==> " + intent.getDataString());
 
                 } catch (URISyntaxException ex) {
-                    Log.e("Browser", "Bad URI " + url + ":" + ex.getMessage());
+                    Log.e(TAG, "Bad URI " + url + ":" + ex.getMessage());
                 }
 
                 if (url.startsWith("intent")) {
@@ -254,7 +274,7 @@ public class PayActivity extends BaseActivity {
                 Uri uri = Uri.parse(url);
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 
-                Log.d("test", "ISP MOBILE[" + isISP_call + "]: " + url);
+                Log.d(TAG, "ISP MOBILE[" + isISP_call + "]: " + url);
 
                 try {
                     isISP_call = true;
@@ -306,6 +326,7 @@ public class PayActivity extends BaseActivity {
 
         }
     }
+
     @Override
     protected void onStop() {
         super.onStop();

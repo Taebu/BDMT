@@ -18,6 +18,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -75,9 +79,27 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
     };
 
     @Override
+    public void onStart() {
+        super.onStart();
+        GoogleAnalytics.getInstance(getActivity()).reportActivityStart(getActivity());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        GoogleAnalytics.getInstance(getActivity()).reportActivityStop(getActivity());
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.list_shop, container, false);
+
+        Tracker t = ((CashqApplication)getActivity().getApplication())
+                .getTracker(CashqApplication.TrackerName.APP_TRACKER);
+
+        t.setScreenName("ShopListFragment");
+        t.send(new HitBuilders.AppViewBuilder().build());
 
         // custom mDialog init.
         mDialog = new CustomDialog(getActivity());
@@ -427,7 +449,15 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
 
         @Override
         public void onClick(View v) {
+
             if (v.getId() == R.id.tel_btn) {
+
+                Tracker t = ((CashqApplication)getActivity().getApplication())
+                        .getTracker(CashqApplication.TrackerName.APP_TRACKER);
+
+                t.send(new HitBuilders.EventBuilder().setCategory("ShopListFragment")
+                        .setAction("Press Button").setLabel("App Call").build());
+
                 String num = v.getTag(R.id.num).toString();
                 String name = v.getTag(R.id.name).toString();
                 String img1 = v.getTag(R.id.img1).toString();

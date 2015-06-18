@@ -30,6 +30,9 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
@@ -102,6 +105,12 @@ public class ShopPageActivity extends BaseActivity {
 
         // mActivity killer mActivity add.
         killer.addActivity(this);
+
+        Tracker t = ((CashqApplication)getApplication())
+                .getTracker(CashqApplication.TrackerName.APP_TRACKER);
+
+        t.setScreenName("ShopListFragment");
+        t.send(new HitBuilders.AppViewBuilder().build());
 
         if (!Util.isOnline(this)) {
             Util.showDialog_normal(this, "네트워크 에러", "네트워크 연결 상태를 확인해주세요");
@@ -350,6 +359,8 @@ public class ShopPageActivity extends BaseActivity {
         Log.e("life", "onStart");
         // setCartCount(this);
         super.onStart();
+
+        GoogleAnalytics.getInstance(this).reportActivityStart(this);
     }
 
     @Override
@@ -371,6 +382,9 @@ public class ShopPageActivity extends BaseActivity {
         // setCartCount(this);
         Log.e("life", "onStop");
         super.onStop();
+
+        GoogleAnalytics.getInstance(this).reportActivityStop(this);
+
         stopService(mZoomIntent);
         if (mDialog.isShowing()) {
             mDialog.dismiss();
@@ -491,6 +505,12 @@ public class ShopPageActivity extends BaseActivity {
 
                 if (v.getId() == R.id.tel_btn) {
 
+                    Tracker t = ((CashqApplication)getApplication())
+                            .getTracker(CashqApplication.TrackerName.APP_TRACKER);
+
+                    t.send(new HitBuilders.EventBuilder().setCategory("ShopPageActivity")
+                            .setAction("Press Button").setLabel("App Call").build());
+
                     String num = getIntent().getStringExtra("tel");
                     String name = getIntent().getStringExtra("name");
 
@@ -584,12 +604,12 @@ public class ShopPageActivity extends BaseActivity {
 
         String url;
 
-        if ("".equals(getIntent().getStringExtra("pre_pay"))) {
-            url = getNoImage();
-        } else {
-            url = getHtml(IMG_URL + getIntent().getStringExtra("img1"), IMG_URL
-                    + getIntent().getStringExtra("img2"));
-        }
+        // if ("".equals(getIntent().getStringExtra("pre_pay"))) {
+        // url = getNoImage();
+        // } else {
+        url = getHtml(IMG_URL + getIntent().getStringExtra("img1"), IMG_URL
+                + getIntent().getStringExtra("img2"));
+        // }
 
         mWebView.loadDataWithBaseURL(null, url, "text/html", "utf-8", null);
     }

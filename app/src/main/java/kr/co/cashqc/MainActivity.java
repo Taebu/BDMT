@@ -89,6 +89,8 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
     private String mPhoneNum;
 
+    private String mAddress;
+
     public MainActivity() {
         super();
         MainActivity.Instance = this;
@@ -128,6 +130,8 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
     private Location mLastLocation;
 
+    private String mGu, mSi;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -142,12 +146,12 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
         updateChecker();
 
-        GoogleAnalytics.getInstance(getApplicationContext()).dispatchLocalHits();
+        GoogleAnalytics.getInstance(this).dispatchLocalHits();
 
-        CashqApplication c = new CashqApplication();
-        Tracker t = c.getTracker(CashqApplication.TrackerName.APP_TRACKER);
+        Tracker t = ((CashqApplication)getApplication())
+                .getTracker(CashqApplication.TrackerName.APP_TRACKER);
+
         t.setScreenName("MainActivity");
-
         t.send(new HitBuilders.AppViewBuilder().build());
 
         LinearLayout ll = (LinearLayout)findViewById(R.id.gps_layout);
@@ -231,7 +235,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
         findViewById(R.id.admin).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialog(0);
+//                showDialog(0);
             }
         });
 
@@ -315,6 +319,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
     protected void onStart() {
         super.onStart();
         mGoogleApiClient.connect();
+        GoogleAnalytics.getInstance(this).reportActivityStart(this);
     }
 
     @Override
@@ -511,11 +516,20 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
             try {
                 json = new String(json.getBytes("8859_1"), "UTF-8");
 
-                String address = getAddress(json);
+                mAddress = getAddress(json);
 
-                tvAddress.setText(address);
+                tvAddress.setText(mAddress);
 
-                Log.e(TAG, "address : " + address);
+                if ("동두천시".equals(mSi) || "안산시".equals(mSi) || "강서구".equals(mGu)
+                        || "양천구".equals(mGu)) {
+                    sDistance = 3;
+                } else {
+                    sDistance = 2;
+                }
+
+                mManualDistance.setText(sDistance + "km\n변경");
+
+                Log.e(TAG, "address : " + mAddress);
 
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
@@ -552,9 +566,15 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
                             String types = addressComponentsObject.getString("types");
 
+                            if (types.contains("locality")) {
+                                mSi = addressComponentsObject.getString("long_name");
+                            }
+
                             if (types.contains("sublocality_level_1")) {
                                 sublocalityLevel1 = addressComponentsObject.getString("long_name");
+                                mGu = addressComponentsObject.getString("long_name");
                             }
+
                             if (types.contains("sublocality_level_2")) {
                                 sublocalityLevel2 = addressComponentsObject.getString("long_name");
                             }
@@ -701,6 +721,8 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
     @Override
     protected void onStop() {
         super.onStop();
+
+        GoogleAnalytics.getInstance(this).reportActivityStop(this);
 
         if (mGoogleApiClient.isConnected())
             mGoogleApiClient.disconnect();

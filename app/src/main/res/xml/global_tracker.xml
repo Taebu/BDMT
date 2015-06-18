@@ -2,15 +2,19 @@
 <resources xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="TypographyDashes">
 
+    <string name="ga_logLevel">verbose</string>
+
     <integer name="ga_sessionTimeout">300</integer>
 
     <!-- Enable automatic Activity measurement -->
     <bool name="ga_autoActivityTracking">true</bool>
 
     <!-- The screen names that will appear in reports -->
-    <screenName name="kr.co.cashqc.MainActivity">
+    <screenName name="kr.co.cashqc.MainActivity"/>
+    <screenName name="kr.co.cashqc.ShopPageActivity"/>
+    <screenName name="kr.co.cashqc.ShopListFragment"/>
+
         <!-- AnalyticsSampleApp ScreenViewSampleScreen -->
-    </screenName>
     <!--<screenName name="com.google.android.gms.analytics.samples.mobileplayground.EcommerceFragment">-->
         <!--AnalyticsSampleApp EcommerceSampleScreen-->
     <!--</screenName>-->

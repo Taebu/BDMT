@@ -402,7 +402,7 @@ public class OrderActivity extends BaseActivity {
                 i.putExtra("order", mOrderData);
                 startActivity(i);
 
-                clear();
+//                clear();
 
             } else {
 
