@@ -55,12 +55,16 @@ public class AddressListDialog extends Dialog {
             @Override
             public void onClick(View v) {
                 int position = listView.getCheckedItemPosition();
-                AddressData item = (AddressData)listView.getItemAtPosition(position);
-                v.setTag(R.id.zipcode, item.getZipcode());
-                v.setTag(R.id.address1, item.getAddress());
-                v.setTag(R.id.address2, "");
-                onClickListener.onClick(v);
-                dismiss();
+
+                if (position != ListView.INVALID_POSITION) {
+                    AddressData item = (AddressData)listView.getItemAtPosition(position);
+                    v.setTag(R.id.zipcode, item.getZipcode());
+                    v.setTag(R.id.address1, item.getAddress());
+                    v.setTag(R.id.address2, "");
+                    v.setTag(R.id.full_address, item.getResult());
+                    onClickListener.onClick(v);
+                    dismiss();
+                }
             }
         };
 

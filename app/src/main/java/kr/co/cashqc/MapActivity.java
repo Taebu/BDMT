@@ -4,10 +4,10 @@ package kr.co.cashqc;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -16,6 +16,10 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.List;
@@ -27,6 +31,8 @@ import java.util.Locale;
 
 public class MapActivity extends BaseActivity implements GoogleMap.OnMapClickListener,
         GoogleMap.OnInfoWindowClickListener {
+
+    private final String TAG = getClass().getSimpleName();
 
     LocationUtil mLocationUtil;
 
@@ -113,17 +119,90 @@ public class MapActivity extends BaseActivity implements GoogleMap.OnMapClickLis
         // killer.removeActivity();
     }
 
+    private View.OnClickListener mOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            try {
+                String address1 = (String)v.getTag(R.id.address1);
+                String address2 = (String)v.getTag(R.id.address2);
+
+                String fullAddress = address1 + address2;
+
+                Log.e(TAG, fullAddress);
+
+                new GeocodingTask().execute(fullAddress);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
     public void mOnClick(View view) {
         switch (view.getId()) {
             case R.id.btn_search:
-                EditText address = (EditText)findViewById(R.id.input_address);
-                if (address.length() != 0) {
-                    LatLng latLng = addressToLatLng(address.getText().toString());
-                    if (latLng != null) {
-                        onMapClick(latLng);
-                    }
-                }
+
+                new AddressListDialog(this, mOnClickListener).show();
+
+                // EditText address =
+                // (EditText)findViewById(R.id.input_address);
+                // if (address.length() != 0) {
+                // LatLng latLng =
+                // addressToLatLng(address.getText().toString());
+                // if (latLng != null) {
+                // onMapClick(latLng);
+                // }
+                // }
                 break;
+        }
+    }
+
+    private class GeocodingTask extends AsyncTask<String, Void, JSONObject> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected JSONObject doInBackground(String... params) {
+
+            String address = params[0].replace(" ", "");
+
+            String url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address;
+
+            return new JSONParser().getJSONObjectFromUrl(url);
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject jsonObject) {
+            super.onPostExecute(jsonObject);
+
+            try {
+                String status = jsonObject.getString("status");
+
+                if (!status.equals("OK"))
+                    return;
+
+                JSONArray resultsArray = jsonObject.getJSONArray("results");
+
+                JSONObject resultsObject = resultsArray.getJSONObject(0);
+
+                JSONObject geometryObject = resultsObject.getJSONObject("geometry");
+
+                JSONObject locationObject = geometryObject.getJSONObject("location");
+
+                double latitude = locationObject.getDouble("lat");
+                double longitude = locationObject.getDouble("lng");
+
+                LatLng latLng = new LatLng(latitude, longitude);
+
+                onMapClick(latLng);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 

@@ -6,6 +6,7 @@
     android:weightSum="10">
 
     <LinearLayout
+        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -20,26 +21,18 @@
             android:hint="주소 입력 (예 : 서초2동)"
             android:inputType="text"
             android:singleLine="true"
-            android:textSize="13sp" />
+            android:textSize="13sp"
+            android:visibility="gone" />
 
-        <AutoCompleteTextView
-            android:id="@+id/auto_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:completionHint="asd"
-            android:completionThreshold="1">
-
-            <requestFocus />
-        </AutoCompleteTextView>
-
-        <ImageView
+        <Button
+            android:textColor="#ffffff"
+            android:text="주소 입력"
             android:id="@+id/btn_search"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:background="@drawable/btn_black"
             android:onClick="mOnClick"
-            android:scaleType="fitCenter"
-            android:src="@drawable/btn_search_2_nor" />
+            android:scaleType="fitCenter" />
 
     </LinearLayout>
 

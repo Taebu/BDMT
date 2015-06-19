@@ -52,5 +52,6 @@
     <item name="zipcode" type="id"/>
     <item name="address1" type="id"/>
     <item name="address2" type="id"/>
+    <item name="full_address" type="id"/>
 
 </resources>
