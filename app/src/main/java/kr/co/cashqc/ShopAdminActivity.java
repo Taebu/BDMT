@@ -57,7 +57,7 @@ public class ShopAdminActivity extends BaseActivity {
 
             String url = "http://cashq.co.kr/m/ajax_data/get_ordtake.php?seq=" + seq;
 
-            return new JSONParser().getJSONObjectFromUrl(url);
+            return new JsonParser().getJSONObjectFromUrl(url);
         }
 
         @Override

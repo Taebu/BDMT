@@ -63,7 +63,7 @@ public class JoinActivity extends BaseActivity {
         @Override
         protected JSONObject doInBackground(String... params) {
             String baseUrl = "http://cashq.co.kr/m/ajax_data/set_member.php?board=user_member&phone=";
-            JSONParser parser = new JSONParser();
+            JsonParser parser = new JsonParser();
             return parser.getJSONObjectFromUrl(baseUrl + params[0]);
         }
 

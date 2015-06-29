@@ -62,7 +62,7 @@ public class AgencyActivity extends BaseActivity {
 
             StringBuilder sb = new StringBuilder();
 
-            return new JSONParser().getJSONStringFromUrl(sb.toString());
+            return new JsonParser().getJSONStringFromUrl(sb.toString());
         }
 
         @Override

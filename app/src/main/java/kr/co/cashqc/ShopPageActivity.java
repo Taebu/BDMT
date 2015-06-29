@@ -244,7 +244,7 @@ public class ShopPageActivity extends BaseActivity {
             String url = Uri.parse("http://cashq.co.kr/m/ajax_data/get_review.php?").buildUpon()
                     .appendQueryParameter("seq", seq).toString();
 
-            return new JSONParser().getJSONObjectFromUrl(url);
+            return new JsonParser().getJSONObjectFromUrl(url);
         }
 
         @Override
@@ -335,7 +335,7 @@ public class ShopPageActivity extends BaseActivity {
                     .appendQueryParameter("token_id", TOKEN_ID).toString();
 
             Log.e(TAG, "remove url : " + url);
-            return new JSONParser().getJSONStringFromUrl(url);
+            return new JsonParser().getJSONStringFromUrl(url);
         }
 
         @Override
@@ -703,7 +703,7 @@ public class ShopPageActivity extends BaseActivity {
             StringBuilder sb = new StringBuilder("http://cashq.co.kr/ajax/get_menu.php?store_code=");
             sb.append(params[0]);
 
-            return new JSONParser().getJSONObjectFromUrl(sb.toString());
+            return new JsonParser().getJSONObjectFromUrl(sb.toString());
         }
 
         @Override
@@ -1018,7 +1018,7 @@ public class ShopPageActivity extends BaseActivity {
                     "http://cashq.co.kr/ajax/get_menu_img.php?store_code=");
             sb.append(params[0]);
 
-            return new JSONParser().getJSONObjectFromUrl(sb.toString());
+            return new JsonParser().getJSONObjectFromUrl(sb.toString());
         }
 
         @Override

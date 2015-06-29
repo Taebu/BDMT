@@ -97,7 +97,7 @@ public class LoginActivity extends BaseActivity {
         @Override
         protected JSONObject doInBackground(String... params) {
             String baseUrl = "http://cashq.co.kr/m/login_json.php?userid=";
-            JSONParser parser = new JSONParser();
+            JsonParser parser = new JsonParser();
             return parser.getJSONObjectFromUrl(baseUrl + params[0]);
         }
 

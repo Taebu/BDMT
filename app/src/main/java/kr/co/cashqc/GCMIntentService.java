@@ -45,7 +45,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 		String link = intent.getStringExtra("link");
 		String get_biz_code = intent.getStringExtra("get_biz_code");
 
-		Intent i = new Intent(context, showMsg.class);
+		Intent i = new Intent(context, ShowMsg.class);
 		Bundle b = new Bundle();
 		b.putString("seq", seq);
 		b.putString("title", title);

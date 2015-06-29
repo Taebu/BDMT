@@ -74,7 +74,7 @@ public class ModifyActivity extends BaseActivity {
         @Override
         protected JSONObject doInBackground(String... params) {
             String baseUrl = "http://cashq.co.kr/m/ajax_data/get_point_list.php?phone=";
-            JSONParser parser = new JSONParser();
+            JsonParser parser = new JsonParser();
             return parser.getJSONObjectFromUrl(baseUrl + params[0]);
         }
 
@@ -146,7 +146,7 @@ public class ModifyActivity extends BaseActivity {
 
             sb.append("&bank=").append(mSpinner.getSelectedItem().toString());
 
-            return new JSONParser().getJSONObjectFromUrl(sb.toString());
+            return new JsonParser().getJSONObjectFromUrl(sb.toString());
         }
 
         @Override

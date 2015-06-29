@@ -45,7 +45,7 @@ public class NoticeActivity extends BaseActivity {
 
             String url = "http://cashq.co.kr/m/ajax_data/get_board.php?board=gonggi";
 
-            return new JSONParser().getJSONObjectFromUrl(url);
+            return new JsonParser().getJSONObjectFromUrl(url);
             // return null;
         }
 

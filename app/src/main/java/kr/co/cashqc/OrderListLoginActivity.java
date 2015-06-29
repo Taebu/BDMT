@@ -92,7 +92,7 @@ public class OrderListLoginActivity extends BaseActivity {
 
             String url = "http://cashq.co.kr/m/login_json.php?userid=" + phoneNum;
 
-            return new JSONParser().getJSONObjectFromUrl(url);
+            return new JsonParser().getJSONObjectFromUrl(url);
         }
 
         @Override

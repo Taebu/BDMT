@@ -70,7 +70,7 @@ public class OrderListActivity extends BaseActivity {
             String url = Uri.parse("http://cashq.co.kr/m/ajax_data/get_bedal_info.php").buildUpon()
                     .appendQueryParameter("mb_hp", phoneNum).build().toString();
 
-            return new JSONParser().getJSONObjectFromUrl(url);
+            return new JsonParser().getJSONObjectFromUrl(url);
         }
 
         @Override

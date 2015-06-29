@@ -75,7 +75,7 @@ public class CallLogActivity extends BaseActivity {
 
             String url = ub.build().toString();
 
-            return new JSONParser().getJSONObjectFromUrl(url);
+            return new JsonParser().getJSONObjectFromUrl(url);
         }
 
         @Override

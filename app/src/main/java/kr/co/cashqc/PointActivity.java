@@ -251,7 +251,7 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
         protected JSONObject doInBackground(String... params) {
             String url = "http://cashq.co.kr/m/ajax_data/get_point_list2.php?phone=" + params[0];
             Log.e(TAG, "URL : " + url);
-            return new JSONParser().getJSONObjectFromUrl(url);
+            return new JsonParser().getJSONObjectFromUrl(url);
         }
 
         @Override
@@ -533,7 +533,7 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
                     sb.append("&chk_seq[]=").append(al.getPoint_seq());
                 }
                 Log.e(TAG, "url : " + sb.toString());
-                return new JSONParser().getJSONObjectFromUrl(sb.toString());
+                return new JsonParser().getJSONObjectFromUrl(sb.toString());
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }

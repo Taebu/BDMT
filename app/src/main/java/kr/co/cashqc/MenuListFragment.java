@@ -19,8 +19,6 @@ import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static kr.co.cashqc.gcm.Util.getPhoneNumber;
-
 /**
  * @author Jung-Hum Cho
  */
@@ -53,7 +51,7 @@ public class MenuListFragment extends ListFragment {
 
         Log.e(TAG, "onActivityCreated");
 
-        String phoneNum = getPhoneNumber(getActivity());
+//        String phoneNum = getPhoneNumber(getActivity());
 
 //        if (sIsInitAdminCheck) {
 //            if (phoneNum != null)
@@ -83,7 +81,7 @@ public class MenuListFragment extends ListFragment {
 
             String url = "http://cashq.co.kr/m/ajax_data/get_isadmin.php?phone=" + phoneNumber;
             Log.e(TAG, "MenuListFragment isadmin url : " + url);
-            return new JSONParser().getJSONObjectFromUrl(url);
+            return new JsonParser().getJSONObjectFromUrl(url);
         }
 
         @Override
@@ -162,7 +160,7 @@ public class MenuListFragment extends ListFragment {
                 break;
             case 2:
                 // intent = new Intent(getActivity(), WebViewActivity.class);
-                intent = new Intent(getActivity(), QNAActivity.class);
+                intent = new Intent(getActivity(), QnaActivity.class);
                 intent.putExtra("assort", "qna");
                 break;
             case 3:
@@ -171,7 +169,7 @@ public class MenuListFragment extends ListFragment {
                 intent.putExtra("assort", "notice");
                 break;
             case 4:
-                intent = new Intent(getActivity(), SPLLoginActivity.class);
+                intent = new Intent(getActivity(), SplLoginActivity.class);
                 break;
 
             case 5:

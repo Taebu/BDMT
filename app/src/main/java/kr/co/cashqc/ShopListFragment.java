@@ -203,7 +203,7 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
 
             Log.e("ShopListFragment.ShopList", "url : " + sb.toString());
 
-            return new JSONParser().getJSONStringFromUrl(sb.toString());
+            return new JsonParser().getJSONStringFromUrl(sb.toString());
         }
 
         @Override

@@ -171,7 +171,7 @@ public class MapActivity extends BaseActivity implements GoogleMap.OnMapClickLis
 
             String url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address;
 
-            return new JSONParser().getJSONObjectFromUrl(url);
+            return new JsonParser().getJSONObjectFromUrl(url);
         }
 
         @Override

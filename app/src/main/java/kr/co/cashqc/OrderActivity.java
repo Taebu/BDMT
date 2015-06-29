@@ -362,7 +362,7 @@ public class OrderActivity extends BaseActivity {
 
             Log.e("order", "url : " + url);
 
-            return new JSONParser().getJSONObjectFromUrl(url);
+            return new JsonParser().getJSONObjectFromUrl(url);
             // return null;
         }
 

@@ -14,6 +14,7 @@ import android.webkit.HttpAuthHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.http.util.EncodingUtils;
@@ -42,6 +43,8 @@ public class PayActivity extends BaseActivity {
 
     private OrderData mOrderData;
 
+    private TextView tvUrl;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,16 +52,17 @@ public class PayActivity extends BaseActivity {
 
         killer.addActivity(this);
 
-        mWebView = (WebView) findViewById(R.id.pay_webview);
+        mWebView = (WebView)findViewById(R.id.pay_webview);
         mWebView.setWebViewClient(new MyWebView());
         mWebView.setWebChromeClient(new ChromeClient());
         mWebView.getSettings().setJavaScriptEnabled(true);
+        tvUrl = (TextView)findViewById(R.id.pay_url);
 
         // mWebView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
         // mWebView.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
         // mWebView.setScrollBarStyle(ScrollView.SCROLLBARS_OUTSIDE_OVERLAY);
 
-        mOrderData = (OrderData) getIntent().getSerializableExtra("order");
+        mOrderData = (OrderData)getIntent().getSerializableExtra("order");
 
         byte[] postData = makePostData();
 
@@ -108,20 +112,21 @@ public class PayActivity extends BaseActivity {
 
         @Override
         public boolean onJsAlert(WebView view, String url, String message,
-                                 final android.webkit.JsResult result) {
+                final android.webkit.JsResult result) {
             new AlertDialog.Builder(PayActivity.this).setTitle("알림").setMessage(message)
                     .setPositiveButton(android.R.string.ok, new AlertDialog.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             result.confirm();
                         }
                     }).setCancelable(false).create().show();
-//            view.getContext().startActivity(new Intent(PayActivity.this, MainActivity.class));
+            // view.getContext().startActivity(new Intent(PayActivity.this,
+            // MainActivity.class));
             return true;
         }
 
         @Override
         public boolean onJsConfirm(WebView view, String url, String message,
-                                   final android.webkit.JsResult result) {
+                final android.webkit.JsResult result) {
             new AlertDialog.Builder(PayActivity.this)
                     .setTitle("알림")
                     .setMessage(message)
@@ -146,7 +151,7 @@ public class PayActivity extends BaseActivity {
 
         @Override
         public void onPageFinished(WebView view, String url) {
-
+            tvUrl.setText(url);
             Log.e(TAG, "onPageFinished url : " + url);
 
             String content = view.getTitle();
@@ -178,18 +183,18 @@ public class PayActivity extends BaseActivity {
                     intent.putExtra("order", mOrderData);
                     intent.putExtra("success", success);
                     startActivity(intent);
-                    finish();
+                    // finish();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
-            }else if(cancelUrl.equals(url)) {
-                Toast.makeText(mThis,"PHONE CANCEL !!!", Toast.LENGTH_SHORT).show();
-                finish();
-            } else if(url.startsWith(failUrl)){
-                Toast.makeText(mThis,"CARD CANCEL !!!", Toast.LENGTH_SHORT).show();
-                finish();
+            } else if (cancelUrl.equals(url)) {
+                Toast.makeText(mThis, "PHONE CANCEL !!!", Toast.LENGTH_SHORT).show();
+                // finish();
+            } else if (url.startsWith(failUrl)) {
+                Toast.makeText(mThis, "CARD CANCEL !!!", Toast.LENGTH_SHORT).show();
+                // finish();
             }
 
             super.onPageFinished(view, url);
@@ -197,16 +202,13 @@ public class PayActivity extends BaseActivity {
 
         @Override
         public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host,
-                                              String realm) {
+                String realm) {
             Log.e(TAG, "host : " + host + "\nrealm : " + realm);
             super.onReceivedHttpAuthRequest(view, handler, host, realm);
         }
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-
-            Log.e(TAG, "shouldOverrideUrlLoading url : " + url);
-
             // TODO Auto-generated method stub
             if (url.contains("market://") || url.endsWith(".apk")
                     || url.contains("http://market.android.com") || url.contains("vguard")
@@ -219,26 +221,22 @@ public class PayActivity extends BaseActivity {
                     || url.contains("http://m.ahnlab.com/kr/site/download")
                     || url.contains("ilkansimmobilevaccine://")
                     || url.contains("mpocketansimclick://")
-                    || url.toLowerCase().contains("cloudpay://") /*
-                                                                  * ||
-                                                                  * url.contains
-                                                                  * (
-                                                                  * "ispmobile://"
-                                                                  * )
-                                                                  */
+                    || url.toLowerCase().contains("cloudpay://") || url.contains("ispmobile://")
                     || url.contains("shinhan-sr-ansimclick://") || url.contains("SAMSUNG")) {
                 Intent intent = null;
                 try {
-                    Log.e(TAG, "URL ==> " + url);
+                    Log.e("URL ==>", url);
                     intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME);
-                    Log.e(TAG, "get Scheme ==> " + intent.getScheme());
-                    Log.e(TAG, "get Scheme ==> " + intent.getDataString());
+                    Log.e("get Scheme ==>", intent.getScheme());
+                    Log.e("get Scheme ==>", intent.getDataString());
 
                 } catch (URISyntaxException ex) {
-                    Log.e(TAG, "Bad URI " + url + ":" + ex.getMessage());
+                    Log.e("Browser", "Bad URI " + url + ":" + ex.getMessage());
                 }
 
+                /* 킷캣(4.4 이상) 버전에서의 설치 점검 */
                 if (url.startsWith("intent")) {
+                    /* 갤럭시s4 등에서 백신설치x 백신호출 */
                     if (url.contains("com.ahnlab.v3mobileplus")) {
                         try {
                             view.getContext().startActivity(intent.parseUri(url, 0));
@@ -270,24 +268,6 @@ public class PayActivity extends BaseActivity {
                     Log.e("ERROR", e.getMessage());
                     return false;
                 }
-            } else if (url.startsWith("ispmobile")) {
-                Uri uri = Uri.parse(url);
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-
-                Log.d(TAG, "ISP MOBILE[" + isISP_call + "]: " + url);
-
-                try {
-                    isISP_call = true;
-                    startActivityForResult(intent, 0);
-                } catch (ActivityNotFoundException ex) {
-                    isISP_call = false;
-                    intent = new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("http://mobile.vpay.co.kr/jsp/MISP/andown.jsp"));
-                    startActivity(intent);
-                }
-
-                return true;
-
             } else {
                 view.loadUrl(url);
                 return true;
@@ -295,6 +275,89 @@ public class PayActivity extends BaseActivity {
             return true;
         }
     }
+
+    // @Override
+    // public boolean shouldOverrideUrlLoading(WebView view, String url) {
+    // Log.e(TAG, "shouldOverrideUrlLoading url : " + url);
+    // // TODO Auto-generated method stub
+    // if (url.contains("market://") || url.endsWith(".apk")
+    // || url.contains("http://market.android.com") || url.contains("vguard")
+    // || url.contains("v3mobile") || url.contains("ansimclick")
+    // || url.endsWith("ansimclick") ||
+    // url.toLowerCase().contains("vguardstart")
+    // || url.contains("lottesmartpay://") ||
+    // url.contains("smhyundaiansimclick://")
+    // || url.contains("smshinhanansimclick://")
+    // || url.contains("smshinhancardusim://") || url.contains("hanaansim://")
+    // || url.contains("citiansimmobilevaccine://") ||
+    // url.contains("droidxantivirus")
+    // || url.contains("http://m.ahnlab.com/kr/site/download")
+    // || url.contains("ilkansimmobilevaccine://")
+    // || url.contains("mpocketansimclick://")
+    // || url.toLowerCase().contains("cloudpay://")
+    //
+    // || url.contains("ispmobile://")
+    //
+    // || url.contains("shinhan-sr-ansimclick://") || url.contains("SAMSUNG")) {
+    // Intent intent = null;
+    // try {
+    // Log.e(TAG, "URL ==> " + url);
+    // intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME);
+    // Log.e(TAG, "get Scheme ==> " + intent.getScheme());
+    // Log.e(TAG, "get Scheme ==> " + intent.getDataString());
+    // } catch (URISyntaxException ex) {
+    // Log.e(TAG, "Bad URI " + url + ":" + ex.getMessage());
+    // }
+    // if (url.startsWith("intent")) {
+    // if (url.contains("com.ahnlab.v3mobileplus")) {
+    // try {
+    // view.getContext().startActivity(intent.parseUri(url, 0));
+    // } catch (URISyntaxException e) {
+    // e.printStackTrace();
+    // } catch (ActivityNotFoundException e) {
+    // e.printStackTrace();
+    // }
+    // return true;
+    // } else {
+    // if (getPackageManager().resolveActivity(intent, 0) == null) {
+    // String packagename = intent.getPackage();
+    // if (packagename != null) {
+    // Uri uri = Uri.parse("market://search?q=pname:" + packagename);
+    // intent = new Intent(Intent.ACTION_VIEW, uri);
+    // startActivity(intent);
+    // return true;
+    // }
+    // }
+    // }
+    // }
+    // try {
+    // Uri uri = Uri.parse(intent.getDataString());
+    // intent = new Intent(Intent.ACTION_VIEW, uri);
+    // startActivity(intent);
+    // } catch (ActivityNotFoundException e) {
+    // Log.e("ERROR", e.getMessage());
+    // return false;
+    // }
+    // } else if (url.startsWith("ispmobile")) {
+    // Uri uri = Uri.parse(url);
+    // Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+    // Log.d(TAG, "ISP MOBILE[" + isISP_call + "]: " + url);
+    // try {
+    // isISP_call = true;
+    // startActivityForResult(intent, 0);
+    // } catch (ActivityNotFoundException ex) {
+    // isISP_call = false;
+    // intent = new Intent(Intent.ACTION_VIEW,
+    // Uri.parse("http://mobile.vpay.co.kr/jsp/MISP/andown.jsp"));
+    // startActivity(intent);
+    // }
+    // return true;
+    // } else {
+    // view.loadUrl(url);
+    // return true;
+    // }
+    // return true;
+    // }
 
     private class OKJsonTask extends AsyncTask<String, Void, JSONObject> {
         @Override
@@ -307,7 +370,7 @@ public class PayActivity extends BaseActivity {
 
             String url = params[0];
 
-            JSONParser jsonParser = new JSONParser();
+            JsonParser jsonParser = new JsonParser();
 
             return jsonParser.getJSONObjectFromUrl(url);
         }
@@ -330,6 +393,5 @@ public class PayActivity extends BaseActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        killer.removeActivity(this);
     }
 }

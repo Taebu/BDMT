@@ -81,7 +81,7 @@ public class BankAccountDialog extends Dialog {
         @Override
         protected JSONObject doInBackground(Void... params) {
             String baseUrl = "http://cashq.co.kr/m/ajax_data/get_point_list.php?phone=";
-            JSONParser parser = new JSONParser();
+            JsonParser parser = new JsonParser();
             return parser.getJSONObjectFromUrl(baseUrl + mPhoneNum);
         }
 
@@ -152,7 +152,7 @@ public class BankAccountDialog extends Dialog {
                 e.printStackTrace();
             }
 
-            return new JSONParser().getJSONObjectFromUrl(sb.toString());
+            return new JsonParser().getJSONObjectFromUrl(sb.toString());
         }
 
         @Override

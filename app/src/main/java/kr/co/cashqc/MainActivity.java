@@ -504,7 +504,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
             Log.e(TAG, "URL : " + url);
 
-            return new JSONParser().getJSONObjectFromUrl(url);
+            return new JsonParser().getJSONObjectFromUrl(url);
         }
 
         @Override
@@ -783,7 +783,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
         @Override
         protected JSONObject doInBackground(String... params) {
 
-            JSONParser parser = new JSONParser();
+            JsonParser parser = new JsonParser();
 
             String pointURL = "http://cashq.co.kr/m/ajax_data/get_point.php?phone=" + mPhoneNum;
 

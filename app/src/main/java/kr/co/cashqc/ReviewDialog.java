@@ -170,7 +170,7 @@ public class ReviewDialog extends Dialog {
 
             Log.e("ReviewDialog", "url : " + url);
 
-            return new JSONParser().getJSONStringFromUrl(url);
+            return new JsonParser().getJSONStringFromUrl(url);
         }
 
         @Override
@@ -210,7 +210,7 @@ public class ReviewDialog extends Dialog {
 
             Log.e("ReviewDialog", "url : " + url);
 
-            return new JSONParser().getJSONStringFromUrl(url);
+            return new JsonParser().getJSONStringFromUrl(url);
         }
 
         @Override
