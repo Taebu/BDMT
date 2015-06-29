@@ -160,10 +160,10 @@
             android:name=".CallLogActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SPLActivity"
+            android:name=".SplActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SPLLoginActivity"
+            android:name=".SplLoginActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".OrderListActivity"
@@ -175,7 +175,7 @@
             android:name=".NoticeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".QNAActivity"
+            android:name=".QnaActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".MenuZoomActivity"
@@ -197,7 +197,7 @@
         </receiver>
 
         <activity
-            android:name=".showMsg"
+            android:name=".ShowMsg"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent">

@@ -8,6 +8,7 @@ android {
         applicationId "kr.co.cashqc"
         minSdkVersion 10
         targetSdkVersion 15
+
     }
     compileOptions {
     }

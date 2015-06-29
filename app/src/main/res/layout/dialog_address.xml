@@ -79,7 +79,7 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/btn_black"
             android:gravity="center"
-            android:text="주소 입력"
+            android:text="확인"
             android:textColor="@android:color/white"
             android:textSize="16sp" />
 

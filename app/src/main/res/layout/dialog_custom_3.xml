@@ -25,6 +25,7 @@
 
 
         <TextView
+            android:textColor="@android:color/black"
             android:autoLink="web|phone"
             android:layout_weight="8"
             android:id="@+id/dialog_message"

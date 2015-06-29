@@ -6,8 +6,13 @@
     android:orientation="vertical"
     tools:context=".PayActivity">
 
+    <TextView
+        android:visibility="gone"
+        android:textSize="20sp"
+        android:id="@+id/pay_url"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
     <WebView
-
         android:id="@+id/pay_webview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
