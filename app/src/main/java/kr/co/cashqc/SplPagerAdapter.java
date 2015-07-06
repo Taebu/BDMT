@@ -23,7 +23,7 @@ public class SplPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
 
         Fragment fragment = null;
-
+d
         switch (position) {
 //            case 0:
 //                fragment = new TtsHistoryFragment();
