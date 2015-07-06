@@ -25,20 +25,20 @@ public class SplPagerAdapter extends FragmentPagerAdapter {
         Fragment fragment = null;
 
         switch (position) {
-            case 0:
-                fragment = new TtsHistoryFragment();
-                break;
+//            case 0:
+//                fragment = new TtsHistoryFragment();
+//                break;
 
-            case 1:
+            case 0:
                 fragment = new CallHistoryFragment();
                 break;
 
-            case 2:
+            case 1:
                 fragment = new PointHistoryFragment();
                 break;
 
             default:
-                fragment = new TtsHistoryFragment();
+                fragment = new CallHistoryFragment();
                 break;
         }
 
@@ -52,6 +52,6 @@ public class SplPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return 2;
     }
 }

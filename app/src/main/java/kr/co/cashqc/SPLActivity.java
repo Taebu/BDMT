@@ -3,10 +3,13 @@ package kr.co.cashqc;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.TextView;
+
+import com.viewpagerindicator.CirclePageIndicator;
 
 import kr.co.cashqc.gcm.Util;
 
@@ -44,22 +47,29 @@ public class SplActivity extends BaseActivity {
         ViewPager viewPager = (ViewPager)findViewById(R.id.spl_pager);
         viewPager.setAdapter(pagerAdapter);
 
-        viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+        CirclePageIndicator pageIndicator = (CirclePageIndicator)findViewById(R.id.calllog_indicator);
+
+        pageIndicator.setFillColor(Color.parseColor("#000000"));
+        pageIndicator.setStrokeColor(Color.parseColor("#333333"));
+
+        pageIndicator.setViewPager(viewPager);
+
+        pageIndicator.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
 
                 switch (position) {
+//                    case 0:
+//                        tvPage.setText("바로결제 주문 내역");
+//                        break;
+
                     case 0:
-                        tvPage.setText("TTS");
+                        tvPage.setText("전화 주문 내역");
                         break;
 
                     case 1:
-                        tvPage.setText("CALL");
-                        break;
-
-                    case 2:
-                        tvPage.setText("POINT");
+                        tvPage.setText("포인트 적립 내역");
                         break;
                 }
 
