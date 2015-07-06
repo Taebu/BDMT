@@ -12,8 +12,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import static kr.co.cashqc.BaseActivity.setCartCount;
+import static kr.co.cashqc.ShopPageActivity.TTS_SHOP;
 import static kr.co.cashqc.Utils.insertMenuLevel2;
-import static kr.co.cashqc.BaseActivity.TTS_MODE;
+
 public class ShopMenuAdapter extends BaseExpandableListAdapter {
 
     public ShopMenuAdapter(Context context, ShopMenuData data,
@@ -69,7 +70,7 @@ public class ShopMenuAdapter extends BaseExpandableListAdapter {
         String imgUrl = "http://cashq.co.kr/adm/upload/thumb/1424842254UWDWC.jpg";
 
         // ImageLoader.getInstance().displayImage(imgUrl, h.ivThumb);
-        if (TTS_MODE) {
+        if (TTS_SHOP) {
             // if (false) {
 
             v.setOnClickListener(new View.OnClickListener() {

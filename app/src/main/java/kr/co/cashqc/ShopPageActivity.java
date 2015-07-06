@@ -98,6 +98,10 @@ public class ShopPageActivity extends BaseActivity {
 
     private Intent mZoomIntent;
 
+    private boolean hasImage = true;
+
+    public static boolean TTS_SHOP = false;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -160,13 +164,20 @@ public class ShopPageActivity extends BaseActivity {
 
         setWebView();
 
-        // mPrePay = getIntent().getStringExtra("pre_pay");
-        // Log.e("ShopPageActivity", "prepay : " + mPrePay);
+        mPrePay = getIntent().getStringExtra("pre_pay");
+        Log.e("ShopPageActivity", "prepay : " + mPrePay);
+
+//        TTS_SHOP = mPrePay.equals("gl");
 
         boolean hasList = "1".equals(getIntent().getStringExtra("pay"));
 
         if (hasList) {
             setListView();
+
+            if(!hasImage) {
+                isWeb = false;
+            }
+
             switcher.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -622,6 +633,7 @@ public class ShopPageActivity extends BaseActivity {
         if (url1.endsWith("null") && url2.endsWith("null")) {
             sb.append("<p style='text-align:center; margin-top:250px'>");
             sb.append("<img src='http://cashq.co.kr/m/img/img_no_image.png'></p>");
+            hasImage = false;
         } else {
             if (!url1.endsWith("null")) {
                 sb.append("<img width='100%' src='").append(url1).append("'>");
@@ -644,29 +656,17 @@ public class ShopPageActivity extends BaseActivity {
 
     private void isVisibilityWebView(boolean isWebView) {
 
-        int webViewVisibility;
-        int listViewVisibility;
-        String content;
-
         if (isWebView) {
-            webViewVisibility = View.VISIBLE;
-            listViewVisibility = View.GONE;
+            mListMenu.setVisibility(View.GONE);
+            mWebView.setVisibility(View.VISIBLE);
+            switcher.setText("메뉴 보기");
             startService(mZoomIntent);
-            content = "메뉴 보기";
         } else {
-            webViewVisibility = View.GONE;
-            listViewVisibility = View.VISIBLE;
+            mListMenu.setVisibility(View.VISIBLE);
+            mWebView.setVisibility(View.GONE);
+            switcher.setText("전단지 보기");
             stopService(mZoomIntent);
-            content = "전단지 보기";
         }
-
-        // btnUp.setVisibility(listViewVisibility);
-        // mListView.setVisibility(listViewVisibility);
-        // mMenuImgLayout.setVisibility(listViewVisibility);
-        mListMenu.setVisibility(listViewVisibility);
-        mWebView.setVisibility(webViewVisibility);
-
-        switcher.setText(content);
 
     }
 
@@ -1101,7 +1101,7 @@ public class ShopPageActivity extends BaseActivity {
             price3.setText(price[2]);
             price4.setText(price[3]);
 
-            if (TTS_MODE) {
+            if (TTS_SHOP) {
                 // if (false) {
                 img1.setOnClickListener(this);
                 img2.setOnClickListener(this);

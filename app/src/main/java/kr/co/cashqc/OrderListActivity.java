@@ -37,8 +37,8 @@ public class OrderListActivity extends BaseActivity {
         killer.addActivity(this);
         mDialog = new CustomDialog(this);
 
-        tvSubject = (TextView)findViewById(R.id.orderlist_subject);
-        tvSubject.setText("캐시큐 주문 내역");
+//        tvSubject = (TextView)findViewById(R.id.orderlist_subject);
+//        tvSubject.setText("캐시큐 주문 내역");
 
         String phoneNum = getIntent().getStringExtra("phoneNum");
 

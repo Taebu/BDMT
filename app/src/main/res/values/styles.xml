@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- File created by the Android Action Bar Style Generator
+<?xml version="1.0" encoding="utf-8"?><!-- File created by the Android Action Bar Style Generator
 
      Copyright (C) 2011 The Android Open Source Project
      Copyright (C) 2012 readyState Software Ltd
@@ -34,8 +33,17 @@
         <item name="actionModeBackground">@drawable/cab_background_top_cashq</item>
         <item name="actionModeSplitBackground">@drawable/cab_background_bottom_cashq</item>
         <item name="actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Cashq</item>
+        <item name="vpiCirclePageIndicatorStyle">@style/CustomCirclePageIndicator</item>
 
+    </style>
 
+    <style name="CustomCirclePageIndicator">
+        <item name="fillColor">#000000</item>
+        <item name="strokeColor">#000000</item>
+        <item name="strokeWidth">2dp</item>
+        <item name="radius">10dp</item>
+        <item name="centered">true</item>
+        <item name="gapWidth">10dp</item>
     </style>
 
     <style name="CustomTab">
@@ -52,7 +60,7 @@
     </style>
 
     <style name="ActionBar.Transparent.Cashq" parent="@style/Widget.Sherlock.Light.ActionBar">
-    <item name="background">@drawable/ab_transparent_cashq</item>
+        <item name="background">@drawable/ab_transparent_cashq</item>
         <item name="progressBarStyle">@style/ProgressBar.Cashq</item>
     </style>
 

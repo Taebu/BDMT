@@ -2,6 +2,7 @@
 package kr.co.cashqc;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
@@ -148,6 +150,11 @@ public class TtsHistoryFragment extends Fragment {
                 v = inflater.inflate(R.layout.row_child_tts_history, null);
 
                 h.webView = (WebView)v.findViewById(R.id.child_tts_history_webview);
+                h.webView.getSettings().setLayoutAlgorithm(
+                        WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+                h.webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+                h.webView.getSettings().setLoadWithOverviewMode(true);
+                h.webView.getSettings().setUseWideViewPort(true);
 
                 v.setTag(h);
             } else {
@@ -177,8 +184,10 @@ public class TtsHistoryFragment extends Fragment {
 
             if (isExpanded) {
                 h.ivIndicator.setImageResource(R.drawable.btn_list_close);
+                v.setBackgroundColor(Color.parseColor("#9e9e9e"));
             } else {
                 h.ivIndicator.setImageResource(R.drawable.btn_list_open);
+                v.setBackgroundColor(Color.parseColor("#ffffff"));
             }
 
             SplData item = (SplData)getGroup(groupPosition);
