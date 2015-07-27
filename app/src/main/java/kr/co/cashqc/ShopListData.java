@@ -7,24 +7,24 @@ package kr.co.cashqc;
 
 public class ShopListData {
 
-    private String reveiwCount;
+    private String reviewCount;
 
-    private String reveiwRating;
+    private String reviewRating;
 
-    public String getReveiwCount() {
-        return reveiwCount;
+    public String getReviewCount() {
+        return reviewCount;
     }
 
-    public void setReveiwCount(String reveiwCount) {
-        this.reveiwCount = reveiwCount;
+    public void setReviewCount(String reviewCount) {
+        this.reviewCount = reviewCount;
     }
 
-    public String getReveiwRating() {
-        return reveiwRating;
+    public String getReviewRating() {
+        return reviewRating;
     }
 
-    public void setReveiwRating(String reveiwRating) {
-        this.reveiwRating = reveiwRating;
+    public void setReviewRating(String reviewRating) {
+        this.reviewRating = reviewRating;
     }
 
     public String getCallcnt() {
@@ -108,6 +108,18 @@ public class ShopListData {
     private String tel; // 전화번호
 
     private String distance; // 거리
+
+    public boolean isOpen() {
+        return isOpen;
+    }
+
+    public void setIsOpen(boolean isOpen) {
+        this.isOpen = isOpen;
+    }
+
+    private boolean isOpen;
+
+
 
     public ShopListData() {
 

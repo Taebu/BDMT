@@ -3,6 +3,7 @@ package kr.co.cashqc;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -11,9 +12,12 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.net.HttpURLConnection;
 
 import static kr.co.cashqc.MainActivity.TOKEN_ID;
 
@@ -24,27 +28,33 @@ public class ReviewDialog extends Dialog {
 
     private int mScore = 0;
 
+    private ImageView reviewImg[] = new ImageView[4];
+
+    private Context mContext;
+
     public ReviewDialog(final Context context, String shopName, final String seq, final String phone) {
         super(context);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        // 배경 투명하게
+        //ㅎ흫 배경 투명하게
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         setContentView(R.layout.dialog_custom_review);
 
-        final EditText content = (EditText)findViewById(R.id.dialog_review_comment);
-        final RatingBar ratingBar = (RatingBar)findViewById(R.id.dialog_review_rating);
+        mContext = context;
 
-        TextView tvShopName = (TextView)findViewById(R.id.dialog_review_name);
+        final EditText content = (EditText) findViewById(R.id.dialog_review_comment);
+        final RatingBar ratingBar = (RatingBar) findViewById(R.id.dialog_review_rating);
+
+        TextView tvShopName = (TextView) findViewById(R.id.dialog_review_name);
 
         tvShopName.setText(shopName);
 
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                mScore = (int)rating;
+                mScore = (int) rating;
             }
         });
 
@@ -67,16 +77,6 @@ public class ReviewDialog extends Dialog {
                     data.setRating(mScore);
                     data.setTokenId(TOKEN_ID);
 
-                    // final HashMap<String, String> map = new HashMap<String,
-                    // String>();
-                    //
-                    // map.put("seq", seq);
-                    // map.put("phone", phone);
-                    // map.put("nick", "test");
-                    // map.put("content", content.getText().toString());
-                    // map.put("rating", String.valueOf(mScore));
-                    // map.put("token_id", TOKEN_ID);
-
                     Log.e("ReviewDialog", "content : " + content.getText().toString());
                     new ReviewTask().execute(data);
                     dismiss();
@@ -84,7 +84,34 @@ public class ReviewDialog extends Dialog {
             }
         });
 
+        reviewImg[0] = (ImageView) findViewById(R.id.dialog_review_img1);
+        reviewImg[1] = (ImageView) findViewById(R.id.dialog_review_img2);
+        reviewImg[2] = (ImageView) findViewById(R.id.dialog_review_img3);
+        reviewImg[3] = (ImageView) findViewById(R.id.dialog_review_img4);
+
+        reviewImg[0].setOnClickListener(reviewImageOnClick);
+
     }
+
+    private View.OnClickListener reviewImageOnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.dialog_review_img1:
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    intent.setType("image/*");
+                    mContext.startActivity(intent);
+                    break;
+                case R.id.dialog_review_img2:
+                    break;
+                case R.id.dialog_review_img3:
+                    break;
+                case R.id.dialog_review_img4:
+                    break;
+            }
+        }
+    };
 
     public ReviewDialog(final Context context, String shopName, final String seq) {
         super(context);
@@ -96,17 +123,17 @@ public class ReviewDialog extends Dialog {
 
         setContentView(R.layout.dialog_custom_review);
 
-        final EditText content = (EditText)findViewById(R.id.dialog_review_comment);
-        final RatingBar ratingBar = (RatingBar)findViewById(R.id.dialog_review_rating);
+        final EditText content = (EditText) findViewById(R.id.dialog_review_comment);
+        final RatingBar ratingBar = (RatingBar) findViewById(R.id.dialog_review_rating);
 
-        TextView tvShopName = (TextView)findViewById(R.id.dialog_review_name);
+        TextView tvShopName = (TextView) findViewById(R.id.dialog_review_name);
 
         tvShopName.setText(shopName);
 
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                mScore = (int)rating;
+                mScore = (int) rating;
             }
         });
 
@@ -199,14 +226,7 @@ public class ReviewDialog extends Dialog {
                     .appendQueryParameter("rating", String.valueOf(data.getRating())).build()
                     .toString();
 
-            // if (data.containsKey("img1"))
             // url += "&re_img1=" + data.get("img1");
-            // if (data.containsKey("img2"))
-            // url += "&re_img2=" + data.get("img2");
-            // if (data.containsKey("img3"))
-            // url += "&re_img3=" + data.get("img3");
-            // if (data.containsKey("img4"))
-            // url += "&re_img4=" + data.get("img4");
 
             Log.e("ReviewDialog", "url : " + url);
 
@@ -219,4 +239,9 @@ public class ReviewDialog extends Dialog {
             Log.e("ReviewDialog", s);
         }
     }
+
+    private void imageUpload() {
+        HttpURLConnection httpURLConnection;
+    }
+
 }

@@ -3,8 +3,8 @@ package kr.co.cashqc;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,20 +16,19 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-
-import kr.co.cashqc.lazylist.ImageLoader;
 
 /**
  * @author Jung-Hum Cho
  */
 
 public class ShopListAdapter extends BaseAdapter {
+
+    private final String TAG = getClass().getSimpleName();
 
     public ShopListAdapter(Context context, View.OnClickListener onClickListener) {
         mOnClickListener = onClickListener;
@@ -38,7 +37,7 @@ public class ShopListAdapter extends BaseAdapter {
 
         mData = new ArrayList<ShopListData>();
 
-        mLazy = new ImageLoader(context);
+        // mLazy = new ImageLoader(context);
 
         mContext = context;
 
@@ -46,7 +45,7 @@ public class ShopListAdapter extends BaseAdapter {
 
     private View.OnClickListener mOnClickListener = null;
 
-    private ImageLoader mLazy;
+    // private ImageLoader mLazy;
 
     private ArrayList<ShopListData> mData;
 
@@ -188,31 +187,31 @@ public class ShopListAdapter extends BaseAdapter {
 
         if (type == TYPE_ITEM) {
 
-            ShopListData data = (ShopListData)getItem(position);
+            ShopListData item = (ShopListData)getItem(position);
 
             h.btnTel.setFocusable(false);
             if (mOnClickListener != null) {
-                h.btnTel.setTag(R.id.num, data.getTel());
-                h.btnTel.setTag(R.id.name, data.getName());
-                h.btnTel.setTag(R.id.img1, data.getImg1());
-                h.btnTel.setTag(R.id.img2, data.getImg2());
+                h.btnTel.setTag(R.id.num, item.getTel());
+                h.btnTel.setTag(R.id.name, item.getName());
+                h.btnTel.setTag(R.id.img1, item.getImg1());
+                h.btnTel.setTag(R.id.img2, item.getImg2());
                 h.btnTel.setOnClickListener(mOnClickListener);
             }
 
-            h.name.setText(data.getName());
+            h.name.setText(item.getName());
 
-            h.distance.setText(data.getDistance());
+            h.distance.setText(item.getDistance());
 
-            h.minPay.setText(data.getMinpay());
+            h.minPay.setText(item.getMinpay());
 
-            h.dong.setText(data.getDelivery_comment());
+            h.dong.setText(item.getDelivery_comment());
 
-            h.minPay.setTag(data.getPre_pay());
+            h.minPay.setTag(item.getPre_pay());
 
-            h.time1.setText(data.getTime1() + " ~");
-            h.time2.setText(data.getTime2());
+            h.time1.setText(item.getTime1() + " ~");
+            h.time2.setText(item.getTime2());
 
-            h.score.setRating(Float.parseFloat(data.getReveiwRating()));
+            h.score.setRating(Float.parseFloat(item.getReviewRating()));
 
             String pre_pay = (String)h.minPay.getTag();
 
@@ -229,22 +228,38 @@ public class ShopListAdapter extends BaseAdapter {
                 h.imgPoint.setVisibility(View.GONE);
 
             } else {
-//                mLazy.DisplayImage(data.makeURL(), h.thumbImg);
+                // mLazy.DisplayImage(item.makeURL(), h.thumbImg);
 
-                com.nostra13.universalimageloader.core.ImageLoader.getInstance().displayImage(data.makeURL(), h.thumbImg,
-                        new SimpleImageLoadingListener() {
-                            @Override
-                            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                                h.thumbImg.setImageResource(R.drawable.img_no_image_80x120);
-                            }
-                        });
+                // bizhour work
+
+                Log.d(TAG, "bizHour : " + item.getName());
+
+                boolean isBizHour = item.isOpen();
+
+                if (isBizHour) {
+
+                    ImageLoader.getInstance().displayImage(item.makeURL(), h.thumbImg,
+                            new SimpleImageLoadingListener() {
+
+                                @Override
+                                public void onLoadingFailed(String imageUri, View view,
+                                        FailReason failReason) {
+                                    h.thumbImg.setImageResource(R.drawable.img_no_image_80x120);
+                                }
+                            });
+                } else {
+
+                    h.thumbImg.setImageResource(R.drawable.nottime);
+
+                }
 
                 h.imgPoint.setVisibility(View.VISIBLE);
                 h.thmLayout.setVisibility(View.VISIBLE);
                 h.score.setVisibility(View.VISIBLE);
                 h.thumbImg.setVisibility(View.VISIBLE);
 
-                Bitmap thumb = null, ribbon = null, thumbRibbon = null, result = null;
+                // Bitmap thumb = null, ribbon = null, thumbRibbon = null,
+                // result = null;
 
                 if ("gl".equals(pre_pay)) {
 
@@ -254,8 +269,9 @@ public class ShopListAdapter extends BaseAdapter {
 
                     h.imgPoint.setImageResource(R.drawable.point_2000);
 
-                    ribbon = BitmapFactory.decodeResource(mContext.getResources(),
-                            R.drawable.img_ribbon_pr);
+                    // ribbon =
+                    // BitmapFactory.decodeResource(mContext.getResources(),
+                    // R.drawable.img_ribbon_pr);
 
                 } else if ("sl".equals(pre_pay)) {
 
@@ -263,8 +279,9 @@ public class ShopListAdapter extends BaseAdapter {
                     h.btnTel.setBackgroundResource(R.drawable.btn_list_silver);
                     h.separatorRow.setBackgroundResource(R.drawable.list_title_silver);
 
-                    ribbon = BitmapFactory.decodeResource(mContext.getResources(),
-                            R.drawable.img_ribbon_po);
+                    // ribbon =
+                    // BitmapFactory.decodeResource(mContext.getResources(),
+                    // R.drawable.img_ribbon_po);
 
                     h.imgPoint.setImageResource(R.drawable.point_2000);
 
@@ -274,24 +291,23 @@ public class ShopListAdapter extends BaseAdapter {
                     h.btnTel.setBackgroundResource(R.drawable.btn_list_red);
                     h.separatorRow.setBackgroundResource(R.drawable.list_title_red);
 
-                    ribbon = BitmapFactory.decodeResource(mContext.getResources(), 
-                            R.drawable.img_ribbon_po);
+                    // ribbon =
+                    // BitmapFactory.decodeResource(mContext.getResources(),
+                    // R.drawable.img_ribbon_po);
 
                     h.imgPoint.setImageResource(R.drawable.point_1000);
                 }
 
-                /*
-                 * // ribbon thumbnail work if (data.getThm().isEmpty()) { thumb
-                 * = BitmapFactory.decodeResource(mContext.getResources(),
-                 * R.drawable.img_no_image_80x120); } else { thumb =
-                 * mLazy.getBitmap(data.makeURL()); } thumbRibbon =
-                 * overlayBitmap(thumb, ribbon, 5, 5); // bizhour work if
-                 * (isBizHours(data.getTime1(), data.getTime2())) { result =
-                 * thumbRibbon; } else { Bitmap overtime =
-                 * BitmapFactory.decodeResource(mContext.getResources(),
-                 * R.drawable.nottime); result = overlayBitmap(thumbRibbon,
-                 * overtime, 0, 0); } h.thumbImg.setImageBitmap(result);
-                 */
+                // ribbon thumbnail work
+                // if (item.getThm().isEmpty()) {
+                // thumb = BitmapFactory.decodeResource(mContext.getResources(),
+                // R.drawable.img_no_image_80x120);
+                // } else {
+                // thumb = mLazy.getBitmap(item.makeURL());
+                // }
+
+                // thumbRibbon = overlayBitmap(thumb, ribbon, 5, 5);
+
             }
 
         } else {
@@ -318,27 +334,6 @@ public class ShopListAdapter extends BaseAdapter {
             }
         }
         return v;
-    }
-
-    private boolean isBizHours(String t1, String t2) {
-
-        String strNow = new SimpleDateFormat("H").format(new Date(System.currentTimeMillis()));
-        int nowTime = Integer.parseInt(strNow);
-        try {
-            t1 = t1.trim().replace(":", "").replace("0", "");
-            t2 = t2.trim().replace(":", "").replace("0", "");
-
-            int openTime = Integer.parseInt(t1);
-            int closeTime = Integer.parseInt(t2);
-
-            if (nowTime <= openTime && nowTime >= closeTime) {
-                return false;
-            }
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
-
-        return true;
     }
 
     private Bitmap overlayBitmap(Bitmap b1, Bitmap b2, int x, int y) {

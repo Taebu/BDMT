@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/transparent"
     android:gravity="center"
+
     android:orientation="vertical">
 
 
@@ -23,42 +24,81 @@
     </LinearLayout>
 
     <LinearLayout
-        android:padding="16dp"
         android:id="@+id/dialog"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_popup_content"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
 
         <TextView
             android:id="@+id/dialog_review_name"
-            android:layout_marginBottom="8dp"
-            android:textColor="#999999"
-            android:text="태부치킨"
-            android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="8dp"
+            android:text="태부치킨"
+            android:textColor="#999999" />
 
         <RatingBar
-            android:layout_marginBottom="8dp"
-            android:stepSize="1"
-            android:numStars="5"
             android:id="@+id/dialog_review_rating"
             style="@style/starRatingBar"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:numStars="5"
+            android:stepSize="1" />
 
         <EditText
-            android:layout_marginBottom="8dp"
             android:id="@+id/dialog_review_comment"
-            android:gravity="top"
-            android:padding="12dp"
-            android:textSize="13sp"
-            android:hint="여기를 눌러 리뷰를 작성해 주세요."
-            android:background="@drawable/text_box_1"
             android:layout_width="match_parent"
-            android:layout_height="150dp" />
+            android:layout_height="150dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/text_box_1"
+            android:gravity="top"
+            android:hint="여기를 눌러 리뷰를 작성해 주세요."
+            android:padding="12dp"
+            android:textSize="13sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/dialog_review_img1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:src="@drawable/btn_photo_2" />
+
+            <ImageView
+                android:id="@+id/dialog_review_img2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:clickable="true"
+                android:src="@drawable/btn_photo_2" />
+
+            <ImageView
+                android:id="@+id/dialog_review_img3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:clickable="true"
+                android:src="@drawable/btn_photo_2" />
+
+            <ImageView
+                android:id="@+id/dialog_review_img4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:clickable="true"
+                android:src="@drawable/btn_photo_2" />
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/ok"

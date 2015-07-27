@@ -26,7 +26,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 import kr.co.cashqc.gcm.Util;
 
@@ -37,6 +40,8 @@ import static kr.co.cashqc.Utils.checkContact;
  */
 
 public class ShopListFragment extends Fragment implements AdapterView.OnItemClickListener {
+
+    private final String TAG = getClass().getSimpleName();
 
     // Constructor
     public ShopListFragment() {
@@ -61,7 +66,7 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
 
     private int mType;
 
-    private ArrayList<ShopListData> mCashqList;
+    private ArrayList<ShopListData> mShopListData;
 
     private LinearLayout footerLayout;
 
@@ -105,7 +110,7 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
         mDialog = new CustomDialog(getActivity());
 
         // list dataset init
-        mCashqList = new ArrayList<ShopListData>();
+        mShopListData = new ArrayList<ShopListData>();
 
         // bundle class get extra
         mType = getArguments().getInt("mType");
@@ -316,7 +321,7 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
 
             Log.e("JAY", "object : " + object);
 
-            ShopListData cashq = new ShopListData();
+            ShopListData shopData = new ShopListData();
 
             if (object.has("r_tel")) {
                 String r_tel = object.getString("r_tel");
@@ -324,63 +329,67 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
                 if (r_tel.startsWith("del_")) {
                     return null;
                 } else {
-                    cashq.setTel(r_tel);
+                    shopData.setTel(r_tel);
                 }
             }
 
             if (object.has("tel"))
-                cashq.setTel(object.getString("tel"));
+                shopData.setTel(object.getString("tel"));
 
             if (object.has("name"))
-                cashq.setName(object.getString("name"));
+                shopData.setName(object.getString("name"));
 
             if (object.has("pre_pay"))
-                cashq.setPre_pay(object.getString("pre_pay"));
+                shopData.setPre_pay(object.getString("pre_pay"));
 
             if (object.has("seq"))
-                cashq.setSeq(object.getString("seq"));
+                shopData.setSeq(object.getString("seq"));
 
             if (object.has("thm"))
-                cashq.setThm(object.getString("thm"));
+                shopData.setThm(object.getString("thm"));
 
             if (object.has("delivery_comment_cashq"))
-                cashq.setDelivery_comment(object.getString("delivery_comment_cashq"));
+                shopData.setDelivery_comment(object.getString("delivery_comment_cashq"));
 
             if (object.has("callcnt"))
-                cashq.setCallcnt(object.getString("callcnt"));
+                shopData.setCallcnt(object.getString("callcnt"));
 
             if (object.has("address"))
-                cashq.setAddress(object.getString(("address")));
+                shopData.setAddress(object.getString(("address")));
 
             if (object.has("distance"))
-                cashq.setDistance(object.getString("distance"));
+                shopData.setDistance(object.getString("distance"));
 
             if (object.has("time1"))
-                cashq.setTime1(object.getString("time1").substring(3));
+                shopData.setTime1(object.getString("time1").substring(3));
 
             if (object.has("time2"))
-                cashq.setTime2(object.getString("time2").substring(6));
+                shopData.setTime2(object.getString("time2").substring(6));
 
             if (object.has("img1"))
-                cashq.setImg1(object.getString("img1"));
+                shopData.setImg1(object.getString("img1"));
 
             if (object.has("img2"))
-                cashq.setImg2(object.getString("img2"));
+                shopData.setImg2(object.getString("img2"));
 
             if (object.has("review_cnt"))
-                cashq.setReveiwCount(object.getString("review_cnt"));
+                shopData.setReviewCount(object.getString("review_cnt"));
 
             if (object.has("review_rating"))
-                cashq.setReveiwRating(object.getString("review_rating"));
+                shopData.setReviewRating(object.getString("review_rating"));
 
-            cashq.setMinpay("12,000원 이상 주문시 적립가능");
+            shopData.setMinpay("12,000원 이상 주문시 적립가능");
 
-            cashq.setSeq(object.getString("seq"));
-            cashq.setBizCode(object.getString("biz_code"));
+            shopData.setSeq(object.getString("seq"));
+            shopData.setBizCode(object.getString("biz_code"));
 
-            cashq.setPay(object.getString("pay"));
+            shopData.setPay(object.getString("pay"));
 
-            return cashq;
+            boolean isOpen = isBizHours(shopData.getTime1(), shopData.getTime2());
+
+            shopData.setIsOpen(isOpen);
+
+            return shopData;
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -437,9 +446,11 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
 
             intent.putExtra("pay", data.getPay());
 
-            intent.putExtra("review_cnt", data.getReveiwCount());
+            intent.putExtra("review_cnt", data.getReviewCount());
 
-            intent.putExtra("review_rating", data.getReveiwRating());
+            intent.putExtra("review_rating", data.getReviewRating());
+
+            intent.putExtra("isopen", data.isOpen());
 
             startActivity(intent);
         }
@@ -482,4 +493,43 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
         }
     };
 
+    private boolean isBizHours(String t1, String t2) {
+
+        try {
+
+            String strNow = new SimpleDateFormat("HH00", Locale.KOREAN).format(new Date(System
+                    .currentTimeMillis()));
+
+            int nowTime = Integer.parseInt(strNow);
+
+            t1 = t1.trim().replace(":", "");
+            t2 = t2.trim().replace(":", "");
+
+            int openTime = Integer.parseInt(t1);
+            int closeTime = Integer.parseInt(t2);
+
+            Log.e(TAG, "isBizHours : " + nowTime + " " + openTime + " " + closeTime);
+
+            // TODO 시간 처리할것
+
+            boolean afterOpen = openTime <= nowTime;
+            boolean beforeClose = nowTime < closeTime;
+
+            if (openTime < closeTime) {
+
+                Log.e(TAG, "day - " + (afterOpen && beforeClose));
+                return afterOpen && beforeClose;
+
+            } else {
+                Log.e(TAG, "next day - " + (afterOpen || beforeClose));
+                return afterOpen || beforeClose;
+            }
+
+        } catch (NumberFormatException e) {
+            // e.printStackTrace();
+        }
+
+        Log.e(TAG, "isBizHours true");
+        return true;
+    }
 }

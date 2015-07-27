@@ -48,7 +48,6 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
@@ -126,7 +125,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
     // google api location service
 
-    private GoogleApiClient mGoogleApiClient;
+//    private GoogleApiClient mGoogleApiClient;
 
     private Location mLastLocation;
 
@@ -142,7 +141,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
         findViewById(R.id.actionbar_gps_layout).setVisibility(View.GONE);
         findViewById(R.id.logo).setVisibility(View.VISIBLE);
 
-        buildGoogleApiClient();
+//        buildGoogleApiClient();
 
         updateChecker();
 
@@ -310,15 +309,15 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
     }
 
     private synchronized void buildGoogleApiClient() {
-        mGoogleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this).addApi(LocationServices.API)
-                .addOnConnectionFailedListener(this).build();
+//        mGoogleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks(this)
+//                .addOnConnectionFailedListener(this).addApi(LocationServices.API)
+//                .addOnConnectionFailedListener(this).build();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        mGoogleApiClient.connect();
+//        mGoogleApiClient.connect();
         GoogleAnalytics.getInstance(this).reportActivityStart(this);
     }
 
@@ -331,7 +330,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
         // updates. Gets the best and most recent location currently available,
         // which may be null
         // in rare cases when a location is not available.
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+//        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLastLocation != null) {
 
             double latitude = mLastLocation.getLatitude();
@@ -349,7 +348,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
         // call connect() to
         // attempt to re-establish the connection.
         Log.i(TAG, "Connection suspended");
-        mGoogleApiClient.connect();
+//        mGoogleApiClient.connect();
     }
 
     @Override
@@ -724,8 +723,8 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
         GoogleAnalytics.getInstance(this).reportActivityStop(this);
 
-        if (mGoogleApiClient.isConnected())
-            mGoogleApiClient.disconnect();
+//        if (mGoogleApiClient.isConnected())
+//            mGoogleApiClient.disconnect();
 
         if (mDialog.isShowing()) {
             mDialog.dismiss();

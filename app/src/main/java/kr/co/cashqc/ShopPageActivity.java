@@ -60,6 +60,8 @@ import static kr.co.cashqc.gcm.Util.getPhoneNumber;
  */
 public class ShopPageActivity extends BaseActivity {
 
+    private boolean mIsOpen;
+
     private final String TAG = this.getClass().getSimpleName();
 
     private ShopPageActivity mActivity = this;
@@ -131,7 +133,7 @@ public class ShopPageActivity extends BaseActivity {
 
         String reviewCount = getIntent().getStringExtra("review_cnt");
 
-        tvReviewCount.setText(reviewCount + "개 리뷰");
+        tvReviewCount.setText(reviewCount + "개 리뷰 보기");
 
         tvRatingScore.setText(String.valueOf(reviewRating));
 
@@ -167,14 +169,14 @@ public class ShopPageActivity extends BaseActivity {
         mPrePay = getIntent().getStringExtra("pre_pay");
         Log.e("ShopPageActivity", "prepay : " + mPrePay);
 
-//        TTS_SHOP = mPrePay.equals("gl");
+        // TTS_SHOP = mPrePay.equals("gl");
 
         boolean hasList = "1".equals(getIntent().getStringExtra("pay"));
 
         if (hasList) {
             setListView();
 
-            if(!hasImage) {
+            if (!hasImage) {
                 isWeb = false;
             }
 
@@ -483,6 +485,8 @@ public class ShopPageActivity extends BaseActivity {
         dong.setText(getIntent().getStringExtra("delivery_comment_cashq"));
         callcnt.setText(getIntent().getStringExtra("callcnt") + " 건 주문");
 
+        mIsOpen = getIntent().getBooleanExtra("isopen", true);
+
         score.setRating(Float.parseFloat(getIntent().getStringExtra("review_rating")));
 
         if ("".equals(getIntent().getStringExtra("pre_pay"))) {
@@ -551,13 +555,21 @@ public class ShopPageActivity extends BaseActivity {
             }
         });
 
-        ImageLoader.getInstance().displayImage(IMG_URL + getIntent().getStringExtra("thumb"), thm,
-                new SimpleImageLoadingListener() {
-                    @Override
-                    public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                        thm.setImageResource(R.drawable.img_no_image_80x120);
-                    }
-                });
+        if (mIsOpen) {
+
+            ImageLoader.getInstance().displayImage(IMG_URL + getIntent().getStringExtra("thumb"),
+                    thm, new SimpleImageLoadingListener() {
+                        @Override
+                        public void onLoadingFailed(String imageUri, View view,
+                                FailReason failReason) {
+                            thm.setImageResource(R.drawable.img_no_image_80x120);
+                        }
+                    });
+        } else {
+
+            thm.setImageResource(R.drawable.nottime);
+
+        }
 
     }
 
