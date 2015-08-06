@@ -24,6 +24,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import kr.co.cashqc.gcm.Util;
 
@@ -52,9 +53,7 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
 
     private static final int FIVE_POINT = 1;
 
-    private static final int DONGDAEMUN_POINT = 2;
-
-    private static final int JOONGRANG_POINT = 3;
+    private static final int FREE_POINT = 2;
 
     public static int POINT_STATUS = NOT_SELECT;
 
@@ -91,9 +90,9 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
         dialog = new CustomDialog(PointActivity.this);
 
         // resource init
-        checkBox = (CheckBox)findViewById(R.id.row_point_check);
+        checkBox = (CheckBox) findViewById(R.id.row_point_check);
 
-        mListView = (ListView)findViewById(R.id.list_point);
+        mListView = (ListView) findViewById(R.id.list_point);
 
         //
         mPhoneNum = getIntent().getStringExtra("phoneNum");
@@ -101,7 +100,7 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
         POINT_STATUS = NOT_SELECT;
 
         //
-        sBtnRequest = (Button)findViewById(R.id.btn_cashrequest);
+        sBtnRequest = (Button) findViewById(R.id.btn_cashrequest);
 
         if (Build.VERSION.SDK_INT > 10)
             sBtnRequest.setAlpha(0.1f);
@@ -175,7 +174,7 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
 
         int total = 0;
 
-        if (POINT_STATUS == JOONGRANG_POINT || POINT_STATUS == DONGDAEMUN_POINT) {
+        if (POINT_STATUS == FREE_POINT) {
 
             for (PointRuleData p : mCheckedDataList.get(0).getPointRuleList()) {
                 if (sCheckedCount == p.getCount()) {
@@ -213,8 +212,6 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
 
                 if (isDuplicate) {
 
-                    // Toast.makeText(this, "동일 업소 주문 건은 적립이 불가합니다.",
-                    // Toast.LENGTH_LONG).show();
                     new CustomDialog(this, "동일 업소 주문 건은 적립이 불가합니다.").show();
 
                 } else {
@@ -278,7 +275,7 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
                     Log.e(TAG, "else if");
                 }
 
-                TextView tvAccrue = (TextView)findViewById(R.id.tv_accrue);
+                TextView tvAccrue = (TextView) findViewById(R.id.tv_accrue);
 
                 tvAccrue.setText("포인트를 선택해주세요");
 
@@ -370,14 +367,6 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
 
                 datas.setLocation(location);
 
-                if (location.contains("동대문구")) {
-                    datas.setPointType(DONGDAEMUN_POINT);
-                } else if (location.contains("중랑구")) {
-                    datas.setPointType(JOONGRANG_POINT);
-                } else {
-                    datas.setPointType(FIVE_POINT);
-                }
-
             } else {
                 datas.setPointType(FIVE_POINT);
                 datas.setLocation("");
@@ -388,8 +377,10 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
 
             if (object.getString("pt_stat").equals("free")) {
                 datas.setIsFreePoint(true);
+                datas.setPointType(FREE_POINT);
             } else {
                 datas.setIsFreePoint(false);
+                datas.setPointType(FIVE_POINT);
             }
 
             datas.setPoint_seq(object.getString("seq") + "_" + object.getString("type"));
@@ -442,6 +433,17 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
                     }
 
                     datas.setPointRuleContent(pointRuleContent);
+
+                    if (object.has("incbiz")) {
+
+                        String[] incbiz = object.getString("incbiz").split("&");
+
+                        datas.setIncludeCodes(incbiz);
+
+                        for (int i = 0; i < incbiz.length; i++) {
+                            Log.e(TAG, "includeBizCode - " + i + " : " + incbiz[i]);
+                        }
+                    }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -572,6 +574,8 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
 
         private final String TAG = getClass().getSimpleName();
 
+        private String[] includeCodes = null;
+
         public PointListAdapter(Context context, int viewResourceId, ArrayList<PointData> objects) {
 
             this.mContext = context;
@@ -613,19 +617,19 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
 
                 h = new ViewHolder();
 
-                h.date = (TextView)convertView.findViewById(R.id.row_point_date);
-                h.name = (TextView)convertView.findViewById(R.id.row_point_name);
-                h.status = (TextView)convertView.findViewById(R.id.row_point_status);
-                h.deadline = (TextView)convertView.findViewById(R.id.row_point_deadline);
-                h.comment = (TextView)convertView.findViewById(R.id.row_point_comment);
-                h.value = (TextView)convertView.findViewById(R.id.row_point_value);
-                h.checkBox = (CheckBox)convertView.findViewById(R.id.row_point_check);
-                h.grade = (TextView)convertView.findViewById(R.id.row_point_grade);
+                h.date = (TextView) convertView.findViewById(R.id.row_point_date);
+                h.name = (TextView) convertView.findViewById(R.id.row_point_name);
+                h.status = (TextView) convertView.findViewById(R.id.row_point_status);
+                h.deadline = (TextView) convertView.findViewById(R.id.row_point_deadline);
+                h.comment = (TextView) convertView.findViewById(R.id.row_point_comment);
+                h.value = (TextView) convertView.findViewById(R.id.row_point_value);
+                h.checkBox = (CheckBox) convertView.findViewById(R.id.row_point_check);
+                h.grade = (TextView) convertView.findViewById(R.id.row_point_grade);
 
                 convertView.setTag(h);
 
             } else {
-                h = (ViewHolder)convertView.getTag();
+                h = (ViewHolder) convertView.getTag();
             }
 
             item = getItem(position);
@@ -674,7 +678,27 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
             h.checkBox.setChecked(item.isChecked());
             h.checkBox.setTag(item);
 
-            if (POINT_STATUS == NOT_SELECT || item.getPointType() == POINT_STATUS) {
+            boolean isInclude = true;
+
+            if (item.isFreePoint()) {
+                if (includeCodes == null) {
+
+                    isInclude = true;
+
+                } else {
+
+                    for (String inc : includeCodes) {
+                        isInclude = false;
+                        if (item.getBiz_code().equals(inc)) {
+                            Log.e(TAG, "inc : " + inc + " item : " + item.getBiz_code());
+                            isInclude = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (POINT_STATUS == NOT_SELECT || item.getPointType() == POINT_STATUS && isInclude) {
 
                 if (item.getStatus().equals("사용가능")) {
                     h.status.setText("사용가능");
@@ -716,13 +740,13 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
         @Override
         public void onClick(View v) {
 
-            if (SystemClock.elapsedRealtime() - mLastClickTime < 500) {
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 200) {
                 return;
             }
 
             mLastClickTime = SystemClock.elapsedRealtime();
-            CheckBox cb = (CheckBox)v.findViewById(R.id.row_point_check);
-            PointData clickData = (PointData)cb.getTag();
+            CheckBox cb = (CheckBox) v.findViewById(R.id.row_point_check);
+            PointData clickData = (PointData) cb.getTag();
 
             if (clickData.getStatus().equals("사용가능")) {
 
@@ -733,13 +757,7 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
 
                     if (cb.isChecked()) {
 
-                        if (POINT_STATUS == DONGDAEMUN_POINT) {
-
-                            sCheckedCount--;
-                            cb.setChecked(false);
-                            sPositionArray.set(clickData.getPosition(), false);
-
-                        } else if (POINT_STATUS == JOONGRANG_POINT) {
+                        if (POINT_STATUS == FREE_POINT) {
 
                             sCheckedCount--;
                             cb.setChecked(false);
@@ -755,12 +773,19 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
                         }
 
                         if (sCheckedCount == 0) {
+                            //초기화
                             POINT_STATUS = NOT_SELECT;
+                            includeCodes = null;
                         }
                     } else {
 
                         if (clickData.isFreePoint()) {
+
                             POINT_STATUS = clickData.getPointType();
+
+                            includeCodes = clickData.getIncludeCodes();
+
+                            Log.e(TAG, "INCLUDE_CODES : " + Arrays.toString(includeCodes));
 
                             Log.e(TAG, "POINT_STATUS : " + POINT_STATUS);
 
@@ -794,23 +819,7 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
                         sBtnRequest.setEnabled(false);
                     }
 
-                } else if (POINT_STATUS == DONGDAEMUN_POINT) {
-
-                    for (PointRuleData pointRule : clickData.getPointRuleList()) {
-
-                        if (sCheckedCount == pointRule.getCount()) {
-                            if (Build.VERSION.SDK_INT > 10)
-                                sBtnRequest.setAlpha(1.0f);
-                            sBtnRequest.setEnabled(true);
-                            break;
-                        } else {
-                            if (Build.VERSION.SDK_INT > 10)
-                                sBtnRequest.setAlpha(0.1f);
-                            sBtnRequest.setEnabled(false);
-                        }
-                    }
-
-                } else if (POINT_STATUS == JOONGRANG_POINT) {
+                } else if (POINT_STATUS == FREE_POINT) {
 
                     for (PointRuleData pointRule : clickData.getPointRuleList()) {
 

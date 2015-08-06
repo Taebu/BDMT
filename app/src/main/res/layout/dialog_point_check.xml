@@ -152,7 +152,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="14dp"
-                android:text="유효기간 내 최대 20,000원 까지만 지급합니다."
+                android:text="이벤트 기간 내 최대 10포인트만 적립 가능합니다."
                 android:textColor="#333333"
                 android:textSize="12sp" />
 

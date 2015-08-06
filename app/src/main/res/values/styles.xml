@@ -104,4 +104,6 @@
         <item name="android:thumb">@null</item>
     </style>
 
+    <!-- ActionBar Not Boring -->
+
 </resources>

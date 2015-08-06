@@ -8,6 +8,16 @@ import java.util.ArrayList;
  */
 public class PointData {
 
+    private String[] includeCodes;
+
+    public String[] getIncludeCodes() {
+        return includeCodes;
+    }
+
+    public void setIncludeCodes(String[] includeCodes) {
+        this.includeCodes = includeCodes;
+    }
+
     private int pointType;
 
     public int getPointType() {
