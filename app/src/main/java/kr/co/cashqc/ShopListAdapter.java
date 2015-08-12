@@ -234,7 +234,8 @@ public class ShopListAdapter extends BaseAdapter {
 
                 Log.d(TAG, "bizHour : " + item.getName());
 
-                boolean isBizHour = item.isOpen();
+//                boolean isBizHour = item.isOpen();
+                boolean isBizHour = true;
 
                 if (isBizHour) {
 

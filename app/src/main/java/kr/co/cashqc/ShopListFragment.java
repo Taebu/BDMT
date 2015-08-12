@@ -450,7 +450,8 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
 
             intent.putExtra("review_rating", data.getReviewRating());
 
-            intent.putExtra("isopen", data.isOpen());
+//            intent.putExtra("isopen", data.isOpen());
+            intent.putExtra("isopen", true);
 
             startActivity(intent);
         }

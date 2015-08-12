@@ -434,21 +434,25 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
 
                     datas.setPointRuleContent(pointRuleContent);
 
-                    if (object.has("incbiz")) {
-
-                        String[] incbiz = object.getString("incbiz").split("&");
-
-                        datas.setIncludeCodes(incbiz);
-
-                        for (int i = 0; i < incbiz.length; i++) {
-                            Log.e(TAG, "includeBizCode - " + i + " : " + incbiz[i]);
-                        }
-                    }
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
+            }
+
+            if (object.has("incbiz")) {
+
+                Log.e(TAG, "hasIncludeBizCode? - YES" );
+
+                String[] incbiz = object.getString("incbiz").split("&");
+
+                datas.setIncludeCodes(incbiz);
+
+                for (int i = 0; i < incbiz.length; i++) {
+                    Log.e(TAG, "includeBizCode - " + i + " : " + incbiz[i]);
+                }
+            } else {
+                Log.e(TAG, "hasIncludeBizCode? - NO" );
             }
 
             datas.setPointRuleList(pointRuleList);
