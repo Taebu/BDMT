@@ -79,6 +79,12 @@
         </LinearLayout>
 
         <ImageView
+            android:src="@android:color/black"
+            android:id="@+id/testtt"
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
+
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:src="#E8E8E8" />

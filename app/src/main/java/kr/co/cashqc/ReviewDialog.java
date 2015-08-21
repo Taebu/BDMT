@@ -1,6 +1,7 @@
 
 package kr.co.cashqc;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -26,13 +28,19 @@ import static kr.co.cashqc.MainActivity.TOKEN_ID;
  */
 public class ReviewDialog extends Dialog {
 
+    public static final int PICK_FROM_CAMERA = 0;
+    public static final int PICK_FROM_ALBUM = 1;
+    public static final int CROP_FROM_CAMERA = 2;
+
     private int mScore = 0;
 
     private ImageView reviewImg[] = new ImageView[4];
 
     private Context mContext;
 
-    public ReviewDialog(final Context context, String shopName, final String seq, final String phone) {
+    private Activity mActivity;
+
+    public ReviewDialog(final Context context, String shopName, final String seq, final String phone, final Activity activity) {
         super(context);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -43,6 +51,8 @@ public class ReviewDialog extends Dialog {
         setContentView(R.layout.dialog_custom_review);
 
         mContext = context;
+
+        mActivity = activity;
 
         final EditText content = (EditText) findViewById(R.id.dialog_review_comment);
         final RatingBar ratingBar = (RatingBar) findViewById(R.id.dialog_review_rating);
@@ -99,9 +109,21 @@ public class ReviewDialog extends Dialog {
             switch (v.getId()) {
                 case R.id.dialog_review_img1:
                     Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_GET_CONTENT);
-                    intent.setType("image/*");
-                    mContext.startActivity(intent);
+
+//                    intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+//                    intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                    mActivity.startActivityForResult(intent, 6974);
+
+//                    intent.setAction(Intent.ACTION_GET_CONTENT);
+//                    intent.setType("image/*");
+//                    mContext.startActivity(intent);
+
+                    intent = new Intent(Intent.ACTION_PICK);
+                    intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+                    mActivity.startActivityForResult(intent, PICK_FROM_ALBUM);
+
+//                    ImageDialogFragment dialogFragment = new ImageDialogFragment();
+
                     break;
                 case R.id.dialog_review_img2:
                     break;
@@ -112,6 +134,7 @@ public class ReviewDialog extends Dialog {
             }
         }
     };
+
 
     public ReviewDialog(final Context context, String shopName, final String seq) {
         super(context);
@@ -244,4 +267,41 @@ public class ReviewDialog extends Dialog {
         HttpURLConnection httpURLConnection;
     }
 
+
 }
+
+//class ImageDialogFragment extends DialogFragment {
+//
+//    @Override
+//    public Dialog onCreateDialog(Bundle savedInstanceState) {
+//
+//        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//
+//        builder.setMessage("카메라 ?? 앨범 ??");
+//
+//        builder.setPositiveButton("album", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                doTakePhoto();
+//            }
+//        });
+//
+//        builder.setNegativeButton("camera", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                doTakeAlbum();
+//            }
+//        });
+//
+//        return builder.create();
+//    }
+//
+//    private void doTakeAlbum() {
+//
+//
+//    }
+//
+//    private void doTakePhoto() {
+//
+//    }
+//}

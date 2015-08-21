@@ -3,6 +3,7 @@ package kr.co.cashqc;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -11,7 +12,9 @@ import android.net.Uri;
 import android.net.http.SslError;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.ContactsContract;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -29,6 +32,7 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
@@ -41,12 +45,21 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import kr.co.cashqc.gcm.Util;
 
 import static kr.co.cashqc.MainActivity.TOKEN_ID;
+import static kr.co.cashqc.ReviewDialog.CROP_FROM_CAMERA;
+import static kr.co.cashqc.ReviewDialog.PICK_FROM_ALBUM;
+import static kr.co.cashqc.ReviewDialog.PICK_FROM_CAMERA;
 import static kr.co.cashqc.Utils.IMG_URL;
 import static kr.co.cashqc.Utils.checkContact;
 import static kr.co.cashqc.Utils.initExpandableListViewHeight;
@@ -103,6 +116,7 @@ public class ShopPageActivity extends BaseActivity {
     private boolean hasImage = true;
 
     public static boolean TTS_SHOP = false;
+    private Uri mImgUri;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -112,7 +126,7 @@ public class ShopPageActivity extends BaseActivity {
         // mActivity killer mActivity add.
         killer.addActivity(this);
 
-        Tracker t = ((CashqApplication)getApplication())
+        Tracker t = ((CashqApplication) getApplication())
                 .getTracker(CashqApplication.TrackerName.APP_TRACKER);
 
         t.setScreenName("ShopListFragment");
@@ -148,7 +162,7 @@ public class ShopPageActivity extends BaseActivity {
                     phoneNum = "4444444444";
 
                 new ReviewDialog(mActivity, getIntent().getStringExtra("name"), getIntent()
-                        .getStringExtra("seq"), phoneNum).show();
+                        .getStringExtra("seq"), phoneNum, mActivity).show();
                 return false;
             }
         });
@@ -198,22 +212,170 @@ public class ShopPageActivity extends BaseActivity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Toast.makeText(mActivity, "Result Code : " + resultCode, Toast.LENGTH_SHORT).show();
+
+        Log.e(TAG, "resultCode : " + resultCode);
+
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+
+        Log.e(TAG, "requestCode : " + requestCode);
+        switch (requestCode) {
+
+            case PICK_FROM_ALBUM:
+
+                Log.e(TAG, "PICK_FROM_ALBUM");
+
+                mImgUri = data.getData();
+                File originalImgFile = getImageFile(mImgUri);
+
+                mImgUri = createSaveCropFile();
+                File copyImgFile = new File(mImgUri.getPath());
+
+                // SD카드에 저장된 파일을 이미지 Crop을 위해 복사한다.
+                copyFile(originalImgFile, copyImgFile);
+
+            case PICK_FROM_CAMERA:
+
+                Log.e(TAG, "PICK_FROM_CAMERA");
+
+                // 이미지를 가져온 이후의 리사이즈할 이미지 크기를 결정합니다.
+                // 이후에 이미지 크롭 어플리케이션을 호출하게 됩니다.
+
+                Intent intent = new Intent("com.android.camera.action.CROP");
+                intent.setDataAndType(mImgUri, "image/*");
+
+                // Crop한 이미지를 저장할 Path
+                intent.putExtra("output", mImgUri);
+
+                // Return Data를 사용하면 번들 용량 제한으로 크기가 큰 이미지는
+                // 넘겨 줄 수 없다.
+//          intent.putExtra("return-data", true);
+                startActivityForResult(intent, CROP_FROM_CAMERA);
+                break;
+
+            case CROP_FROM_CAMERA:
+
+                Log.e(TAG, "CROP_FROM_CAMERA");
+
+
+                String full_path = mImgUri.getPath();
+                Log.e(TAG, "full_path : " + full_path);
+
+                String photo_path = full_path.substring(4, full_path.length());
+                Log.e(TAG, "photo_path : " + photo_path);
+
+                Bitmap photo = BitmapFactory.decodeFile(photo_path);
+
+                ImageView testtt = (ImageView) findViewById(R.id.testtt);
+                testtt.setImageBitmap(photo);
+                break;
+        }
+
+    }
+
+    public static boolean copyFile(File srcFile, File destFile) {
+        boolean result = false;
+        try {
+            InputStream in = new FileInputStream(srcFile);
+            try {
+                result = copyToFile(in, destFile);
+            } finally {
+                in.close();
+            }
+        } catch (IOException e) {
+            result = false;
+        }
+        return result;
+    }
+
+    private static boolean copyToFile(InputStream inputStream, File destFile) {
+        try {
+            OutputStream out = new FileOutputStream(destFile);
+            try {
+                byte[] buffer = new byte[4096];
+                int bytesRead;
+                while ((bytesRead = inputStream.read(buffer)) >= 0) {
+                    out.write(buffer, 0, bytesRead);
+                }
+            } finally {
+                out.close();
+            }
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+
+    private Uri createSaveCropFile() {
+        Uri uri;
+        String url = "tmp_" + String.valueOf(System.currentTimeMillis()) + ".jpg";
+        uri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), url));
+        return uri;
+
+    }
+
+    private File getImageFile(Uri imgUri) {
+        String[] projection = {MediaStore.Images.Media.DATA};
+        if (imgUri == null) {
+            imgUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        }
+
+        Cursor mCursor = getContentResolver().query(imgUri, projection, null, null,
+                MediaStore.Images.Media.DATE_MODIFIED + " desc");
+        if (mCursor == null || mCursor.getCount() < 1) {
+            return null; // no cursor or no record
+        }
+        int column_index = mCursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        mCursor.moveToFirst();
+
+        String path = mCursor.getString(column_index);
+
+        if (mCursor != null) {
+            mCursor.close();
+            mCursor = null;
+        }
+
+        return new File(path);
+    }
+
+    private String getImageNameFromUri(Uri data) {
+
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = managedQuery(data, proj, null, null, null);
+        int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+
+        cursor.moveToFirst();
+
+        String imgPath = cursor.getString(columnIndex);
+        String imgName = imgPath.substring(imgPath.lastIndexOf("/") + 1);
+
+        return imgName;
+
+    }
+
     private void setLayout() {
 
-        mListMenu = (LinearLayout)findViewById(R.id.shoppage_listmenu);
+        mListMenu = (LinearLayout) findViewById(R.id.shoppage_listmenu);
 
-        mWebView = (WebView)findViewById(R.id.shoppage_webview);
-        mListView = (ExpandableListView)findViewById(R.id.shoppage_listview);
-        mMenuImgLayout = (RelativeLayout)findViewById(R.id.shoppage_menulist);
-        mScrollView = (ScrollView)findViewById(R.id.shoppage_scrollview);
+        mWebView = (WebView) findViewById(R.id.shoppage_webview);
+        mListView = (ExpandableListView) findViewById(R.id.shoppage_listview);
+        mMenuImgLayout = (RelativeLayout) findViewById(R.id.shoppage_menulist);
+        mScrollView = (ScrollView) findViewById(R.id.shoppage_scrollview);
 
-        mRatingBar = (RatingBar)findViewById(R.id.shoppage_rating);
-        tvRatingScore = (TextView)findViewById(R.id.shoppage_ratingscore);
-        tvReviewCount = (TextView)findViewById(R.id.shoppage_reviewcount);
+        mRatingBar = (RatingBar) findViewById(R.id.shoppage_rating);
+        tvRatingScore = (TextView) findViewById(R.id.shoppage_ratingscore);
+        tvReviewCount = (TextView) findViewById(R.id.shoppage_reviewcount);
 
-        switcher = (Button)findViewById(R.id.shoppage_switcher);
+        switcher = (Button) findViewById(R.id.shoppage_switcher);
 
-        mReviewListView = (ListView)findViewById(R.id.shoppage_reviewlistview);
+        mReviewListView = (ListView) findViewById(R.id.shoppage_reviewlistview);
 
         findViewById(R.id.btn_up).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -460,19 +622,19 @@ public class ShopPageActivity extends BaseActivity {
 
     private void setRowLayout() {
 
-        final ImageView thm = (ImageView)findViewById(R.id.list_thm);
-        TextView name = (TextView)findViewById(R.id.cashq_list_name);
-        TextView time1 = (TextView)findViewById(R.id.cashq_list_time1);
-        TextView time2 = (TextView)findViewById(R.id.cashq_list_time2);
-        TextView minPay = (TextView)findViewById(R.id.min_pay);
-        TextView distance = (TextView)findViewById(R.id.cashq_list_distance);
-        TextView dong = (TextView)findViewById(R.id.dong);
-        Button btnTel = (Button)findViewById(R.id.tel_btn);
-        TextView callcnt = (TextView)findViewById(R.id.calllog);
+        final ImageView thm = (ImageView) findViewById(R.id.list_thm);
+        TextView name = (TextView) findViewById(R.id.cashq_list_name);
+        TextView time1 = (TextView) findViewById(R.id.cashq_list_time1);
+        TextView time2 = (TextView) findViewById(R.id.cashq_list_time2);
+        TextView minPay = (TextView) findViewById(R.id.min_pay);
+        TextView distance = (TextView) findViewById(R.id.cashq_list_distance);
+        TextView dong = (TextView) findViewById(R.id.dong);
+        Button btnTel = (Button) findViewById(R.id.tel_btn);
+        TextView callcnt = (TextView) findViewById(R.id.calllog);
         // ImageView iconCalllog = (ImageView)findViewById(R.id.icon_calllog);
-        RatingBar score = (RatingBar)findViewById(R.id.shoplist_rating);
-        ImageView separatorRow = (ImageView)findViewById(R.id.separator_row);
-        ImageView img2000 = (ImageView)findViewById(R.id.row_img_point);
+        RatingBar score = (RatingBar) findViewById(R.id.shoplist_rating);
+        ImageView separatorRow = (ImageView) findViewById(R.id.separator_row);
+        ImageView img2000 = (ImageView) findViewById(R.id.row_img_point);
 
         callcnt.setVisibility(View.VISIBLE);
         // iconCalllog.setVisibility(View.VISIBLE);
@@ -490,7 +652,7 @@ public class ShopPageActivity extends BaseActivity {
         score.setRating(Float.parseFloat(getIntent().getStringExtra("review_rating")));
 
         if ("".equals(getIntent().getStringExtra("pre_pay"))) {
-            LinearLayout ll = (LinearLayout)findViewById(R.id.thm_layout);
+            LinearLayout ll = (LinearLayout) findViewById(R.id.thm_layout);
             ll.setVisibility(View.GONE);
             score.setVisibility(View.GONE);
             btnTel.setText("일반\n주문");
@@ -520,7 +682,7 @@ public class ShopPageActivity extends BaseActivity {
 
                 if (v.getId() == R.id.tel_btn) {
 
-                    Tracker t = ((CashqApplication)getApplication())
+                    Tracker t = ((CashqApplication) getApplication())
                             .getTracker(CashqApplication.TrackerName.APP_TRACKER);
 
                     t.send(new HitBuilders.EventBuilder().setCategory("ShopPageActivity")
@@ -561,7 +723,7 @@ public class ShopPageActivity extends BaseActivity {
                     thm, new SimpleImageLoadingListener() {
                         @Override
                         public void onLoadingFailed(String imageUri, View view,
-                                FailReason failReason) {
+                                                    FailReason failReason) {
                             thm.setImageResource(R.drawable.img_no_image_80x120);
                         }
                     });
@@ -742,7 +904,7 @@ public class ShopPageActivity extends BaseActivity {
                 mListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
                     @Override
                     public boolean onGroupClick(ExpandableListView parent, View v,
-                            int groupPosition, long id) {
+                                                int groupPosition, long id) {
                         setExpandableListViewHeight(parent, groupPosition);
                         return false;
                     }
@@ -914,9 +1076,9 @@ public class ShopPageActivity extends BaseActivity {
 
                             Log.e("fucking_tree", "level 3 : "
                                     + shop.getMenu().get(i).getChild().get(y).getChild().get(j)
-                                            .getCode()
+                                    .getCode()
                                     + shop.getMenu().get(i).getChild().get(y).getChild().get(j)
-                                            .getLabel());
+                                    .getLabel());
 
                             if (shop.getMenu().get(i).getChild().get(y).getChild().get(j)
                                     .getChild() != null) {
@@ -926,9 +1088,9 @@ public class ShopPageActivity extends BaseActivity {
 
                                     Log.e("fucking_tree", "level 4 : "
                                             + shop.getMenu().get(i).getChild().get(y).getChild()
-                                                    .get(j).getChild().get(k).getCode()
+                                            .get(j).getChild().get(k).getCode()
                                             + shop.getMenu().get(i).getChild().get(y).getChild()
-                                                    .get(j).getChild().get(k).getLabel());
+                                            .get(j).getChild().get(k).getLabel());
                                 }
                             }
                         }
@@ -996,20 +1158,20 @@ public class ShopPageActivity extends BaseActivity {
             View.OnClickListener {
 
         private MenuImageTask() {
-            img1 = (ImageView)findViewById(R.id.img1);
-            img2 = (ImageView)findViewById(R.id.img2);
-            img3 = (ImageView)findViewById(R.id.img3);
-            img4 = (ImageView)findViewById(R.id.img4);
+            img1 = (ImageView) findViewById(R.id.img1);
+            img2 = (ImageView) findViewById(R.id.img2);
+            img3 = (ImageView) findViewById(R.id.img3);
+            img4 = (ImageView) findViewById(R.id.img4);
 
-            content1 = (TextView)findViewById(R.id.text1);
-            content2 = (TextView)findViewById(R.id.text2);
-            content3 = (TextView)findViewById(R.id.text3);
-            content4 = (TextView)findViewById(R.id.text4);
+            content1 = (TextView) findViewById(R.id.text1);
+            content2 = (TextView) findViewById(R.id.text2);
+            content3 = (TextView) findViewById(R.id.text3);
+            content4 = (TextView) findViewById(R.id.text4);
 
-            price1 = (TextView)findViewById(R.id.price1);
-            price2 = (TextView)findViewById(R.id.price2);
-            price3 = (TextView)findViewById(R.id.price3);
-            price4 = (TextView)findViewById(R.id.price4);
+            price1 = (TextView) findViewById(R.id.price1);
+            price2 = (TextView) findViewById(R.id.price2);
+            price3 = (TextView) findViewById(R.id.price3);
+            price4 = (TextView) findViewById(R.id.price4);
         }
 
         private ImageView img1, img2, img3, img4;

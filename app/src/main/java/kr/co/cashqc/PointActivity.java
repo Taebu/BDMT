@@ -373,9 +373,10 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
             }
 
             datas.setSeq(object.getString("seq"));
-            datas.setType(object.getString("type"));
 
-            if (object.getString("pt_stat").equals("free")) {
+            datas.setType(object.getString("pt_stat"));
+
+            if (object.getString("pt_stat").equals("freept")) {
                 datas.setIsFreePoint(true);
                 datas.setPointType(FREE_POINT);
             } else {
@@ -534,6 +535,8 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
                 sb.append("&biz_code=").append(pointDatas.get(0).getBiz_code());
 
                 sb.append("&eventcode=").append(pointDatas.get(0).getEventcode());
+
+                sb.append("&point_type=").append(pointDatas.get(0).getType());
 
                 for (PointData al : pointDatas) {
                     sb.append("&chk_seq[]=").append(al.getPoint_seq());
