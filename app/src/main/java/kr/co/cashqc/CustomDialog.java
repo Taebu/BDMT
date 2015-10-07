@@ -86,7 +86,7 @@ public class CustomDialog extends Dialog {
     }
 
     public CustomDialog(final Context context, final String message, boolean b,
-            final Activity activity, final Class<?> cls) {
+            final Activity activity, final Class<?> cls, int msgFlag) {
         super(context);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -95,6 +95,8 @@ public class CustomDialog extends Dialog {
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         setCancelable(false);
+
+        ImageView msgImg = (ImageView) findViewById(R.id.img_gcm);
 
         if (b) {
             setContentView(R.layout.dialog_custom_ok);

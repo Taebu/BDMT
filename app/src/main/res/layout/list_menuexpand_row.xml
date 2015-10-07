@@ -15,15 +15,38 @@
         android:id="@+id/tv_child"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/iv_thumb"
         android:textColor="#999999"
         android:textSize="15sp" />
 
     <TextView
-        android:id="@+id/tv_value"
+        android:id="@+id/tv_quantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+
+    <TextView
+        android:id="@+id/tv_rate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="4dp"
+        android:layout_toLeftOf="@+id/tv_price" />
+
+    <TextView
+        android:id="@+id/tv_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
+        android:textColor="#E94230"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/tv_discountprice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tv_price"
         android:textColor="#E94230"
         android:textSize="15sp" />
 

@@ -81,7 +81,7 @@ public class JoinActivity extends BaseActivity {
             }
 
             CustomDialog joinDialog = new CustomDialog(JoinActivity.this, msg, true,
-                    JoinActivity.this, LoginActivity.class);
+                    JoinActivity.this, LoginActivity.class, 0);
             joinDialog.show();
 
             if (dialog.isShowing())

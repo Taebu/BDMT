@@ -2,7 +2,6 @@
 package kr.co.cashqc;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -136,13 +135,13 @@ public class ReviewListAdapter extends BaseAdapter {
 
         h.insdate.setText(item.getInsdate());
 
-        Log.e(TAG, "item.getPhone() : " + item.getPhone());
+//        Log.e(TAG, "item.getPhone() : " + item.getPhone());
 
         try {
             String first = item.getPhone().substring(0, 3);
-            Log.e(TAG, "first : " + first);
+//            Log.e(TAG, "first : " + first);
             String last = item.getPhone().substring(7, 11);
-            Log.e(TAG, "last : " + last);
+//            Log.e(TAG, "last : " + last);
 
             String phoneCode = first.concat("****").concat(last);
 

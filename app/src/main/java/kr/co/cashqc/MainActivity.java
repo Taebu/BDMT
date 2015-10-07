@@ -90,6 +90,8 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
     private String mAddress;
 
+    public static boolean saleZone = false;
+
     public MainActivity() {
         super();
         MainActivity.Instance = this;
@@ -520,7 +522,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
                 tvAddress.setText(mAddress);
 
                 if ("동두천시".equals(mSi) || "안산시".equals(mSi) || "강서구".equals(mGu)
-                        || "양천구".equals(mGu)) {
+                        || "양천구".equals(mGu) || "의정부시".equals((mSi))) {
                     sDistance = 3;
                 } else {
                     sDistance = 2;

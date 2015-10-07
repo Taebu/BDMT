@@ -31,6 +31,12 @@ public class ShowMsg extends Activity {
         final String get_biz_code;
         final String link;
 
+        int MSG_TYPE = 0;
+
+        // 0 = common
+        // 1 = order success
+        // 2 = order cancel
+
         Bundle bun = getIntent().getExtras();
         seq = bun.getString("seq");
         title = bun.getString("title");
@@ -48,7 +54,7 @@ public class ShowMsg extends Activity {
         // if (msg.startsWith(auth)) {
         // dialog = new CustomDialog(this, msg);
         // } else {
-        dialog = new CustomDialog(this, msg, false, this, MainActivity.class);
+        dialog = new CustomDialog(this, msg, false, this, MainActivity.class, MSG_TYPE);
         // }
 
         dialog.show();

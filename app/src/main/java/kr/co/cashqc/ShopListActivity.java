@@ -1,7 +1,6 @@
 
 package kr.co.cashqc;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
@@ -10,6 +9,8 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.ActionBar;
 
 import kr.co.cashqc.gcm.Util;
+
+import static kr.co.cashqc.MainActivity.saleZone;
 
 /**
  * @author Jung-Hum Cho
@@ -27,7 +28,7 @@ public class ShopListActivity extends BaseActivity implements ActionBar.TabListe
 
     // Tab titles
     private String[] mTabs = {
-            "치킨", "피자/햄버거", "중식/냉면", "한식/분식", "닭발/오리", "야식/기타", "족발/보쌈", "일식/돈가스"
+            "할인", "치킨", "피자/햄버거", "중식/냉면", "한식/분식", "닭발/오리", "야식/기타", "족발/보쌈", "일식/돈가스"
     };
 
     @Override
@@ -40,8 +41,9 @@ public class ShopListActivity extends BaseActivity implements ActionBar.TabListe
 
         mLocationUtil = LocationUtil.getInstance(this);
 
-//        findViewById(R.id.actionbar_gps_layout).setVisibility(View.VISIBLE);
-//        findViewById(R.id.logo).setVisibility(View.GONE);
+        // findViewById(R.id.logo).setVisibility(View.GONE);
+
+        // findViewById(R.id.actionbar_gps_layout).setVisibility(View.VISIBLE);
 
         tvAddress = (TextView)findViewById(R.id.actionbar_location_name1);
 
@@ -54,9 +56,9 @@ public class ShopListActivity extends BaseActivity implements ActionBar.TabListe
 
         int distance = getIntent().getIntExtra("distance", 2);
 
-//        String address = mLocationUtil.getAddress(lat, lng);
+        // String address = mLocationUtil.getAddressShort(lat, lng);
 
-//        tvAddress.setText(address);
+        // tvAddress.setText(address);
 
         // Initialization
         ShopListPagerAdapter pagerAdapter = new ShopListPagerAdapter(getSupportFragmentManager(),
@@ -71,6 +73,16 @@ public class ShopListActivity extends BaseActivity implements ActionBar.TabListe
 
         // TODO 액션바 아이콘
 
+        if (saleZone) {
+            mTabs = new String[] {
+                    "할인", "치킨", "피자/햄버거", "중식/냉면", "한식/분식", "닭발/오리", "야식/기타", "족발/보쌈", "일식/돈가스"
+            };
+        } else {
+            mTabs = new String[] {
+                    "치킨", "피자/햄버거", "중식/냉면", "한식/분식", "닭발/오리", "야식/기타", "족발/보쌈", "일식/돈가스"
+            };
+        }
+
         if (mActionBar != null) {
             mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
             for (String tab_name : mTabs) {
@@ -78,10 +90,14 @@ public class ShopListActivity extends BaseActivity implements ActionBar.TabListe
             }
         }
 
-        Intent intent = getIntent();
+        int type = getIntent().getIntExtra("TYPE", 1);
 
-        mViewPager.setCurrentItem(intent.getIntExtra("TYPE", 1) - 1);
-        mActionBar.setSelectedNavigationItem(intent.getIntExtra("TYPE", 1) - 1);
+        if (!saleZone) {
+            type -= 1;
+        }
+
+        mViewPager.setCurrentItem(type);
+        mActionBar.setSelectedNavigationItem(type);
 
         mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override

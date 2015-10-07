@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import static kr.co.cashqc.MainActivity.saleZone;
+
 /**
  * The type Tabs pager adapter.
  */
@@ -24,13 +26,21 @@ public class ShopListPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-//        position++;
-        //return new ShopListFragment(position);
+        // position++;
+        // return new ShopListFragment(position);
 
         Fragment slf = new ShopListFragment();
         Bundle args = new Bundle();
         // Our object is just an integer :-P
-        args.putInt("mType", position+1);
+
+//        if (saleZone) {
+//            args.putInt("mType", position);
+//        } else {
+//            args.putInt("mType", position + 1);
+//        }
+
+        args.putInt("mType", saleZone ? position : position + 1);
+
         args.putDouble("lat", mLat);
         args.putDouble("lng", mLng);
         args.putInt("distance", mDistance);
@@ -38,7 +48,6 @@ public class ShopListPagerAdapter extends FragmentPagerAdapter {
 
         return slf;
     }
-
 
     // @Override
     // public Fragment getItem(int position) {
@@ -53,6 +62,6 @@ public class ShopListPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 8;
+        return 9;
     }
 }

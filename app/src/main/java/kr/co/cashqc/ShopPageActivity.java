@@ -116,6 +116,7 @@ public class ShopPageActivity extends BaseActivity {
     private boolean hasImage = true;
 
     public static boolean TTS_SHOP = false;
+
     private Uri mImgUri;
 
     @Override
@@ -126,7 +127,7 @@ public class ShopPageActivity extends BaseActivity {
         // mActivity killer mActivity add.
         killer.addActivity(this);
 
-        Tracker t = ((CashqApplication) getApplication())
+        Tracker t = ((CashqApplication)getApplication())
                 .getTracker(CashqApplication.TrackerName.APP_TRACKER);
 
         t.setScreenName("ShopListFragment");
@@ -255,14 +256,13 @@ public class ShopPageActivity extends BaseActivity {
 
                 // Return Data를 사용하면 번들 용량 제한으로 크기가 큰 이미지는
                 // 넘겨 줄 수 없다.
-//          intent.putExtra("return-data", true);
+                // intent.putExtra("return-data", true);
                 startActivityForResult(intent, CROP_FROM_CAMERA);
                 break;
 
             case CROP_FROM_CAMERA:
 
                 Log.e(TAG, "CROP_FROM_CAMERA");
-
 
                 String full_path = mImgUri.getPath();
                 Log.e(TAG, "full_path : " + full_path);
@@ -272,7 +272,7 @@ public class ShopPageActivity extends BaseActivity {
 
                 Bitmap photo = BitmapFactory.decodeFile(photo_path);
 
-                ImageView testtt = (ImageView) findViewById(R.id.testtt);
+                ImageView testtt = (ImageView)findViewById(R.id.testtt);
                 testtt.setImageBitmap(photo);
                 break;
         }
@@ -312,7 +312,6 @@ public class ShopPageActivity extends BaseActivity {
         }
     }
 
-
     private Uri createSaveCropFile() {
         Uri uri;
         String url = "tmp_" + String.valueOf(System.currentTimeMillis()) + ".jpg";
@@ -322,7 +321,9 @@ public class ShopPageActivity extends BaseActivity {
     }
 
     private File getImageFile(Uri imgUri) {
-        String[] projection = {MediaStore.Images.Media.DATA};
+        String[] projection = {
+            MediaStore.Images.Media.DATA
+        };
         if (imgUri == null) {
             imgUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
         }
@@ -347,7 +348,9 @@ public class ShopPageActivity extends BaseActivity {
 
     private String getImageNameFromUri(Uri data) {
 
-        String[] proj = {MediaStore.Images.Media.DATA};
+        String[] proj = {
+            MediaStore.Images.Media.DATA
+        };
         Cursor cursor = managedQuery(data, proj, null, null, null);
         int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
 
@@ -362,20 +365,20 @@ public class ShopPageActivity extends BaseActivity {
 
     private void setLayout() {
 
-        mListMenu = (LinearLayout) findViewById(R.id.shoppage_listmenu);
+        mListMenu = (LinearLayout)findViewById(R.id.shoppage_listmenu);
 
-        mWebView = (WebView) findViewById(R.id.shoppage_webview);
-        mListView = (ExpandableListView) findViewById(R.id.shoppage_listview);
-        mMenuImgLayout = (RelativeLayout) findViewById(R.id.shoppage_menulist);
-        mScrollView = (ScrollView) findViewById(R.id.shoppage_scrollview);
+        mWebView = (WebView)findViewById(R.id.shoppage_webview);
+        mListView = (ExpandableListView)findViewById(R.id.shoppage_listview);
+        mMenuImgLayout = (RelativeLayout)findViewById(R.id.shoppage_menulist);
+        mScrollView = (ScrollView)findViewById(R.id.shoppage_scrollview);
 
-        mRatingBar = (RatingBar) findViewById(R.id.shoppage_rating);
-        tvRatingScore = (TextView) findViewById(R.id.shoppage_ratingscore);
-        tvReviewCount = (TextView) findViewById(R.id.shoppage_reviewcount);
+        mRatingBar = (RatingBar)findViewById(R.id.shoppage_rating);
+        tvRatingScore = (TextView)findViewById(R.id.shoppage_ratingscore);
+        tvReviewCount = (TextView)findViewById(R.id.shoppage_reviewcount);
 
-        switcher = (Button) findViewById(R.id.shoppage_switcher);
+        switcher = (Button)findViewById(R.id.shoppage_switcher);
 
-        mReviewListView = (ListView) findViewById(R.id.shoppage_reviewlistview);
+        mReviewListView = (ListView)findViewById(R.id.shoppage_reviewlistview);
 
         findViewById(R.id.btn_up).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -387,20 +390,20 @@ public class ShopPageActivity extends BaseActivity {
 
     private void setReviewView(boolean isExpanded) {
 
-        int draw;
-        int visibility;
-
         if (isExpanded) {
             new ReviewTask().execute(getIntent().getStringExtra("seq"));
-            visibility = View.VISIBLE;
-            draw = R.drawable.btn_list_open;
+            mReviewListView.setVisibility(View.VISIBLE);
+            tvReviewCount
+                    .setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.btn_list_open, 0);
+
         } else {
-            visibility = View.GONE;
-            draw = R.drawable.btn_list_close;
+            mReviewListView.setVisibility(View.GONE);
+            tvReviewCount.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.btn_list_close,
+                    0);
         }
 
-        mReviewListView.setVisibility(visibility);
-        tvReviewCount.setCompoundDrawablesWithIntrinsicBounds(0, 0, draw, 0);
+        setListViewHeightBasedOnChildren(mReviewListView);
+
     }
 
     private class ReviewTask extends AsyncTask<String, Void, JSONObject> {
@@ -447,7 +450,7 @@ public class ShopPageActivity extends BaseActivity {
                         reviewData.setNick(object.getString("mb_nick"));
 
                     if (object.has("content"))
-                        reviewData.setContent(object.getString("content"));
+                        reviewData.setContent(object.getString("content").trim());
 
                     if (object.has("rating"))
                         reviewData.setRating(Integer.parseInt(object.getString("rating")));
@@ -464,6 +467,7 @@ public class ShopPageActivity extends BaseActivity {
                 ReviewListAdapter adapter = new ReviewListAdapter(mActivity, reviewDataList,
                         mOnClickListener);
                 mReviewListView.setAdapter(adapter);
+
                 setListViewHeightBasedOnChildren(mReviewListView);
 
             } catch (JSONException e) {
@@ -622,19 +626,19 @@ public class ShopPageActivity extends BaseActivity {
 
     private void setRowLayout() {
 
-        final ImageView thm = (ImageView) findViewById(R.id.list_thm);
-        TextView name = (TextView) findViewById(R.id.cashq_list_name);
-        TextView time1 = (TextView) findViewById(R.id.cashq_list_time1);
-        TextView time2 = (TextView) findViewById(R.id.cashq_list_time2);
-        TextView minPay = (TextView) findViewById(R.id.min_pay);
-        TextView distance = (TextView) findViewById(R.id.cashq_list_distance);
-        TextView dong = (TextView) findViewById(R.id.dong);
-        Button btnTel = (Button) findViewById(R.id.tel_btn);
-        TextView callcnt = (TextView) findViewById(R.id.calllog);
+        final ImageView thm = (ImageView)findViewById(R.id.list_thm);
+        TextView name = (TextView)findViewById(R.id.cashq_list_name);
+        TextView time1 = (TextView)findViewById(R.id.cashq_list_time1);
+        TextView time2 = (TextView)findViewById(R.id.cashq_list_time2);
+        TextView minPay = (TextView)findViewById(R.id.min_pay);
+        TextView distance = (TextView)findViewById(R.id.cashq_list_distance);
+        TextView dong = (TextView)findViewById(R.id.dong);
+        Button btnTel = (Button)findViewById(R.id.tel_btn);
+        TextView callcnt = (TextView)findViewById(R.id.calllog);
         // ImageView iconCalllog = (ImageView)findViewById(R.id.icon_calllog);
-        RatingBar score = (RatingBar) findViewById(R.id.shoplist_rating);
-        ImageView separatorRow = (ImageView) findViewById(R.id.separator_row);
-        ImageView img2000 = (ImageView) findViewById(R.id.row_img_point);
+        RatingBar score = (RatingBar)findViewById(R.id.shoplist_rating);
+        ImageView separatorRow = (ImageView)findViewById(R.id.separator_row);
+        ImageView img2000 = (ImageView)findViewById(R.id.row_img_point);
 
         callcnt.setVisibility(View.VISIBLE);
         // iconCalllog.setVisibility(View.VISIBLE);
@@ -652,7 +656,7 @@ public class ShopPageActivity extends BaseActivity {
         score.setRating(Float.parseFloat(getIntent().getStringExtra("review_rating")));
 
         if ("".equals(getIntent().getStringExtra("pre_pay"))) {
-            LinearLayout ll = (LinearLayout) findViewById(R.id.thm_layout);
+            LinearLayout ll = (LinearLayout)findViewById(R.id.thm_layout);
             ll.setVisibility(View.GONE);
             score.setVisibility(View.GONE);
             btnTel.setText("일반\n주문");
@@ -682,7 +686,7 @@ public class ShopPageActivity extends BaseActivity {
 
                 if (v.getId() == R.id.tel_btn) {
 
-                    Tracker t = ((CashqApplication) getApplication())
+                    Tracker t = ((CashqApplication)getApplication())
                             .getTracker(CashqApplication.TrackerName.APP_TRACKER);
 
                     t.send(new HitBuilders.EventBuilder().setCategory("ShopPageActivity")
@@ -723,7 +727,7 @@ public class ShopPageActivity extends BaseActivity {
                     thm, new SimpleImageLoadingListener() {
                         @Override
                         public void onLoadingFailed(String imageUri, View view,
-                                                    FailReason failReason) {
+                                FailReason failReason) {
                             thm.setImageResource(R.drawable.img_no_image_80x120);
                         }
                     });
@@ -767,8 +771,8 @@ public class ShopPageActivity extends BaseActivity {
         // }
         // }
 
-        set.setLoadWithOverviewMode(true);
-        set.setUseWideViewPort(true);
+//        set.setLoadWithOverviewMode(true);
+//        set.setUseWideViewPort(true);
         // set.setJavaScriptEnabled(true);
 
         // 내장 줌 사용여부
@@ -787,35 +791,65 @@ public class ShopPageActivity extends BaseActivity {
 
         set.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
 
-        String url;
-
-        // if ("".equals(getIntent().getStringExtra("pre_pay"))) {
-        // url = getNoImage();
-        // } else {
-        url = getHtml(IMG_URL + getIntent().getStringExtra("img1"), IMG_URL
-                + getIntent().getStringExtra("img2"));
-        // }
+        String url = getHtml(getIntent().getStringExtra("img1"), getIntent().getStringExtra("img2"));
 
         mWebView.loadDataWithBaseURL(null, url, "text/html", "utf-8", null);
     }
 
-    private String getHtml(String url1, String url2) {
-        Log.e("JAY", "params url : " + url1 + "\n" + url2);
+    private String getHtml(String img1, String img2) {
+
+        final int NOTHING = 0;
+        final int HAS_IMG1 = 1;
+        final int HAS_IMG2 = 2;
+        final int HAS_ALL = 3;
+
+        int imgFlag = NOTHING;
+
+        if (!("".equals(img1) || "null".equals(img1) || img1.isEmpty())) {
+
+            img1 = IMG_URL + img1;
+
+            imgFlag = HAS_IMG1;
+        }
+
+        if (!("".equals(img2) || "null".equals(img2) || img2.isEmpty())) {
+
+            img2 = IMG_URL + img2;
+
+            if (imgFlag == HAS_IMG1) {
+                imgFlag = HAS_ALL;
+            } else {
+                imgFlag = HAS_IMG2;
+            }
+        }
+
+        Log.e("JAY", "params url : " + img1 + "\n" + img2);
+
         StringBuilder sb = new StringBuilder("<HTML>");
         sb.append("<HEAD>").append("</HEAD>").append("<BODY>");
 
-        if (url1.endsWith("null") && url2.endsWith("null")) {
-            sb.append("<p style='text-align:center; margin-top:250px'>");
-            sb.append("<img src='http://cashq.co.kr/m/img/img_no_image.png'></p>");
-            hasImage = false;
-        } else {
-            if (!url1.endsWith("null")) {
-                sb.append("<img width='100%' src='").append(url1).append("'>");
-            }
-            if (!url2.endsWith("null")) {
-                sb.append("<img width='100%' src='").append(url2).append("'>");
-            }
+        switch (imgFlag) {
+
+            case NOTHING:
+                sb.append("<p style='text-align:center; margin-top:250px'>");
+                sb.append("<img src='http://cashq.co.kr/m/img/img_no_image.png'></p>");
+                hasImage = false;
+                break;
+
+            case HAS_IMG1:
+                sb.append("<img width='100%' src='").append(img1).append("'>");
+                break;
+
+            case HAS_IMG2:
+                sb.append("<img width='100%' src='").append(img2).append("'>");
+                break;
+
+            case HAS_ALL:
+                sb.append("<img width='100%' src='").append(img1).append("'>");
+                sb.append("<img width='100%' src='").append(img2).append("'>");
+                break;
         }
+
         sb.append("</BODY>").append("</HTML>");
         Log.e("JAY", "html : " + sb.toString());
         return sb.toString();
@@ -874,10 +908,11 @@ public class ShopPageActivity extends BaseActivity {
         @Override
         protected JSONObject doInBackground(String... params) {
 
-            StringBuilder sb = new StringBuilder("http://cashq.co.kr/ajax/get_menu.php?store_code=");
-            sb.append(params[0]);
+            String url = "http://cashq.co.kr/ajax/get_menu.php?store_code=" + params[0];
 
-            return new JsonParser().getJSONObjectFromUrl(sb.toString());
+            Log.e(TAG, "GET MENU URL" + url);
+
+            return new JsonParser().getJSONObjectFromUrl(url);
         }
 
         @Override
@@ -904,7 +939,7 @@ public class ShopPageActivity extends BaseActivity {
                 mListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
                     @Override
                     public boolean onGroupClick(ExpandableListView parent, View v,
-                                                int groupPosition, long id) {
+                            int groupPosition, long id) {
                         setExpandableListViewHeight(parent, groupPosition);
                         return false;
                     }
@@ -1076,9 +1111,9 @@ public class ShopPageActivity extends BaseActivity {
 
                             Log.e("fucking_tree", "level 3 : "
                                     + shop.getMenu().get(i).getChild().get(y).getChild().get(j)
-                                    .getCode()
+                                            .getCode()
                                     + shop.getMenu().get(i).getChild().get(y).getChild().get(j)
-                                    .getLabel());
+                                            .getLabel());
 
                             if (shop.getMenu().get(i).getChild().get(y).getChild().get(j)
                                     .getChild() != null) {
@@ -1088,9 +1123,9 @@ public class ShopPageActivity extends BaseActivity {
 
                                     Log.e("fucking_tree", "level 4 : "
                                             + shop.getMenu().get(i).getChild().get(y).getChild()
-                                            .get(j).getChild().get(k).getCode()
+                                                    .get(j).getChild().get(k).getCode()
                                             + shop.getMenu().get(i).getChild().get(y).getChild()
-                                            .get(j).getChild().get(k).getLabel());
+                                                    .get(j).getChild().get(k).getLabel());
                                 }
                             }
                         }
@@ -1132,6 +1167,12 @@ public class ShopPageActivity extends BaseActivity {
                     if (object.has("price"))
                         data.setPrice(object.getString("price"));
 
+                    if (object.has("discount"))
+                        data.setDiscountRate(object.getInt("discount"));
+
+                    if (object.has("quantity"))
+                        data.setQuantity(object.getInt("quantity"));
+
                     data.setCode(parentId, data.getId());
 
                     ArrayList<MenuData> childData = new ArrayList<MenuData>();
@@ -1158,20 +1199,20 @@ public class ShopPageActivity extends BaseActivity {
             View.OnClickListener {
 
         private MenuImageTask() {
-            img1 = (ImageView) findViewById(R.id.img1);
-            img2 = (ImageView) findViewById(R.id.img2);
-            img3 = (ImageView) findViewById(R.id.img3);
-            img4 = (ImageView) findViewById(R.id.img4);
+            img1 = (ImageView)findViewById(R.id.img1);
+            img2 = (ImageView)findViewById(R.id.img2);
+            img3 = (ImageView)findViewById(R.id.img3);
+            img4 = (ImageView)findViewById(R.id.img4);
 
-            content1 = (TextView) findViewById(R.id.text1);
-            content2 = (TextView) findViewById(R.id.text2);
-            content3 = (TextView) findViewById(R.id.text3);
-            content4 = (TextView) findViewById(R.id.text4);
+            content1 = (TextView)findViewById(R.id.text1);
+            content2 = (TextView)findViewById(R.id.text2);
+            content3 = (TextView)findViewById(R.id.text3);
+            content4 = (TextView)findViewById(R.id.text4);
 
-            price1 = (TextView) findViewById(R.id.price1);
-            price2 = (TextView) findViewById(R.id.price2);
-            price3 = (TextView) findViewById(R.id.price3);
-            price4 = (TextView) findViewById(R.id.price4);
+            price1 = (TextView)findViewById(R.id.price1);
+            price2 = (TextView)findViewById(R.id.price2);
+            price3 = (TextView)findViewById(R.id.price3);
+            price4 = (TextView)findViewById(R.id.price4);
         }
 
         private ImageView img1, img2, img3, img4;

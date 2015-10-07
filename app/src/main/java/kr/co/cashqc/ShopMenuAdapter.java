@@ -4,6 +4,7 @@ package kr.co.cashqc;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,7 @@ import static kr.co.cashqc.Utils.insertMenuLevel2;
 public class ShopMenuAdapter extends BaseExpandableListAdapter {
 
     public ShopMenuAdapter(Context context, ShopMenuData data,
-            DialogInterface.OnDismissListener onDismissListener, ShopPageActivity activity) {
+                           DialogInterface.OnDismissListener onDismissListener, ShopPageActivity activity) {
         super();
 
         mData = data;
@@ -42,30 +43,63 @@ public class ShopMenuAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild,
-            View convertView, ViewGroup parent) {
+                             View convertView, ViewGroup parent) {
 
         View v = convertView;
 
         if (v == null) {
             h = new ViewHolder();
             v = inflater.inflate(R.layout.list_menuexpand_row, null);
-            h.tvChildName = (TextView)v.findViewById(R.id.tv_child);
-            h.tvChildValue = (TextView)v.findViewById(R.id.tv_value);
-            h.ivThumb = (ImageView)v.findViewById(R.id.iv_thumb);
+            h.tvChildName = (TextView) v.findViewById(R.id.tv_child);
+            h.ivThumb = (ImageView) v.findViewById(R.id.iv_thumb);
+
+            h.tvPrice = (TextView) v.findViewById(R.id.tv_price);
+            h.tvDiscountRate = (TextView) v.findViewById(R.id.tv_rate);
+            h.tvDiscountPrice = (TextView) v.findViewById(R.id.tv_discountprice);
+            h.tvQuantity = (TextView) v.findViewById(R.id.tv_quantity);
+
             v.setTag(h);
         } else {
-            h = (ViewHolder)v.getTag();
+            h = (ViewHolder) v.getTag();
         }
 
-        final MenuData item = (MenuData)getChild(groupPosition, childPosition);
+        final MenuData item = (MenuData) getChild(groupPosition, childPosition);
 
         h.tvChildName.setText(item.getLabel());
+
         String price = "가격 정보 없음";
         if (!item.getPrice().isEmpty()) {
             price = String.format("%,d 원", Integer.parseInt(item.getPrice()));
         }
-        // Log.e("price", "" + item.getPrice());
-        h.tvChildValue.setText(price);
+
+        h.tvPrice.setText(price);
+
+        if (item.getQuantity() == 0 || item.getDiscountRate() == 0) {
+
+            h.tvQuantity.setVisibility(View.GONE);
+            h.tvDiscountPrice.setVisibility(View.GONE);
+            h.tvDiscountRate.setVisibility(View.GONE);
+
+        } else {
+
+            h.tvQuantity.setText("남은 수량 : " + item.getQuantity());
+
+            h.tvPrice.setPaintFlags(h.tvPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
+            int rate = item.getDiscountRate();
+
+            h.tvDiscountRate.setText(String.valueOf(rate));
+
+            int discountPrice = 0;
+
+            if (!item.getPrice().isEmpty()) {
+
+                discountPrice = (int) (Integer.parseInt(item.getPrice()) * (100 - rate) * 0.1);
+            }
+
+            h.tvDiscountPrice.setText(String.valueOf(discountPrice));
+        }
+
 
         String imgUrl = "http://cashq.co.kr/adm/upload/thumb/1424842254UWDWC.jpg";
 
@@ -103,18 +137,18 @@ public class ShopMenuAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView,
-            ViewGroup parent) {
+                             ViewGroup parent) {
         View v = convertView;
         if (v == null) {
             h = new ViewHolder();
             v = inflater.inflate(R.layout.list_menu_row, parent, false);
             v.setBackgroundColor(Color.rgb(237, 237, 237));
-            h.tvGroupName = (TextView)v.findViewById(R.id.tv_group);
-            h.ivImage = (ImageView)v.findViewById(R.id.iv_image);
-            h.ivIndicator = (ImageView)v.findViewById(R.id.iv_indicator);
+            h.tvGroupName = (TextView) v.findViewById(R.id.tv_group);
+            h.ivImage = (ImageView) v.findViewById(R.id.iv_image);
+            h.ivIndicator = (ImageView) v.findViewById(R.id.iv_indicator);
             v.setTag(h);
         } else {
-            h = (ViewHolder)v.getTag();
+            h = (ViewHolder) v.getTag();
         }
 
         if (isExpanded) {
@@ -125,7 +159,7 @@ public class ShopMenuAdapter extends BaseExpandableListAdapter {
             h.ivIndicator.setImageResource(R.drawable.btn_list_open);
         }
 
-        h.tvGroupName.setText(((MenuData)getGroup(groupPosition)).getLabel());
+        h.tvGroupName.setText(((MenuData) getGroup(groupPosition)).getLabel());
 
         return v;
     }
@@ -177,7 +211,14 @@ public class ShopMenuAdapter extends BaseExpandableListAdapter {
 
         private TextView tvChildName;
 
-        private TextView tvChildValue;
+        private TextView tvPrice;
+
+        private TextView tvDiscountPrice;
+
+        private TextView tvQuantity;
+
+        private TextView tvDiscountRate;
+
     }
 
 }

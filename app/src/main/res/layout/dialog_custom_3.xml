@@ -24,6 +24,14 @@
         android:orientation="vertical">
 
 
+        <ImageView
+            android:visibility="gone"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/img_gcm"
+            android:src="@drawable/order_success"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
         <TextView
             android:textColor="@android:color/black"
             android:autoLink="web|phone"

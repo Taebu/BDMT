@@ -26,6 +26,26 @@ public class MenuData {
 
     private String code;
 
+    private int quantity;
+
+    private int discountRate;
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public int getDiscountRate() {
+        return discountRate;
+    }
+
+    public void setDiscountRate(int discountRate) {
+        this.discountRate = discountRate;
+    }
+
     private ArrayList<MenuData> child;
 
     public String getLabel() {

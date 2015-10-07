@@ -31,6 +31,8 @@ import static kr.co.cashqc.DataBaseOpenHelper.TABLE_NAME;
  */
 public class Utils {
 
+    private static final String TAG = "GLOBAL UTILS";
+
     public static double sLAT = 0;
 
     public static double sLNG = 0;
@@ -192,10 +194,15 @@ public class Utils {
             View listItem = listAdapter.getView(i, null, listView);
             listItem.measure(0, 0);
             totalHeight += listItem.getMeasuredHeight();
+
+            Log.e(TAG, "i : " + i + " listItem : " + listItem.getMeasuredHeight()
+                    + " totalHeight : " + totalHeight);
         }
 
         ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        // params.height = totalHeight + (listView.getDividerHeight() *
+        // (listAdapter.getCount() - 1));
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount()));
         listView.setLayoutParams(params);
         listView.requestLayout();
     }
