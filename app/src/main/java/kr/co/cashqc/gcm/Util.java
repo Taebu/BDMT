@@ -891,7 +891,7 @@ public class Util {
             return num.trim();
 
         } catch (NullPointerException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             return "";
         }
     }

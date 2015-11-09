@@ -92,6 +92,8 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
     public static boolean saleZone = false;
 
+    public static MainActivity Instance = null;
+
     public MainActivity() {
         super();
         MainActivity.Instance = this;
@@ -100,8 +102,6 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
     private AsyncTask<Void, Void, Void> mRegisterTask;
 
     public static boolean introFlag = true;
-
-    public static MainActivity Instance = null;
 
     private LocationUtil mLocationUtil;
 

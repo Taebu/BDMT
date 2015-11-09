@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,6 +14,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import static kr.co.cashqc.Utils.getVersionCode;
+import static kr.co.cashqc.Utils.getVersionName;
 
 /**
  * @author Jung-Hum Cho Created by anp on 15. 4. 8..
@@ -27,6 +31,15 @@ public class NoticeActivity extends BaseActivity {
         setContentView(R.layout.activity_notice);
         killer.addActivity(this);
         mDialog = new CustomDialog(this);
+
+        String versionCode = getVersionCode(mThis);
+        String versionName = getVersionName(mThis);
+
+        TextView tvVersionCode = (TextView) findViewById(R.id.version_code);
+        TextView tvVersionName = (TextView) findViewById(R.id.version_name);
+
+        tvVersionCode.setText(versionCode);
+        tvVersionName.setText(versionName);
 
         new NoticeTask().execute();
     }
@@ -117,4 +130,5 @@ public class NoticeActivity extends BaseActivity {
     public void finish() {
         super.finish();
     }
+
 }

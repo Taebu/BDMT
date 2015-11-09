@@ -180,6 +180,8 @@ public class CustomDialog extends Dialog {
         final CheckBox cb3 = (CheckBox)findViewById(R.id.point_terms3);
         final CheckBox cb4 = (CheckBox)findViewById(R.id.point_terms4);
         final CheckBox cb5 = (CheckBox)findViewById(R.id.point_terms5);
+        final CheckBox cb6 = (CheckBox)findViewById(R.id.point_terms6);
+
 
         TextView give = (TextView)findViewById(R.id.dialog_point_check_give_money);
 
@@ -189,7 +191,7 @@ public class CustomDialog extends Dialog {
             @Override
             public void onClick(View v) {
                 if (cb1.isChecked() && cb2.isChecked() && cb3.isChecked() && cb4.isChecked()
-                        && cb5.isChecked()) {
+                        && cb5.isChecked() && cb6.isChecked() ) {
                     mRequestOnClickListener.onClick(v);
                     dismiss();
                 } else {

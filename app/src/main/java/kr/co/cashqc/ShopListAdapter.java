@@ -221,7 +221,7 @@ public class ShopListAdapter extends BaseAdapter {
                 h.score.setVisibility(View.GONE);
 
                 h.btnTel.setBackgroundResource(R.drawable.btn_list_gray);
-                h.btnTel.setText("일반 주문");
+                h.btnTel.setText("일반\n주문");
                 h.minPay.setText("포인트 적립 불가");
                 h.separatorRow.setBackgroundResource(R.drawable.list_title_gray);
 
@@ -264,7 +264,7 @@ public class ShopListAdapter extends BaseAdapter {
 
                 if ("gl".equals(pre_pay)) {
 
-                    h.btnTel.setText("골드 주문");
+                    h.btnTel.setText("골드\n주문");
                     h.btnTel.setBackgroundResource(R.drawable.btn_list_gold);
                     h.separatorRow.setBackgroundResource(R.drawable.list_title_gold);
 
@@ -276,7 +276,7 @@ public class ShopListAdapter extends BaseAdapter {
 
                 } else if ("sl".equals(pre_pay)) {
 
-                    h.btnTel.setText("실버 주문");
+                    h.btnTel.setText("실버\n주문");
                     h.btnTel.setBackgroundResource(R.drawable.btn_list_silver);
                     h.separatorRow.setBackgroundResource(R.drawable.list_title_silver);
 
@@ -288,7 +288,7 @@ public class ShopListAdapter extends BaseAdapter {
 
                 } else if ("on".equals(pre_pay)) {
 
-                    h.btnTel.setText("캐시큐 주문");
+                    h.btnTel.setText("캐시큐\n주문");
                     h.btnTel.setBackgroundResource(R.drawable.btn_list_red);
                     h.separatorRow.setBackgroundResource(R.drawable.list_title_red);
 

@@ -6,8 +6,6 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -285,16 +283,16 @@ public class BaseActivity extends SlidingFragmentActivity {
 
     }
 
-    public static String getVersionName(Context context) {
-        try {
-            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(
-                    context.getPackageName(), 0);
-            return packageInfo.versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+//    public static String getVersionName(Context context) {
+//        try {
+//            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(
+//                    context.getPackageName(), 0);
+//            return packageInfo.versionName;
+//        } catch (PackageManager.NameNotFoundException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
 
     public static String getAndroidId(Context context) {
 

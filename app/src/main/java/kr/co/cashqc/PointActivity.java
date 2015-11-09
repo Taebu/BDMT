@@ -538,6 +538,10 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
 
                 sb.append("&point_type=").append(pointDatas.get(0).getType());
 
+//                sb.append("&testmode=").append("test");
+
+//                sb.append("&ed_type=").append("");
+
                 for (PointData al : pointDatas) {
                     sb.append("&chk_seq[]=").append(al.getPoint_seq());
                 }

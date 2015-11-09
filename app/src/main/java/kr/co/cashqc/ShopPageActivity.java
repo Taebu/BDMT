@@ -1,6 +1,7 @@
 
 package kr.co.cashqc;
 
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -56,10 +57,9 @@ import java.util.HashMap;
 
 import kr.co.cashqc.gcm.Util;
 
+import static kr.co.cashqc.CameraUtil.TAKE_ALBUM;
+import static kr.co.cashqc.CameraUtil.TAKE_CAMERA;
 import static kr.co.cashqc.MainActivity.TOKEN_ID;
-import static kr.co.cashqc.ReviewDialog.CROP_FROM_CAMERA;
-import static kr.co.cashqc.ReviewDialog.PICK_FROM_ALBUM;
-import static kr.co.cashqc.ReviewDialog.PICK_FROM_CAMERA;
 import static kr.co.cashqc.Utils.IMG_URL;
 import static kr.co.cashqc.Utils.checkContact;
 import static kr.co.cashqc.Utils.initExpandableListViewHeight;
@@ -117,7 +117,9 @@ public class ShopPageActivity extends BaseActivity {
 
     public static boolean TTS_SHOP = false;
 
-    private Uri mImgUri;
+    private ImageView testtt;
+
+    private CameraUtil mCameraUtil;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -141,6 +143,10 @@ public class ShopPageActivity extends BaseActivity {
 
         mDialog = new CustomDialog(this);
 
+        testtt = (ImageView)findViewById(R.id.testtt);
+
+        testtt.setVisibility(View.GONE);
+
         setRowLayout();
         setLayout();
 
@@ -163,7 +169,7 @@ public class ShopPageActivity extends BaseActivity {
                     phoneNum = "4444444444";
 
                 new ReviewDialog(mActivity, getIntent().getStringExtra("name"), getIntent()
-                        .getStringExtra("seq"), phoneNum, mActivity).show();
+                        .getStringExtra("seq"), phoneNum, mPhotoListener).show();
                 return false;
             }
         });
@@ -210,72 +216,6 @@ public class ShopPageActivity extends BaseActivity {
         }
 
         isVisibilityWebView(isWeb);
-
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        Toast.makeText(mActivity, "Result Code : " + resultCode, Toast.LENGTH_SHORT).show();
-
-        Log.e(TAG, "resultCode : " + resultCode);
-
-        if (resultCode != RESULT_OK) {
-            return;
-        }
-
-        Log.e(TAG, "requestCode : " + requestCode);
-        switch (requestCode) {
-
-            case PICK_FROM_ALBUM:
-
-                Log.e(TAG, "PICK_FROM_ALBUM");
-
-                mImgUri = data.getData();
-                File originalImgFile = getImageFile(mImgUri);
-
-                mImgUri = createSaveCropFile();
-                File copyImgFile = new File(mImgUri.getPath());
-
-                // SD카드에 저장된 파일을 이미지 Crop을 위해 복사한다.
-                copyFile(originalImgFile, copyImgFile);
-
-            case PICK_FROM_CAMERA:
-
-                Log.e(TAG, "PICK_FROM_CAMERA");
-
-                // 이미지를 가져온 이후의 리사이즈할 이미지 크기를 결정합니다.
-                // 이후에 이미지 크롭 어플리케이션을 호출하게 됩니다.
-
-                Intent intent = new Intent("com.android.camera.action.CROP");
-                intent.setDataAndType(mImgUri, "image/*");
-
-                // Crop한 이미지를 저장할 Path
-                intent.putExtra("output", mImgUri);
-
-                // Return Data를 사용하면 번들 용량 제한으로 크기가 큰 이미지는
-                // 넘겨 줄 수 없다.
-                // intent.putExtra("return-data", true);
-                startActivityForResult(intent, CROP_FROM_CAMERA);
-                break;
-
-            case CROP_FROM_CAMERA:
-
-                Log.e(TAG, "CROP_FROM_CAMERA");
-
-                String full_path = mImgUri.getPath();
-                Log.e(TAG, "full_path : " + full_path);
-
-                String photo_path = full_path.substring(4, full_path.length());
-                Log.e(TAG, "photo_path : " + photo_path);
-
-                Bitmap photo = BitmapFactory.decodeFile(photo_path);
-
-                ImageView testtt = (ImageView)findViewById(R.id.testtt);
-                testtt.setImageBitmap(photo);
-                break;
-        }
 
     }
 
@@ -361,6 +301,20 @@ public class ShopPageActivity extends BaseActivity {
 
         return imgName;
 
+    }
+
+    private String getImageNameToUri(Uri data) {
+        String[] prj = {
+            MediaStore.Images.Media.DATA
+        };
+        Cursor cursor = managedQuery(data, prj, null, null, null);
+        int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+
+        cursor.moveToFirst();
+
+        String imgPath = cursor.getString(columnIndex);
+
+        return imgPath.substring(imgPath.lastIndexOf("/") + 1);
     }
 
     private void setLayout() {
@@ -771,8 +725,8 @@ public class ShopPageActivity extends BaseActivity {
         // }
         // }
 
-//        set.setLoadWithOverviewMode(true);
-//        set.setUseWideViewPort(true);
+        // set.setLoadWithOverviewMode(true);
+        // set.setUseWideViewPort(true);
         // set.setJavaScriptEnabled(true);
 
         // 내장 줌 사용여부
@@ -1397,4 +1351,79 @@ public class ShopPageActivity extends BaseActivity {
         super.onDestroy();
         stopService(mZoomIntent);
     }
+
+    private View.OnClickListener mPhotoListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            mCameraUtil = new CameraUtil(mActivity);
+
+            mCameraUtil.takeCamera();
+//            setPhotoListener();
+
+            // switch (v.getId()) {
+            // case R.id.dialog_review_img1:
+            // break;
+            // case R.id.dialog_review_img2:
+            // break;
+            // case R.id.dialog_review_img3:
+            // break;
+            // case R.id.dialog_review_img4:
+            // break;
+            // }
+        }
+    };
+
+    private void setPhotoListener() {
+
+        DialogInterface.OnClickListener cameraListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mCameraUtil.takeCamera();
+            }
+        };
+
+        DialogInterface.OnClickListener albumListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mCameraUtil.takeAlbum();
+            }
+        };
+
+        DialogInterface.OnClickListener cancelListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        };
+
+        new AlertDialog.Builder(mActivity).setTitle("업로드할 이미지 선택")
+                .setPositiveButton("사진촬영", cameraListener).setNeutralButton("앨범선택", albumListener)
+                .setNegativeButton("취소", cancelListener).show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Toast.makeText(mActivity, "Result Code : " + resultCode, Toast.LENGTH_SHORT).show();
+
+        Log.e(TAG, "resultCode : " + resultCode);
+
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+
+        // take camera
+
+        switch (requestCode) {
+            case TAKE_CAMERA:
+                mCameraUtil.takePhoto(data, testtt);
+                break;
+
+            case TAKE_ALBUM:
+                break;
+        }
+    }
+
 }

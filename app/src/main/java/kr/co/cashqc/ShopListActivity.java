@@ -79,7 +79,7 @@ public class ShopListActivity extends BaseActivity implements ActionBar.TabListe
             };
         } else {
             mTabs = new String[] {
-                    "치킨", "피자/햄버거", "중식/냉면", "한식/분식", "닭발/오리", "야식/기타", "족발/보쌈", "일식/돈가스"
+                    "치킨", "피자/햄버거", "중식/냉면", "한식/분식", "닭발/오리", "야식/기타", "족발/보쌈", "일식/돈가스", "생활/편"
             };
         }
 
