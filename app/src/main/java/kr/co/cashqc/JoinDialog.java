@@ -16,8 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * @author Jung-Hum Cho
- * Created by anp on 14. 11. 19..
+ * @author Jung-Hum Cho Created by anp on 14. 11. 19..
  */
 public class JoinDialog extends Dialog {
 
@@ -51,7 +50,9 @@ public class JoinDialog extends Dialog {
                     Toast.makeText(context, "약관에 모두 동의하여 주세요.", Toast.LENGTH_SHORT).show();
                 }
             }
+
         });
+
     }
 
     private CheckBox cbTerms1, cbTerms2;
@@ -87,11 +88,10 @@ public class JoinDialog extends Dialog {
 
                 if (success.equals("true")) {
                     Toast.makeText(context, "회원 가입이 완료되었습니다.", Toast.LENGTH_LONG).show();
+                    dismiss();
                 } else {
                     Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
                 }
-
-
 
             } catch (JSONException e) {
                 e.printStackTrace();
