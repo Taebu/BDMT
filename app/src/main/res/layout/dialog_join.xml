@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_normal"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".JoinDialog">
+
+
+
+
+    <LinearLayout
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_popup_title"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="회원가입"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dialog"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_popup_content"
+        android:gravity="center"
+        android:padding="16dp"
+        android:orientation="vertical">
+
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:src="@drawable/icon_user_on" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center">
+
+            <EditText
+
+                android:id="@+id/field_phone"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/login_box"
+                android:digits="0123456789"
+                android:hint="휴대전화 번호 입력"
+                android:inputType="number"
+                android:lines="1"
+                android:paddingLeft="80dp"
+                android:singleLine="true"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="22dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:src="@drawable/icon_phone_on" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_gravity="left"
+            android:orientation="horizontal"
+            android:layout_marginTop="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <CheckBox
+                android:id="@+id/terms1"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:button="@drawable/btn_check" />
+            <TextView
+
+                android:textColor="#333333"
+                android:layout_marginLeft="14dp"
+                android:text="서비스 약관 및 개인정보취급 동의"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_gravity="left"
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <CheckBox
+                android:id="@+id/terms2"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:button="@drawable/btn_check" />
+            <TextView
+                android:textColor="#333333"
+                android:layout_marginLeft="14dp"
+                android:text="위치정보제공 및 개인정보의 3자 제공 동의"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <TextView
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:text="회원가입 하시겠습니까?"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/btn_joinok"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/btn_black"
+            android:text="가입 신청"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
+
+
+
+
+
+</LinearLayout>

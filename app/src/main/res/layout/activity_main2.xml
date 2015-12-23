@@ -1,0 +1,219 @@
+<!--
+   Copyright 2013 Csaba Szugyiczki
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<LinearLayout
+    android:id="@+id/bg_main"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/gps_layout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#000000"
+        android:orientation="vertical"
+        android:weightSum="10.0">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="10"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <Button
+                android:id="@+id/btn_gps"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/location_pin"/>
+
+            <TextView
+                android:id="@+id/location_name1"
+                android:layout_width="0dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="0dp"
+                android:layout_weight="8.0"
+                android:text="위치"
+                android:textColor="#FFFFFF"/>
+
+            <TextView
+                android:id="@+id/manual_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.5"
+                android:clickable="true"
+                android:gravity="center"
+                android:onClick="mapOnClick"
+                android:text="수동주소"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/manual_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.5"
+                android:clickable="true"
+                android:gravity="center"
+                android:onClick="mapOnClick"
+                android:text="2km\n변경"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"/>
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/main_chicken"
+                    android:layout_width="@dimen/mainimg_size"
+                    android:layout_height="@dimen/mainimg_size"
+                    android:layout_margin="@dimen/mainimg_margin"
+                    android:clickable="true"
+                    android:onClick="mainOnClick"
+                    android:src="@drawable/main_chicken"/>
+
+                <ImageView
+                    android:id="@+id/main_pizza"
+                    android:layout_width="@dimen/mainimg_size"
+                    android:layout_height="@dimen/mainimg_size"
+                    android:layout_margin="@dimen/mainimg_margin"
+                    android:clickable="true"
+                    android:onClick="mainOnClick"
+                    android:src="@drawable/main_chicken"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/mainimg_topmargin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/main_chinese"
+                    android:layout_width="@dimen/mainimg_size"
+                    android:layout_height="@dimen/mainimg_size"
+                    android:layout_margin="@dimen/mainimg_margin"
+                    android:clickable="true"
+                    android:onClick="mainOnClick"
+                    android:src="@drawable/main_chinese"/>
+
+                <ImageView
+                    android:id="@+id/main_korean"
+                    android:layout_width="@dimen/mainimg_size"
+                    android:layout_height="@dimen/mainimg_size"
+                    android:layout_margin="@dimen/mainimg_margin"
+                    android:clickable="true"
+                    android:onClick="mainOnClick"
+                    android:src="@drawable/main_korean"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/mainimg_topmargin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/main_dakbal"
+                    android:layout_width="@dimen/mainimg_size"
+                    android:layout_height="@dimen/mainimg_size"
+                    android:layout_margin="@dimen/mainimg_margin"
+                    android:clickable="true"
+                    android:onClick="mainOnClick"
+                    android:src="@drawable/main_chicken"/>
+
+                <ImageView
+                    android:id="@+id/main_night"
+                    android:layout_width="@dimen/mainimg_size"
+                    android:layout_height="@dimen/mainimg_size"
+                    android:layout_margin="@dimen/mainimg_margin"
+                    android:clickable="true"
+                    android:onClick="mainOnClick"
+                    android:src="@drawable/main_chicken"/>
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/mainimg_topmargin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/main_jokbal"
+                    android:layout_width="@dimen/mainimg_size"
+                    android:layout_height="@dimen/mainimg_size"
+                    android:layout_margin="@dimen/mainimg_margin"
+                    android:clickable="true"
+                    android:onClick="mainOnClick"
+                    android:src="@drawable/main_chicken"/>
+
+                <ImageView
+                    android:id="@+id/main_japanese"
+                    android:layout_width="@dimen/mainimg_size"
+                    android:layout_height="@dimen/mainimg_size"
+                    android:layout_margin="@dimen/mainimg_margin"
+                    android:clickable="true"
+                    android:onClick="mainOnClick"
+                    android:src="@drawable/main_chicken"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/admin"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@android:color/transparent"
+        android:visibility="gone"/>
+</LinearLayout>

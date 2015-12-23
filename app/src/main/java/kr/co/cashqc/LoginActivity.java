@@ -74,7 +74,7 @@ public class LoginActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_join:
-                startActivity(new Intent(this, JoinActivity.class));
+                startActivity(new Intent(this, JoinDialog.class));
                 break;
         }
     }
@@ -127,11 +127,10 @@ public class LoginActivity extends BaseActivity {
 
             } else {
 
-                Intent intent = new Intent(LoginActivity.this, JoinActivity.class);
-                intent.putExtra("phoneNum", etPhoneNum.getText().toString());
-                CustomDialog joinDialog = new CustomDialog(LoginActivity.this, msg,
-                        LoginActivity.this, intent);
+                JoinDialog joinDialog = new JoinDialog(LoginActivity.this, etPhoneNum.getText()
+                        .toString());
                 joinDialog.show();
+
             }
 
             if (mDialog.isShowing())

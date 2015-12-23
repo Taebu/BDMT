@@ -46,8 +46,8 @@
             android:layout_marginBottom="8dp"
             android:background="@drawable/text_box_1"
             android:gravity="top"
-            android:hint="여기를 눌러 문의 사항을 작성해 주세요."
-            android:padding="12dp"
+            android:hint="업체 이름과 날짜시간을 알려주시면 보다 신속하고 원활하게 처리 가능합니다."
+           android:padding="12dp"
             android:textSize="13sp" />
 
         <Button

@@ -114,6 +114,7 @@ public class MapActivity extends BaseActivity implements GoogleMap.OnMapClickLis
         Intent i = new Intent(this, MainActivity.class);
         i.putExtra("lat", marker.getPosition().latitude);
         i.putExtra("lng", marker.getPosition().longitude);
+        i.putExtra("gpsflag", true);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(i);
         // killer.removeActivity();

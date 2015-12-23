@@ -8,4 +8,8 @@
     <integer name="num_cols">1</integer>
     <dimen name="menuimg_width">180dp</dimen>
     <dimen name="menuimg_height">100dp</dimen>
+    <dimen name="mainimg_size">170dp</dimen>
+    <dimen name="mainimg_margin">10dp</dimen>
+    <dimen name="mainimg_topmargin">-15dp</dimen>
+
 </resources>

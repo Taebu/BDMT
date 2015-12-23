@@ -57,7 +57,7 @@ public class ShowMsg extends Activity {
         dialog = new CustomDialog(this, msg, false, this, MainActivity.class, MSG_TYPE);
         // }
 
-        dialog.show();
+//        dialog.show();
 
         // 폰 설정의 조명시간을 가져와서 해당 시간만큼만 화면을 켠다.
         int defTimeOut = Settings.System.getInt(getContentResolver(),

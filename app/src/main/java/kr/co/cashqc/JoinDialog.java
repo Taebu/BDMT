@@ -1,9 +1,13 @@
 
 package kr.co.cashqc;
 
+import android.app.Dialog;
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -11,29 +15,31 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static kr.co.cashqc.gcm.Util.getPhoneNumber;
-
 /**
+ * @author Jung-Hum Cho
  * Created by anp on 14. 11. 19..
  */
-public class JoinActivity extends BaseActivity {
+public class JoinDialog extends Dialog {
 
-    private CheckBox cbTerms1, cbTerms2;
+    public JoinDialog(final Context context, String phoneNum) {
+        super(context);
 
-    private EditText etNum;
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_join);
+        this.context = context;
 
-        killer.addActivity(this);
+        // 배경 투명하게
+        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        setContentView(R.layout.dialog_join);
+        // setContentView(R.layout.dialog_custom_ok);
+        setCancelable(true);
 
         cbTerms1 = (CheckBox)findViewById(R.id.terms1);
         cbTerms2 = (CheckBox)findViewById(R.id.terms2);
         etNum = (EditText)findViewById(R.id.field_phone);
 
-        etNum.setText(getPhoneNumber(this));
+        etNum.setText(phoneNum);
 
         findViewById(R.id.btn_joinok).setOnClickListener(new View.OnClickListener() {
 
@@ -42,16 +48,20 @@ public class JoinActivity extends BaseActivity {
                 if (cbTerms1.isChecked() && cbTerms2.isChecked()) {
                     new JoinTask().execute(etNum.getText().toString());
                 } else {
-                    Toast.makeText(JoinActivity.this, "약관에 모두 동의하여 주세요.", Toast.LENGTH_SHORT)
-                            .show();
+                    Toast.makeText(context, "약관에 모두 동의하여 주세요.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
     }
 
+    private CheckBox cbTerms1, cbTerms2;
+
+    private EditText etNum;
+
+    private Context context;
+
     private class JoinTask extends AsyncTask<String, Void, JSONObject> {
-        CustomDialog dialog = new CustomDialog(JoinActivity.this);
+        CustomDialog dialog = new CustomDialog(context);
 
         @Override
         protected void onPreExecute() {
@@ -71,27 +81,25 @@ public class JoinActivity extends BaseActivity {
         protected void onPostExecute(JSONObject object) {
             super.onPostExecute(object);
 
-            String success = null;
-            String msg = null;
             try {
-                success = object.getString("success");
-                msg = object.getString("msg");
+                String success = object.getString("success");
+                String msg = object.getString("msg");
+
+                if (success.equals("true")) {
+                    Toast.makeText(context, "회원 가입이 완료되었습니다.", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+                }
+
+
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
-            CustomDialog joinDialog = new CustomDialog(JoinActivity.this, msg, true,
-                    JoinActivity.this, LoginActivity.class, 0);
-            joinDialog.show();
 
             if (dialog.isShowing())
                 dialog.dismiss();
         }
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        killer.removeActivity(this);
-    }
 }

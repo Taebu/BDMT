@@ -69,7 +69,7 @@
         android:layout_height="50dp"
         android:layout_marginTop="40dp"
         android:background="@drawable/btn_black"
-        android:text="로그인"
+        android:text="포인트 조회"
         android:textColor="#FFFFFF" />
 
     <LinearLayout
@@ -80,6 +80,7 @@
 
 
         <TextView
+            android:visibility="invisible"
             android:id="@+id/btn_join"
             android:layout_width="wrap_content"
             android:layout_height="20dp"

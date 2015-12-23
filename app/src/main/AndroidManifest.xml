@@ -123,7 +123,7 @@
             android:name=".PointActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".JoinActivity"
+            android:name=".JoinDialog"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ModifyActivity"

@@ -206,16 +206,21 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
         // gps util init.
         mLocationUtil = LocationUtil.getInstance(MainActivity.this);
 
+        mGpsFlag = getIntent().getBooleanExtra("gpsflag", false);
         mLatitude = getIntent().getDoubleExtra("lat", -1);
         mLongitude = getIntent().getDoubleExtra("lng", -1);
 
-        if (!mGpsFlag && mLatitude == -1) {
+        mAddressText.setText("lat: " + String.valueOf(mLatitude) + "lon: "
+                + String.valueOf(mLongitude));
+
+        if (!mGpsFlag || mLatitude == -1 || mLongitude == -1) {
             findLocation();
         } else {
             mGpsFlag = true;
+            Log.e(TAG, "lat: " + String.valueOf(mLatitude) + "lon: "
+                    + String.valueOf(mLongitude));
             new AddressJsonTask(mAddressText).execute(mLatitude, mLongitude);
-            // mAddressText.setText(mLocationUtil.getAddress(mLatitude,
-            // mLongitude));
+//            mAddressText.setText(mLocationUtil.getAddress(mLatitude, mLongitude));
         }
 
         // if(adminFlag) {
@@ -477,7 +482,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
         // view.startAnimation(animation);
     }
 
-    class AddressJsonTask extends AsyncTask<Double, Void, JSONObject> {
+    private class AddressJsonTask extends AsyncTask<Double, Void, JSONObject> {
 
         public AddressJsonTask(TextView textView) {
             tvAddress = textView;
@@ -526,7 +531,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
                 if ("동두천시".equals(mSi) || "안산시".equals(mSi) || "강서구".equals(mGu)
                         || "양천구".equals(mGu) || "의정부시".equals((mSi))) {
                     sDistance = 3;
-                } else if("양산시".equals(mSi)) {
+                } else if ("양산시".equals(mSi)) {
                     sDistance = 5;
                 } else {
                     sDistance = 2;
