@@ -26,8 +26,6 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import static kr.co.cashqc.DataBaseOpenHelper.TABLE_NAME;
-
 /**
  * @author Jung-Hum Cho Created by anp on 14. 10. 31..
  */
@@ -329,13 +327,13 @@ public class Utils {
     }
 
     public static void insertMenuLevel2(Context context, ShopMenuData data, int groupPos,
-            int childPos) {
+                                        int childPos) {
 
         DataBaseOpenHelper helper = new DataBaseOpenHelper(context);
 
         SQLiteDatabase db = helper.getWritableDatabase();
 
-        Cursor c = db.query(TABLE_NAME, null, null, null, null, null, null);
+        Cursor c = db.query(DataBaseOpenHelper.TABLE_NAME, null, null, null, null, null, null);
 
         MenuData level1 = data.getMenu().get(groupPos);
 
@@ -386,13 +384,19 @@ public class Utils {
 
             values.put("menu_code", level2.getCode());
 
-            int price2 = Integer.parseInt(level2.getPrice());
+            int price2;
+
+            if(level2.isDeal()) {
+                price2 = level2.getDiscountPrice();
+            } else {
+                price2 = level2.getPrice();
+            }
 
             values.put("price", price2);
 
             values.put("ea", 1);
 
-            db.insert(TABLE_NAME, null, values);
+            db.insert(DataBaseOpenHelper.TABLE_NAME, null, values);
 
             Log.i("cart_add", values.toString());
 
@@ -409,7 +413,6 @@ public class Utils {
         }
 
     }
-
     // public static void
 
     public static int getDisplayHeightSize(Activity activity) {

@@ -17,15 +17,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import static kr.co.cashqc.DataBaseOpenHelper.TABLE_NAME;
-
 /**
  * @author Jung-Hum Cho Created by anp on 15. 1. 13..
  */
 public class OrderMenuDialog extends Dialog {
     // 메뉴 장바구니 선택
     public OrderMenuDialog(final Context context, final ShopMenuData data, final int groupPos,
-            final int childPos, final OnDismissListener listener) {
+                           final int childPos, final OnDismissListener listener) {
         super(context);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -83,7 +81,7 @@ public class OrderMenuDialog extends Dialog {
     }
 
     public OrderMenuDialog(final Context context, final ShopMenuData data, final MenuData level1,
-            final MenuData level2, final MenuData level3) {
+                           final MenuData level2, final MenuData level3) {
         super(context);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -93,7 +91,7 @@ public class OrderMenuDialog extends Dialog {
 
         setContentView(R.layout.dialog_order);
 
-        Button btnOk = (Button)findViewById(R.id.ok);
+        Button btnOk = (Button)findViewById(R.id.qna_ok);
         TextView tvLabel = (TextView)findViewById(R.id.order_dialog_group);
         TextView tvChoice = (TextView)findViewById(R.id.order_dialog_choice);
 
@@ -123,13 +121,13 @@ public class OrderMenuDialog extends Dialog {
     }
 
     private void insertMenuLevel3(Context context, ShopMenuData data, MenuData level1,
-            MenuData level2, MenuData level3) {
+                                  MenuData level2, MenuData level3) {
 
         DataBaseOpenHelper helper = new DataBaseOpenHelper(context);
 
         SQLiteDatabase db = helper.getWritableDatabase();
 
-        Cursor c = db.query(TABLE_NAME, null, null, null, null, null, null);
+        Cursor c = db.query(DataBaseOpenHelper.TABLE_NAME, null, null, null, null, null, null);
 
         String shopCode = data.getShopCode();
 
@@ -177,14 +175,14 @@ public class OrderMenuDialog extends Dialog {
 
             values.put("menu_code", level3.getCode());
 
-            int price2 = Integer.parseInt(level2.getPrice());
-            int price3 = Integer.parseInt(level3.getPrice());
+            int price2 = level2.getPrice();
+            int price3 = level3.getPrice();
 
             values.put("price", price2 + price3);
 
             values.put("ea", 1);
 
-            db.insert(TABLE_NAME, null, values);
+            db.insert(DataBaseOpenHelper.TABLE_NAME, null, values);
 
             Log.i("cart_add", values.toString());
 
@@ -204,13 +202,13 @@ public class OrderMenuDialog extends Dialog {
     }
 
     private void insertMenuLevel4(Context context, int checkedPos, ShopMenuData data,
-            MenuData level1, MenuData level2, MenuData level3) {
+                                  MenuData level1, MenuData level2, MenuData level3) {
 
         DataBaseOpenHelper helper = new DataBaseOpenHelper(context);
 
         SQLiteDatabase db = helper.getWritableDatabase();
 
-        Cursor c = db.query(TABLE_NAME, null, null, null, null, null, null);
+        Cursor c = db.query(DataBaseOpenHelper.TABLE_NAME, null, null, null, null, null, null);
 
         // 동일한 메뉴인지
         boolean hasMenu = false;
@@ -264,15 +262,15 @@ public class OrderMenuDialog extends Dialog {
 
             values.put("menu_code", level4.getCode());
 
-            int price2 = Integer.parseInt(level2.getPrice());
-            int price3 = Integer.parseInt(level3.getPrice());
-            int price4 = Integer.parseInt(level4.getPrice());
+            int price2 = level2.getPrice();
+            int price3 = level3.getPrice();
+            int price4 = level4.getPrice();
 
             values.put("price", price2 + price3 + price4);
 
             values.put("ea", 1);
 
-            db.insert(TABLE_NAME, null, values);
+            db.insert(DataBaseOpenHelper.TABLE_NAME, null, values);
 
             Log.i("cart_add", values.toString());
 

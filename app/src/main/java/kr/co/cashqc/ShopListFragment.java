@@ -378,7 +378,8 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
             if (object.has("review_rating"))
                 shopData.setReviewRating(object.getString("review_rating"));
 
-            shopData.setMinpay("12,000원 이상 주문시 적립가능");
+            if (object.has("minpay"))
+            shopData.setMinpay(object.getString("minpay"));
 
             shopData.setSeq(object.getString("seq"));
             shopData.setBizCode(object.getString("biz_code"));

@@ -13,15 +13,14 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:circle="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/bg_main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/bg_chicken"
-    android:orientation="vertical"
-    tools:context=".MainWheelMenu2">
+<RelativeLayout android:id="@+id/bg_main"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:circle="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_chicken"
+                android:orientation="vertical"
+    >
 
     <LinearLayout
         android:id="@+id/gps_layout"
@@ -32,10 +31,10 @@
         android:weightSum="10.0">
 
         <LinearLayout
-            android:gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="10"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
             android:weightSum="10">
 
@@ -45,7 +44,7 @@
                 android:layout_height="30dp"
                 android:layout_marginLeft="8dp"
                 android:layout_weight="1"
-                android:background="@drawable/location_pin" />
+                android:background="@drawable/location_pin"/>
 
             <TextView
                 android:id="@+id/location_name1"
@@ -54,7 +53,7 @@
                 android:layout_marginLeft="0dp"
                 android:layout_weight="8.0"
                 android:text="위치"
-                android:textColor="#FFFFFF" />
+                android:textColor="#FFFFFF"/>
 
             <TextView
                 android:id="@+id/manual_location"
@@ -67,7 +66,7 @@
                 android:onClick="mOnClick"
                 android:text="수동주소"
                 android:textColor="#FFFFFF"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/manual_distance"
@@ -80,7 +79,7 @@
                 android:onClick="mOnClick"
                 android:text="2km\n변경"
                 android:textColor="#FFFFFF"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
 
         </LinearLayout>
 
@@ -88,12 +87,21 @@
 
     <LinearLayout
         android:id="@+id/explain"
-        android:layout_below="@+id/gps_layout"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/gps_layout"
+        android:layout_marginTop="10dp"
         android:gravity="center"
         android:orientation="horizontal">
+
+        <ImageView
+            android:visibility="gone"
+            android:onClick="mOnClick"
+            android:clickable="true"
+            android:id="@+id/main_sale"
+            android:src="@drawable/btn_mainsale"
+            android:layout_width="match_parent"
+            android:layout_height="100dp" />
 
         <TextView
             android:id="@+id/display"
@@ -101,13 +109,14 @@
             android:layout_height="wrap_content"
             android:text="메뉴를 돌려보세요~"
             android:textColor="#000000"
-            android:textSize="20sp" />
+            android:textSize="20sp"/>
 
         <Button
+            android:visibility="gone"
             android:id="@+id/admin"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@android:color/transparent" />
+            android:background="@android:color/transparent"/>
 
         <!--<Button-->
         <!--android:id="@+id/send"-->
@@ -136,10 +145,10 @@
     </LinearLayout>
 
     <kr.co.cashqc.view.CircleLayout
-        android:layout_below="@id/explain"
         android:id="@+id/main_circle_layout"
         android:layout_width="match_parent"
         android:layout_height="350dp"
+        android:layout_below="@id/explain"
         android:layout_marginTop="40dp"
         circle:firstChildPosition="North"
         circle:isRotating="true"
@@ -152,7 +161,7 @@
             android:layout_height="@dimen/circle_size"
             android:src="@drawable/icon_chicken"
             android:visibility="invisible"
-            circle:name="@string/chicken" />
+            circle:name="@string/chicken"/>
 
         <kr.co.cashqc.view.CircleImageView
             android:id="@+id/wmain_pizza"
@@ -160,7 +169,7 @@
             android:layout_height="@dimen/circle_size"
             android:src="@drawable/icon_pizza"
             android:visibility="invisible"
-            circle:name="@string/pizza" />
+            circle:name="@string/pizza"/>
 
         <kr.co.cashqc.view.CircleImageView
             android:id="@+id/wmain_chinese"
@@ -168,7 +177,7 @@
             android:layout_height="@dimen/circle_size"
             android:src="@drawable/icon_chinese"
             android:visibility="invisible"
-            circle:name="@string/chinese" />
+            circle:name="@string/chinese"/>
 
         <kr.co.cashqc.view.CircleImageView
 
@@ -177,7 +186,7 @@
             android:layout_height="@dimen/circle_size"
             android:src="@drawable/icon_korean"
             android:visibility="invisible"
-            circle:name="@string/korean" />
+            circle:name="@string/korean"/>
 
         <kr.co.cashqc.view.CircleImageView
             android:id="@+id/wmain_dakbal"
@@ -185,7 +194,7 @@
             android:layout_height="@dimen/circle_size"
             android:src="@drawable/icon_dakbal"
             android:visibility="invisible"
-            circle:name="@string/dakbal" />
+            circle:name="@string/dakbal"/>
 
         <kr.co.cashqc.view.CircleImageView
             android:id="@+id/wmain_night"
@@ -193,7 +202,7 @@
             android:layout_height="@dimen/circle_size"
             android:src="@drawable/icon_night"
             android:visibility="invisible"
-            circle:name="@string/night" />
+            circle:name="@string/night"/>
 
         <kr.co.cashqc.view.CircleImageView
             android:id="@+id/wmain_bossam"
@@ -201,7 +210,7 @@
             android:layout_height="@dimen/circle_size"
             android:src="@drawable/icon_jokbal"
             android:visibility="invisible"
-            circle:name="@string/bossam" />
+            circle:name="@string/bossam"/>
 
         <kr.co.cashqc.view.CircleImageView
             android:id="@+id/wmain_japanese"
@@ -209,17 +218,17 @@
             android:layout_height="@dimen/circle_size"
             android:src="@drawable/icon_japanese"
             android:visibility="invisible"
-            circle:name="@string/japanese" />
+            circle:name="@string/japanese"/>
 
 
     </kr.co.cashqc.view.CircleLayout>
 
     <ImageView
-        android:visibility="invisible"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:scaleType="fitXY"
-        android:src="@drawable/logo_new" />
+        android:src="@drawable/logo_new"
+        android:visibility="invisible"/>
 
 </RelativeLayout>

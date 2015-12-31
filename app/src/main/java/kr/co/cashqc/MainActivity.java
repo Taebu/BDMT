@@ -37,6 +37,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -94,6 +95,8 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
     public static MainActivity Instance = null;
 
+    private int mType = 1;
+
     public MainActivity() {
         super();
         MainActivity.Instance = this;
@@ -133,6 +136,8 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
     private String mGu, mSi;
 
+    private ImageView btnSale;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -161,6 +166,8 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
         }
 
         mManualTextView = (TextView)findViewById(R.id.manual_location);
+
+        btnSale = (ImageView)findViewById(R.id.main_sale);
 
         mContext = getApplicationContext();
 
@@ -217,10 +224,10 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
             findLocation();
         } else {
             mGpsFlag = true;
-            Log.e(TAG, "lat: " + String.valueOf(mLatitude) + "lon: "
-                    + String.valueOf(mLongitude));
+            Log.e(TAG, "lat: " + String.valueOf(mLatitude) + "lon: " + String.valueOf(mLongitude));
             new AddressJsonTask(mAddressText).execute(mLatitude, mLongitude);
-//            mAddressText.setText(mLocationUtil.getAddress(mLatitude, mLongitude));
+            // mAddressText.setText(mLocationUtil.getAddress(mLatitude,
+            // mLongitude));
         }
 
         // if(adminFlag) {
@@ -397,39 +404,42 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
         int drawable = 0;
         switch (view.getId()) {
+
             case R.id.wmain_chicken:
-                mIntent.putExtra("TYPE", 1);
+                mType = 1;
                 drawable = R.drawable.bg_chicken;
                 break;
             case R.id.wmain_pizza:
-                mIntent.putExtra("TYPE", 2);
+                mType = 2;
                 drawable = R.drawable.bg_pizza;
                 break;
             case R.id.wmain_chinese:
-                mIntent.putExtra("TYPE", 3);
+                mType = 3;
                 drawable = R.drawable.bg_chinese;
                 break;
             case R.id.wmain_korean:
-                mIntent.putExtra("TYPE", 4);
+                mType = 4;
                 drawable = R.drawable.bg_korean;
                 break;
             case R.id.wmain_dakbal:
-                mIntent.putExtra("TYPE", 5);
+                mType = 5;
                 drawable = R.drawable.bg_dakbal;
                 break;
             case R.id.wmain_night:
-                mIntent.putExtra("TYPE", 6);
+                mType = 6;
                 drawable = R.drawable.bg_night;
                 break;
             case R.id.wmain_bossam:
-                mIntent.putExtra("TYPE", 7);
+                mType = 7;
                 drawable = R.drawable.bg_jokbal;
                 break;
             case R.id.wmain_japanese:
-                mIntent.putExtra("TYPE", 8);
+                mType = 8;
                 drawable = R.drawable.bg_japanese;
                 break;
         }
+
+        mIntent.putExtra("TYPE", mType);
 
         String uri = "drawable://" + drawable;
         ImageLoader.getInstance().loadImage(uri, new SimpleImageLoadingListener() {
@@ -526,6 +536,14 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
                 mAddress = getAddress(json);
 
+                if (saleZone) {
+                    btnSale.setVisibility(View.VISIBLE);
+                    mPointText.setVisibility(View.GONE);
+                } else {
+                    btnSale.setVisibility(View.GONE);
+                    mPointText.setVisibility(View.VISIBLE);
+                }
+
                 tvAddress.setText(mAddress);
 
                 if ("동두천시".equals(mSi) || "안산시".equals(mSi) || "강서구".equals(mGu)
@@ -556,6 +574,8 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
                 JSONObject jsonObject = new JSONObject(json);
 
                 JSONArray resultsArray = jsonObject.getJSONArray("results");
+
+//                saleZone = resultsArray.toString().contains("안산시");
 
                 String sublocalityLevel1 = "";
                 String sublocalityLevel2 = "";
@@ -758,6 +778,19 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
     public void mOnClick(View view) {
         switch (view.getId()) {
+            case R.id.main_sale:
+                mType = 0;
+                mIntent.putExtra("TYPE", mType);
+                mIntent.putExtra("lat", mLatitude);
+                mIntent.putExtra("lng", mLongitude);
+                mIntent.putExtra("distance", sDistance);
+
+                startActivity(mIntent);
+                if (!mDialog.isShowing()) {
+                    mDialog.show();
+                }
+                break;
+
             case R.id.manual_location:
                 Intent i = new Intent(this, MapActivity.class);
                 i.putExtra("lat", mLatitude);
@@ -766,6 +799,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
                 startActivity(i);
                 break;
+
             case R.id.manual_distance:
                 ManualDistanceDialog distanceDialog = new ManualDistanceDialog(this);
                 distanceDialog.show();

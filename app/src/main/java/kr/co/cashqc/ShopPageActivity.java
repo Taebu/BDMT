@@ -1119,13 +1119,26 @@ public class ShopPageActivity extends BaseActivity {
                         data.setId(object.getString("id"));
 
                     if (object.has("price"))
-                        data.setPrice(object.getString("price"));
+                        data.setPrice(object.getInt("price"));
 
-                    if (object.has("discount"))
-                        data.setDiscountRate(object.getInt("discount"));
+                    data.setIsDeal(false);
 
-                    if (object.has("quantity"))
-                        data.setQuantity(object.getInt("quantity"));
+                    if (object.has("is_deal")) {
+
+                        if (object.getBoolean("is_deal")) {
+
+                            data.setIsDeal(true);
+
+                            if (object.has("dis_price"))
+                                data.setDiscountPrice(object.getInt("dis_price"));
+
+                            if (object.has("discount"))
+                                data.setDiscountRate(object.getInt("discount"));
+
+                            if (object.has("quantity"))
+                                data.setQuantity(object.getInt("quantity"));
+                        }
+                    }
 
                     data.setCode(parentId, data.getId());
 
@@ -1359,7 +1372,7 @@ public class ShopPageActivity extends BaseActivity {
             mCameraUtil = new CameraUtil(mActivity);
 
             mCameraUtil.takeCamera();
-//            setPhotoListener();
+            // setPhotoListener();
 
             // switch (v.getId()) {
             // case R.id.dialog_review_img1:

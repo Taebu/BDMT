@@ -85,7 +85,7 @@ public class OrderMenuAdapter extends BaseAdapter {
 
         h.menu.setText(item.getLabel());
 
-        String price = String.format("+ %,d 원", Integer.parseInt(item.getPrice()));
+        String price = String.format("+ %,d 원", item.getPrice());
 
         h.price.setText(price);
 

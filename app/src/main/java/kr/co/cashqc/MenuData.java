@@ -22,13 +22,33 @@ public class MenuData {
 
     private String id;
 
-    private String price;
-
     private String code;
+
+    private int price;
+
+    private int discountPrice;
 
     private int quantity;
 
     private int discountRate;
+
+    private boolean isDeal;
+
+    public boolean isDeal() {
+        return isDeal;
+    }
+
+    public void setIsDeal(boolean isDeal) {
+        this.isDeal = isDeal;
+    }
+
+    public int getDiscountPrice() {
+        return discountPrice;
+    }
+
+    public void setDiscountPrice(int discountPrice) {
+        this.discountPrice = discountPrice;
+    }
 
     public int getQuantity() {
         return quantity;
@@ -64,11 +84,11 @@ public class MenuData {
         this.id = id;
     }
 
-    public String getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 

@@ -202,7 +202,7 @@ public class ShopListAdapter extends BaseAdapter {
 
             h.distance.setText(item.getDistance());
 
-            h.minPay.setText(item.getMinpay());
+            h.minPay.setText(item.getMinpay() + " 이상 주문시 적립");
 
             h.dong.setText(item.getDelivery_comment());
 
