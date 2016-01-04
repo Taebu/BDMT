@@ -605,6 +605,16 @@ public class ShopPageActivity extends BaseActivity {
         dong.setText(getIntent().getStringExtra("delivery_comment_cashq"));
         callcnt.setText(getIntent().getStringExtra("callcnt") + " 건 주문");
 
+        String bizCode = getIntent().getStringExtra("biz_code");
+
+        boolean invisibleCallCnt = bizCode.equals("a061");
+
+        if (invisibleCallCnt) {
+            callcnt.setVisibility(View.INVISIBLE);
+        } else {
+            callcnt.setVisibility(View.VISIBLE);
+        }
+
         mIsOpen = getIntent().getBooleanExtra("isopen", true);
 
         score.setRating(Float.parseFloat(getIntent().getStringExtra("review_rating")));

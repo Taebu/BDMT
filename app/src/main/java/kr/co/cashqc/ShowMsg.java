@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Window;
-import android.view.WindowManager;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -17,10 +16,10 @@ public class ShowMsg extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        getWindow().addFlags(
-                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                        | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
-                        | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+//        getWindow().addFlags(
+//                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+//                        | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+//                        | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 
         final String seq;
         final String msg;

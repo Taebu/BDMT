@@ -379,10 +379,12 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
                 shopData.setReviewRating(object.getString("review_rating"));
 
             if (object.has("minpay"))
-            shopData.setMinpay(object.getString("minpay"));
+                shopData.setMinpay(object.getString("minpay"));
 
             shopData.setSeq(object.getString("seq"));
-            shopData.setBizCode(object.getString("biz_code"));
+
+            if (object.has("biz_code"))
+                shopData.setBizCode(object.getString("biz_code"));
 
             shopData.setPay(object.getString("pay"));
 
@@ -451,7 +453,10 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
 
             intent.putExtra("review_rating", data.getReviewRating());
 
-//            intent.putExtra("isopen", data.isOpen());
+            intent.putExtra("biz_code", data.getBizCode());
+
+
+            // intent.putExtra("isopen", data.isOpen());
             intent.putExtra("isopen", true);
 
             startActivity(intent);

@@ -89,7 +89,7 @@ public class AddressListDialog extends Dialog {
                         @Override
                         protected ArrayList<AddressData> doInBackground(String... params) {
 
-                            String dong = params[0];
+                            String dong = params[0].trim();
 
                             final String apiUrl = "http://biz.epost.go.kr/KpostPortal/openapi";
 

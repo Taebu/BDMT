@@ -20,7 +20,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="회원가입"
+            android:text="이용 동의"
             android:textColor="#FFFFFF"
             android:textStyle="bold" />
 
@@ -117,7 +117,7 @@
         <TextView
             android:textStyle="bold"
             android:layout_marginTop="20dp"
-            android:text="회원가입 하시겠습니까?"
+            android:text="이용에 동의 하십니까?"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
@@ -127,7 +127,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:background="@drawable/btn_black"
-            android:text="가입 신청"
+            android:text="이용 동의"
             android:textColor="#FFFFFF" />
     </LinearLayout>
 
