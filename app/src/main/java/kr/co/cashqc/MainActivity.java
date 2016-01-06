@@ -19,10 +19,11 @@ package kr.co.cashqc;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -33,6 +34,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,11 +45,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gcm.GCMRegistrar;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -60,17 +68,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import kr.co.cashqc.gcm.Dictionary;
-import kr.co.cashqc.gcm.HttpRequest;
-import kr.co.cashqc.gcm.Timer.TimerListener;
 import kr.co.cashqc.gcm.Util;
 import kr.co.cashqc.view.CircleLayout;
 
-import static kr.co.cashqc.CommonUtilities.SENDER_ID;
 import static kr.co.cashqc.ShopListFragment.adminFlag;
 import static kr.co.cashqc.gcm.Util.getPhoneNumber;
 
@@ -152,6 +155,8 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
         updateChecker();
 
+        registBroadcastReceiver();
+
         GoogleAnalytics.getInstance(this).dispatchLocalHits();
 
         Tracker t = ((CashqApplication)getApplication())
@@ -181,16 +186,16 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
             Util.showDialog_normal(this, "네트워크 에러", "네트워크 연결 상태를 확인해주세요");
         }
 
-        getRegId();
+        // getRegId();
 
-        setHttpRequest();
+        // setHttpRequest();
 
-        new kr.co.cashqc.gcm.Timer(new TimerListener() {
-
-            public void onTick() {
-                setHttpRequest();
-            }
-        }, 3000);
+        // new kr.co.cashqc.gcm.Timer(new TimerListener() {
+        //
+        // public void onTick() {
+        // setHttpRequest();
+        // }
+        // }, 3000);
 
         // custom mDialog init.
         mDialog = new CustomDialog(this);
@@ -575,7 +580,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
                 JSONArray resultsArray = jsonObject.getJSONArray("results");
 
-//                saleZone = resultsArray.toString().contains("안산시");
+                // saleZone = resultsArray.toString().contains("안산시");
 
                 String sublocalityLevel1 = "";
                 String sublocalityLevel2 = "";
@@ -741,11 +746,29 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
     @Override
     protected void onResume() {
-        NotificationManager nm = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-        nm.cancelAll();
+        // NotificationManager nm =
+        // (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        // nm.cancelAll();
         setCartCount(this);
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(QuickstartPreferences.REGISTRATION_READY));
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(QuickstartPreferences.REGISTRATION_GENERATING));
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(QuickstartPreferences.REGISTRATION_COMPLETE));
+
         super.onResume();
         // Check device for Play Services APK.
+    }
+
+    /**
+     * 앱이 화면에서 사라지면 등록된 LocalBoardcast를 모두 삭제한다.
+     */
+    @Override
+    protected void onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
+        super.onPause();
     }
 
     @Override
@@ -848,91 +871,95 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
         }
     }
 
-    public String getRegId() {
-        final String regId = GCMRegistrar.getRegistrationId(getApplicationContext());
-        Log.e("JAY", "regid = " + regId);
-        if (regId.equals("")) {
-            GCMRegistrar.register(this, SENDER_ID);
-            GCMRegistrar.checkDevice(this);
-            GCMRegistrar.checkManifest(this);
-        } else {
-            if (GCMRegistrar.isRegisteredOnServer(this)) {
-                // Toast.makeText(getApplicationContext(), "Already",
-                // Toast.LENGTH_LONG).show();
-            } else {
-                final Context context = this;
-                mRegisterTask = new AsyncTask<Void, Void, Void>() {
+    // public String getRegId() {
+    // final String regId =
+    // GCMRegistrar.getRegistrationId(getApplicationContext());
+    // Log.e("JAY", "regid = " + regId);
+    // if (regId.equals("")) {
+    // GCMRegistrar.register(this, SENDER_ID);
+    // GCMRegistrar.checkDevice(this);
+    // GCMRegistrar.checkManifest(this);
+    // } else {
+    // if (GCMRegistrar.isRegisteredOnServer(this)) {
+    // // Toast.makeText(getApplicationContext(), "Already",
+    // // Toast.LENGTH_LONG).show();
+    // } else {
+    // final Context context = this;
+    // mRegisterTask = new AsyncTask<Void, Void, Void>() {
+    //
+    // protected Void doInBackground(Void... params) {
+    // ServerUtilities
+    // .register(context, "central", getPhoneNumber(context), regId);
+    // return null;
+    // }
+    //
+    // @Override
+    // protected void onPostExecute(Void result) {
+    // mRegisterTask = null;
+    // }
+    // };
+    // mRegisterTask.execute(null, null, null);
+    // }
+    // Log.v("JAY", "Already registered");
+    // }
+    // return regId;
+    // }
 
-                    protected Void doInBackground(Void... params) {
-                        ServerUtilities
-                                .register(context, "central", getPhoneNumber(context), regId);
-                        return null;
-                    }
+    // public void setHttpRequest() {
+    // try {
+    // String num = mPhoneNum;
+    // String register = Util.loadSharedPreferences(getApplicationContext(),
+    // Utils.RegisterKey222);
+    // Log.e("JAY", "loadshared = " + register);
+    // if (register != null) {
+    // // if (TTS_MODE) {
+    // String url = "http://cashq.co.kr/m/set_tokenid_add.php" +
+    // "?biz_code=central"
+    // + "&phone=" + num + "&token_id=" + getRegId();
+    //
+    // TOKEN_ID = register;
+    //
+    // Log.e("test", "register  :  " + register);
+    // Log.e("test", "url  :  " + url);
+    //
+    // new HttpRequest(mHttpRequestListener, url, "list");
+    // } else {
+    // new kr.co.cashqc.gcm.Timer(new TimerListener() {
+    //
+    // public void onTick() {
+    // setHttpRequest();
+    // }
+    // }, 3000);
+    // }
+    // } catch (NullPointerException e) {
+    // e.printStackTrace();
+    // }
+    // }
 
-                    @Override
-                    protected void onPostExecute(Void result) {
-                        mRegisterTask = null;
-                    }
-                };
-                mRegisterTask.execute(null, null, null);
-            }
-            Log.v("JAY", "Already registered");
-        }
-        return regId;
-    }
-
-    public void setHttpRequest() {
-        try {
-            String num = mPhoneNum;
-            String register = Util.loadSharedPreferences(getApplicationContext(),
-                    Utils.RegisterKey222);
-            Log.e("JAY", "loadshared = " + register);
-            if (register != null) {
-                // if (TTS_MODE) {
-                String url = "http://cashq.co.kr/m/set_tokenid_add.php" + "?biz_code=central"
-                        + "&phone=" + num + "&token_id=" + getRegId();
-
-                TOKEN_ID = register;
-
-                Log.e("test", "register  :  " + register);
-                Log.e("test", "url  :  " + url);
-
-                new HttpRequest(mHttpRequestListener, url, "list");
-            } else {
-                new kr.co.cashqc.gcm.Timer(new TimerListener() {
-
-                    public void onTick() {
-                        setHttpRequest();
-                    }
-                }, 3000);
-            }
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private HttpRequest.HttpRequestListener mHttpRequestListener = new HttpRequest.HttpRequestListener() {
-
-        public void httpRequestError() {
-            httpRequestErrorMsg();
-        }
-
-        public void getRequestData(ArrayList<Dictionary> dicArray, boolean isError) {
-
-            if (dicArray.size() > 0) {
-            }
-        }
-    };
+    // private HttpRequest.HttpRequestListener mHttpRequestListener = new
+    // HttpRequest.HttpRequestListener() {
+    //
+    // public void httpRequestError() {
+    // httpRequestErrorMsg();
+    // }
+    //
+    // public void getRequestData(ArrayList<Dictionary> dicArray, boolean
+    // isError) {
+    //
+    // if (dicArray.size() > 0) {
+    // }
+    // }
+    // };
 
     /**
      * 컨텐츠 요청 에러
      */
-    private void httpRequestErrorMsg() {
-        if (!isFinishing()) {
-            // Util.showDialog(this, "알림", "인터넷 환경이 불안정 합니다. 네트워크 상태를 확인해 주세요.",
-            // null);
-        }
-    }
+    // private void httpRequestErrorMsg() {
+    // if (!isFinishing()) {
+    // // Util.showDialog(this, "알림", "인터넷 환경이 불안정 합니다. 네트워크 상태를 확인해 주세요.",
+    // // null);
+    // }
+    // }
 
     @Override
     protected Dialog onCreateDialog(int i) {
@@ -971,6 +998,90 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
         });
 
         return builder.create();
+    }
+
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
+
+    /**
+     * Instance ID를 이용하여 디바이스 토큰을 가져오는 RegistrationIntentService를 실행한다.
+     */
+    public void getInstanceIdToken() {
+        if (checkPlayServices()) {
+            // Start IntentService to register this application with GCM.
+            Intent intent = new Intent(this, RegistrationIntentService.class);
+            startService(intent);
+        }
+    }
+
+    /**
+     * LocalBroadcast 리시버를 정의한다. 토큰을 획득하기 위한 READY, GENERATING, COMPLETE 액션에 따라
+     * UI에 변화를 준다.
+     */
+    public void registBroadcastReceiver() {
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String action = intent.getAction();
+
+                if (action.equals(QuickstartPreferences.REGISTRATION_READY)) {
+                    // 액션이 READY일 경우
+                } else if (action.equals(QuickstartPreferences.REGISTRATION_GENERATING)) {
+                    // 액션이 GENERATING일 경우
+                } else if (action.equals(QuickstartPreferences.REGISTRATION_COMPLETE)) {
+                    // 액션이 COMPLETE일 경우
+                    String token = intent.getStringExtra("token");
+                    requestQueue(token);
+                }
+
+            }
+        };
+    }
+
+    /**
+     * Google Play Service를 사용할 수 있는 환경이지를 체크한다.
+     */
+    private boolean checkPlayServices() {
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+                GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
+            } else {
+                Log.i(TAG, "This device is not supported.");
+                finish();
+            }
+            return false;
+        }
+        return true;
+    }
+
+    private void requestQueue(String token) {
+
+        final String phoneNum = getPhoneNumber(this);
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+
+        String url = "http://cashq.co.kr/m/set_tokenid_add.php?biz_code=anpsms&appid=anpsms&gcm_type=gcm3"
+                + "&phone=" + phoneNum + "&token_id=" + token;
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(MainActivity.this, "PUSH 서버 등록 성공 !", Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(MainActivity.this, "PUSH 서버 등록 실패.. !", Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                });
+
+        requestQueue.add(stringRequest);
     }
 
 }

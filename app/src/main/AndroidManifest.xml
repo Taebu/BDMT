@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="kr.co.cashqc"
-    android:versionCode="110"
-    android:versionName="3.0.2.7">
+    android:versionCode="111"
+    android:versionName="3.0.2.8">
+
+    <!-- [START gcm_permission] -->
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- [END gcm_permission] -->
 
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
 
@@ -26,17 +31,17 @@
     <!-- gcm permission -->
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.VIBRATE" />
+    <!--<uses-permission android:name="android.permission.GET_ACCOUNTS" />-->
+    <!--<uses-permission android:name="android.permission.WAKE_LOCK" />-->
+    <!--<uses-permission android:name="android.permission.VIBRATE" />-->
 
-    <permission
-        android:name="kr.co.cashqc.permission.C2D_MESSAGE"
-        android:protectionLevel="signature" />
+    <!--<permission-->
+        <!--android:name="kr.co.cashqc.permission.C2D_MESSAGE"-->
+        <!--android:protectionLevel="signature" />-->
 
-    <uses-permission android:name="kr.co.cashqc.permission.C2D_MESSAGE" />
+    <!--<uses-permission android:name="kr.co.cashqc.permission.C2D_MESSAGE" />-->
 
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <!--<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />-->
 
     <!-- google map api v2 -->
     <uses-feature
@@ -123,9 +128,6 @@
             android:name=".PointActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".JoinDialog"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ModifyActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -188,16 +190,16 @@
             android:screenOrientation="portrait" />
 
 
-        <receiver
-            android:name="com.google.android.gcm.GCMBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND">
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+        <!--<receiver-->
+            <!--android:name="com.google.android.gcm.GCMBroadcastReceiver"-->
+            <!--android:permission="com.google.android.c2dm.permission.SEND">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="com.google.android.c2dm.intent.RECEIVE" />-->
+                <!--<action android:name="com.google.android.c2dm.intent.REGISTRATION" />-->
 
-                <category android:name="kr.co.cashqc" />
-            </intent-filter>
-        </receiver>
+                <!--<category android:name="kr.co.cashqc" />-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
 
         <activity
             android:name=".ShowMsg"
@@ -213,7 +215,7 @@
 
         </activity>
 
-        <service android:name=".GCMIntentService" />
+        <!--<service android:name=".GCMIntentService" />-->
         <service android:name=".CallService" />
         <service android:name=".ZoomService" />
 
@@ -228,6 +230,46 @@
             </intent-filter>
 
         </receiver>
+
+        <!-- [START gcm_receiver] -->
+        <receiver
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="kr.co.cashqc" />
+            </intent-filter>
+        </receiver>
+        <!-- [END gcm_receiver] -->
+
+        <!-- [START gcm_listener_service] -->
+        <service
+            android:name="kr.co.cashqc.MyGcmListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+        <!-- [END gcm_listener_service] -->
+
+        <!-- [START instanceId_listener_service] -->
+        <service
+            android:name="kr.co.cashqc.MyInstanceIDListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID" />
+            </intent-filter>
+        </service>
+        <!-- [END instanceId_listener_service] -->
+
+        <!-- [START gcm_registration_service] -->
+        <service
+            android:name="kr.co.cashqc.RegistrationIntentService"
+            android:exported="false"></service>
+        <!-- [END gcm_registration_service] -->
+
+
 
 
     </application>

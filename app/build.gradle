@@ -1,15 +1,17 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'com.google.gms.google-services'
 android {
-    compileSdkVersion 19
-    buildToolsVersion '19.1.0'
+    compileSdkVersion 18
+    buildToolsVersion '23.0.2'
 
     defaultConfig {
         applicationId "kr.co.cashqc"
         minSdkVersion 10
         targetSdkVersion 15
+        multiDexEnabled true
 
     }
+
     compileOptions {
     }
 }
@@ -21,8 +23,14 @@ dependencies {
     compile project(':SlidingMenu')
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
     compile 'com.github.chrisbanes.photoview:library:1.2.3'
-    compile 'com.google.android.gms:play-services:6.5.87'
+    compile 'com.google.android.gms:play-services-analytics:8.3.0'
+    compile 'com.google.android.gms:play-services-maps:8.3.0'
+    compile 'com.google.android.gms:play-services-gcm:8.3.0'
+//    compile 'com.google.android.gms:play-services:7.5.0'
+//    compile 'com.google.android.gms:play-services:6.5.87'
     compile 'com.github.rampo.updatechecker:library:2.1.7'
     compile project(':ViewPagerIndicator')
     compile 'com.mcxiaoke.volley:library:1.0.19'
+//        compile 'com.android.support:appcompat-v7:23.1.1'
 }
+

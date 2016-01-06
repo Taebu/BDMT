@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <integer name="versioncode">101</integer>
-    <string name="versionname">2.9.92</string>
+    <!--<integer name="versioncode">101</integer>-->
+    <!--<string name="versionname">2.9.92</string>-->
 
     <string name="app_name">배달캐시큐</string>
     <string name="hello_world">Hello world!</string>
