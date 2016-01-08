@@ -70,8 +70,8 @@ public class ReviewListAdapter extends BaseAdapter {
 
             h.insdate = (TextView)v.findViewById(R.id.row_review_insdate);
 
-            h.modify = (Button) v.findViewById(R.id.row_review_modify);
-            h.remove = (Button) v.findViewById(R.id.row_review_remove);
+            h.modify = (Button)v.findViewById(R.id.row_review_modify);
+            h.remove = (Button)v.findViewById(R.id.row_review_remove);
 
             v.setTag(h);
         } else {
@@ -135,31 +135,39 @@ public class ReviewListAdapter extends BaseAdapter {
 
         h.insdate.setText(item.getInsdate());
 
-//        Log.e(TAG, "item.getPhone() : " + item.getPhone());
+        // Log.e(TAG, "item.getPhone() : " + item.getPhone());
 
         try {
             String first = item.getPhone().substring(0, 3);
-//            Log.e(TAG, "first : " + first);
+            // Log.e(TAG, "first : " + first);
             String last = item.getPhone().substring(7, 11);
-//            Log.e(TAG, "last : " + last);
+            // Log.e(TAG, "last : " + last);
 
             String phoneCode = first.concat("****").concat(last);
 
             h.phone.setText(phoneCode);
         } catch (Exception e) {
-//            e.printStackTrace();
+            // e.printStackTrace();
         }
 
         h.content.setText(item.getContent());
 
-        if(MainActivity.TOKEN_ID.equals(item.getTokenId())) {
-            h.modify.setVisibility(View.VISIBLE);
-            h.remove.setVisibility(View.VISIBLE);
-            if (mOnClickListener != null) {
-                h.modify.setTag(R.id.seq, item.getSeq());
-                h.remove.setTag(R.id.seq, item.getSeq());
-                h.modify.setOnClickListener(mOnClickListener);
-                h.remove.setOnClickListener(mOnClickListener);
+        String tokenId = item.getTokenId();
+
+        if (tokenId != null) {
+
+            if (MainActivity.TOKEN_ID.equals(tokenId)) {
+                h.modify.setVisibility(View.VISIBLE);
+                h.remove.setVisibility(View.VISIBLE);
+                if (mOnClickListener != null) {
+                    h.modify.setTag(R.id.seq, item.getSeq());
+                    h.remove.setTag(R.id.seq, item.getSeq());
+                    h.modify.setOnClickListener(mOnClickListener);
+                    h.remove.setOnClickListener(mOnClickListener);
+                }
+            } else {
+                h.modify.setVisibility(View.GONE);
+                h.remove.setVisibility(View.GONE);
             }
         } else {
             h.modify.setVisibility(View.GONE);

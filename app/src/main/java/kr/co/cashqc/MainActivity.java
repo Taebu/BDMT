@@ -157,6 +157,8 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
         registBroadcastReceiver();
 
+        getInstanceIdToken();
+
         GoogleAnalytics.getInstance(this).dispatchLocalHits();
 
         Tracker t = ((CashqApplication)getApplication())
@@ -1027,11 +1029,15 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
                 if (action.equals(QuickstartPreferences.REGISTRATION_READY)) {
                     // 액션이 READY일 경우
+                    Log.i(TAG, "regist READY");
                 } else if (action.equals(QuickstartPreferences.REGISTRATION_GENERATING)) {
                     // 액션이 GENERATING일 경우
+                    Log.i(TAG, "regist GENERATING");
                 } else if (action.equals(QuickstartPreferences.REGISTRATION_COMPLETE)) {
                     // 액션이 COMPLETE일 경우
                     String token = intent.getStringExtra("token");
+                    TOKEN_ID = token;
+                    Log.i(TAG, "token: " + token);
                     requestQueue(token);
                 }
 
@@ -1063,7 +1069,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
 
-        String url = "http://cashq.co.kr/m/set_tokenid_add.php?biz_code=anpsms&appid=anpsms&gcm_type=gcm3"
+        String url = "http://cashq.co.kr/m/set_tokenid_add.php?biz_code=central&appid=cashq&gcm_type=gcm3"
                 + "&phone=" + phoneNum + "&token_id=" + token;
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,

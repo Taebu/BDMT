@@ -1129,7 +1129,7 @@ public class ShopPageActivity extends BaseActivity {
                         data.setId(object.getString("id"));
 
                     if (object.has("price"))
-                        data.setPrice(object.getInt("price"));
+                        data.setPrice(Integer.valueOf(object.getString("price")));
 
                     data.setIsDeal(false);
 
