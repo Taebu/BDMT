@@ -717,6 +717,7 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
                     h.checkBox.setVisibility(View.VISIBLE);
                     h.status.setTextColor(Color.parseColor("#666666"));
                 } else {
+                    convertView.setOnClickListener(null);
                     h.checkBox.setVisibility(View.INVISIBLE);
                     h.status.setTextColor(Color.RED);
                     h.status.setText("선택불가 - " + item.getStatus());
@@ -724,6 +725,7 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
                 convertView.setBackgroundColor(Color.WHITE);
 
             } else {
+                convertView.setOnClickListener(null);
                 h.status.setText("선택불가 - 다른 지역");
                 h.status.setTextColor(Color.RED);
                 convertView.setBackgroundColor(Color.LTGRAY);
