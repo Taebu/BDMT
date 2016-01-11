@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_id": "api-project-496060468342",
+    "project_number": "496060468342",
+    "name": "API Project"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:496060468342:android:92f4e33d32c6e2f9",
+        "client_id": "android:kr.co.cashqc",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "kr.co.cashqc"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 2,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 1
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
+}
