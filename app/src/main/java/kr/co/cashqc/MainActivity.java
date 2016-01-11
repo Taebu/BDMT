@@ -1036,9 +1036,13 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
                 } else if (action.equals(QuickstartPreferences.REGISTRATION_COMPLETE)) {
                     // 액션이 COMPLETE일 경우
                     String token = intent.getStringExtra("token");
+
                     TOKEN_ID = token;
+
                     Log.i(TAG, "token: " + token);
-                    requestQueue(token);
+                    getTokenId(token);
+                } else if (action.equals(QuickstartPreferences.REGISTRATION_ALREADY)) {
+                    Log.i(TAG, "regist Already");
                 }
 
             }
@@ -1063,7 +1067,48 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
         return true;
     }
 
-    private void requestQueue(String token) {
+    private void getTokenId(final String token) {
+
+        final String phoneNum = getPhoneNumber(this);
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+
+        String url = "http://cashq.co.kr/m/ajax_data/get_token_id.php?appid=cashq&phone="
+                + phoneNum;
+
+        Log.i(TAG, "Get token Url: " + url);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+
+                            String receivedToken = jsonObject.getString("token_id");
+                            Log.i(TAG, "received: " + receivedToken);
+                            if (receivedToken.equals(token)) {
+                                Log.i(TAG, "token already !!");
+                            } else {
+                                setTokenId(token);
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                    }
+                });
+
+        requestQueue.add(stringRequest);
+    }
+
+    private void setTokenId(String token) {
 
         final String phoneNum = getPhoneNumber(this);
 
