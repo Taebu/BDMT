@@ -47,7 +47,7 @@ public class JoinDialog extends Dialog {
                 if (cbTerms1.isChecked() && cbTerms2.isChecked()) {
                     new JoinTask().execute(etNum.getText().toString());
                 } else {
-                    Toast.makeText(context, "약관에 모두 동의하여 주세요.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "동의하여 주세요.", Toast.LENGTH_SHORT).show();
                 }
             }
 

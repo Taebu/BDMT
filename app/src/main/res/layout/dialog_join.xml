@@ -87,7 +87,7 @@
 
                 android:textColor="#333333"
                 android:layout_marginLeft="14dp"
-                android:text="서비스 약관 및 개인정보취급 동의"
+                android:text="핸드폰번호 제공 동의(포인트 조회 및 지급)"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -108,7 +108,7 @@
             <TextView
                 android:textColor="#333333"
                 android:layout_marginLeft="14dp"
-                android:text="위치정보제공 및 개인정보의 3자 제공 동의"
+                android:text="위치정보 제공 동의"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
