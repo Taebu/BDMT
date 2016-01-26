@@ -6,10 +6,19 @@
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
+    <TextView
+        android:layout_marginTop="8dp"
+        android:textColor="#E94320"
+        android:text="1. 포인트는 하루 한건 주문만 인정합니다.\n2. 12,000원 이상 주문이 아닐시 지급이 거절됩니다.\n3. 가맹점 등급에 따라 금액이 다릅니다."
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
+
     <LinearLayout
         android:layout_width="350dp"
         android:layout_height="match_parent"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="4dp"
         android:background="@drawable/bg_content"
         android:orientation="vertical"
         android:weightSum="10">
