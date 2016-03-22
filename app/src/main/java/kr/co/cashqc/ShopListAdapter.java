@@ -1,6 +1,10 @@
 
 package kr.co.cashqc;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -15,10 +19,6 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import java.util.ArrayList;
 
@@ -61,9 +61,11 @@ public class ShopListAdapter extends BaseAdapter {
 
     public static final int TYPE_CASHQ = 3;
 
-    public static final int TYPE_NORMAL = 4;
+    public static final int TYPE_PRQ = 4;
 
-    public static final int TYPE_MAX_COUNT = 5;
+    public static final int TYPE_NORMAL = 5;
+
+    public static final int TYPE_MAX_COUNT = 6;
 
     private LayoutInflater mInflater;
 
@@ -234,7 +236,7 @@ public class ShopListAdapter extends BaseAdapter {
 
                 Log.d(TAG, "bizHour : " + item.getName());
 
-//                boolean isBizHour = item.isOpen();
+                // boolean isBizHour = item.isOpen();
                 boolean isBizHour = true;
 
                 if (isBizHour) {
@@ -297,6 +299,20 @@ public class ShopListAdapter extends BaseAdapter {
                     // R.drawable.img_ribbon_po);
 
                     h.imgPoint.setImageResource(R.drawable.point_1000);
+                } else if ("pr".equals(pre_pay)) {
+
+                    h.btnTel.setText("PRQ\n주문");
+                    h.btnTel.setBackgroundResource(R.drawable.btn_list_prq);
+                    h.separatorRow.setBackgroundResource(R.drawable.list_title_prq);
+
+                    // ribbon =
+                    // BitmapFactory.decodeResource(mContext.getResources(),
+                    // R.drawable.img_ribbon_po);
+
+                    h.minPay.setText("포인트 적립 불가");
+
+                    h.imgPoint.setImageResource(R.drawable.point_1000);
+                    h.imgPoint.setVisibility(View.INVISIBLE);
                 }
 
                 // ribbon thumbnail work
@@ -332,6 +348,9 @@ public class ShopListAdapter extends BaseAdapter {
                 h.separatorText.setText("일반 가맹점 - 포인트 적립 불가");
                 h.separatorImage.setImageResource(R.drawable.list_title_gray);
 
+            } else if (type == TYPE_PRQ) {
+                h.separatorText.setText("PRQ 가맹점 - 포인트 적립 불가");
+                h.separatorImage.setImageResource(R.drawable.list_title_prq);
             }
         }
         return v;

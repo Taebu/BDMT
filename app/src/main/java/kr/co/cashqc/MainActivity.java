@@ -17,6 +17,31 @@ package kr.co.cashqc;
  * limitations under the License.
  */
 
+import static kr.co.cashqc.ShopListFragment.adminFlag;
+import static kr.co.cashqc.gcm.Util.getPhoneNumber;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.rampo.updatechecker.UpdateChecker;
+import com.rampo.updatechecker.UpdateCheckerResult;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
@@ -45,37 +70,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
-import com.rampo.updatechecker.UpdateChecker;
-import com.rampo.updatechecker.UpdateCheckerResult;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.UnsupportedEncodingException;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import kr.co.cashqc.gcm.Util;
 import kr.co.cashqc.view.CircleLayout;
-
-import static kr.co.cashqc.ShopListFragment.adminFlag;
-import static kr.co.cashqc.gcm.Util.getPhoneNumber;
 
 public class MainActivity extends BaseActivity implements CircleLayout.OnItemSelectedListener,
         CircleLayout.OnItemClickListener, CircleLayout.OnRotationFinishedListener,
@@ -94,11 +94,15 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
     private String mAddress;
 
-    public static boolean saleZone = false;
+    public static boolean SALE_ZONE = false;
+
+    public static boolean ANSAN_LIFE = false;
 
     public static MainActivity Instance = null;
 
     private int mType = 1;
+
+    public static final String APP_ID = "cashq";
 
     public MainActivity() {
         super();
@@ -141,6 +145,8 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
     private ImageView btnSale;
 
+    private ImageView mLifeImageView;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -148,12 +154,18 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
         mPhoneNum = getPhoneNumber(this);
 
+        mLifeImageView = (ImageView)findViewById(R.id.main_life);
+
         findViewById(R.id.actionbar_gps_layout).setVisibility(View.GONE);
         findViewById(R.id.logo).setVisibility(View.VISIBLE);
 
         // buildGoogleApiClient();
 
-        updateChecker();
+        // updateChecker();
+
+        UpdateChecker updateChecker = new UpdateChecker(this);
+        updateChecker.setSuccessfulChecksRequired(1);
+        updateChecker.start();
 
         registBroadcastReceiver();
 
@@ -326,7 +338,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
                 Log.e("UpdateChecker", "returnStoreError");
             }
         });
-        checker.start();
+        UpdateChecker.start();
     }
 
     private synchronized void buildGoogleApiClient() {
@@ -543,7 +555,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
                 mAddress = getAddress(json);
 
-                if (saleZone) {
+                if (SALE_ZONE) {
                     btnSale.setVisibility(View.VISIBLE);
                     mPointText.setVisibility(View.GONE);
                 } else {
@@ -553,11 +565,16 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
                 tvAddress.setText(mAddress);
 
-                if ("동두천시".equals(mSi) || "안산시".equals(mSi) || "강서구".equals(mGu)
-                        || "양천구".equals(mGu) || "의정부시".equals((mSi))) {
+                if ("동두천시".equals(mSi) || "강서구".equals(mGu) || "양천구".equals(mGu)
+                        || "의정부시".equals((mSi))) {
                     sDistance = 3;
                 } else if ("양산시".equals(mSi)) {
                     sDistance = 5;
+                } else if ("안산시".equals(mSi)) {
+                    // mPointText.setVisibility(View.GONE);
+                    // mLifeImageView.setVisibility(View.VISIBLE);
+                    // ANSAN_LIFE = true;
+                    sDistance = 3;
                 } else {
                     sDistance = 2;
                 }
@@ -582,7 +599,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
                 JSONArray resultsArray = jsonObject.getJSONArray("results");
 
-                // saleZone = resultsArray.toString().contains("안산시");
+                // SALE_ZONE = resultsArray.toString().contains("안산시");
 
                 String sublocalityLevel1 = "";
                 String sublocalityLevel2 = "";
@@ -835,6 +852,18 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
                     }
                 });
                 break;
+            case R.id.main_life:
+                mType = 9;
+                mIntent.putExtra("TYPE", mType);
+                mIntent.putExtra("lat", mLatitude);
+                mIntent.putExtra("lng", mLongitude);
+                mIntent.putExtra("distance", sDistance);
+
+                startActivity(mIntent);
+                if (!mDialog.isShowing()) {
+                    mDialog.show();
+                }
+                break;
         }
 
     }
@@ -1073,7 +1102,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
 
-        String url = "http://cashq.co.kr/m/ajax_data/get_token_id.php?appid=cashq&phone="
+        String url = "http://cashq.co.kr/m/ajax_data/get_token_id.php?appid=" + APP_ID + "&phone="
                 + phoneNum;
 
         Log.i(TAG, "Get token Url: " + url);
@@ -1114,8 +1143,8 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
 
-        String url = "http://cashq.co.kr/m/set_tokenid_add.php?biz_code=central&appid=cashq&gcm_type=gcm3"
-                + "&phone=" + phoneNum + "&token_id=" + token;
+        String url = "http://cashq.co.kr/m/set_tokenid_add.php?biz_code=central&appid" + APP_ID
+                + "&gcm_type=gcm3" + "&phone=" + phoneNum + "&token_id=" + token;
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {

@@ -1,6 +1,16 @@
 
 package kr.co.cashqc;
 
+import static kr.co.cashqc.Utils.checkContact;
+
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
@@ -18,22 +28,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
-import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
 import kr.co.cashqc.gcm.Util;
-
-import static kr.co.cashqc.Utils.checkContact;
+import static kr.co.cashqc.MainActivity.APP_ID;
 
 /**
  * @author Jung-Hum Cho
@@ -205,6 +206,7 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
             sb.append("&lng=").append(mLng);
             sb.append("&type=W0").append(type);
             sb.append("&page=").append(page);
+            sb.append("&appid=").append(APP_ID);
 
             Log.e("ShopListFragment.ShopList", "url : " + sb.toString());
 
@@ -237,22 +239,34 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
                                 mTypeDuplicator = 1;
                             } else if ("on".equals(prePay)) {
                                 mTypeDuplicator = 2;
-                            } else if ("".equals(prePay)) {
+                            } else if ("pr".equals(prePay)) {
                                 mTypeDuplicator = 3;
+                            } else if ("".equals(prePay)) {
+                                mTypeDuplicator = 4;
                             }
                         } else if (mTypeDuplicator == 1) {
                             if ("sl".equals(prePay)) {
                                 mTypeDuplicator = 1;
                             } else if ("on".equals(prePay)) {
                                 mTypeDuplicator = 2;
-                            } else if ("".equals(prePay)) {
+                            } else if ("pr".equals(prePay)) {
                                 mTypeDuplicator = 3;
+                            } else if ("".equals(prePay)) {
+                                mTypeDuplicator = 4;
                             }
                         } else if (mTypeDuplicator == 2) {
                             if ("on".equals(prePay)) {
                                 mTypeDuplicator = 2;
-                            } else if ("".equals(prePay)) {
+                            } else if ("pr".equals(prePay)) {
                                 mTypeDuplicator = 3;
+                            } else if ("".equals(prePay)) {
+                                mTypeDuplicator = 4;
+                            }
+                        } else if (mTypeDuplicator == 3) {
+                            if ("pr".equals(prePay)) {
+                                mTypeDuplicator = 3;
+                            } else if ("".equals(prePay)) {
+                                mTypeDuplicator = 4;
                             }
                         }
 
@@ -276,11 +290,16 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
                             mAdapter.addSeparatorItem(separator);
                             mTypeDuplicator = 3;
 
-                        } else if ("".equals(prePay) && mTypeDuplicator == 3) {
+                        } else if ("pr".equals(prePay) && mTypeDuplicator == 3) {
+
+                            separator.setSeparatorType(ShopListAdapter.TYPE_PRQ);
+                            mAdapter.addSeparatorItem(separator);
+                            mTypeDuplicator = 4;
+                        } else if ("".equals(prePay) && mTypeDuplicator == 4) {
 
                             separator.setSeparatorType(ShopListAdapter.TYPE_NORMAL);
                             mAdapter.addSeparatorItem(separator);
-                            mTypeDuplicator = 4;
+                            mTypeDuplicator = 5;
                         }
 
                         ShopListData data = getRowData(object);
@@ -454,7 +473,6 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
             intent.putExtra("review_rating", data.getReviewRating());
 
             intent.putExtra("biz_code", data.getBizCode());
-
 
             // intent.putExtra("isopen", data.isOpen());
             intent.putExtra("isopen", true);

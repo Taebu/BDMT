@@ -1,6 +1,28 @@
 
 package kr.co.cashqc;
 
+import static kr.co.cashqc.CameraUtil.TAKE_ALBUM;
+import static kr.co.cashqc.CameraUtil.TAKE_CAMERA;
+import static kr.co.cashqc.MainActivity.TOKEN_ID;
+import static kr.co.cashqc.Utils.IMG_URL;
+import static kr.co.cashqc.Utils.checkContact;
+import static kr.co.cashqc.Utils.initExpandableListViewHeight;
+import static kr.co.cashqc.Utils.insertMenuLevel2;
+import static kr.co.cashqc.Utils.setExpandableListViewHeight;
+import static kr.co.cashqc.Utils.setListViewHeightBasedOnChildren;
+import static kr.co.cashqc.gcm.Util.getPhoneNumber;
+
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -35,17 +57,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -56,17 +67,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import kr.co.cashqc.gcm.Util;
-
-import static kr.co.cashqc.CameraUtil.TAKE_ALBUM;
-import static kr.co.cashqc.CameraUtil.TAKE_CAMERA;
-import static kr.co.cashqc.MainActivity.TOKEN_ID;
-import static kr.co.cashqc.Utils.IMG_URL;
-import static kr.co.cashqc.Utils.checkContact;
-import static kr.co.cashqc.Utils.initExpandableListViewHeight;
-import static kr.co.cashqc.Utils.insertMenuLevel2;
-import static kr.co.cashqc.Utils.setExpandableListViewHeight;
-import static kr.co.cashqc.Utils.setListViewHeightBasedOnChildren;
-import static kr.co.cashqc.gcm.Util.getPhoneNumber;
 
 /**
  * @author Jung-Hum Cho Created by Administrator on 2014-10-16.
@@ -637,6 +637,10 @@ public class ShopPageActivity extends BaseActivity {
             separatorRow.setBackgroundResource(R.drawable.list_title_silver);
             btnTel.setBackgroundResource(R.drawable.btn_list_silver);
             btnTel.setText("실버\n주문");
+        } else if ("pr".equals(getIntent().getStringExtra("pre_pay"))) {
+            separatorRow.setBackgroundResource(R.drawable.list_title_prq);
+            btnTel.setBackgroundResource(R.drawable.btn_list_prq);
+            btnTel.setText("PRQ\n주문");
         }
 
         dong.setSingleLine(true);

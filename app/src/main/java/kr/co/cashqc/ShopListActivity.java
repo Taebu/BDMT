@@ -1,16 +1,17 @@
 
 package kr.co.cashqc;
 
+import static kr.co.cashqc.MainActivity.ANSAN_LIFE;
+import static kr.co.cashqc.MainActivity.SALE_ZONE;
+
+import com.actionbarsherlock.app.ActionBar;
+
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.ActionBar;
-
 import kr.co.cashqc.gcm.Util;
-
-import static kr.co.cashqc.MainActivity.saleZone;
 
 /**
  * @author Jung-Hum Cho
@@ -51,8 +52,8 @@ public class ShopListActivity extends BaseActivity implements ActionBar.TabListe
             Util.showDialog_normal(this, "네트워크 에러", "네트워크 연결 상태를 확인해주세요");
         }
 
-        double lat = getIntent().getDoubleExtra("lat", -1), lng = getIntent().getDoubleExtra("lng",
-                -1);
+        double lat = getIntent().getDoubleExtra("lat", -1);
+        double lng = getIntent().getDoubleExtra("lng", -1);
 
         int distance = getIntent().getIntExtra("distance", 2);
 
@@ -73,12 +74,16 @@ public class ShopListActivity extends BaseActivity implements ActionBar.TabListe
 
         // TODO 액션바 아이콘
 
-        if (saleZone) {
+        if (SALE_ZONE) {
             mTabs = new String[] {
                     "할인", "치킨", "피자/햄버거", "중식/냉면", "한식/분식", "닭발/오리", "야식/기타", "족발/보쌈", "일식/돈가스",
                     "생활/편의"
             };
-        } else {
+        } /*else if (ANSAN_LIFE) {
+            mTabs = new String[] {
+                    "치킨", "피자/햄버거", "중식/냉면", "한식/분식", "닭발/오리", "야식/기타", "족발/보쌈", "일식/돈가스", "생활/편의"
+            };
+        } */else {
             mTabs = new String[] {
                     "치킨", "피자/햄버거", "중식/냉면", "한식/분식", "닭발/오리", "야식/기타", "족발/보쌈", "일식/돈가스", "생활/편의"
             };
@@ -93,7 +98,7 @@ public class ShopListActivity extends BaseActivity implements ActionBar.TabListe
 
         int type = getIntent().getIntExtra("TYPE", 1);
 
-        if (!saleZone) {
+        if (!SALE_ZONE) {
             type -= 1;
         }
 

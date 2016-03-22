@@ -1014,7 +1014,8 @@ public class Util {
         NetworkInfo mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
         NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
-        return mobile.isConnected() || wifi.isConnected();
+//        return mobile.isConnected() || wifi.isConnected();
+        return true;
     }
 
 }

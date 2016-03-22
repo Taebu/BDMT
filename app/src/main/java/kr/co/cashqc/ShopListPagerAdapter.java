@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import static kr.co.cashqc.MainActivity.saleZone;
+import static kr.co.cashqc.MainActivity.SALE_ZONE;
 
 /**
  * The type Tabs pager adapter.
@@ -33,13 +33,13 @@ public class ShopListPagerAdapter extends FragmentPagerAdapter {
         Bundle args = new Bundle();
         // Our object is just an integer :-P
 
-//        if (saleZone) {
+//        if (SALE_ZONE) {
 //            args.putInt("mType", position);
 //        } else {
 //            args.putInt("mType", position + 1);
 //        }
 
-        args.putInt("mType", saleZone ? position : position + 1);
+        args.putInt("mType", SALE_ZONE ? position : position + 1);
 
         args.putDouble("lat", mLat);
         args.putDouble("lng", mLng);

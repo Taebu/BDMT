@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import kr.co.cashqc.gcm.Util;
+import static kr.co.cashqc.MainActivity.APP_ID;
 
 /**
  * Created by anp on 14. 11. 18..
@@ -246,7 +247,7 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
 
         @Override
         protected JSONObject doInBackground(String... params) {
-            String url = "http://cashq.co.kr/m/ajax_data/get_point_list2.php?phone=" + params[0];
+            String url = "http://cashq.co.kr/m/ajax_data/get_point_list2.php?phone=" + params[0] + "&appid=" + APP_ID;
             Log.e(TAG, "URL : " + url);
             return new JsonParser().getJSONObjectFromUrl(url);
         }
