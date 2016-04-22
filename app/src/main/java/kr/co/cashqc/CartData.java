@@ -35,8 +35,9 @@ public class CartData implements Serializable {
     }
 
     public void minusEa() {
-        if (ea > 1)
+        if (ea > 1) {
             ea--;
+        }
     }
 
     public int getEa() {

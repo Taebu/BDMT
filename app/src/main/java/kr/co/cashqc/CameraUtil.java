@@ -150,7 +150,7 @@ public class CameraUtil {
 
     private Bitmap decodeBitmapFile(String filePath) {
 
-        final int IMAGE_MAX_SIZE = 1 * 1024 * 1024;
+        final int IMAGEMAXSIZE = 1 * 1024 * 1024;
 
         File file = new File(filePath);
 
@@ -164,10 +164,10 @@ public class CameraUtil {
 
         BitmapFactory.decodeFile(filePath, options);
 
-        if (options.outHeight * options.outWidth >= IMAGE_MAX_SIZE) {
+        if (options.outHeight * options.outWidth >= IMAGEMAXSIZE) {
             options.inSampleSize = (int)Math.pow(
                     2,
-                    (int)Math.round(Math.log(IMAGE_MAX_SIZE
+                    (int)Math.round(Math.log(IMAGEMAXSIZE
                             / (double)Math.max(options.outHeight, options.outWidth))
                             / Math.log(0.5)));
         }

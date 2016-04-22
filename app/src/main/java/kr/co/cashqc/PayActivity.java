@@ -360,10 +360,6 @@ public class PayActivity extends BaseActivity {
     // }
 
     private class OKJsonTask extends AsyncTask<String, Void, JSONObject> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
 
         @Override
         protected JSONObject doInBackground(String... params) {
@@ -390,8 +386,4 @@ public class PayActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
 }

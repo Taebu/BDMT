@@ -47,8 +47,9 @@ public class ShopAdminActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (!mDialog.isShowing())
+            if (!mDialog.isShowing()) {
                 mDialog.show();
+            }
         }
 
         @Override
@@ -79,8 +80,9 @@ public class ShopAdminActivity extends BaseActivity {
                 }
             });
 
-            if (mDialog.isShowing())
+            if (mDialog.isShowing()) {
                 mDialog.dismiss();
+            }
         }
 
         private ArrayList<OrderData> getOrderList(JSONObject jsonObject) {

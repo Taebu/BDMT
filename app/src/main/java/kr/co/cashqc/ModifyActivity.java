@@ -67,8 +67,9 @@ public class ModifyActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (!dialog.isShowing())
+            if (!dialog.isShowing()) {
                 dialog.show();
+            }
         }
 
         @Override
@@ -105,8 +106,9 @@ public class ModifyActivity extends BaseActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            if (dialog.isShowing())
+            if (dialog.isShowing()) {
                 dialog.dismiss();
+            }
         }
     }
 
@@ -115,8 +117,9 @@ public class ModifyActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (!dialog.isShowing())
+            if (!dialog.isShowing()) {
                 dialog.show();
+            }
         }
 
         @Override
@@ -160,8 +163,10 @@ public class ModifyActivity extends BaseActivity {
                 e.printStackTrace();
             }
 
-            if (dialog.isShowing())
+            if (dialog.isShowing()) {
                 dialog.dismiss();
+            }
+
             Intent intent = new Intent(ModifyActivity.this, PointActivity.class);
             intent.putExtra("phoneNum", getIntent().getStringExtra("phoneNum"));
 

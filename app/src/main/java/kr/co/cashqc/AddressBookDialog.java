@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * @author Jung-Hum Cho Created by anp on 15. 1. 13..
  */
 public class AddressBookDialog extends Dialog {
-    // 메뉴 장바구니 선택
+
     public AddressBookDialog(final Context context, ArrayList<String> addressList,
             final View.OnClickListener onClickListener) {
         super(context);
@@ -49,7 +49,6 @@ public class AddressBookDialog extends Dialog {
                     String item = (String)listView.getItemAtPosition(position);
 
                     String[] address = item.split("_");
-
                     v.setTag(R.id.zipcode, address[0]);
                     v.setTag(R.id.address1, address[1]);
                     v.setTag(R.id.address2, address[2]);
@@ -61,4 +60,5 @@ public class AddressBookDialog extends Dialog {
             }
         });
     }
+
 }

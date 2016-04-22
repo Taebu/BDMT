@@ -1,6 +1,8 @@
 
 package kr.co.cashqc;
 
+import static kr.co.cashqc.DataBaseOpenHelper.TABLE_NAME;
+
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -12,8 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-
-import static kr.co.cashqc.DataBaseOpenHelper.TABLE_NAME;
 
 /**
  * @author Jung-Hum Cho Created by anp on 14. 12. 24..
@@ -68,10 +68,11 @@ public class CartActivity extends BaseActivity {
 
                 if (mCartList.isEmpty()) {
                     Toast.makeText(CartActivity.this, "장바구니가 비어있어요~", Toast.LENGTH_SHORT).show();
-                } else if(mOrderData.getTotal() < 12000) {
-                    Toast.makeText(CartActivity.this, "12,000원 이상 주문만 가능합니다", Toast.LENGTH_SHORT).show();
+                } else if (mOrderData.getTotal() < 12000) {
+                    Toast.makeText(CartActivity.this, "12,000원 이상 주문만 가능합니다", Toast.LENGTH_SHORT)
+                            .show();
 
-                }else {
+                } else {
                     Intent intent = new Intent(CartActivity.this, OrderActivity.class);
                     intent.putExtra("order", mOrderData);
                     startActivity(intent);
@@ -82,25 +83,9 @@ public class CartActivity extends BaseActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void finish() {
-        super.finish();
-    }
-
-    @Override
     protected void onStop() {
         super.onStop();
         killer.removeActivity(this);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
     }
 
     public void update(String menuCode, int ea) {

@@ -1,6 +1,10 @@
 
 package kr.co.cashqc;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -18,10 +22,6 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -103,8 +103,9 @@ public class PointNewActivity extends BaseActivity implements View.OnClickListen
         //
         sBtnRequest = (Button)findViewById(R.id.btn_cashrequest);
 
-        if (Build.VERSION.SDK_INT > 10)
+        if (Build.VERSION.SDK_INT > 10) {
             sBtnRequest.setAlpha(0.1f);
+        }
 
         if (mPhoneNum != null) {
             new LoadPointTask().execute(mPhoneNum);
@@ -229,8 +230,9 @@ public class PointNewActivity extends BaseActivity implements View.OnClickListen
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (!dialog.isShowing())
+            if (!dialog.isShowing()) {
                 dialog.show();
+            }
             // list set init.
             mPointDataList = new ArrayList<PointData>();
             mUserDatas = new ArrayList<PointData>();
@@ -285,8 +287,9 @@ public class PointNewActivity extends BaseActivity implements View.OnClickListen
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            if (dialog.isShowing())
+            if (dialog.isShowing()) {
                 dialog.dismiss();
+            }
         }
 
         private void setPointRule(JSONObject pointRule) {
@@ -391,8 +394,9 @@ public class PointNewActivity extends BaseActivity implements View.OnClickListen
             datas.setEventcode(object.getString("eventcode"));
             datas.setBiz_code(object.getString("biz_code"));
 
-            if (object.has("pre_pay"))
+            if (object.has("pre_pay")) {
                 datas.setGrade(object.getString("pre_pay"));
+            }
 
             ArrayList<PointRuleData> pointRuleList = new ArrayList<PointRuleData>();
             if (object.getString("pointset").equals("on")) {
@@ -739,13 +743,11 @@ public class PointNewActivity extends BaseActivity implements View.OnClickListen
                             cb.setChecked(false);
                             sPositionArray.set(clickData.getPosition(), false);
 
-                        } else if (POINT_STATUS == FIVE_POINT) {
+                        } else if (POINT_STATUS == FIVE_POINT && sCheckedCount <= mCheckLimit) {
 
-                            if (sCheckedCount <= mCheckLimit) {
-                                sCheckedCount--;
-                                cb.setChecked(false);
-                                sPositionArray.set(clickData.getPosition(), false);
-                            }
+                            sCheckedCount--;
+                            cb.setChecked(false);
+                            sPositionArray.set(clickData.getPosition(), false);
                         }
 
                         if (sCheckedCount == 0) {
@@ -779,12 +781,14 @@ public class PointNewActivity extends BaseActivity implements View.OnClickListen
                 if (POINT_STATUS == FIVE_POINT) {
 
                     if (sCheckedCount == mCheckLimit) {
-                        if (Build.VERSION.SDK_INT > 10)
+                        if (Build.VERSION.SDK_INT > 10) {
                             sBtnRequest.setAlpha(1.0f);
+                        }
                         sBtnRequest.setEnabled(true);
                     } else {
-                        if (Build.VERSION.SDK_INT > 10)
+                        if (Build.VERSION.SDK_INT > 10) {
                             sBtnRequest.setAlpha(0.1f);
+                        }
                         sBtnRequest.setEnabled(false);
                     }
 
@@ -793,13 +797,15 @@ public class PointNewActivity extends BaseActivity implements View.OnClickListen
                     for (PointRuleData pointRule : clickData.getPointRuleList()) {
 
                         if (sCheckedCount == pointRule.getCount()) {
-                            if (Build.VERSION.SDK_INT > 10)
+                            if (Build.VERSION.SDK_INT > 10) {
                                 sBtnRequest.setAlpha(1.0f);
+                            }
                             sBtnRequest.setEnabled(true);
                             break;
                         } else {
-                            if (Build.VERSION.SDK_INT > 10)
+                            if (Build.VERSION.SDK_INT > 10) {
                                 sBtnRequest.setAlpha(0.1f);
+                            }
                             sBtnRequest.setEnabled(false);
                         }
                     }
@@ -809,13 +815,15 @@ public class PointNewActivity extends BaseActivity implements View.OnClickListen
                     for (PointRuleData pointRule : clickData.getPointRuleList()) {
 
                         if (sCheckedCount == pointRule.getCount()) {
-                            if (Build.VERSION.SDK_INT > 10)
+                            if (Build.VERSION.SDK_INT > 10) {
                                 sBtnRequest.setAlpha(1.0f);
+                            }
                             sBtnRequest.setEnabled(true);
                             break;
                         } else {
-                            if (Build.VERSION.SDK_INT > 10)
+                            if (Build.VERSION.SDK_INT > 10) {
                                 sBtnRequest.setAlpha(0.1f);
+                            }
                             sBtnRequest.setEnabled(false);
                         }
                     }

@@ -470,11 +470,11 @@ public class CircleLayout extends ViewGroup {
                 float centerX = circleWidth / 2;
                 float centerY = circleHeight / 2;
 
-                float multiple = (float) 2.5;
+                float multiple = (float)2.5;
                 if (e.getX() < centerX + (childWidth * multiple) // right
-                 && e.getX() > centerX - (childWidth * multiple) // left
-                 && e.getY() < centerY + (childHeight * multiple) // bottom
-                 && e.getY() > centerY - (childHeight * multiple)) // top
+                        && e.getX() > centerX - (childWidth * multiple) // left
+                        && e.getY() < centerY + (childHeight * multiple) // bottom
+                        && e.getY() > centerY - (childHeight * multiple)) // top
                 {
                     if (mOnCenterClickListener != null) {
                         mOnCenterClickListener.onCenterClick();

@@ -1,6 +1,12 @@
 
 package kr.co.cashqc;
 
+import static kr.co.cashqc.MainActivity.APP_ID;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -19,15 +25,10 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import kr.co.cashqc.gcm.Util;
-import static kr.co.cashqc.MainActivity.APP_ID;
 
 /**
  * Created by anp on 14. 11. 18..
@@ -91,9 +92,9 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
         dialog = new CustomDialog(PointActivity.this);
 
         // resource init
-        checkBox = (CheckBox) findViewById(R.id.row_point_check);
+        checkBox = (CheckBox)findViewById(R.id.row_point_check);
 
-        mListView = (ListView) findViewById(R.id.list_point);
+        mListView = (ListView)findViewById(R.id.list_point);
 
         //
         mPhoneNum = getIntent().getStringExtra("phoneNum");
@@ -101,10 +102,11 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
         POINT_STATUS = NOT_SELECT;
 
         //
-        sBtnRequest = (Button) findViewById(R.id.btn_cashrequest);
+        sBtnRequest = (Button)findViewById(R.id.btn_cashrequest);
 
-        if (Build.VERSION.SDK_INT > 10)
+        if (Build.VERSION.SDK_INT > 10) {
             sBtnRequest.setAlpha(0.1f);
+        }
 
         if (mPhoneNum != null) {
             new LoadPointTask().execute(mPhoneNum);
@@ -235,8 +237,9 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (!dialog.isShowing())
+            if (!dialog.isShowing()) {
                 dialog.show();
+            }
             // list set init.
             mPointDataList = new ArrayList<PointData>();
             mUserDatas = new ArrayList<PointData>();
@@ -247,7 +250,8 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
 
         @Override
         protected JSONObject doInBackground(String... params) {
-            String url = "http://cashq.co.kr/m/ajax_data/get_point_list2.php?phone=" + params[0] + "&appid=" + APP_ID;
+            String url = "http://cashq.co.kr/m/ajax_data/get_point_list2.php?phone=" + params[0]
+                    + "&appid=" + APP_ID;
             Log.e(TAG, "URL : " + url);
             return new JsonParser().getJSONObjectFromUrl(url);
         }
@@ -276,7 +280,7 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
                     Log.e(TAG, "else if");
                 }
 
-                TextView tvAccrue = (TextView) findViewById(R.id.tv_accrue);
+                TextView tvAccrue = (TextView)findViewById(R.id.tv_accrue);
 
                 tvAccrue.setText("포인트를 선택해주세요");
 
@@ -289,8 +293,9 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            if (dialog.isShowing())
+            if (dialog.isShowing()) {
                 dialog.dismiss();
+            }
         }
 
         private void setPointRule(JSONObject pointRule) {
@@ -390,8 +395,9 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
             datas.setEventcode(object.getString("eventcode"));
             datas.setBiz_code(object.getString("biz_code"));
 
-            if (object.has("pre_pay"))
+            if (object.has("pre_pay")) {
                 datas.setGrade(object.getString("pre_pay"));
+            }
 
             ArrayList<PointRuleData> pointRuleList = new ArrayList<PointRuleData>();
             if (object.getString("pointset").equals("on")) {
@@ -444,7 +450,7 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
 
             if (object.has("incbiz")) {
 
-                Log.e(TAG, "hasIncludeBizCode? - YES" );
+                Log.e(TAG, "hasIncludeBizCode? - YES");
 
                 String[] incbiz = object.getString("incbiz").split("&");
 
@@ -454,7 +460,7 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
                     Log.e(TAG, "includeBizCode - " + i + " : " + incbiz[i]);
                 }
             } else {
-                Log.e(TAG, "hasIncludeBizCode? - NO" );
+                Log.e(TAG, "hasIncludeBizCode? - NO");
             }
 
             datas.setPointRuleList(pointRuleList);
@@ -539,9 +545,9 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
 
                 sb.append("&point_type=").append(pointDatas.get(0).getType());
 
-//                sb.append("&testmode=").append("test");
+                // sb.append("&testmode=").append("test");
 
-//                sb.append("&ed_type=").append("");
+                // sb.append("&ed_type=").append("");
 
                 for (PointData al : pointDatas) {
                     sb.append("&chk_seq[]=").append(al.getPoint_seq());
@@ -629,19 +635,19 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
 
                 h = new ViewHolder();
 
-                h.date = (TextView) convertView.findViewById(R.id.row_point_date);
-                h.name = (TextView) convertView.findViewById(R.id.row_point_name);
-                h.status = (TextView) convertView.findViewById(R.id.row_point_status);
-                h.deadline = (TextView) convertView.findViewById(R.id.row_point_deadline);
-                h.comment = (TextView) convertView.findViewById(R.id.row_point_comment);
-                h.value = (TextView) convertView.findViewById(R.id.row_point_value);
-                h.checkBox = (CheckBox) convertView.findViewById(R.id.row_point_check);
-                h.grade = (TextView) convertView.findViewById(R.id.row_point_grade);
+                h.date = (TextView)convertView.findViewById(R.id.row_point_date);
+                h.name = (TextView)convertView.findViewById(R.id.row_point_name);
+                h.status = (TextView)convertView.findViewById(R.id.row_point_status);
+                h.deadline = (TextView)convertView.findViewById(R.id.row_point_deadline);
+                h.comment = (TextView)convertView.findViewById(R.id.row_point_comment);
+                h.value = (TextView)convertView.findViewById(R.id.row_point_value);
+                h.checkBox = (CheckBox)convertView.findViewById(R.id.row_point_check);
+                h.grade = (TextView)convertView.findViewById(R.id.row_point_grade);
 
                 convertView.setTag(h);
 
             } else {
-                h = (ViewHolder) convertView.getTag();
+                h = (ViewHolder)convertView.getTag();
             }
 
             item = getItem(position);
@@ -759,8 +765,8 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
             }
 
             mLastClickTime = SystemClock.elapsedRealtime();
-            CheckBox cb = (CheckBox) v.findViewById(R.id.row_point_check);
-            PointData clickData = (PointData) cb.getTag();
+            CheckBox cb = (CheckBox)v.findViewById(R.id.row_point_check);
+            PointData clickData = (PointData)cb.getTag();
 
             if (clickData.getStatus().equals("사용가능")) {
 
@@ -777,17 +783,15 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
                             cb.setChecked(false);
                             sPositionArray.set(clickData.getPosition(), false);
 
-                        } else if (POINT_STATUS == FIVE_POINT) {
+                        } else if (POINT_STATUS == FIVE_POINT && sCheckedCount <= mCheckLimit) {
 
-                            if (sCheckedCount <= mCheckLimit) {
-                                sCheckedCount--;
-                                cb.setChecked(false);
-                                sPositionArray.set(clickData.getPosition(), false);
-                            }
+                            sCheckedCount--;
+                            cb.setChecked(false);
+                            sPositionArray.set(clickData.getPosition(), false);
                         }
 
                         if (sCheckedCount == 0) {
-                            //초기화
+                            // 초기화
                             POINT_STATUS = NOT_SELECT;
                             includeCodes = null;
                         }
@@ -824,12 +828,14 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
                 if (POINT_STATUS == FIVE_POINT) {
 
                     if (sCheckedCount == mCheckLimit) {
-                        if (Build.VERSION.SDK_INT > 10)
+                        if (Build.VERSION.SDK_INT > 10) {
                             sBtnRequest.setAlpha(1.0f);
+                        }
                         sBtnRequest.setEnabled(true);
                     } else {
-                        if (Build.VERSION.SDK_INT > 10)
+                        if (Build.VERSION.SDK_INT > 10) {
                             sBtnRequest.setAlpha(0.1f);
+                        }
                         sBtnRequest.setEnabled(false);
                     }
 
@@ -838,13 +844,15 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
                     for (PointRuleData pointRule : clickData.getPointRuleList()) {
 
                         if (sCheckedCount == pointRule.getCount()) {
-                            if (Build.VERSION.SDK_INT > 10)
+                            if (Build.VERSION.SDK_INT > 10) {
                                 sBtnRequest.setAlpha(1.0f);
+                            }
                             sBtnRequest.setEnabled(true);
                             break;
                         } else {
-                            if (Build.VERSION.SDK_INT > 10)
+                            if (Build.VERSION.SDK_INT > 10) {
                                 sBtnRequest.setAlpha(0.1f);
+                            }
                             sBtnRequest.setEnabled(false);
                         }
                     }

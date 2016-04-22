@@ -94,8 +94,4 @@ public class SplActivity extends BaseActivity {
         killer.removeActivity(this);
     }
 
-    @Override
-    public void finish() {
-        super.finish();
-    }
 }

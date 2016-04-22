@@ -152,7 +152,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mPhoneNum = getPhoneNumber(this);
+        // mPhoneNum = getPhoneNumber(this);
 
         mLifeImageView = (ImageView)findViewById(R.id.main_life);
 
@@ -404,11 +404,6 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
     }
 
     @Override
-    public void finish() {
-        super.finish();
-    }
-
-    @Override
     public void onItemSelected(View view, String name) {
 
         if (toast == null) {
@@ -524,8 +519,9 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (!mDialog.isShowing())
+            if (!mDialog.isShowing()) {
                 mDialog.show();
+            }
         }
 
         @Override
@@ -565,17 +561,19 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
                 tvAddress.setText(mAddress);
 
-                if ("동두천시".equals(mSi) || "강서구".equals(mGu) || "양천구".equals(mGu)
-                        || "의정부시".equals((mSi))) {
+                if ("동두천시".equals(mSi) || "강서구".equals(mGu) || "양천구".equals(mGu)) {
                     sDistance = 3;
+                    mLifeImageView.setVisibility(View.GONE);
                 } else if ("양산시".equals(mSi)) {
+                    mLifeImageView.setVisibility(View.GONE);
                     sDistance = 5;
-                } else if ("안산시".equals(mSi)) {
+                } else if ("안산시".equals(mSi) || "의정부시".equals(mSi)) {
                     // mPointText.setVisibility(View.GONE);
-                    // mLifeImageView.setVisibility(View.VISIBLE);
+                     mLifeImageView.setVisibility(View.VISIBLE);
                     // ANSAN_LIFE = true;
                     sDistance = 3;
                 } else {
+                    mLifeImageView.setVisibility(View.GONE);
                     sDistance = 2;
                 }
 
@@ -586,8 +584,9 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             } finally {
-                if (mDialog.isShowing())
+                if (mDialog.isShowing()) {
                     mDialog.dismiss();
+                }
             }
 
         }
@@ -871,14 +870,6 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
     private class LoadSavingTask extends AsyncTask<String, String, JSONObject> {
 
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            // 적립금 텍스트뷰
-            // mPointText = (TextView)findViewById(R.id.point_value);
-
-        }
-
-        @Override
         protected JSONObject doInBackground(String... params) {
 
             JsonParser parser = new JsonParser();
@@ -940,7 +931,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
     // try {
     // String num = mPhoneNum;
     // String register = Util.loadSharedPreferences(getApplicationContext(),
-    // Utils.RegisterKey222);
+    // Utils.REGISTER);
     // Log.e("JAY", "loadshared = " + register);
     // if (register != null) {
     // // if (TTS_MODE) {

@@ -79,20 +79,18 @@ public class GpsInfo extends Service implements LocationListener {
                 }
 
                 // gps로 부터 위치값 가져오기
-                if (isGpsEnabled) {
-                    if (mLocation == null) {
-                        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                                MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+                if (isGpsEnabled && mLocation == null) {
+                    mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                            MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
 
-                        if (mLocationManager != null) {
-                            mLocation = mLocationManager
-                                    .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    if (mLocationManager != null) {
+                        mLocation = mLocationManager
+                                .getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-                            if (mLocation != null) {
-                                // 위도 경도 저장
-                                mLatitude = mLocation.getLatitude();
-                                mLongitude = mLocation.getLongitude();
-                            }
+                        if (mLocation != null) {
+                            // 위도 경도 저장
+                            mLatitude = mLocation.getLatitude();
+                            mLongitude = mLocation.getLongitude();
                         }
                     }
                 }
@@ -146,20 +144,18 @@ public class GpsInfo extends Service implements LocationListener {
         alertDialog.setMessage("설정에서 GPS 관련 설정을 모두 켜주세요.\n 설정으로 이동 하시겠습니까?");
 
         // OK 를 누르게 되면 설정창으로 이동합니다.
-        alertDialog.setPositiveButton("설정",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                        mContext.startActivity(intent);
-                    }
-                });
+        alertDialog.setPositiveButton("설정", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                mContext.startActivity(intent);
+            }
+        });
         // Cancle 하면 종료 합니다.
-        alertDialog.setNegativeButton("취소",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
+        alertDialog.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
 
         alertDialog.show();
 

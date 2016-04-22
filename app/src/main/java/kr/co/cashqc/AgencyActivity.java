@@ -52,8 +52,9 @@ public class AgencyActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (!mDialog.isShowing())
+            if (!mDialog.isShowing()) {
                 mDialog.show();
+            }
         }
 
         @Override
@@ -68,8 +69,9 @@ public class AgencyActivity extends BaseActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            if (mDialog.isShowing())
+            if (mDialog.isShowing()) {
                 mDialog.dismiss();
+            }
 
             String result;
             CustomDialog dialog = new CustomDialog(AgencyActivity.this, "result");

@@ -315,23 +315,14 @@ public class OrderActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    public void finish() {
-        super.finish();
-    }
-
     private class OrderTask extends AsyncTask<OrderData, Void, JSONObject> {
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (!mDialog.isShowing())
+            if (!mDialog.isShowing()) {
                 mDialog.show();
+            }
         }
 
         @Override
@@ -370,8 +361,9 @@ public class OrderActivity extends BaseActivity {
         protected void onPostExecute(JSONObject jsonObject) {
             super.onPostExecute(jsonObject);
 
-            if (mDialog.isShowing())
+            if (mDialog.isShowing()) {
                 mDialog.dismiss();
+            }
 
             Log.e("order", "json result : " + jsonObject.toString());
 

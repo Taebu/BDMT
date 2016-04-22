@@ -1,6 +1,7 @@
 
 package kr.co.cashqc;
 
+import com.hb.views.PinnedSectionListView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
@@ -26,7 +27,7 @@ import java.util.ArrayList;
  * @author Jung-Hum Cho
  */
 
-public class ShopListAdapter extends BaseAdapter {
+public class ShopListAdapter extends BaseAdapter implements PinnedSectionListView.PinnedSectionListAdapter {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -102,6 +103,11 @@ public class ShopListAdapter extends BaseAdapter {
     @Override
     public long getItemId(int position) {
         return position;
+    }
+
+    @Override
+    public boolean isItemViewTypePinned(int viewType) {
+        return viewType == 1 || viewType == 2 || viewType == 3 || viewType == 4 || viewType == 5;
     }
 
     private class ViewHolder {
@@ -230,8 +236,6 @@ public class ShopListAdapter extends BaseAdapter {
                 h.imgPoint.setVisibility(View.GONE);
 
             } else {
-                // mLazy.DisplayImage(item.makeURL(), h.thumbImg);
-
                 // bizhour work
 
                 Log.d(TAG, "bizHour : " + item.getName());
@@ -358,8 +362,9 @@ public class ShopListAdapter extends BaseAdapter {
 
     private Bitmap overlayBitmap(Bitmap b1, Bitmap b2, int x, int y) {
 
-        if (b1 == null || b2 == null)
+        if (b1 == null || b2 == null) {
             return null;
+        }
 
         Bitmap resultImg = Bitmap.createBitmap(b1.getWidth() + x, b1.getHeight() + y,
                 b1.getConfig());

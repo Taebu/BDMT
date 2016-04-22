@@ -49,8 +49,9 @@ public class NoticeActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (!mDialog.isShowing())
+            if (!mDialog.isShowing()) {
                 mDialog.show();
+            }
         }
 
         @Override
@@ -77,11 +78,13 @@ public class NoticeActivity extends BaseActivity {
 
                     JSONObject object = array.getJSONObject(i);
 
-                    if (object.has("wr_subject"))
+                    if (object.has("wr_subject")) {
                         map.put("subject", object.getString("wr_subject"));
+                    }
 
-                    if (object.has("wr_content"))
+                    if (object.has("wr_content")) {
                         map.put("content", object.getString("wr_content"));
+                    }
 
                     dataList.add(map);
                 }
@@ -107,8 +110,9 @@ public class NoticeActivity extends BaseActivity {
                 e.printStackTrace();
             }
 
-            if (mDialog.isShowing())
+            if (mDialog.isShowing()) {
                 mDialog.dismiss();
+            }
         }
     }
 
@@ -124,11 +128,6 @@ public class NoticeActivity extends BaseActivity {
     protected void onStop() {
         super.onStop();
         killer.removeActivity(this);
-    }
-
-    @Override
-    public void finish() {
-        super.finish();
     }
 
 }

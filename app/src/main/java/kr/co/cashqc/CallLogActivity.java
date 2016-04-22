@@ -53,8 +53,9 @@ public class CallLogActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (!mDialog.isShowing())
+            if (!mDialog.isShowing()) {
                 mDialog.show();
+            }
         }
 
         @Override
@@ -110,8 +111,9 @@ public class CallLogActivity extends BaseActivity {
 
             setListViewHeightBasedOnChildren(listView);
 
-            if (mDialog.isShowing())
+            if (mDialog.isShowing()) {
                 mDialog.dismiss();
+            }
         }
 
 //        private void setListViewHeightBasedOnChildren(ListView listView) {

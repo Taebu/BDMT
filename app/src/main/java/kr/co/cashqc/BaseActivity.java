@@ -69,11 +69,6 @@ public class BaseActivity extends SlidingFragmentActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -234,11 +229,6 @@ public class BaseActivity extends SlidingFragmentActivity {
     }
 
     @Override
-    public void finish() {
-        super.finish();
-    }
-
-    @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
             case 0:
@@ -259,11 +249,11 @@ public class BaseActivity extends SlidingFragmentActivity {
     }
 
     public void activityAnimation(Boolean isStart) {
-        if (isStart) {
+//        if (isStart) {
             // overridePendingTransition(R.anim.start_enter, R.anim.start_exit);
-        } else {
+//        } else {
             // overridePendingTransition(R.anim.end_enter, R.anim.end_exit);
-        }
+//        }
     }
 
     public static void setCartCount(Activity act) {

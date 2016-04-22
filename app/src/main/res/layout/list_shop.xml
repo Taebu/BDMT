@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ListView
+    <com.hb.views.PinnedSectionListView
         android:divider="#00ff0000"
         android:layout_margin="10dp"
         android:background="@drawable/bg_normal"

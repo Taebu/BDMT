@@ -82,8 +82,9 @@ public class AddressListDialog extends Dialog {
                         @Override
                         protected void onPreExecute() {
                             super.onPreExecute();
-                            if (!mLoading.isShowing())
+                            if (!mLoading.isShowing()) {
                                 mLoading.show();
+                            }
                         }
 
                         @Override
@@ -120,8 +121,9 @@ public class AddressListDialog extends Dialog {
 
                                 while (true) {
                                     int red = in.read(bytes);
-                                    if (red < 0)
+                                    if (red < 0) {
                                         break;
+                                    }
                                     baos.write(bytes, 0, red);
                                 }
 
@@ -138,8 +140,9 @@ public class AddressListDialog extends Dialog {
 
                                     Node node = el.getChildNodes().item(i);
 
-                                    if (!node.getNodeName().equals("item"))
+                                    if (!node.getNodeName().equals("item")) {
                                         continue;
+                                    }
 
                                     AddressData data = new AddressData();
 
@@ -158,8 +161,9 @@ public class AddressListDialog extends Dialog {
                             } catch (Exception e) {
                                 e.printStackTrace();
                             } finally {
-                                if (conn != null)
+                                if (conn != null) {
                                     conn.disconnect();
+                                }
                             }
 
                             return addressInfo;
@@ -178,8 +182,9 @@ public class AddressListDialog extends Dialog {
                                 Log.e("zipcode", s.getResult());
                                 // adapter.add(s);
                             }
-                            if (mLoading.isShowing())
+                            if (mLoading.isShowing()) {
                                 mLoading.dismiss();
+                            }
                         }
                     }.execute(dong.getText().toString());
                 }

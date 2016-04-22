@@ -41,8 +41,9 @@ public class ImageLoader {
     {
         imageViews.put(imageView, url);
         Bitmap bitmap=memoryCache.get(url);
-        if(bitmap!=null)
+        if(bitmap!=null) {
             imageView.setImageBitmap(bitmap);
+        }
         else
         {
             queuePhoto(url, imageView);
@@ -62,9 +63,9 @@ public class ImageLoader {
         
         //from SD cache
         Bitmap b = decodeFile(f);
-        if(b!=null)
+        if(b!=null) {
             return b;
-        
+        }
         //from web
         try {
             Bitmap bitmap=null;
@@ -82,8 +83,9 @@ public class ImageLoader {
             return bitmap;
         } catch (Throwable ex){
            ex.printStackTrace();
-           if(ex instanceof OutOfMemoryError)
+           if(ex instanceof OutOfMemoryError) {
                memoryCache.clear();
+           }
            return null;
         }
     }
@@ -99,12 +101,13 @@ public class ImageLoader {
             stream1.close();
             
             //Find the correct scale value. It should be the power of 2.
-            final int REQUIRED_SIZE=70;
+            final int REQUIREDSIZE=70;
             int width_tmp=o.outWidth, height_tmp=o.outHeight;
             int scale=1;
             while(true){
-                if(width_tmp/2<REQUIRED_SIZE || height_tmp/2<REQUIRED_SIZE)
+                if(width_tmp/2<REQUIREDSIZE || height_tmp/2<REQUIREDSIZE) {
                     break;
+                }
                 width_tmp/=2;
                 height_tmp/=2;
                 scale*=2;
@@ -145,12 +148,14 @@ public class ImageLoader {
         @Override
         public void run() {
             try{
-                if(imageViewReused(photoToLoad))
+                if(imageViewReused(photoToLoad)) {
                     return;
+                }
                 Bitmap bmp=getBitmap(photoToLoad.url);
                 memoryCache.put(photoToLoad.url, bmp);
-                if(imageViewReused(photoToLoad))
+                if(imageViewReused(photoToLoad)) {
                     return;
+                }
                 BitmapDisplayer bd=new BitmapDisplayer(bmp, photoToLoad);
                 handler.post(bd);
             }catch(Throwable th){
@@ -161,8 +166,9 @@ public class ImageLoader {
     
     boolean imageViewReused(PhotoToLoad photoToLoad){
         String tag=imageViews.get(photoToLoad.imageView);
-        if(tag==null || !tag.equals(photoToLoad.url))
+        if(tag==null || !tag.equals(photoToLoad.url)) {
             return true;
+        }
         return false;
     }
     
@@ -174,12 +180,15 @@ public class ImageLoader {
         public BitmapDisplayer(Bitmap b, PhotoToLoad p){bitmap=b;photoToLoad=p;}
         public void run()
         {
-            if(imageViewReused(photoToLoad))
+            if(imageViewReused(photoToLoad)) {
                 return;
-            if(bitmap!=null)
+            }
+            if(bitmap!=null) {
                 photoToLoad.imageView.setImageBitmap(bitmap);
-            else
+            }
+            else {
                 photoToLoad.imageView.setImageResource(stub_id);
+            }
         }
     }
 

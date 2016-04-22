@@ -67,8 +67,9 @@ public class JoinDialog extends Dialog {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (!dialog.isShowing())
+            if (!dialog.isShowing()) {
                 dialog.show();
+            }
         }
 
         @Override
@@ -97,8 +98,9 @@ public class JoinDialog extends Dialog {
                 e.printStackTrace();
             }
 
-            if (dialog.isShowing())
+            if (dialog.isShowing()) {
                 dialog.dismiss();
+            }
         }
     }
 

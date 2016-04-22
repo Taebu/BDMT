@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import java.util.Arrays;
+
 /**
  * Created by anp on 14. 12. 9..
  */
@@ -30,7 +32,7 @@ public class FranchiseActivity extends BaseActivity {
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if(checkedId == yes.getId()) {
+                if (checkedId == yes.getId()) {
                     mOwner = true;
                 } else if (checkedId == no.getId()) {
                     mOwner = false;
@@ -89,11 +91,13 @@ public class FranchiseActivity extends BaseActivity {
 
     private class FranchiseRequestTask extends AsyncTask<Void, Void, String> {
 
-        private FranchiseRequestTask(boolean mIsOwner, String mPhone, String mAddress, Bitmap[] mImg) {
+        private FranchiseRequestTask(boolean mIsOwner, String mPhone, String mAddress,
+                Bitmap[] bitmaps) {
             this.mIsOwner = mIsOwner;
             this.mPhone = mPhone;
             this.mAddress = mAddress;
-            this.mImg = mImg;
+            this.mImg = Arrays.copyOf(bitmaps, bitmaps.length);
+            ;
         }
 
         private boolean mIsOwner;
@@ -105,8 +109,9 @@ public class FranchiseActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (!mDialog.isShowing())
+            if (!mDialog.isShowing()) {
                 mDialog.show();
+            }
         }
 
         @Override
@@ -120,8 +125,9 @@ public class FranchiseActivity extends BaseActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            if (mDialog.isShowing())
+            if (mDialog.isShowing()) {
                 mDialog.dismiss();
+            }
         }
     }
 }

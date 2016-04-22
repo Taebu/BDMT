@@ -1,7 +1,6 @@
 
 package kr.co.cashqc;
 
-import static kr.co.cashqc.MainActivity.ANSAN_LIFE;
 import static kr.co.cashqc.MainActivity.SALE_ZONE;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -13,11 +12,12 @@ import android.widget.TextView;
 
 import kr.co.cashqc.gcm.Util;
 
+
 /**
  * @author Jung-Hum Cho
  */
 
-public class ShopListActivity extends BaseActivity implements ActionBar.TabListener {
+public class ShopListActivity extends BaseActivity implements ActionBar.TabListener, ViewPager.OnPageChangeListener {
 
     private ViewPager mViewPager;
 
@@ -67,7 +67,8 @@ public class ShopListActivity extends BaseActivity implements ActionBar.TabListe
 
         mViewPager = (ViewPager)findViewById(R.id.pager);
         mViewPager.setAdapter(pagerAdapter);
-        // mViewPager.setOffscreenPageLimit(8);
+//         mViewPager.setOffscreenPageLimit(2);
+        mViewPager.addOnPageChangeListener(this);
 
         // 액션바 활성
         mActionBar = getSupportActionBar();
@@ -79,11 +80,10 @@ public class ShopListActivity extends BaseActivity implements ActionBar.TabListe
                     "할인", "치킨", "피자/햄버거", "중식/냉면", "한식/분식", "닭발/오리", "야식/기타", "족발/보쌈", "일식/돈가스",
                     "생활/편의"
             };
-        } /*else if (ANSAN_LIFE) {
-            mTabs = new String[] {
-                    "치킨", "피자/햄버거", "중식/냉면", "한식/분식", "닭발/오리", "야식/기타", "족발/보쌈", "일식/돈가스", "생활/편의"
-            };
-        } */else {
+        } /*
+           * else if (ANSAN_LIFE) { mTabs = new String[] { "치킨", "피자/햄버거",
+           * "중식/냉면", "한식/분식", "닭발/오리", "야식/기타", "족발/보쌈", "일식/돈가스", "생활/편의" }; }
+           */else {
             mTabs = new String[] {
                     "치킨", "피자/햄버거", "중식/냉면", "한식/분식", "닭발/오리", "야식/기타", "족발/보쌈", "일식/돈가스", "생활/편의"
             };
@@ -120,27 +120,9 @@ public class ShopListActivity extends BaseActivity implements ActionBar.TabListe
     }
 
     @Override
-    protected void onResume() {
-        // setCartCount(this);
-        super.onResume();
-        // MainActivity.progressBar.setVisibility(View.GONE);
-    }
-
-    @Override
     public void finish() {
         super.finish();
         activityAnimation(false);
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        // startActivity(new Intent(this, MainActivity.class));
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
     }
 
     @Override
@@ -156,4 +138,18 @@ public class ShopListActivity extends BaseActivity implements ActionBar.TabListe
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
     }
 
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        mActionBar.setSelectedNavigationItem(position);
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
 }

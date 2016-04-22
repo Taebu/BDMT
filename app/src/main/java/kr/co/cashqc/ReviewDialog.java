@@ -158,12 +158,6 @@ public class ReviewDialog extends Dialog {
     private class ReviewTask extends AsyncTask<ReviewData, Void, String> {
 
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-        }
-
-        @Override
         protected String doInBackground(ReviewData... params) {
 
             ReviewData data = params[0];
@@ -199,11 +193,6 @@ public class ReviewDialog extends Dialog {
     }
 
     private class ReviewModifyTask extends AsyncTask<ReviewData, Void, String> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
 
         @Override
         protected String doInBackground(ReviewData... params) {

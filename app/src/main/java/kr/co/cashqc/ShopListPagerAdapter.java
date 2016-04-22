@@ -5,13 +5,14 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 import static kr.co.cashqc.MainActivity.SALE_ZONE;
 
 /**
  * The type Tabs pager adapter.
  */
-public class ShopListPagerAdapter extends FragmentPagerAdapter {
+public class ShopListPagerAdapter extends FragmentStatePagerAdapter {
 
     public ShopListPagerAdapter(FragmentManager fm, double lat, double lng, int distance) {
         super(fm);
@@ -64,4 +65,6 @@ public class ShopListPagerAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return 9;
     }
+
+
 }

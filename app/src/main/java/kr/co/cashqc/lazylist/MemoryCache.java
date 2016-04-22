@@ -18,7 +18,7 @@ public class MemoryCache {
 
     public MemoryCache(){
         //use 25% of available heap size
-        setLimit(Runtime.getRuntime().maxMemory()/4);
+        setLimit(Runtime.getRuntime().maxMemory() / 4);
     }
     
     public void setLimit(long new_limit){
@@ -28,8 +28,9 @@ public class MemoryCache {
 
     public Bitmap get(String id){
         try{
-            if(!cache.containsKey(id))
+            if(!cache.containsKey(id)) {
                 return null;
+            }
             //NullPointerException sometimes happen here http://code.google.com/p/osmdroid/issues/detail?id=78 
             return cache.get(id);
         }catch(NullPointerException ex){
@@ -40,8 +41,9 @@ public class MemoryCache {
 
     public void put(String id, Bitmap bitmap){
         try{
-            if(cache.containsKey(id))
-                size-=getSizeInBytes(cache.get(id));
+            if(cache.containsKey(id)) {
+                size -= getSizeInBytes(cache.get(id));
+            }
             cache.put(id, bitmap);
             size+=getSizeInBytes(bitmap);
             checkSize();
@@ -58,8 +60,9 @@ public class MemoryCache {
                 Entry<String, Bitmap> entry=iter.next();
                 size-=getSizeInBytes(entry.getValue());
                 iter.remove();
-                if(size<=limit)
+                if(size<=limit) {
                     break;
+                }
             }
             Log.i(TAG, "Clean cache. New size "+cache.size());
         }
@@ -76,8 +79,9 @@ public class MemoryCache {
     }
 
     long getSizeInBytes(Bitmap bitmap) {
-        if(bitmap==null)
+        if(bitmap==null) {
             return 0;
+        }
         return bitmap.getRowBytes() * bitmap.getHeight();
     }
 }

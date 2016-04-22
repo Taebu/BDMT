@@ -1,6 +1,12 @@
 
 package kr.co.cashqc;
 
+import static kr.co.cashqc.Utils.setListViewHeightBasedOnChildren;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -11,15 +17,9 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 
 import kr.co.cashqc.gcm.Util;
-
-import static kr.co.cashqc.Utils.setListViewHeightBasedOnChildren;
 
 /**
  * @author Jung-Hum Cho Created by anp on 15. 1. 23..
@@ -37,8 +37,8 @@ public class OrderListActivity extends BaseActivity {
         killer.addActivity(this);
         mDialog = new CustomDialog(this);
 
-//        tvSubject = (TextView)findViewById(R.id.orderlist_subject);
-//        tvSubject.setText("캐시큐 주문 내역");
+        // tvSubject = (TextView)findViewById(R.id.orderlist_subject);
+        // tvSubject.setText("캐시큐 주문 내역");
 
         String phoneNum = getIntent().getStringExtra("phoneNum");
 
@@ -58,8 +58,9 @@ public class OrderListActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (!mDialog.isShowing())
+            if (!mDialog.isShowing()) {
                 mDialog.show();
+            }
         }
 
         @Override
@@ -90,60 +91,62 @@ public class OrderListActivity extends BaseActivity {
 
                     OrderData orderData = new OrderData();
 
-                    if (object.has("seq"))
+                    if (object.has("seq")) {
                         orderData.setNumber(Integer.parseInt(object.getString("seq")));
+                    }
 
-                    if (object.has("mb_hp"))
+                    if (object.has("mb_hp")) {
                         orderData.setUserPhone(object.getString("mb_hp"));
+                    }
 
-                    if (object.has("mb_zip"))
+                    if (object.has("mb_zip")) {
                         orderData.setZipCode(object.getString("mb_zip"));
-
-                    if (object.has("mb_addr1"))
+                    }
+                    if (object.has("mb_addr1")) {
                         orderData.setAddress1(object.getString("mb_addr1"));
-
-                    if (object.has("mb_addr2"))
+                    }
+                    if (object.has("mb_addr2")) {
                         orderData.setAddress1(object.getString("mb_addr2"));
-
-                    if (object.has("mb_addr2"))
+                    }
+                    if (object.has("mb_addr2")) {
                         orderData.setAddress1(object.getString("mb_addr2"));
-
-                    if (object.has("st_seq"))
+                    }
+                    if (object.has("st_seq")) {
                         orderData.setShopCode(object.getString("st_seq"));
-
-                    if (object.has("st_name"))
+                    }
+                    if (object.has("st_name")) {
                         orderData.setShopName(object.getString("st_name"));
-
-                    if (object.has("st_phone"))
+                    }
+                    if (object.has("st_phone")) {
                         orderData.setShopPhone(object.getString("st_phone"));
-
-                    if (object.has("st_vphone"))
+                    }
+                    if (object.has("st_vphone")) {
                         orderData.setShopVPhone(object.getString("st_vphone"));
-
-                    if (object.has("Tradeid"))
+                    }
+                    if (object.has("Tradeid")) {
                         orderData.setTradeId(object.getString("Tradeid"));
-
-                    if (object.has("pay_status"))
+                    }
+                    if (object.has("pay_status")) {
                         orderData.setPayStatus(object.getString("pay_status"));
-
-                    if (object.has("ordmenu"))
+                    }
+                    if (object.has("ordmenu")) {
                         orderData.setSimpleMenu(object.getString("ordmenu"));
-
-                    if (object.has("appamount"))
+                    }
+                    if (object.has("appamount")) {
                         orderData.setTotal(Integer.parseInt(object.getString("appamount")));
-
-                    if(object.has("menucode"))
+                    }
+                    if (object.has("menucode")) {
                         orderData.setMenuCode(object.getString("menucode"));
-
-                    if(object.has("insdate"))
+                    }
+                    if (object.has("insdate")) {
                         orderData.setDate(object.getString("insdate"));
-
-                    if(object.has("comment"))
+                    }
+                    if (object.has("comment")) {
                         orderData.setComment(object.getString("comment"));
-
-                    if(object.has("pay_type"))
+                    }
+                    if (object.has("pay_type")) {
                         orderData.setPayType(object.getString("pay_type"));
-
+                    }
                     orderDataList.add(orderData);
                 }
 
@@ -159,8 +162,9 @@ public class OrderListActivity extends BaseActivity {
 
             setListViewHeightBasedOnChildren(listView);
 
-            if (mDialog.isShowing())
+            if (mDialog.isShowing()) {
                 mDialog.dismiss();
+            }
         }
 
     }
@@ -171,8 +175,4 @@ public class OrderListActivity extends BaseActivity {
         killer.removeActivity(this);
     }
 
-    @Override
-    public void finish() {
-        super.finish();
-    }
 }

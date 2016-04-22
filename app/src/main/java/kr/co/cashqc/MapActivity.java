@@ -161,11 +161,6 @@ public class MapActivity extends BaseActivity implements GoogleMap.OnMapClickLis
     private class GeocodingTask extends AsyncTask<String, Void, JSONObject> {
 
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
         protected JSONObject doInBackground(String... params) {
 
             String address = params[0].replace(" ", "");
@@ -182,8 +177,9 @@ public class MapActivity extends BaseActivity implements GoogleMap.OnMapClickLis
             try {
                 String status = jsonObject.getString("status");
 
-                if (!status.equals("OK"))
+                if (!status.equals("OK")) {
                     return;
+                }
 
                 JSONArray resultsArray = jsonObject.getJSONArray("results");
 

@@ -1,6 +1,11 @@
 
 package kr.co.cashqc;
 
+import static kr.co.cashqc.gcm.Util.getPhoneNumber;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -10,12 +15,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import kr.co.cashqc.gcm.Util;
-
-import static kr.co.cashqc.gcm.Util.getPhoneNumber;
 
 /**
  * @author Jung-Hum Cho Created by anp on 14. 11. 18..
@@ -90,8 +90,9 @@ public class LoginActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (!mDialog.isShowing())
+            if (!mDialog.isShowing()) {
                 mDialog.show();
+            }
         }
 
         @Override
@@ -133,15 +134,11 @@ public class LoginActivity extends BaseActivity {
 
             }
 
-            if (mDialog.isShowing())
+            if (mDialog.isShowing()) {
                 mDialog.dismiss();
+            }
         }
 
-    }
-
-    @Override
-    public void finish() {
-        super.finish();
     }
 
     @Override

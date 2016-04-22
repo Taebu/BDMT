@@ -1,6 +1,7 @@
 package kr.co.cashqc;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * @author Jung-Hum Cho
@@ -15,7 +16,7 @@ public class PointData {
     }
 
     public void setIncludeCodes(String[] includeCodes) {
-        this.includeCodes = includeCodes;
+        this.includeCodes = Arrays.copyOf(includeCodes, includeCodes.length);
     }
 
     private int pointType;

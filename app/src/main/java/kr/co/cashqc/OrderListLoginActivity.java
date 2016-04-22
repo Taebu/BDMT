@@ -82,8 +82,9 @@ public class OrderListLoginActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (!mDialog.isShowing())
+            if (!mDialog.isShowing()) {
                 mDialog.show();
+            }
         }
 
         @Override
@@ -122,13 +123,10 @@ public class OrderListLoginActivity extends BaseActivity {
                 e.printStackTrace();
             }
 
-            if (mDialog.isShowing())
+            if (mDialog.isShowing()) {
                 mDialog.dismiss();
+            }
         }
-    }
-    @Override
-    public void finish() {
-        super.finish();
     }
 
     @Override

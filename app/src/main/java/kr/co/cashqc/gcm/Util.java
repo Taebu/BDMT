@@ -46,7 +46,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.lang.Character.UnicodeBlock;
 import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -70,9 +69,9 @@ public class Util {
             char ch = str.charAt(i);
             Character.UnicodeBlock unicodeBlock = Character.UnicodeBlock.of(ch);
 
-            if (UnicodeBlock.HANGUL_SYLLABLES.equals(unicodeBlock)
-                    || UnicodeBlock.HANGUL_COMPATIBILITY_JAMO.equals(unicodeBlock)
-                    || UnicodeBlock.HANGUL_JAMO.equals(unicodeBlock)) {
+            if (Character.UnicodeBlock.HANGUL_SYLLABLES.equals(unicodeBlock)
+                    || Character.UnicodeBlock.HANGUL_COMPATIBILITY_JAMO.equals(unicodeBlock)
+                    || Character.UnicodeBlock.HANGUL_JAMO.equals(unicodeBlock)) {
                 return true;
             }
         }
@@ -109,10 +108,12 @@ public class Util {
     // 토스트 메시지
     public static void toast(Context context, String msg, int sel) {
         Log.d("!!!Util.Class!!!", "--------------toast----------------");
-        if (sel == 1)
+        if (sel == 1) {
             Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
-        else
+        }
+        else {
             Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+        }
     }
 
     // 토스트 메시지
@@ -301,8 +302,9 @@ public class Util {
 
                 activity.setResult(Activity.RESULT_OK);
                 dialog.dismiss();
-                if (callBack != null)
+                if (callBack != null) {
                     callBack.onOk();
+                }
             }
         };
         ad.setPositiveButton("확인", dialogButListener);
@@ -342,8 +344,9 @@ public class Util {
                 Log.d("!!!Util.Class!!!", "--------------optionDialog.onClick----------------");
 
                 dialog.dismiss();
-                if (callBack != null)
+                if (callBack != null) {
                     callBack.onSelected(item);
+                }
             }
         });
         if (button != null) {
@@ -354,8 +357,9 @@ public class Util {
                                 "--------------optionDialog.onClick----------------");
 
                         dialog.dismiss();
-                        if (callBack != null)
+                        if (callBack != null) {
                             callBack.onPositiveBotton(item);
+                        }
                     }
                 });
             }
@@ -363,13 +367,15 @@ public class Util {
         ad.setOnCancelListener(new AlertDialog.OnCancelListener() {
             public void onCancel(DialogInterface dialog) {
 
+
                 if (dialog != null) {
                     dialog.cancel();
                     callBack.OnCancel();
                 }
 
-                if (callBack != null)
+                if (callBack != null) {
                     callBack.onPositiveBotton(0);
+                }
             }
         });
         ad.create();
@@ -399,8 +405,9 @@ public class Util {
 
                 // Action for 'Yes' Button
                 dialog.dismiss();
-                if (callBack != null)
+                if (callBack != null) {
                     callBack.onSelected(dialog, 1);
+                }
             }
         });
         ad.setNegativeButton(ch2, new DialogInterface.OnClickListener() {
@@ -409,17 +416,20 @@ public class Util {
 
                 // Action for 'NO' Button
                 dialog.dismiss();
-                if (callBack != null)
+                if (callBack != null) {
                     callBack.onSelected(dialog, 0);
+                }
             }
         });
         ad.setOnCancelListener(new AlertDialog.OnCancelListener() {
             public void onCancel(DialogInterface dialog) {
 
-                if (dialog != null)
+                if (dialog != null) {
                     dialog.dismiss();
-                if (callBack != null)
+                }
+                if (callBack != null) {
                     callBack.onSelected(dialog, 0);
+                }
             }
         });
         ad.create();
@@ -454,8 +464,9 @@ public class Util {
 
                 // Action for 'Yes' Button
                 dialog.dismiss();
-                if (callBack != null)
+                if (callBack != null) {
                     callBack.onSetRating(dialog, ratingBar.getRating());
+                }
             }
         });
         ad.setNegativeButton("취소", new DialogInterface.OnClickListener() {
@@ -464,17 +475,20 @@ public class Util {
 
                 // Action for 'NO' Button
                 dialog.dismiss();
-                if (callBack != null)
+                if (callBack != null) {
                     callBack.onCancel(dialog);
+                }
             }
         });
         ad.setOnCancelListener(new AlertDialog.OnCancelListener() {
             public void onCancel(DialogInterface dialog) {
 
-                if (dialog != null)
+                if (dialog != null) {
                     dialog.dismiss();
-                if (callBack != null)
+                }
+                if (callBack != null) {
                     callBack.onCancel(dialog);
+                }
             }
         });
         ad.create();
@@ -496,9 +510,10 @@ public class Util {
         ly.setGravity(Gravity.CENTER);
 
         final EditText editText = new EditText(activity);
-        if (msg != null)
+        if (msg != null) {
             ly.addView(editText, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT,
                     LayoutParams.WRAP_CONTENT));
+        }
         else {
             float density = activity.getResources().getDisplayMetrics().density;
             editText.setGravity(Gravity.LEFT | Gravity.TOP);
@@ -515,24 +530,28 @@ public class Util {
             public void onClick(DialogInterface dialog, int id) {
                 // Action for 'Yes' Button
                 dialog.dismiss();
-                if (callBack != null)
+                if (callBack != null) {
                     callBack.onEditOk(dialog, editText.getText().toString());
+                }
             }
         });
         ad.setNegativeButton("취소", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // Action for 'NO' Button
                 dialog.dismiss();
-                if (callBack != null)
+                if (callBack != null) {
                     callBack.onCancel(dialog);
+                }
             }
         });
         ad.setOnCancelListener(new AlertDialog.OnCancelListener() {
             public void onCancel(DialogInterface dialog) {
-                if (dialog != null)
+                if (dialog != null) {
                     dialog.dismiss();
-                if (callBack != null)
+                }
+                if (callBack != null) {
                     callBack.onCancel(dialog);
+                }
             }
         });
         ad.create();
@@ -621,13 +640,16 @@ public class Util {
         String resName = null;
 
         int firstIndex = resIDString.lastIndexOf("/");
-        if (firstIndex >= 0)
+        if (firstIndex >= 0) {
             resName = resIDString.substring(firstIndex + 1);
+        }
 
-        if (resIDString.charAt(0) == '@')
+        if (resIDString.charAt(0) == '@') {
             path = resIDString.substring(1, firstIndex);
-        else
+        }
+        else {
             path = resIDString.substring(0, firstIndex);
+        }
 
         resId = context.getResources().getIdentifier(resName, path, context.getPackageName());
         return resId;
@@ -637,13 +659,15 @@ public class Util {
     public static String getStringToFloat(String string, int limitFloat) {
         Log.d("!!!Util.Class!!!", "--------------getStringToFloat----------------");
 
-        if (string == null)
+        if (string == null) {
             return null;
+        }
 
         int dotCharPos = string.lastIndexOf(".");
         String valueStr = string;
-        if (dotCharPos >= 0)
+        if (dotCharPos >= 0) {
             valueStr = string.substring(0, dotCharPos + limitFloat + 1);
+        }
 
         return valueStr;
     }
@@ -652,28 +676,32 @@ public class Util {
     public static String setCommaNumber(String num) {
         Log.d("!!!Util.Class!!!", "--------------setCommaNumber----------------");
 
-        if (num == null || num.length() <= 0)
+        if (num == null || num.length() <= 0) {
             return null;
+        }
 
         int cnt = 0;
         int len = num.length();
         int firstLen = len % 3;
-        if (firstLen == 0)
+        if (firstLen == 0) {
             firstLen = 3;
+        }
 
         String returnValue = "";
 
         while (cnt < len) {
             int addLen = 3;
-            if (cnt == 0)
+            if (cnt == 0) {
                 addLen = firstLen;
+            }
 
             returnValue += num.substring(cnt, cnt + addLen);
 
             cnt += addLen;
 
-            if (cnt < len)
+            if (cnt < len) {
                 returnValue += ",";
+            }
         }
 
         return returnValue;
@@ -699,8 +727,9 @@ public class Util {
     public static String getMultiply(String numStr, String numStr2) {
         Log.d("!!!Util.Class!!!", "--------------getMultiply----------------");
 
-        if (!(numStr != null && numStr.length() > 0 && numStr2 != null && numStr2.length() > 0))
+        if (!(numStr != null && numStr.length() > 0 && numStr2 != null && numStr2.length() > 0)) {
             return null;
+        }
 
         BigInteger op1 = new BigInteger(numStr);
         BigInteger op2 = new BigInteger(numStr2);
@@ -713,8 +742,9 @@ public class Util {
     public static void drawRectImage(Canvas canvas, Bitmap img, Rect destRect) {
         Log.d("!!!Util.Class!!!", "--------------drawRectImage----------------");
 
-        if (canvas == null || img == null || destRect == null)
+        if (canvas == null || img == null || destRect == null) {
             return;
+        }
 
         int x = destRect.left;
         int y = destRect.top;
@@ -723,14 +753,18 @@ public class Util {
         int rect_width = destRect.width();
         int rect_height = destRect.height();
 
-        if (img_width < rect_width)
+        if (img_width < rect_width) {
             x = (rect_width - img_width) / 2;
-        if (img_height < rect_height)
+        }
+        if (img_height < rect_height) {
             y = (rect_height - img_height) / 2;
-        if (img_width > rect_width)
+        }
+        if (img_width > rect_width) {
             x = x - ((img_width - rect_width) / 2);
-        if (img_height > rect_height)
+        }
+        if (img_height > rect_height) {
             y = y - ((img_height - rect_height) / 2);
+        }
 
         canvas.drawBitmap(img, x, y, null);
     }
@@ -761,8 +795,9 @@ public class Util {
     public static void drawText(Canvas canvas, String text, int x, int y, int color, int fontSize) {
         Log.d("!!!Util.Class!!!", "--------------drawText----------------");
 
-        if (text == null || text.length() <= 0)
+        if (text == null || text.length() <= 0) {
             return;
+        }
 
         Paint paint = new Paint();
         paint.setColor(color);
@@ -785,10 +820,12 @@ public class Util {
         Log.d("!!!Util.Class!!!", "--------------getSDCardPath----------------");
 
         String ext = Environment.getExternalStorageState();
-        if (ext.equals(Environment.MEDIA_MOUNTED))
+        if (ext.equals(Environment.MEDIA_MOUNTED)) {
             return Environment.getExternalStorageDirectory().getAbsolutePath();
-        else
+        }
+        else {
             return null;
+        }
     }
 
     // sd카드 파일 있는지 체크
@@ -874,7 +911,8 @@ public class Util {
 
     public static String getPhoneNumber(Context context) {
 
-        TelephonyManager mgr = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager mgr = (TelephonyManager)context
+                .getSystemService(Context.TELEPHONY_SERVICE);
 
         try {
 
@@ -891,7 +929,7 @@ public class Util {
             return num.trim();
 
         } catch (NullPointerException e) {
-//            e.printStackTrace();
+            // e.printStackTrace();
             return "";
         }
     }
@@ -993,8 +1031,9 @@ public class Util {
                             / Math.log(0.5)));
         }
 
-        if (scale > 1)
+        if (scale > 1) {
             scale /= 2;
+        }
 
         opts.inJustDecodeBounds = false;
         opts.inSampleSize = scale;
@@ -1014,7 +1053,7 @@ public class Util {
         NetworkInfo mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
         NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
-//        return mobile.isConnected() || wifi.isConnected();
+        // return mobile.isConnected() || wifi.isConnected();
         return true;
     }
 

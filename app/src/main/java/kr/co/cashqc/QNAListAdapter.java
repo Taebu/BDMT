@@ -41,7 +41,7 @@ public class QnaListAdapter extends BaseExpandableListAdapter {
             h = new ViewHolder();
             v = inflater.inflate(R.layout.list_menuexpand_row, null);
             h.tvChildName = (TextView)v.findViewById(R.id.tv_child);
-            h.tvChildValue = (TextView)v.findViewById(R.id.tv_value);
+            h.tvChildValue = (TextView)v.findViewById(R.id.tv_price);
             h.ivThumb = (ImageView)v.findViewById(R.id.iv_thumb);
             v.setTag(h);
         } else {

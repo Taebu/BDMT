@@ -37,7 +37,7 @@ public class Utils {
 
     public static double sLNG = 0;
 
-    public static final String RegisterKey222 = "register";
+    public static final String REGISTER = "register";
 
     public static final String IMG_URL = "http://cashq.co.kr/adm/upload/";
 

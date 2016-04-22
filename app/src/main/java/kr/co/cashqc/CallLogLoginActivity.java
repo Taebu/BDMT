@@ -86,8 +86,9 @@ public class CallLogLoginActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (!mDialog.isShowing())
+            if (!mDialog.isShowing()) {
                 mDialog.show();
+            }
         }
 
         @Override
@@ -128,8 +129,9 @@ public class CallLogLoginActivity extends BaseActivity {
                 e.printStackTrace();
             }
 
-            if (mDialog.isShowing())
+            if (mDialog.isShowing()) {
                 mDialog.dismiss();
+            }
         }
     }
 }

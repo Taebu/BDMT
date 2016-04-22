@@ -14,9 +14,9 @@ import android.net.Uri;
  */
 public class CartCP extends ContentProvider {
 
-    public static final String uriString = "content://kr.co.cashqc.CartCP";
+    public static final String URI_STRING = "content://kr.co.cashqc.CartCP";
 
-    public static final Uri CONTENT_URI = Uri.parse(uriString);
+    public static final Uri CONTENT_URI = Uri.parse(URI_STRING);
 
     private SQLiteDatabase mDatabase;
 

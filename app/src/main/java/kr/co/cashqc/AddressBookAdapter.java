@@ -78,9 +78,7 @@ public class AddressBookAdapter extends BaseAdapter {
         h.radio.setClickable(false);
         h.radio.setTag(position);
 
-        if ((Integer)h.radio.getTag() == ((ListView)parent).getCheckedItemPosition()) {
-
-        }
+//        if ((Integer)h.radio.getTag() == ((ListView)parent).getCheckedItemPosition()) {}
 
         h.radio.setChecked(((ListView)parent).isItemChecked((Integer)h.radio.getTag()));
 

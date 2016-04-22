@@ -22,12 +22,12 @@ public class SplPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
 
-        Fragment fragment = null;
+        Fragment fragment;
 
         switch (position) {
-//            case 0:
-//                fragment = new TtsHistoryFragment();
-//                break;
+            case 2:
+                fragment = new TtsHistoryFragment();
+                break;
 
             case 0:
                 fragment = new CallHistoryFragment();
@@ -52,6 +52,6 @@ public class SplPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 2;
+        return 3;
     }
 }

@@ -198,8 +198,9 @@ public class LocationUtil {
     }
 
     private boolean isBestProvider(Location myLocation) {
-        if (myLocation == null)
+        if (myLocation == null) {
             return false;
+        }
         boolean isBestProvider = false;
         String myProvider = myLocation.getProvider();
         boolean gpsCall = myProvider.equalsIgnoreCase(LocationManager.GPS_PROVIDER);
@@ -218,8 +219,9 @@ public class LocationUtil {
         if (networkLocationActivated) {
             Location lastNetworkLocation = lm
                     .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            if (lastNetworkLocation != null)
+            if (lastNetworkLocation != null) {
                 networkAccuracy = lastNetworkLocation.getAccuracy();
+            }
         }
         float currentAccuracy = myLocation.getAccuracy();
         long currentTime = myLocation.getTime();

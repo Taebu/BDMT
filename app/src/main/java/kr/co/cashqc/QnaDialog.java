@@ -1,16 +1,6 @@
 
 package kr.co.cashqc;
 
-import android.app.Dialog;
-import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.AsyncTask;
-import android.view.View;
-import android.view.Window;
-import android.widget.EditText;
-import android.widget.TextView;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -20,6 +10,16 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+
+import android.app.Dialog;
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
+import android.view.View;
+import android.view.Window;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -58,12 +58,6 @@ public class QnaDialog extends Dialog {
     }
 
     private class WriteTask extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-        }
 
         @Override
         protected String doInBackground(String... params) {
@@ -115,12 +109,5 @@ public class QnaDialog extends Dialog {
 
             return null;
         }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            // Log.e("qnaDialog", s);
-        }
     }
-
 }

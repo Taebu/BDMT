@@ -1,6 +1,7 @@
 
 package kr.co.cashqc;
 
+import static kr.co.cashqc.MainActivity.APP_ID;
 import static kr.co.cashqc.Utils.checkContact;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
@@ -21,12 +22,15 @@ import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,7 +38,6 @@ import java.util.Date;
 import java.util.Locale;
 
 import kr.co.cashqc.gcm.Util;
-import static kr.co.cashqc.MainActivity.APP_ID;
 
 /**
  * @author Jung-Hum Cho
@@ -45,6 +48,7 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
     private final String TAG = getClass().getSimpleName();
 
     // Constructor
+
     public ShopListFragment() {
     }
 
@@ -75,8 +79,12 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
 
     private int mDistance = 2;
 
+    private boolean flagLoading = false;
+
     // 관리자 모드
     public static boolean adminFlag = false;
+
+    private boolean hasAddItem = true;
 
     @SuppressLint("InlineApi")
     private static final String[] FROM_COLUMNS = {
@@ -97,9 +105,17 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        Log.v("life", "onCreate");
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.list_shop, container, false);
+        Log.v("life", "onCreateView");
+
+        final View view = inflater.inflate(R.layout.list_shop, container, false);
 
         Tracker t = ((CashqApplication)getActivity().getApplication())
                 .getTracker(CashqApplication.TrackerName.APP_TRACKER);
@@ -116,12 +132,16 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
         // bundle class get extra
         mType = getArguments().getInt("mType");
 
+        Log.v(TAG, "mType : " + mType);
+
+        // mPage = 1;
+
         final double latitude = getArguments().getDouble("lat");
         final double longitude = getArguments().getDouble("lng");
         final int distance = getArguments().getInt("distance");
 
-        Log.e("ShopListFragment", "\n" + latitude);
-        Log.e("ShopListFragment", "\n" + longitude);
+        Log.v("oncreaview", "" + latitude);
+        Log.e("ShopListFragment", "" + longitude);
 
         // adapter init
         mAdapter = new ShopListAdapter(getActivity(), mOnClickListener);
@@ -135,23 +155,165 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
 
         // mListView.setOnScrollListener(this);
         mListView.setOnItemClickListener(this);
-        mListView.addFooterView(footerLayout);
+        // mListView.addFooterView(footerLayout);
+
+        mListView.setOnTouchListener(new View.OnTouchListener() {
+
+            boolean firstDragFlag = true;
+
+            boolean dragFlag = false;
+
+            float startYPosition = 0;
+
+            float endYPosition = 0;
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                String tag = "ON TOUCH";
+
+                switch (event.getAction()) {
+                // 터치를 한 후 움직이고 있으면
+                    case MotionEvent.ACTION_MOVE:
+                        dragFlag = true;
+                        if (firstDragFlag) {
+                            // 터치후 계속 드래그 하고 있다면 ACTION_MOVE가 계속 일어날 것임으로 무브를
+                            // 시작한 첫번째 터치만 값을 저장함
+
+                            // 첫번째 터치의 Y(높이)를 저장
+                            startYPosition = event.getY();
+
+                            // 두번째 MOVE가 실행되지 못하도록 플래그 변경
+
+                            firstDragFlag = false;
+
+                        }
+
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        endYPosition = event.getY();
+                        firstDragFlag = true;
+
+                        // 드래그를 하다가 터치를 실행
+                        if (dragFlag) {
+
+                            // 시작Y가 끝 Y보다 크다면 터치가 아래서 위로 이루어졌다는 것이고, 스크롤은
+                            // 아래로내려갔다는 뜻이다.
+                            // (startYPosition - endYPosition) > 10 은 터치로 이동한
+                            // 거리가 10픽셀 이상은 이동해야 스크롤 이동으로 감지하겠다는 뜻임으로 필요하지 않으면
+                            // 제거해도 된다.
+
+                            if ((startYPosition > endYPosition)
+                            /* && (startYPosition - endYPosition) > 10 */) {
+                                // TODO 스크롤 다운 시 작업
+                                Log.v(tag, "SCROLL DOWN");
+                                if (flagLoading && hasAddItem) {
+                                    Log.v("Last", "WTF");
+                                    new LoadShopListTask(latitude, longitude, distance).execute(
+                                            mType, ++mPage);
+                                }
+                            }
+                            // 시작 Y가 끝 보다 작다면 터치가 위에서 아래로 이러우졌다는 것이고, 스크롤이 올라갔다는
+                            // 뜻이다.
+                            else if ((startYPosition < endYPosition)
+                            /* && (endYPosition - startYPosition) > 10 */) {
+                                // TODO 스크롤 업 시 작업
+                                Log.v(tag, "SCROLL UP");
+                            }
+                        }
+
+                        startYPosition = 0.0f;
+                        endYPosition = 0.0f;
+
+                        break;
+                }
+
+                return false;
+            }
+
+        });
+
+        mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int scrollState) {
+
+                String tag = "SCROLL STATE";
+
+                Log.v(tag, "" + absListView.getAdapter().getCount());
+                Log.v(tag, "" + absListView.getCount());
+
+                if (absListView.getLastVisiblePosition() == absListView.getAdapter().getCount() - 1
+                        && absListView.getChildAt(absListView.getChildCount() - 1).getBottom() <= absListView
+                                .getHeight() && scrollState == SCROLL_STATE_TOUCH_SCROLL) {
+                    flagLoading = true;
+                } else {
+                    flagLoading = false;
+                }
+
+            }
+
+            @Override
+            public void onScroll(AbsListView absListView, int firstVisibleItem,
+                    int visibleItemCount, int totalItemCount) {
+                String tag = "ON SCROLL";
+
+                // try {
+                // if (absListView.getLastVisiblePosition() ==
+                // absListView.getAdapter().getCount() - 1
+                // && absListView.getChildAt(absListView.getChildCount() -
+                // 1).getBottom() <= absListView
+                // .getHeight()) {
+                // // It is scrolled all the way down here
+                // if (flagLoading && downScrollFlag) {
+                // // Log.v("Last", "WTF");
+                // }
+                // }
+                // } catch (Exception e) {
+                // e.printStackTrace();
+                // }
+
+                // int preLast = 3;
+                // final int lastItem = firstVisibleItem + visibleItemCount;
+                // if (lastItem == totalItemCount) {
+                // if (preLast != lastItem) { // to avoid multiple calls
+                // // for last item
+                // // Log.d("Last", "Last");
+                // preLast = lastItem;
+                // }
+                // }
+                //
+                // if (firstVisibleItem + visibleItemCount == totalItemCount &&
+                // flagLoading
+                // && downScrollFlag) {
+                // Log.v(tag,
+                // "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                // // new LoadShopListTask(latitude, longitude,
+                // // distance).execute(mType, ++mPage);
+                // }
+
+            }
+
+        });
 
         // JSONParse AsyncTask Method
         new LoadShopListTask(latitude, longitude, distance).execute(mType, 1);
 
-        for (String s : FROM_COLUMNS)
-            Log.e("contacts", "contacts :: " + s);
+        // for (String s : FROM_COLUMNS) {
+        // Log.e("contacts", "contacts :: " + s);
+        // }
 
-        view.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                mPage++;
-                Log.e("JAY", "mType : " + mType + " mPage" + mPage);
-                new LoadShopListTask(latitude, longitude, distance).execute(mType, mPage);
-            }
-        });
+        // view.findViewById(R.id.button).setOnClickListener(new
+        // View.OnClickListener() {
+        // @Override
+        // public void onClick(View v) {
+        //
+        // mPage++;
+        // Log.e("JAY", "mType : " + mType + " mPage" + mPage);
+        // new LoadShopListTask(latitude, longitude, distance).execute(mType,
+        // mPage);
+        // }
+        // });
 
         return view;
     }
@@ -172,14 +334,17 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
         protected void onPreExecute() {
             super.onPreExecute();
 
+            flagLoading = false;
+
             if (!Util.isOnline(getActivity())) {
                 // Util.showDialog_normal(getActivity(), "네트워크 에러",
                 // "네트워크 연결 상태를 확인해주세요");
                 mDialog.dismiss();
             } else {
 
-                if (!mDialog.isShowing())
+                if (!mDialog.isShowing()) {
                     mDialog.show();
+                }
             }
         }
 
@@ -208,7 +373,7 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
             sb.append("&page=").append(page);
             sb.append("&appid=").append(APP_ID);
 
-            Log.e("ShopListFragment.ShopList", "url : " + sb.toString());
+            Log.e("ShopList", "url : " + sb.toString());
 
             return new JsonParser().getJSONStringFromUrl(sb.toString());
         }
@@ -227,6 +392,7 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
             }
 
             if (array != null && !"[]".equals(array.toString())) {
+                hasAddItem = array.length() % 10 == 0;
                 for (int i = 0; i < array.length(); i++) {
                     try {
                         JSONObject object = array.getJSONObject(i);
@@ -295,6 +461,7 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
                             separator.setSeparatorType(ShopListAdapter.TYPE_PRQ);
                             mAdapter.addSeparatorItem(separator);
                             mTypeDuplicator = 4;
+
                         } else if ("".equals(prePay) && mTypeDuplicator == 4) {
 
                             separator.setSeparatorType(ShopListAdapter.TYPE_NORMAL);
@@ -320,17 +487,28 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
                 mListView.setEmptyView(mEmpty);
                 mEmpty.setVisibility(View.VISIBLE);
                 Log.e("JAY", "\narray null");
+
+                hasAddItem = false;
+
+                if (mPage == 1) {
+                    Toast.makeText(getActivity(), "가맹점이 없습니다.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "가맹점이 더 이상 없습니다.", Toast.LENGTH_SHORT).show();
+                }
             }
 
             // adapter set-up
-            mListView.setAdapter(mAdapter);
+            if (mListView.getAdapter() == null) {
+                mListView.setAdapter(mAdapter);
+            }
+
             mAdapter.notifyDataSetChanged();
 
             if (mPage > 1) {
-
-                mListView.setSelection((mPage - 1) * 9);
+                // mListView.setSelection(mPage * 9);
             }
             mDialog.dismiss();
+            // flagLoading = false;
         }
     }
 
@@ -352,64 +530,82 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
                 }
             }
 
-            if (object.has("tel"))
+            if (object.has("tel")) {
                 shopData.setTel(object.getString("tel"));
+            }
 
-            if (object.has("name"))
+            if (object.has("name")) {
                 shopData.setName(object.getString("name"));
+            }
 
-            if (object.has("pre_pay"))
+            if (object.has("pre_pay")) {
                 shopData.setPre_pay(object.getString("pre_pay"));
+            }
 
-            if (object.has("seq"))
+            if (object.has("seq")) {
                 shopData.setSeq(object.getString("seq"));
+            }
 
-            if (object.has("thm"))
+            if (object.has("thm")) {
                 shopData.setThm(object.getString("thm"));
+            }
 
-            if (object.has("delivery_comment_cashq"))
+            if (object.has("delivery_comment_cashq")) {
                 shopData.setDelivery_comment(object.getString("delivery_comment_cashq"));
+            }
 
-            if (object.has("callcnt"))
+            if (object.has("callcnt")) {
                 shopData.setCallcnt(object.getString("callcnt"));
+            }
 
-            if (object.has("address"))
+            if (object.has("address")) {
                 shopData.setAddress(object.getString(("address")));
+            }
 
-            if (object.has("distance"))
+            if (object.has("distance")) {
                 shopData.setDistance(object.getString("distance"));
+            }
 
-            if (object.has("time1"))
+            if (object.has("time1")) {
                 shopData.setTime1(object.getString("time1").substring(3));
+            }
 
-            if (object.has("time2"))
+            if (object.has("time2")) {
                 shopData.setTime2(object.getString("time2").substring(6));
+            }
 
-            if (object.has("img1"))
+            if (object.has("img1")) {
                 shopData.setImg1(object.getString("img1"));
+            }
 
-            if (object.has("img2"))
+            if (object.has("img2")) {
                 shopData.setImg2(object.getString("img2"));
+            }
 
-            if (object.has("review_cnt"))
+            if (object.has("review_cnt")) {
                 shopData.setReviewCount(object.getString("review_cnt"));
+            }
 
-            if (object.has("review_rating"))
+            if (object.has("review_rating")) {
                 shopData.setReviewRating(object.getString("review_rating"));
+            }
 
-            if (object.has("minpay"))
+            if (object.has("minpay")) {
                 shopData.setMinpay(object.getString("minpay"));
+            }
 
             shopData.setSeq(object.getString("seq"));
 
-            if (object.has("biz_code"))
+            if (object.has("biz_code")) {
                 shopData.setBizCode(object.getString("biz_code"));
+            }
 
             shopData.setPay(object.getString("pay"));
 
-            boolean isOpen = isBizHours(shopData.getTime1(), shopData.getTime2());
+            // boolean isOpen = isBizHours(shopData.getTime1(),
+            // shopData.getTime2());
 
-            shopData.setIsOpen(isOpen);
+            shopData.setIsOpen(true);
 
             return shopData;
 
@@ -423,7 +619,7 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
     /**
      * Callback method to be invoked when an item in this AdapterView has been
      * clicked.
-     * <p/>
+     * <p>
      * Implementers can call getItemAtPosition(position) if they need to access
      * the data associated with the selected item.
      *

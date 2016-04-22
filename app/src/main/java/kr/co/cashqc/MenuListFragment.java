@@ -100,8 +100,9 @@ public class MenuListFragment extends ListFragment {
                 adapter.add(new SampleItem("문의 사항", R.drawable.icon_more_3_gray));
                 adapter.add(new SampleItem("공지 사항", R.drawable.icon_more_6_gray));
 
-                if (sIsAdmin)
+                if (sIsAdmin) {
                     adapter.add(new SampleItem("가맹점 주문내역", R.drawable.icon_more_8_gray));
+                }
 
                 setListAdapter(adapter);
 

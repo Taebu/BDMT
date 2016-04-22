@@ -26,7 +26,7 @@
 //	@Override
 //	protected void onRegistered(Context arg0, String registrationId) {
 //		Log.i(TAG, "Device registered: regId = " + registrationId);
-//		Util.saveSharedPreferences_string(getApplicationContext(), Utils.RegisterKey222, registrationId);
+//		Util.saveSharedPreferences_string(getApplicationContext(), Utils.REGISTER, registrationId);
 //	}
 //
 //	@Override

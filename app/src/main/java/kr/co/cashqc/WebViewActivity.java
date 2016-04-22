@@ -76,18 +76,21 @@ public class WebViewActivity extends BaseActivity {
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             if (!Util.isOnline(getApplicationContext())) {
                 Util.showDialog_normal(WebViewActivity.this, "네트워크 에러", "네트워크 연결 상태를 확인해주세요");
-                if (mDialog.isShowing())
+                if (mDialog.isShowing()) {
                     mDialog.dismiss();
+                }
             } else {
-                if (!mDialog.isShowing())
+                if (!mDialog.isShowing()) {
                     mDialog.show();
+                }
             }
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
-            if (mDialog.isShowing())
+            if (mDialog.isShowing()) {
                 mDialog.dismiss();
+            }
         }
 
         @Override
@@ -98,11 +101,6 @@ public class WebViewActivity extends BaseActivity {
     public String getPhoneNumber() {
         TelephonyManager mgr = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
         return mgr.getLine1Number();
-    }
-
-    @Override
-    public void finish() {
-        super.finish();
     }
 
     @Override

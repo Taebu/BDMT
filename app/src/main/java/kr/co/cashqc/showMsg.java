@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Window;
-import android.view.WindowManager;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -17,10 +16,10 @@ public class ShowMsg extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        getWindow().addFlags(
-                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                        | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
-                        | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+//        getWindow().addFlags(
+//                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+//                        | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+//                        | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 
         final String seq;
         final String msg;
@@ -30,6 +29,12 @@ public class ShowMsg extends Activity {
         final String board;
         final String get_biz_code;
         final String link;
+
+        int MSG_TYPE = 0;
+
+        // 0 = common
+        // 1 = order success
+        // 2 = order cancel
 
         Bundle bun = getIntent().getExtras();
         seq = bun.getString("seq");
@@ -48,10 +53,10 @@ public class ShowMsg extends Activity {
         // if (msg.startsWith(auth)) {
         // dialog = new CustomDialog(this, msg);
         // } else {
-        dialog = new CustomDialog(this, msg, false, this, MainActivity.class);
+        dialog = new CustomDialog(this, msg, false, this, MainActivity.class, MSG_TYPE);
         // }
 
-        dialog.show();
+//        dialog.show();
 
         // 폰 설정의 조명시간을 가져와서 해당 시간만큼만 화면을 켠다.
         int defTimeOut = Settings.System.getInt(getContentResolver(),

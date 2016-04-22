@@ -1,6 +1,10 @@
 
 package kr.co.cashqc;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -13,10 +17,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -49,12 +49,6 @@ public class PointHistoryFragment extends Fragment {
     private class SPLTask extends AsyncTask<String, Void, JSONObject> {
 
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-        }
-
-        @Override
         protected JSONObject doInBackground(String... params) {
 
             String phoneNum = params[0];
@@ -80,27 +74,26 @@ public class PointHistoryFragment extends Fragment {
 
                     JSONObject object = array.getJSONObject(i);
 
-                    if (object.has("stype")) {
-                        if (object.getString("stype").startsWith("PNT")) {
+                    if (object.has("stype") && object.getString("stype").startsWith("PNT")) {
 
-                            SplData data = new SplData();
+                        SplData data = new SplData();
 
-                            data.setNum(String.valueOf(array.length() - 1));
+                        data.setNum(String.valueOf(array.length() - 1));
 
-                            if (object.has("wr_subject"))
-                                data.setSubject(object.getString("wr_subject"));
-
-                            if (object.has("regdate"))
-                                data.setDate(object.getString("regdate"));
-
-                            if (object.has("caller"))
-                                data.setCaller(object.getString("caller"));
-
-                            if (object.has("called"))
-                                data.setCalled(object.getString("called"));
-
-                            dataList.add(data);
+                        if (object.has("wr_subject")) {
+                            data.setSubject(object.getString("wr_subject"));
                         }
+
+                        if (object.has("regdate")) {
+                            data.setDate(object.getString("regdate"));
+                        }
+                        if (object.has("caller")) {
+                            data.setCaller(object.getString("caller"));
+                        }
+                        if (object.has("called")) {
+                            data.setCalled(object.getString("called"));
+                        }
+                        dataList.add(data);
                     }
                 }
 

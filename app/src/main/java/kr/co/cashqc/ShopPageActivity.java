@@ -165,8 +165,9 @@ public class ShopPageActivity extends BaseActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 String phoneNum = getPhoneNumber(mActivity);
 
-                if (phoneNum.isEmpty())
+                if (phoneNum.isEmpty()) {
                     phoneNum = "4444444444";
+                }
 
                 new ReviewDialog(mActivity, getIntent().getStringExtra("name"), getIntent()
                         .getStringExtra("seq"), phoneNum, mPhotoListener).show();
@@ -364,8 +365,9 @@ public class ShopPageActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (!mDialog.isShowing())
+            if (!mDialog.isShowing()) {
                 mDialog.show();
+            }
         }
 
         @Override
@@ -394,26 +396,33 @@ public class ShopPageActivity extends BaseActivity {
 
                     ReviewData reviewData = new ReviewData();
 
-                    if (object.has("seq"))
+                    if (object.has("seq")) {
                         reviewData.setSeq(object.getString("seq"));
+                    }
 
-                    if (object.has("mb_hp"))
+                    if (object.has("mb_hp")) {
                         reviewData.setPhone(object.getString("mb_hp"));
+                    }
 
-                    if (object.has("mb_nick"))
+                    if (object.has("mb_nick")) {
                         reviewData.setNick(object.getString("mb_nick"));
+                    }
 
-                    if (object.has("content"))
+                    if (object.has("content")) {
                         reviewData.setContent(object.getString("content").trim());
+                    }
 
-                    if (object.has("rating"))
+                    if (object.has("rating")) {
                         reviewData.setRating(Integer.parseInt(object.getString("rating")));
+                    }
 
-                    if (object.has("insdate"))
+                    if (object.has("insdate")) {
                         reviewData.setInsdate(object.getString("insdate"));
+                    }
 
-                    if (object.has("token_id"))
+                    if (object.has("token_id")) {
                         reviewData.setTokenId(object.getString("token_id"));
+                    }
 
                     reviewDataList.add(reviewData);
                 }
@@ -428,8 +437,9 @@ public class ShopPageActivity extends BaseActivity {
                 e.printStackTrace();
             }
 
-            if (mDialog.isShowing())
+            if (mDialog.isShowing()) {
                 mDialog.dismiss();
+            }
         }
     }
 
@@ -454,8 +464,9 @@ public class ShopPageActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (!mDialog.isShowing())
+            if (!mDialog.isShowing()) {
                 mDialog.show();
+            }
         }
 
         @Override
@@ -475,8 +486,9 @@ public class ShopPageActivity extends BaseActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             Log.e(TAG, s);
-            if (mDialog.isShowing())
+            if (mDialog.isShowing()) {
                 mDialog.dismiss();
+            }
         }
     }
 
@@ -501,13 +513,9 @@ public class ShopPageActivity extends BaseActivity {
         Log.e("life", "onResume");
         // setCartCount(this);
         super.onResume();
-        if (isWeb)
+        if (isWeb) {
             startService(mZoomIntent);
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+        }
     }
 
     @Override
@@ -563,14 +571,16 @@ public class ShopPageActivity extends BaseActivity {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
 
-            if (!mDialog.isShowing())
+            if (!mDialog.isShowing()) {
                 mDialog.show();
+            }
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
-            if (mDialog.isShowing())
+            if (mDialog.isShowing()) {
                 mDialog.dismiss();
+            }
         }
 
         @Override
@@ -869,8 +879,9 @@ public class ShopPageActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (!mDialog.isShowing())
+            if (!mDialog.isShowing()) {
                 mDialog.show();
+            }
         }
 
         @Override
@@ -878,7 +889,7 @@ public class ShopPageActivity extends BaseActivity {
 
             String url = "http://cashq.co.kr/ajax/get_menu.php?store_code=" + params[0];
 
-            Log.e(TAG, "GET MENU URL" + url);
+            Log.e(TAG, "GET MENU URL: " + url);
 
             return new JsonParser().getJSONObjectFromUrl(url);
         }
@@ -917,8 +928,9 @@ public class ShopPageActivity extends BaseActivity {
                 e.printStackTrace();
             }
 
-            if (mDialog.isShowing())
+            if (mDialog.isShowing()) {
                 mDialog.dismiss();
+            }
 
         }
     }
@@ -1132,8 +1144,13 @@ public class ShopPageActivity extends BaseActivity {
                     if (object.has("id"))
                         data.setId(object.getString("id"));
 
-                    if (object.has("price"))
-                        data.setPrice(Integer.valueOf(object.getString("price")));
+                    if (object.has("price")) {
+                        if(object.getString("price").equals("")) {
+                            data.setPrice(0);
+                        } else {
+                            data.setPrice(Integer.parseInt(object.getString("price")));
+                        }
+                    }
 
                     data.setIsDeal(false);
 
@@ -1151,6 +1168,81 @@ public class ShopPageActivity extends BaseActivity {
 
                             if (object.has("quantity"))
                                 data.setQuantity(object.getInt("quantity"));
+                        }
+                    }
+
+                    data.setCode(parentId, data.getId());
+
+                    ArrayList<MenuData> childData = new ArrayList<MenuData>();
+
+                    if (object.has("children")) {
+                        childData = makeMenuData(object, data.getCode());
+                    }
+
+                    data.setChild(childData);
+
+                    dataList.add(data);
+                }
+                return dataList;
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    private ArrayList<MenuData> makeMenuData1(JSONObject jsonObject, String parentId) {
+
+        try {
+
+            ArrayList<MenuData> dataList = new ArrayList<MenuData>();
+
+            JSONArray array = null;
+
+            if (jsonObject.has("posts")) {
+                array = jsonObject.getJSONArray("posts");
+            } else if (jsonObject.has("children")) {
+                array = jsonObject.getJSONArray("children");
+            }
+
+            if (array != null) {
+
+                for (int i = 0; i < array.length(); i++) {
+
+                    JSONObject object = array.getJSONObject(i);
+
+                    MenuData data = new MenuData();
+
+                    if (object.has("label")) {
+                        data.setLabel(object.getString("label"));
+                    }
+
+                    if (object.has("id")) {
+                        data.setId(object.getString("id"));
+                    }
+
+                    if (object.has("price")) {
+                        data.setPrice(Integer.valueOf(object.getString("price")));
+                    }
+
+                    data.setIsDeal(false);
+
+                    if (object.has("is_deal") && object.getBoolean("is_deal")) {
+
+                        data.setIsDeal(true);
+
+                        if (object.has("dis_price")) {
+                            data.setDiscountPrice(object.getInt("dis_price"));
+                        }
+
+                        if (object.has("discount")) {
+                            data.setDiscountRate(object.getInt("discount"));
+                        }
+
+                        if (object.has("quantity")) {
+                            data.setQuantity(object.getInt("quantity"));
                         }
                     }
 
@@ -1203,8 +1295,9 @@ public class ShopPageActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (!mDialog.isShowing())
+            if (!mDialog.isShowing()) {
                 mDialog.show();
+            }
         }
 
         @Override
@@ -1231,21 +1324,25 @@ public class ShopPageActivity extends BaseActivity {
 
                 for (int i = 0; i < jsonArray.length(); i++) {
 
-                    if (i == 4)
+                    if (i == 4) {
                         break;
+                    }
 
                     JSONObject object = jsonArray.getJSONObject(i);
 
                     HashMap<String, String> hashMap = new HashMap<String, String>();
 
-                    if (object.has("wr_id"))
+                    if (object.has("wr_id")) {
                         hashMap.put("id", object.getString("wr_id"));
+                    }
 
-                    if (object.has("bf_file"))
+                    if (object.has("bf_file")) {
                         hashMap.put("img", object.getString("bf_file"));
+                    }
 
-                    if (object.has("bf_content"))
+                    if (object.has("bf_content")) {
                         hashMap.put("text", object.getString("bf_content"));
+                    }
 
                     hasImage = true;
 
@@ -1262,8 +1359,9 @@ public class ShopPageActivity extends BaseActivity {
                 e.printStackTrace();
             }
 
-            if (mDialog.isShowing())
+            if (mDialog.isShowing()) {
                 mDialog.dismiss();
+            }
         }
 
         private void setMenuImage() {
@@ -1339,8 +1437,7 @@ public class ShopPageActivity extends BaseActivity {
                 for (int y = 0; y < childData.size(); y++) {
 
                     String level2Id = childData.get(y).getId();
-                    Log.e("ShopPageActivity.imageMenuOrder", "level2Id : " + level2Id
-                            + " imageId : " + imageId);
+                    Log.e("imageMenuOrder", "level2Id : " + level2Id + " imageId : " + imageId);
 
                     if (level2Id.equals(imageId)) {
 
