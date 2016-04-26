@@ -59,8 +59,9 @@ public class QnaActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if (!mDialog.isShowing())
+            if (!mDialog.isShowing()) {
                 mDialog.show();
+            }
         }
 
         @Override
@@ -103,8 +104,9 @@ public class QnaActivity extends BaseActivity {
                 });
             }
 
-            if (mDialog.isShowing())
+            if (mDialog.isShowing()) {
                 mDialog.dismiss();
+            }
         }
 
         private ArrayList<BoardData> makeBoardData(JSONObject jsonObject) {
@@ -131,20 +133,25 @@ public class QnaActivity extends BaseActivity {
                         Log.e("QNAActivity", "i : " + i);
 
                         // 질문
-                        if (object.has("wr_name"))
+                        if (object.has("wr_name")) {
                             articleData.setName(object.getString("wr_name"));
+                        }
 
-                        if (object.has("wr_1"))
+                        if (object.has("wr_1")) {
                             articleData.setPhone(object.getString("wr_1"));
+                        }
 
-                        if (object.has("wr_subject"))
+                        if (object.has("wr_subject")) {
                             articleData.setSubject(object.getString("wr_subject"));
+                        }
 
-                        if (object.has("wr_content"))
+                        if (object.has("wr_content")) {
                             articleData.setContent(object.getString("wr_content"));
+                        }
 
-                        if (object.has("wr_datetime"))
+                        if (object.has("wr_datetime")) {
                             articleData.setDatetime(object.getString("wr_datetime"));
+                        }
 
                         ArrayList<BoardData> replyDataList = new ArrayList<BoardData>();
 

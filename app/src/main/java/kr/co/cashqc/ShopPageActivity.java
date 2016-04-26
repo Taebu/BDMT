@@ -152,7 +152,7 @@ public class ShopPageActivity extends BaseActivity {
 
         float reviewRating = Float.parseFloat(getIntent().getStringExtra("review_rating"));
 
-        String reviewCount = getIntent().getStringExtra("review_cnt");
+        final String reviewCount = getIntent().getStringExtra("review_cnt");
 
         tvReviewCount.setText(reviewCount + "개 리뷰 보기");
 
@@ -169,8 +169,11 @@ public class ShopPageActivity extends BaseActivity {
                     phoneNum = "4444444444";
                 }
 
-                new ReviewDialog(mActivity, getIntent().getStringExtra("name"), getIntent()
-                        .getStringExtra("seq"), phoneNum, mPhotoListener).show();
+                ReviewDialog reviewDialog = new ReviewDialog(mActivity, getIntent().getStringExtra(
+                        "name"), getIntent().getStringExtra("seq"), phoneNum, mPhotoListener);
+                reviewDialog.show();
+                reviewDialog.setOnDismissListener(mReviewOnDismissListener);
+                stopService(mZoomIntent);
                 return false;
             }
         });
@@ -450,7 +453,11 @@ public class ShopPageActivity extends BaseActivity {
             String seq = v.getTag(R.id.seq).toString();
             switch (v.getId()) {
                 case R.id.row_review_modify:
-                    new ReviewDialog(mActivity, getIntent().getStringExtra("name"), seq).show();
+                    ReviewDialog reviewDialog = new ReviewDialog(mActivity, getIntent()
+                            .getStringExtra("name"), seq);
+                    reviewDialog.show();
+                    reviewDialog.setOnDismissListener(mReviewOnDismissListener);
+                    stopService(mZoomIntent);
                     break;
                 case R.id.row_review_remove:
                     new ReviewRemoveTask().execute(seq);
@@ -1145,7 +1152,7 @@ public class ShopPageActivity extends BaseActivity {
                         data.setId(object.getString("id"));
 
                     if (object.has("price")) {
-                        if(object.getString("price").equals("")) {
+                        if (object.getString("price").equals("")) {
                             data.setPrice(0);
                         } else {
                             data.setPrice(Integer.parseInt(object.getString("price")));
@@ -1467,6 +1474,13 @@ public class ShopPageActivity extends BaseActivity {
         @Override
         public void onDismiss(DialogInterface dialog) {
             setCartCount(mActivity);
+        }
+    };
+
+    private DialogInterface.OnDismissListener mReviewOnDismissListener = new DialogInterface.OnDismissListener() {
+        @Override
+        public void onDismiss(DialogInterface dialog) {
+            startService(mZoomIntent);
         }
     };
 

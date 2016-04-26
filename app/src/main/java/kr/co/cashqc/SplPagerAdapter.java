@@ -22,7 +22,7 @@ public class SplPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
 
-        Fragment fragment = null;
+        Fragment fragment;
 
         switch (position) {
             case 2:

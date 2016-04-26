@@ -12,6 +12,7 @@
         android:layout_height="wrap_content">
 
         <CheckBox
+            android:clickable="true"
             android:id="@+id/row_point_check"
             android:layout_width="26dp"
             android:layout_height="26dp"

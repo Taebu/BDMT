@@ -96,11 +96,13 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
     public static boolean SALE_ZONE = false;
 
-    public static boolean ANSAN_LIFE = false;
+    public static boolean LIFE_ZONE = false;
 
     public static MainActivity Instance = null;
 
-    private int mType = 1;
+    private String mType = "W01";
+
+    private int mPosition = 0;
 
     public static final String APP_ID = "cashq";
 
@@ -420,40 +422,78 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
         switch (view.getId()) {
 
             case R.id.wmain_chicken:
-                mType = 1;
-                drawable = R.drawable.bg_chicken;
+                mPosition = 0;
+                mType = "W01";
+                if (LIFE_ZONE) {
+                    drawable = R.drawable.bg_chicken_crop;
+                } else {
+                    drawable = R.drawable.bg_chicken;
+                }
                 break;
             case R.id.wmain_pizza:
-                mType = 2;
-                drawable = R.drawable.bg_pizza;
+                mPosition = 1;
+                mType = "W02";
+                if (LIFE_ZONE) {
+                    drawable = R.drawable.bg_pizza_crop;
+                } else {
+                    drawable = R.drawable.bg_pizza;
+                }
                 break;
             case R.id.wmain_chinese:
-                mType = 3;
-                drawable = R.drawable.bg_chinese;
+                mPosition = 2;
+                mType = "W03";
+                if (LIFE_ZONE) {
+                    drawable = R.drawable.bg_chinese_crop;
+                } else {
+                    drawable = R.drawable.bg_chinese;
+                }
                 break;
             case R.id.wmain_korean:
-                mType = 4;
-                drawable = R.drawable.bg_korean;
+                mPosition = 3;
+                mType = "W04";
+                if (LIFE_ZONE) {
+                    drawable = R.drawable.bg_korean_crop;
+                } else {
+                    drawable = R.drawable.bg_korean;
+                }
                 break;
             case R.id.wmain_dakbal:
-                mType = 5;
-                drawable = R.drawable.bg_dakbal;
+                mPosition = 4;
+                mType = "W05";
+                if (LIFE_ZONE) {
+                    drawable = R.drawable.bg_dakbal_crop;
+                } else {
+                    drawable = R.drawable.bg_dakbal;
+                }
                 break;
             case R.id.wmain_night:
-                mType = 6;
-                drawable = R.drawable.bg_night;
+                mPosition = 5;
+                mType = "W06";
+                if (LIFE_ZONE) {
+                    drawable = R.drawable.bg_night_crop;
+                } else {
+                    drawable = R.drawable.bg_night;
+                }
                 break;
             case R.id.wmain_bossam:
-                mType = 7;
-                drawable = R.drawable.bg_jokbal;
+                mPosition = 6;
+                mType = "W07";
+                if (LIFE_ZONE) {
+                    drawable = R.drawable.bg_dakbal_crop;
+                } else {
+                    drawable = R.drawable.bg_dakbal;
+                }
                 break;
             case R.id.wmain_japanese:
-                mType = 8;
-                drawable = R.drawable.bg_japanese;
+                mPosition = 7;
+                mType = "W08";
+                if (LIFE_ZONE) {
+                    drawable = R.drawable.bg_japanese_crop;
+                } else {
+                    drawable = R.drawable.bg_japanese;
+                }
                 break;
         }
-
-        mIntent.putExtra("TYPE", mType);
 
         String uri = "drawable://" + drawable;
         ImageLoader.getInstance().loadImage(uri, new SimpleImageLoadingListener() {
@@ -474,7 +514,9 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
     public void onCenterClick() {
 
         if (mGpsFlag) {
-
+            mIntent.putExtra("TYPE", mType);
+            mIntent.putExtra("POSITION", mPosition);
+            mIntent.putExtra("LIFE", false);
             mIntent.putExtra("lat", mLatitude);
             mIntent.putExtra("lng", mLongitude);
             mIntent.putExtra("distance", sDistance);
@@ -569,9 +611,19 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
                     sDistance = 5;
                 } else if ("안산시".equals(mSi) || "의정부시".equals(mSi)) {
                     // mPointText.setVisibility(View.GONE);
-                     mLifeImageView.setVisibility(View.VISIBLE);
-                    // ANSAN_LIFE = true;
+                    mLifeImageView.setVisibility(View.VISIBLE);
+                    LIFE_ZONE = true;
                     sDistance = 3;
+
+                    String uri = "drawable://" + R.drawable.bg_chicken_crop;
+                    ImageLoader.getInstance().loadImage(uri, new SimpleImageLoadingListener() {
+                        @Override
+                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                            Drawable topImage = new BitmapDrawable(loadedImage);
+                            mBackgroundLayout.setBackgroundDrawable(topImage);
+                        }
+                    });
+
                 } else {
                     mLifeImageView.setVisibility(View.GONE);
                     sDistance = 2;
@@ -820,7 +872,8 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
     public void mOnClick(View view) {
         switch (view.getId()) {
             case R.id.main_sale:
-                mType = 0;
+                mPosition = 0;
+                mType = "W00";
                 mIntent.putExtra("TYPE", mType);
                 mIntent.putExtra("lat", mLatitude);
                 mIntent.putExtra("lng", mLongitude);
@@ -852,20 +905,85 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
                 });
                 break;
             case R.id.main_life:
-                mType = 9;
-                mIntent.putExtra("TYPE", mType);
-                mIntent.putExtra("lat", mLatitude);
-                mIntent.putExtra("lng", mLongitude);
-                mIntent.putExtra("distance", sDistance);
 
-                startActivity(mIntent);
-                if (!mDialog.isShowing()) {
-                    mDialog.show();
-                }
+                new LifeDialog(this, mOnClickListener).show();
+
+                // mIntent.putExtra("TYPE", mType);
+                // mIntent.putExtra("lat", mLatitude);
+                // mIntent.putExtra("lng", mLongitude);
+                // mIntent.putExtra("distance", sDistance);
+
+                // startActivity(mIntent);
+                // if (!mDialog.isShowing()) {
+                // mDialog.show();
+                // }
                 break;
         }
 
     }
+
+    private View.OnClickListener mOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            Log.v(TAG, "getid: " + v.getId());
+
+            switch (v.getId()) {
+                case R.id.life_09:
+                    mPosition = 0;
+                    mType = "W09";
+                    break;
+                case R.id.life_10:
+                    mPosition = 1;
+                    mType = "W10";
+                    break;
+                case R.id.life_11:
+                    mType = "W11";
+                    mPosition = 2;
+                    break;
+                case R.id.life_12:
+                    mType = "W12";
+                    mPosition = 3;
+                    break;
+                case R.id.life_13:
+                    mType = "W13";
+                    mPosition = 4;
+                    break;
+                case R.id.life_14:
+                    mType = "W14";
+                    mPosition = 5;
+                    break;
+                case R.id.life_15:
+                    mType = "W15";
+                    mPosition = 6;
+                    break;
+                case R.id.life_16:
+                    mType = "W16";
+                    mPosition = 7;
+                    break;
+                case R.id.life_18:
+                    mType = "W18";
+                    mPosition = 8;
+                    break;
+                case R.id.life_19:
+                    mPosition = 9;
+                    mType = "W19";
+                    break;
+            }
+
+            mIntent.putExtra("LIFE", true);
+            mIntent.putExtra("POSITION", mPosition);
+            mIntent.putExtra("TYPE", mType);
+            mIntent.putExtra("lat", mLatitude);
+            mIntent.putExtra("lng", mLongitude);
+            mIntent.putExtra("distance", sDistance);
+
+            startActivity(mIntent);
+            if (!mDialog.isShowing()) {
+                mDialog.show();
+            }
+        }
+    };
 
     private class LoadSavingTask extends AsyncTask<String, String, JSONObject> {
 

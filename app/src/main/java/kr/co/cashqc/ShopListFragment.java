@@ -69,7 +69,7 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
 
     private int mPage = 1;
 
-    private int mType;
+    private String mType;
 
     private ArrayList<ShopListData> mShopListData;
 
@@ -79,12 +79,12 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
 
     private int mDistance = 2;
 
-    private boolean flagLoading = false;
-
     // 관리자 모드
     public static boolean adminFlag = false;
 
     private boolean hasAddItem = true;
+
+    private boolean flagLoading = false;
 
     @SuppressLint("InlineApi")
     private static final String[] FROM_COLUMNS = {
@@ -130,7 +130,7 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
         mShopListData = new ArrayList<ShopListData>();
 
         // bundle class get extra
-        mType = getArguments().getInt("mType");
+        mType = getArguments().getString("mType");
 
         Log.v(TAG, "mType : " + mType);
 
@@ -210,8 +210,8 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
                                 Log.v(tag, "SCROLL DOWN");
                                 if (flagLoading && hasAddItem) {
                                     Log.v("Last", "WTF");
-                                    new LoadShopListTask(latitude, longitude, distance).execute(
-                                            mType, ++mPage);
+                                    new LoadShopListTask(latitude, longitude, distance)
+                                            .execute(++mPage);
                                 }
                             }
                             // 시작 Y가 끝 보다 작다면 터치가 위에서 아래로 이러우졌다는 것이고, 스크롤이 올라갔다는
@@ -297,7 +297,7 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
         });
 
         // JSONParse AsyncTask Method
-        new LoadShopListTask(latitude, longitude, distance).execute(mType, 1);
+        new LoadShopListTask(latitude, longitude, distance).execute(1);
 
         // for (String s : FROM_COLUMNS) {
         // Log.e("contacts", "contacts :: " + s);
@@ -361,15 +361,14 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
                 distance = 3;
             }
 
-            int type = params[0];
-            int page = params[1];
+            int page = params[0];
 
             StringBuilder sb = new StringBuilder("http://cashq.co.kr/m/list_json.php");
             sb.append("?listsize=").append(listsize);
             sb.append("&distance=").append(distance);
             sb.append("&lat=").append(mLat);
             sb.append("&lng=").append(mLng);
-            sb.append("&type=W0").append(type);
+            sb.append("&type=").append(mType);
             sb.append("&page=").append(page);
             sb.append("&appid=").append(APP_ID);
 
@@ -491,7 +490,7 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
                 hasAddItem = false;
 
                 if (mPage == 1) {
-                    Toast.makeText(getActivity(), "가맹점이 없습니다.", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getActivity(), "가맹점이 없습니다.", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getActivity(), "가맹점이 더 이상 없습니다.", Toast.LENGTH_SHORT).show();
                 }

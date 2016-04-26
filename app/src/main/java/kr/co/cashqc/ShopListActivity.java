@@ -1,8 +1,6 @@
 
 package kr.co.cashqc;
 
-import static kr.co.cashqc.MainActivity.SALE_ZONE;
-
 import com.actionbarsherlock.app.ActionBar;
 
 import android.os.Bundle;
@@ -12,12 +10,12 @@ import android.widget.TextView;
 
 import kr.co.cashqc.gcm.Util;
 
-
 /**
  * @author Jung-Hum Cho
  */
 
-public class ShopListActivity extends BaseActivity implements ActionBar.TabListener, ViewPager.OnPageChangeListener {
+public class ShopListActivity extends BaseActivity implements ActionBar.TabListener,
+        ViewPager.OnPageChangeListener {
 
     private ViewPager mViewPager;
 
@@ -57,17 +55,22 @@ public class ShopListActivity extends BaseActivity implements ActionBar.TabListe
 
         int distance = getIntent().getIntExtra("distance", 2);
 
+        boolean life = getIntent().getBooleanExtra("LIFE", false);
+
+        String type = getIntent().getStringExtra("TYPE");
+        int position = getIntent().getIntExtra("POSITION", 1);
+
         // String address = mLocationUtil.getAddressShort(lat, lng);
 
         // tvAddress.setText(address);
 
         // Initialization
         ShopListPagerAdapter pagerAdapter = new ShopListPagerAdapter(getSupportFragmentManager(),
-                lat, lng, distance);
+                lat, lng, distance, type, life);
 
         mViewPager = (ViewPager)findViewById(R.id.pager);
         mViewPager.setAdapter(pagerAdapter);
-//         mViewPager.setOffscreenPageLimit(2);
+        // mViewPager.setOffscreenPageLimit(2);
         mViewPager.addOnPageChangeListener(this);
 
         // 액션바 활성
@@ -75,19 +78,33 @@ public class ShopListActivity extends BaseActivity implements ActionBar.TabListe
 
         // TODO 액션바 아이콘
 
-        if (SALE_ZONE) {
+        if (life) {
             mTabs = new String[] {
-                    "할인", "치킨", "피자/햄버거", "중식/냉면", "한식/분식", "닭발/오리", "야식/기타", "족발/보쌈", "일식/돈가스",
-                    "생활/편의"
+                    "오락/레져", "건강/뷰티", "꽃배달", "병원/약국", "인테리어", "학원", "이사/용달/퀵", "부동산", "자동차",
+                    "컴퓨터/인터넷"
             };
-        } /*
-           * else if (ANSAN_LIFE) { mTabs = new String[] { "치킨", "피자/햄버거",
-           * "중식/냉면", "한식/분식", "닭발/오리", "야식/기타", "족발/보쌈", "일식/돈가스", "생활/편의" }; }
-           */else {
+
+        } else {
             mTabs = new String[] {
-                    "치킨", "피자/햄버거", "중식/냉면", "한식/분식", "닭발/오리", "야식/기타", "족발/보쌈", "일식/돈가스", "생활/편의"
+                    "치킨", "피자/햄버거", "중식/냉면", "한식/분식", "닭발/오리", "야식/기타", "족발/보쌈", "일식/돈가스"
             };
+
         }
+
+        // if (SALE_ZONE) {
+        // mTabs = new String[] {
+        // "할인", "치킨", "피자/햄버거", "중식/냉면", "한식/분식", "닭발/오리", "야식/기타", "족발/보쌈",
+        // "일식/돈가스",
+        // "생활/편의"
+        // };
+        // } else {
+        // mTabs = new String[] {
+        // "치킨", "피자/햄버거", "중식/냉면", "한식/분식", "닭발/오리", "야식/기타", "족발/보쌈", "일식/돈가스"
+        // };
+        // }
+        // if (!SALE_ZONE) {
+        // position -= 1;
+        // }
 
         if (mActionBar != null) {
             mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -96,14 +113,8 @@ public class ShopListActivity extends BaseActivity implements ActionBar.TabListe
             }
         }
 
-        int type = getIntent().getIntExtra("TYPE", 1);
-
-        if (!SALE_ZONE) {
-            type -= 1;
-        }
-
-        mViewPager.setCurrentItem(type);
-        mActionBar.setSelectedNavigationItem(type);
+        mViewPager.setCurrentItem(position);
+        mActionBar.setSelectedNavigationItem(position);
 
         mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override

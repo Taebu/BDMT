@@ -7,6 +7,7 @@
     android:orientation="vertical">
 
     <TextView
+        android:visibility="gone"
         android:layout_marginTop="8dp"
         android:textColor="#E94320"
         android:text="1. 포인트는 하루 한건 주문만 인정합니다.\n2. 12,000원 이상 주문이 아닐시 지급이 거절됩니다.\n3. 가맹점 등급에 따라 금액이 다릅니다."

@@ -34,20 +34,22 @@ public class SplActivity extends BaseActivity {
 
     }
 
+//    031-901-4082
+
     private void init() {
 
         mDialog = new CustomDialog(this);
 
-        tvPage = (TextView)findViewById(R.id.callog_page);
+        tvPage = (TextView) findViewById(R.id.callog_page);
 
         String phoneNum = getIntent().getStringExtra("phoneNum");
 
         SplPagerAdapter pagerAdapter = new SplPagerAdapter(getSupportFragmentManager(), phoneNum);
 
-        ViewPager viewPager = (ViewPager)findViewById(R.id.spl_pager);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.spl_pager);
         viewPager.setAdapter(pagerAdapter);
 
-        CirclePageIndicator pageIndicator = (CirclePageIndicator)findViewById(R.id.calllog_indicator);
+        CirclePageIndicator pageIndicator = (CirclePageIndicator) findViewById(R.id.calllog_indicator);
 
         pageIndicator.setFillColor(Color.parseColor("#000000"));
         pageIndicator.setStrokeColor(Color.parseColor("#333333"));
@@ -60,9 +62,6 @@ public class SplActivity extends BaseActivity {
                 super.onPageSelected(position);
 
                 switch (position) {
-//                    case 0:
-//                        tvPage.setText("바로결제 주문 내역");
-//                        break;
 
                     case 0:
                         tvPage.setText("전화 주문 내역");
@@ -70,6 +69,10 @@ public class SplActivity extends BaseActivity {
 
                     case 1:
                         tvPage.setText("포인트 적립 내역");
+                        break;
+
+                    case 2:
+                        tvPage.setText("바로결제 주문 내역");
                         break;
                 }
 
@@ -91,8 +94,4 @@ public class SplActivity extends BaseActivity {
         killer.removeActivity(this);
     }
 
-    @Override
-    public void finish() {
-        super.finish();
-    }
 }

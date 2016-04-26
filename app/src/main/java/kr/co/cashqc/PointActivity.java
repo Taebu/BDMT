@@ -25,8 +25,12 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import kr.co.cashqc.gcm.Util;
 
@@ -284,7 +288,7 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
 
                 tvAccrue.setText("포인트를 선택해주세요");
 
-                mAdapter = new PointListAdapter(getApplicationContext(), R.layout.row_point,
+                mAdapter = new PointListAdapter(getApplicationContext(), R.layout.row_newpoint,
                         mPointDataList);
 
                 mListView.setAdapter(mAdapter);
@@ -352,6 +356,68 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
         }
     }
 
+    private int calculateDday(String date) {
+
+        Log.v("cal", "dl: " + date);
+
+        String[] split = date.split("-");
+
+        int year = Integer.parseInt(split[0]);
+        int month = Integer.parseInt(split[1]) - 1;
+        int day = Integer.parseInt(split[2]);
+
+        Log.v("cal", "year: " + year + " month: " + month + " day: " + day);
+
+        Calendar calendar = Calendar.getInstance(Locale.KOREAN);
+        calendar.set(year, month, day, 0, 0, 0);
+
+        long now = System.currentTimeMillis();
+        long deadline = calendar.getTimeInMillis();
+        long secondOfDay = 24 * 60 * 60 * 1000;
+
+        Log.v("cal", "now: " + now + " dead: " + deadline);
+
+        long result = (deadline - now) / secondOfDay;
+
+        Log.v("cal", "" + result);
+
+        return (int)(result) * -1;
+    }
+
+    private String getSimpleDate(String callDate) {
+
+        Log.v("cal", "dl: " + callDate);
+
+        String[] split = callDate.split(" ");
+
+        String[] splitDate = split[0].split("-");
+
+        int year = Integer.parseInt(splitDate[0]);
+        int month = Integer.parseInt(splitDate[1]);
+        int day = Integer.parseInt(splitDate[2]);
+
+        String[] splitTime = split[1].split(":");
+
+        int hour = Integer.parseInt(splitTime[0]);
+        int minute = Integer.parseInt(splitTime[1]);
+        int second = Integer.parseInt(splitTime[2]);
+
+        Calendar calendar = Calendar.getInstance(Locale.KOREAN);
+
+        calendar.set(year, month, day, hour, minute, second);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd hh:mm", Locale.KOREAN);
+
+        // String result = month + "-" + day + /* "\n" + */hour + ":" + minute +
+        // "\n" + month
+        // + "/" + day + " " + hour + ":" + minute;
+
+        Date date = new Date(calendar.getTimeInMillis());
+
+        return dateFormat.format(date);
+
+    }
+
     private PointData getPointData(JSONObject object) {
 
         try {
@@ -360,11 +426,40 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
 
             datas.setStoreSeq(object.getString("store_seq"));
 
-            datas.setName(object.getString("store_name"));
-            datas.setDate(object.getString("ed_dt").replace(" ", "\n"));
+            String storeName = object.getString("store_name");
+
+            storeName = storeName/*.replace(" ", "")*/.trim();
+
+            if (storeName.length() > 4) {
+                StringBuilder sb = new StringBuilder(storeName);
+                storeName = sb.insert(5, "\n").toString();
+            } else {
+
+            }
+
+            datas.setName(storeName);
+
+            String callDate = getSimpleDate(object.getString("ed_dt"));
+
+            datas.setDate(callDate);
+
+            // datas.setDate(object.getString("ed_dt").replace(" ", "\n"));
             datas.setStatus(object.getString("status"));
             datas.setPoint(object.getString("point"));
-            datas.setDeadline(object.getString("ev_st_dt") + " ~ " + object.getString("ev_ed_dt"));
+
+            // int dDay = calculateDday("2016-04-25");
+
+            int dDay = calculateDday(object.getString("ev_ed_dt"));
+
+            if (dDay == 0) {
+                datas.setDeadline("D-Day");
+            } else {
+                datas.setDeadline("D" + String.valueOf(dDay));
+            }
+
+            // datas.setDeadline(object.getString("ev_st_dt") + " ~ " +
+            // object.getString("ev_ed_dt"));
+
             datas.setComment(object.getString("memo").replace("\r\n", ""));
 
             if (object.has("location")) {
@@ -620,7 +715,7 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
 
             private TextView date, name, status, deadline, comment, value, grade;
 
-            private CheckBox checkBox;
+            private CheckBox pointCheck;
 
             private RelativeLayout rowLayout;
 
@@ -641,7 +736,7 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
                 h.deadline = (TextView)convertView.findViewById(R.id.row_point_deadline);
                 h.comment = (TextView)convertView.findViewById(R.id.row_point_comment);
                 h.value = (TextView)convertView.findViewById(R.id.row_point_value);
-                h.checkBox = (CheckBox)convertView.findViewById(R.id.row_point_check);
+                h.pointCheck = (CheckBox)convertView.findViewById(R.id.row_point_check);
                 h.grade = (TextView)convertView.findViewById(R.id.row_point_grade);
 
                 convertView.setTag(h);
@@ -686,15 +781,22 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
             h.name.setText(item.getName());
             h.date.setText(item.getDate());
             h.comment.setText(item.getComment());
-            h.deadline.setText("포인트 유효 기간 : " + item.getDeadline());
+            h.deadline.setText(item.getDeadline());
             h.status.setText(item.getStatus());
             h.status.setTag(item.getStatus());
-            h.checkBox.setEnabled(false);
+            h.pointCheck.setEnabled(false);
 
             item.setPosition(position);
 
-            h.checkBox.setChecked(item.isChecked());
-            h.checkBox.setTag(item);
+            // if (item.isChecked()) {
+            // h.pointCheck.setImageResource(R.drawable.btn_check_on);
+            // } else {
+            // h.pointCheck.setImageResource(R.drawable.btn_check_off);
+            // }
+
+            h.pointCheck.setChecked(item.isChecked());
+
+            h.pointCheck.setTag(item);
 
             boolean isInclude = true;
 
@@ -720,23 +822,26 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
 
                 if (item.getStatus().equals("사용가능")) {
                     h.status.setText("사용가능");
+                    h.pointCheck.setOnClickListener(this);
                     convertView.setOnClickListener(this);
-                    h.checkBox.setVisibility(View.VISIBLE);
+                    h.pointCheck.setVisibility(View.VISIBLE);
                     h.status.setTextColor(Color.parseColor("#666666"));
                 } else {
+                    h.pointCheck.setOnClickListener(null);
                     convertView.setOnClickListener(null);
-                    h.checkBox.setVisibility(View.INVISIBLE);
+                    h.pointCheck.setVisibility(View.INVISIBLE);
                     h.status.setTextColor(Color.RED);
-                    h.status.setText("선택불가 - " + item.getStatus());
+                    h.status.setText("선택불가\n" + item.getStatus());
                 }
                 convertView.setBackgroundColor(Color.WHITE);
 
             } else {
+                h.pointCheck.setOnClickListener(null);
                 convertView.setOnClickListener(null);
-                h.status.setText("선택불가 - 다른 지역");
+                h.status.setText("선택불가\n다른 지역");
                 h.status.setTextColor(Color.RED);
                 convertView.setBackgroundColor(Color.LTGRAY);
-                h.checkBox.setVisibility(View.INVISIBLE);
+                h.pointCheck.setVisibility(View.INVISIBLE);
             }
 
             return convertView;
@@ -760,6 +865,8 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
         @Override
         public void onClick(View v) {
 
+            Log.v(TAG, "" + v.getId());
+
             if (SystemClock.elapsedRealtime() - mLastClickTime < 200) {
                 return;
             }
@@ -775,18 +882,21 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
 
                 if (pointClickable) {
 
-                    if (cb.isChecked()) {
+                    // if (cb.isChecked()) {
+                    if (clickData.isChecked()) {
 
                         if (POINT_STATUS == FREE_POINT) {
 
                             sCheckedCount--;
                             cb.setChecked(false);
+                            // cb.setImageResource(R.drawable.btn_check_off);
                             sPositionArray.set(clickData.getPosition(), false);
 
                         } else if (POINT_STATUS == FIVE_POINT && sCheckedCount <= mCheckLimit) {
 
                             sCheckedCount--;
                             cb.setChecked(false);
+                            // cb.setImageResource(R.drawable.btn_check_off);
                             sPositionArray.set(clickData.getPosition(), false);
                         }
 
@@ -809,6 +919,7 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
 
                             sCheckedCount++;
                             cb.setChecked(true);
+                            // cb.setImageResource(R.drawable.btn_check_on);
                             sPositionArray.set(clickData.getPosition(), true);
 
                         } else {
@@ -819,6 +930,7 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
 
                                 sCheckedCount++;
                                 cb.setChecked(true);
+                                // cb.setImageResource(R.drawable.btn_check_on);
                                 sPositionArray.set(clickData.getPosition(), true);
                             }
                         }
@@ -862,8 +974,8 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
                 // Log.e("JAYPOINT", "pos : " + position +
                 // "clickData.getPosition() : "
                 // + clickData.getPosition());
-
                 clickData.setChecked(cb.isChecked());
+                // clickData.setChecked(clickData.isChecked());
                 notifyDataSetChanged();
             }
         }

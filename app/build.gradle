@@ -11,7 +11,7 @@ android {
         applicationId "kr.co.cashqc"
         minSdkVersion 10
         targetSdkVersion 19
-        multiDexEnabled true
+        multiDexEnabled false
 
     }
 
