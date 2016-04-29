@@ -42,6 +42,7 @@
     </RelativeLayout>
 
     <LinearLayout
+        android:visibility="invisible"
         android:layout_width="340dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -54,6 +55,7 @@
             android:button="@drawable/btn_check" />
 
         <TextView
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="14dp"

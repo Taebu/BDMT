@@ -6,57 +6,70 @@
     android:orientation="vertical"
     android:padding="12dp">
 
-    <TextView
-        android:id="@+id/row_point_name"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="store_name"
-        android:textColor="@android:color/black"
-        android:textStyle="bold" />
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/row_point_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/row_point_name"
-        android:text="YY/MM/DD HH:MM"
-        android:textColor="#999999"
-        android:textSize="12sp" />
+        <TextView
+            android:id="@+id/row_point_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="store_name"
+            android:textColor="@android:color/black"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/row_point_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MM/DD HH:MM"
+            android:textColor="#999999"
+            android:textSize="12sp" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/row_point_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="value"
-        android:textSize="12sp"
-         />
-
-    <TextView
-        android:id="@+id/row_point_deadline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="8dp"
-        android:layout_toLeftOf="@+id/row_point_check"
-        android:text="D-57"
-        android:textColor="#E94433"
+        android:gravity="right"
+        android:text="3개      5,000원\n5개    10,000원\n10개    30,000원"
         android:textSize="12sp" />
 
-    <TextView
-        android:id="@+id/row_point_status"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/row_point_deadline"
-        android:layout_below="@+id/row_point_deadline"
-        android:text="status"
-        android:textColor="#666666"
-        android:textSize="12sp"
-        android:textStyle="bold" />
+        android:layout_centerVertical="true"
+        android:layout_marginRight="8dp"
+        android:layout_toLeftOf="@+id/row_point_check"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/row_point_deadline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="D-57"
+            android:textColor="#E94433"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/row_point_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="사용가능"
+            android:textColor="#666666"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
     <CheckBox
         android:id="@+id/row_point_check"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:button="@drawable/btn_check"

@@ -32,8 +32,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import kr.co.cashqc.gcm.Util;
-
 /**
  * Created by anp on 14. 11. 18..
  *
@@ -136,7 +134,8 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
                 new BankAccountDialog(this, mPhoneNum).show();
                 break;
             case R.id.point_logout:
-                Util.saveSharedPreferences_boolean(mThis, "point_autologin", false);
+                // Util.saveSharedPreferences_boolean(mThis, "point_autologin",
+                // false);
                 intent = new Intent(mThis, MainActivity.class);
                 break;
             case R.id.point_init:
@@ -302,58 +301,62 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
             }
         }
 
-        private void setPointRule(JSONObject pointRule) {
-
-            ArrayList<PointRuleData> mPointRuleList = new ArrayList<PointRuleData>();
-
-            try {
-                String[] pointItems;
-                pointItems = pointRule.getString("point_items").split("&");
-
-                for (String item : pointItems) {
-
-                    PointRuleData pointRuleData = new PointRuleData();
-
-                    String[] countAmount = item.split("_");
-
-                    pointRuleData.setCount(Integer.parseInt(countAmount[0]));
-                    pointRuleData.setAmount(Integer.parseInt(countAmount[1]));
-
-                    mPointRuleList.add(pointRuleData);
-
-                }
-
-                for (PointRuleData data : mPointRuleList) {
-                    Log.e(TAG, "pointRuleList : " + data.getCount() + ", " + data.getAmount());
-                }
-
-                String pointRuleContent = null;
-
-                for (int i = 0; i < mPointRuleList.size(); i++) {
-
-                    String count = String.format("%d개 ", mPointRuleList.get(i).getCount());
-                    String amount = String.format("%,d원 ", mPointRuleList.get(i).getAmount());
-
-                    String rule = count + amount;
-
-                    if (i == 0) {
-
-                        pointRuleContent = rule;
-
-                    } else {
-
-                        if (i % 2 == 0 || i == mPointRuleList.size() - 1) {
-                            pointRuleContent += rule;
-                        } else if (i % 2 == 1) {
-                            pointRuleContent += rule + "\n";
-                        }
-                    }
-                }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
+        // private void setPointRule(JSONObject pointRule) {
+        //
+        // ArrayList<PointRuleData> mPointRuleList = new
+        // ArrayList<PointRuleData>();
+        //
+        // try {
+        // String[] pointItems;
+        // pointItems = pointRule.getString("point_items").split("&");
+        //
+        // for (String item : pointItems) {
+        //
+        // PointRuleData pointRuleData = new PointRuleData();
+        //
+        // String[] countAmount = item.split("_");
+        //
+        // pointRuleData.setCount(Integer.parseInt(countAmount[0]));
+        // pointRuleData.setAmount(Integer.parseInt(countAmount[1]));
+        //
+        // mPointRuleList.add(pointRuleData);
+        //
+        // }
+        //
+        // for (PointRuleData data : mPointRuleList) {
+        // Log.e(TAG, "pointRuleList : " + data.getCount() + ", " +
+        // data.getAmount());
+        // }
+        //
+        // String pointRuleContent = null;
+        //
+        // for (int i = 0; i < mPointRuleList.size(); i++) {
+        //
+        // String count = String.format("%d개 ",
+        // mPointRuleList.get(i).getCount());
+        // String amount = String.format("%,d원 ",
+        // mPointRuleList.get(i).getAmount());
+        //
+        // String rule = count + amount;
+        //
+        // if (i == 0) {
+        //
+        // pointRuleContent = rule;
+        //
+        // } else {
+        //
+        // if (i % 2 == 0 || i == mPointRuleList.size() - 1) {
+        // pointRuleContent += rule;
+        // } else if (i % 2 == 1) {
+        // pointRuleContent += rule + "\n";
+        // }
+        // }
+        // }
+        //
+        // } catch (JSONException e) {
+        // e.printStackTrace();
+        // }
+        // }
     }
 
     private int calculateDday(String date) {
@@ -428,9 +431,9 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
 
             String storeName = object.getString("store_name");
 
-            storeName = storeName/*.replace(" ", "")*/.trim();
+            storeName = storeName/* .replace(" ", "") */.trim();
 
-            if (storeName.length() > 4) {
+            if (storeName.length() > 5) {
                 StringBuilder sb = new StringBuilder(storeName);
                 storeName = sb.insert(5, "\n").toString();
             } else {
@@ -523,10 +526,26 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
 
                     for (int i = 0; i < pointRuleList.size(); i++) {
 
-                        String count = String.format("%d개 ", pointRuleList.get(i).getCount());
-                        String amount = String.format("%,d원 ", pointRuleList.get(i).getAmount());
+                        String countString, amountString;
 
-                        String rule = count + amount;
+                        int count = pointRuleList.get(i).getCount();
+                        int amount = pointRuleList.get(i).getAmount();
+
+                        if (count < 10) {
+                            countString = String.format(Locale.KOREAN, " %d개", count);
+
+                        } else {
+                            countString = String.format(Locale.KOREAN, "%d개", count);
+
+                        }
+
+                        if (amount < 10000) {
+                            amountString = String.format(Locale.KOREAN, "    %,d원", amount);
+                        } else {
+                            amountString = String.format(Locale.KOREAN, "  %,d원", amount);
+                        }
+
+                        String rule = countString + amountString;
 
                         if (i == pointRuleList.size() - 1) {
                             pointRuleContent += rule;

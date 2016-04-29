@@ -40,11 +40,11 @@ public class LoginActivity extends BaseActivity {
         etPhoneNum = (EditText)findViewById(R.id.field_phone);
         etPhoneNum.setText(getPhoneNumber(this));
 
-        if (Util.loadSharedPreferencesBoolean(this, "point_autologin")) {
-
-            cbAutoLogin.setChecked(true);
-            loginWork();
-        }
+//        if (Util.loadSharedPreferencesBoolean(this, "point_autologin")) {
+//
+//            cbAutoLogin.setChecked(true);
+//            loginWork();
+//        }
 
         findViewById(R.id.btn_login).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,7 +120,7 @@ public class LoginActivity extends BaseActivity {
 
             if ("true".equals(success)) {
 
-                Util.saveSharedPreferences_boolean(mThis, "point_autologin", isAutoLogin);
+//                Util.saveSharedPreferences_boolean(mThis, "point_autologin", isAutoLogin);
 
                 Intent intent = new Intent(LoginActivity.this, PointActivity.class);
                 intent.putExtra("phoneNum", etPhoneNum.getText().toString());

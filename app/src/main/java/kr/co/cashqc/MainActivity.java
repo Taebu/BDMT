@@ -609,7 +609,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
                 } else if ("양산시".equals(mSi)) {
                     mLifeImageView.setVisibility(View.GONE);
                     sDistance = 5;
-                } else if ("안산시".equals(mSi) || "의정부시".equals(mSi)) {
+                } else if ("안산시".equals(mSi) || "의정부시".equals(mSi) || "성북구".equals(mGu)) {
                     // mPointText.setVisibility(View.GONE);
                     mLifeImageView.setVisibility(View.VISIBLE);
                     LIFE_ZONE = true;

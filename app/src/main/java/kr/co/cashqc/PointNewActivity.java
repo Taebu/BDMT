@@ -131,7 +131,7 @@ public class PointNewActivity extends BaseActivity implements View.OnClickListen
                 new BankAccountDialog(this, mPhoneNum).show();
                 break;
             case R.id.point_logout:
-                Util.saveSharedPreferences_boolean(mThis, "point_autologin", false);
+//                Util.saveSharedPreferences_boolean(mThis, "point_autologin", false);
                 intent = new Intent(mThis, MainActivity.class);
                 break;
             case R.id.point_init:
