@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:context=".child.BaseActivity">
+    android:layout_height="wrap_content">
 
     <ImageButton
         android:id="@+id/btn_slidingmenu"
@@ -25,14 +23,14 @@
         android:src="@drawable/logo_new" />
 
     <RelativeLayout
-        android:visibility="gone"
         android:id="@+id/actionbar_gps_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="28dp"
         android:layout_toLeftOf="@+id/cart_count"
-        android:layout_toRightOf="@+id/btn_slidingmenu">
+        android:layout_toRightOf="@+id/btn_slidingmenu"
+        android:visibility="gone">
 
         <Button
             android:id="@+id/actionbar_btn_gps"
@@ -51,7 +49,6 @@
             android:textColor="#FFFFFF" />
 
         <TextView
-            android:visibility="gone"
             android:id="@+id/actionbar_manual_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -61,7 +58,8 @@
             android:onClick="mOnClick"
             android:text="수동주소"
             android:textColor="#FFFFFF"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="gone" />
 
         <TextView
 
@@ -88,12 +86,11 @@
         android:layout_marginRight="-4dp"
         android:layout_toLeftOf="@+id/btn_cart"
         android:text="0"
-        android:visibility="invisible"
         android:textColor="#FFFFFF"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:visibility="invisible" />
 
     <ImageView
-        android:visibility="invisible"
         android:id="@+id/btn_cart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -101,6 +98,7 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="16dp"
         android:clickable="true"
-        android:src="@drawable/btn_nav" />
+        android:src="@drawable/btn_nav"
+        android:visibility="invisible" />
 
 </RelativeLayout>

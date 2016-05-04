@@ -479,9 +479,9 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
                 mPosition = 6;
                 mType = "W07";
                 if (LIFE_ZONE) {
-                    drawable = R.drawable.bg_dakbal_crop;
+                    drawable = R.drawable.bg_jokbal_crop;
                 } else {
-                    drawable = R.drawable.bg_dakbal;
+                    drawable = R.drawable.bg_jokbal;
                 }
                 break;
             case R.id.wmain_japanese:
@@ -586,9 +586,8 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
         protected void onPostExecute(JSONObject jsonObject) {
             super.onPostExecute(jsonObject);
 
-            String json = jsonObject.toString();
-
             try {
+                String json = jsonObject.toString();
                 json = new String(json.getBytes("8859_1"), "UTF-8");
 
                 mAddress = getAddress(json);
@@ -633,7 +632,7 @@ public class MainActivity extends BaseActivity implements CircleLayout.OnItemSel
 
                 Log.e(TAG, "address : " + mAddress);
 
-            } catch (UnsupportedEncodingException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             } finally {
                 if (mDialog.isShowing()) {
