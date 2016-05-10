@@ -210,7 +210,7 @@
                 android:textSize="14sp" />
 
             <ImageView
-
+            android:visibility="invisible"
                 android:id="@+id/row_img_point"
                 android:layout_width="64dp"
                 android:layout_height="46dp"
