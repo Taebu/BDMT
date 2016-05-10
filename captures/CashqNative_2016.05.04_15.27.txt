@@ -1,0 +1,32 @@
+ACTIVITY MANAGER PENDING INTENTS (dumpsys activity intents)
+  (nothing)
+
+ACTIVITY MANAGER BROADCAST STATE (dumpsys activity broadcasts)
+  (nothing)
+
+ACTIVITY MANAGER CONTENT PROVIDERS (dumpsys activity providers)
+  Published single-user content providers (by class):
+  * ContentProviderRecord{52b29438 u0 com.android.providers.settings/.SettingsProvider}
+    proc=ProcessRecord{52a06f1c 29702:system/1000}
+    singleton=true
+    authority=settings
+
+ACTIVITY MANAGER SERVICES (dumpsys activity services)
+  (nothing)
+
+ACTIVITY MANAGER ACTIVITIES (dumpsys activity activities)
+  mDismissKeyguardOnNextActivity=false
+  mFocusedStack=null mStackState=STACK_STATE_HOME_IN_FRONT
+  mSleepTimeout=false
+  mCurTaskId=0
+  mUserStackInFront={}
+
+ACTIVITY MANAGER RUNNING PROCESSES (dumpsys activity processes)
+  Process LRU list (sorted by oom_adj, 1 total, non-act at 0, non-svc at 0):
+    PERS # 0: sys   F/ /P  trm: 0 29702:system/1000 (fixed)
+
+  mStartedUsers:
+    User #0: mState=BOOTING
+  mStartedUserArray: [0]
+  mUserLru: [0]
+  mConfiguration: {1.0 ?mcc?mnc ko_KR ldltr ?swdp ?wdp ?hdp ?density ?lsize ?long ?orien ?uimode ?night ?touch ?keyb/?/? ?nav/? s.1}
