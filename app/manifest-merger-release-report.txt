@@ -69,13 +69,13 @@ uses-permission#android.permission.VIBRATE
 ADDED from AndroidManifest.xml:22:5
 	android:name
 		ADDED from AndroidManifest.xml:22:22
-permission#kr.co.cashqc.permission.C2D_MESSAGE
+permission#com.wisepartners.dtalk.permission.C2D_MESSAGE
 ADDED from AndroidManifest.xml:24:5
 	android:protectionLevel
 		ADDED from AndroidManifest.xml:26:9
 	android:name
 		ADDED from AndroidManifest.xml:25:9
-uses-permission#kr.co.cashqc.permission.C2D_MESSAGE
+uses-permission#com.wisepartners.dtalk.permission.C2D_MESSAGE
 ADDED from AndroidManifest.xml:28:5
 	android:name
 		ADDED from AndroidManifest.xml:28:22
@@ -125,7 +125,7 @@ ADDED from AndroidManifest.xml:57:9
 		ADDED from AndroidManifest.xml:59:9
 	android:name
 		ADDED from AndroidManifest.xml:58:9
-activity#kr.co.cashqc.MainActivity
+activity#com.wisepartners.dtalk.MainActivity
 ADDED from AndroidManifest.xml:61:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:63:13
@@ -141,7 +141,7 @@ category#android.intent.category.LAUNCHER
 ADDED from AndroidManifest.xml:67:13
 	android:name
 		ADDED from AndroidManifest.xml:67:23
-activity#kr.co.cashqc.PayActivity
+activity#com.wisepartners.dtalk.PayActivity
 ADDED from AndroidManifest.xml:72:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:74:13
@@ -165,7 +165,7 @@ data
 ADDED from AndroidManifest.xml:80:17
 	android:scheme
 		ADDED from AndroidManifest.xml:80:23
-activity#kr.co.cashqc.IntroActivity
+activity#com.wisepartners.dtalk.IntroActivity
 ADDED from AndroidManifest.xml:85:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:87:13
@@ -173,133 +173,133 @@ ADDED from AndroidManifest.xml:85:9
 		ADDED from AndroidManifest.xml:88:13
 	android:name
 		ADDED from AndroidManifest.xml:86:13
-activity#kr.co.cashqc.ShopListActivity
+activity#com.wisepartners.dtalk.ShopListActivity
 ADDED from AndroidManifest.xml:90:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:92:13
 	android:name
 		ADDED from AndroidManifest.xml:91:13
-activity#kr.co.cashqc.ShopPageActivity
+activity#com.wisepartners.dtalk.ShopPageActivity
 ADDED from AndroidManifest.xml:93:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:95:13
 	android:name
 		ADDED from AndroidManifest.xml:94:13
-activity#kr.co.cashqc.WebViewActivity
+activity#com.wisepartners.dtalk.WebViewActivity
 ADDED from AndroidManifest.xml:96:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:98:13
 	android:name
 		ADDED from AndroidManifest.xml:97:13
-activity#kr.co.cashqc.FakeActivity
+activity#com.wisepartners.dtalk.FakeActivity
 ADDED from AndroidManifest.xml:99:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:101:13
 	android:name
 		ADDED from AndroidManifest.xml:100:13
-activity#kr.co.cashqc.InfoActivity
+activity#com.wisepartners.dtalk.InfoActivity
 ADDED from AndroidManifest.xml:102:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:104:13
 	android:name
 		ADDED from AndroidManifest.xml:103:13
-activity#kr.co.cashqc.LoginActivity
+activity#com.wisepartners.dtalk.LoginActivity
 ADDED from AndroidManifest.xml:105:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:107:13
 	android:name
 		ADDED from AndroidManifest.xml:106:13
-activity#kr.co.cashqc.PointActivity
+activity#com.wisepartners.dtalk.PointActivity
 ADDED from AndroidManifest.xml:108:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:110:13
 	android:name
 		ADDED from AndroidManifest.xml:109:13
-activity#kr.co.cashqc.JoinActivity
+activity#com.wisepartners.dtalk.JoinActivity
 ADDED from AndroidManifest.xml:111:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:113:13
 	android:name
 		ADDED from AndroidManifest.xml:112:13
-activity#kr.co.cashqc.ModifyActivity
+activity#com.wisepartners.dtalk.ModifyActivity
 ADDED from AndroidManifest.xml:114:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:116:13
 	android:name
 		ADDED from AndroidManifest.xml:115:13
-activity#kr.co.cashqc.MailActivity
+activity#com.wisepartners.dtalk.MailActivity
 ADDED from AndroidManifest.xml:117:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:119:13
 	android:name
 		ADDED from AndroidManifest.xml:118:13
-activity#kr.co.cashqc.MapActivity
+activity#com.wisepartners.dtalk.MapActivity
 ADDED from AndroidManifest.xml:120:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:122:13
 	android:name
 		ADDED from AndroidManifest.xml:121:13
-activity#kr.co.cashqc.AgencyActivity
+activity#com.wisepartners.dtalk.AgencyActivity
 ADDED from AndroidManifest.xml:123:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:125:13
 	android:name
 		ADDED from AndroidManifest.xml:124:13
-activity#kr.co.cashqc.PartnershipActivity
+activity#com.wisepartners.dtalk.PartnershipActivity
 ADDED from AndroidManifest.xml:127:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:129:13
 	android:name
 		ADDED from AndroidManifest.xml:128:13
-activity#kr.co.cashqc.FranchiseActivity
+activity#com.wisepartners.dtalk.FranchiseActivity
 ADDED from AndroidManifest.xml:130:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:132:13
 	android:name
 		ADDED from AndroidManifest.xml:131:13
-activity#kr.co.cashqc.OrderActivity
+activity#com.wisepartners.dtalk.OrderActivity
 ADDED from AndroidManifest.xml:133:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:135:13
 	android:name
 		ADDED from AndroidManifest.xml:134:13
-activity#kr.co.cashqc.CartActivity
+activity#com.wisepartners.dtalk.CartActivity
 ADDED from AndroidManifest.xml:136:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:138:13
 	android:name
 		ADDED from AndroidManifest.xml:137:13
-activity#kr.co.cashqc.OrderResultActivity
+activity#com.wisepartners.dtalk.OrderResultActivity
 ADDED from AndroidManifest.xml:139:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:141:13
 	android:name
 		ADDED from AndroidManifest.xml:140:13
-activity#kr.co.cashqc.ShopAdminActivity
+activity#com.wisepartners.dtalk.ShopAdminActivity
 ADDED from AndroidManifest.xml:142:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:144:13
 	android:name
 		ADDED from AndroidManifest.xml:143:13
-activity#kr.co.cashqc.CallLogLoginActivity
+activity#com.wisepartners.dtalk.CallLogLoginActivity
 ADDED from AndroidManifest.xml:145:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:147:13
 	android:name
 		ADDED from AndroidManifest.xml:146:13
-activity#kr.co.cashqc.CallLogActivity
+activity#com.wisepartners.dtalk.CallLogActivity
 ADDED from AndroidManifest.xml:148:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:150:13
 	android:name
 		ADDED from AndroidManifest.xml:149:13
-activity#kr.co.cashqc.SPLActivity
+activity#com.wisepartners.dtalk.SPLActivity
 ADDED from AndroidManifest.xml:151:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:153:13
 	android:name
 		ADDED from AndroidManifest.xml:152:13
-activity#kr.co.cashqc.SPLLoginActivity
+activity#com.wisepartners.dtalk.SPLLoginActivity
 ADDED from AndroidManifest.xml:154:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:156:13
@@ -311,7 +311,7 @@ ADDED from AndroidManifest.xml:159:9
 		ADDED from AndroidManifest.xml:161:13
 	android:name
 		ADDED from AndroidManifest.xml:160:13
-intent-filter#com.google.android.c2dm.intent.RECEIVE+com.google.android.c2dm.intent.REGISTRATION+kr.co.cashqc
+intent-filter#com.google.android.c2dm.intent.RECEIVE+com.google.android.c2dm.intent.REGISTRATION+com.wisepartners.dtalk
 ADDED from AndroidManifest.xml:162:13
 action#com.google.android.c2dm.intent.RECEIVE
 ADDED from AndroidManifest.xml:163:17
@@ -321,11 +321,11 @@ action#com.google.android.c2dm.intent.REGISTRATION
 ADDED from AndroidManifest.xml:164:17
 	android:name
 		ADDED from AndroidManifest.xml:164:25
-category#kr.co.cashqc
+category#com.wisepartners.dtalk
 ADDED from AndroidManifest.xml:166:17
 	android:name
 		ADDED from AndroidManifest.xml:166:27
-activity#kr.co.cashqc.showMsg
+activity#com.wisepartners.dtalk.showMsg
 ADDED from AndroidManifest.xml:170:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:173:13
@@ -341,7 +341,7 @@ action#android.intent.action.AlertDialogs
 ADDED from AndroidManifest.xml:177:17
 	android:name
 		ADDED from AndroidManifest.xml:177:25
-service#kr.co.cashqc.GCMIntentService
+service#com.wisepartners.dtalk.GCMIntentService
 ADDED from AndroidManifest.xml:184:9
 	android:name
 		ADDED from AndroidManifest.xml:184:18

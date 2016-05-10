@@ -8,7 +8,7 @@ android {
     buildToolsVersion '23.0.3'
 
     defaultConfig {
-        applicationId "kr.co.cashqc"
+        applicationId "com.wisepartners.dtalk"
         minSdkVersion 10
         targetSdkVersion 19
         multiDexEnabled false

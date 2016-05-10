@@ -3,168 +3,219 @@
     android:id="@+id/row_id"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/list_box">
+    android:background="#00ff0000"
+    android:paddingBottom="4dp">
 
-    <LinearLayout
-        android:id="@+id/thm_layout"
-        android:layout_width="80dp"
-        android:layout_height="120dp"
-        android:layout_centerVertical="true"
-        android:layout_margin="10dp"
-        android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/list_box">
 
         <ImageView
-            android:id="@+id/list_thm"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:scaleType="fitXY"
-            android:src="@drawable/stub" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/content_layout"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@id/thm_layout"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/cashq_list_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="name"
-            android:textColor="#000"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <RatingBar
-            android:id="@+id/shoplist_rating"
-            style="@style/starRatingBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:isIndicator="true"
-            android:numStars="5" />
+            android:id="@+id/separator_row"
+            android:layout_width="6dp"
+            android:layout_height="125dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="2dp"
+            android:background="@drawable/list_title_red" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:orientation="horizontal">
+            android:id="@+id/thm_layout"
+            android:layout_width="80dp"
+            android:layout_height="120dp"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:orientation="vertical">
 
             <ImageView
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_gravity="center"
-                android:layout_marginRight="5dp"
-                android:src="@drawable/list_money" />
-
-            <TextView
-                android:id="@+id/min_pay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:text="12,000원 부터"
-                android:textColor="#ed8179"
-                android:textSize="12sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_gravity="center"
-                android:layout_marginRight="5dp"
-                android:adjustViewBounds="true"
-                android:scaleType="fitXY"
-                android:src="@drawable/icon_clock" />
-
-            <TextView
-                android:id="@+id/cashq_list_time1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="time1"
-                android:textColor="#000"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/cashq_list_time2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="time2"
-                android:textColor="#000"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_gravity="center"
-                android:src="@drawable/btn_location_1" />
-
-            <TextView
-
-                android:id="@+id/cashq_list_distance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="거리"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/dong"
+                android:id="@+id/list_thm"
                 android:layout_width="match_parent"
-
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:singleLine="true"
-                android:text="동"
-                android:textSize="12sp" />
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:scaleType="fitXY"
+                android:src="@drawable/stub" />
 
         </LinearLayout>
-
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/content_layout"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:orientation="horizontal">
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/thm_layout"
+            android:orientation="vertical">
 
-            <!--<ImageView-->
-            <!--android:id="@+id/icon_calllog"-->
-            <!--android:layout_width="15dp"-->
-            <!--android:layout_height="15dp"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:src="@drawable/icon_call"-->
-            <!--android:visibility="invisible" />-->
+            <TextView
+                android:id="@+id/cashq_list_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="name"
+                android:textColor="#000"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-            <!--<TextView-->
-            <!--android:id="@+id/calllog"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:layout_marginLeft="4dp"-->
-            <!--android:gravity="center"-->
-            <!--android:text="11 건 주문"-->
-            <!--android:textSize="12sp"-->
-            <!--android:visibility="invisible" />-->
+            <RatingBar
+                android:id="@+id/shoplist_rating"
+                style="@style/starRatingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="true"
+                android:numStars="5" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="5dp"
+                    android:src="@drawable/list_money" />
+
+                <TextView
+                    android:id="@+id/min_pay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:text="12,000원 이상 포인트 적립 가능"
+                    android:textColor="#ed8179"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="5dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/icon_clock" />
+
+                <TextView
+                    android:id="@+id/cashq_list_time1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="time1"
+                    android:textColor="#000"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/cashq_list_time2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="time2"
+                    android:textColor="#000"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/btn_location_1" />
+
+                <TextView
+
+                    android:id="@+id/cashq_list_distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="거리"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/dong"
+                    android:layout_width="match_parent"
+
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:singleLine="true"
+                    android:text="동"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:orientation="horizontal">
+
+                <!--<ImageView-->
+                <!--android:id="@+id/icon_calllog"-->
+                <!--android:layout_width="15dp"-->
+                <!--android:layout_height="15dp"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:src="@drawable/icon_call"-->
+                <!--android:visibility="invisible" />-->
+
+                <!--<TextView-->
+                <!--android:id="@+id/calllog"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:layout_marginLeft="4dp"-->
+                <!--android:gravity="center"-->
+                <!--android:text="11 건 주문"-->
+                <!--android:textSize="12sp"-->
+                <!--android:visibility="invisible" />-->
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btn_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:orientation="vertical">
+
+
+            <Button
+                android:id="@+id/tel_btn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="right"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/btn_list_red"
+                android:focusable="false"
+                android:gravity="center"
+                android:scaleType="fitXY"
+                android:text="캐시큐\n주문"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+
+            <ImageView
+
+                android:id="@+id/row_img_point"
+                android:layout_width="64dp"
+                android:layout_height="46dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/img_2000" />
 
         </LinearLayout>
-    </LinearLayout>
+    </RelativeLayout>
 </RelativeLayout>

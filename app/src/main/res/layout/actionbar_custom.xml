@@ -6,21 +6,22 @@
 
     <ImageButton
         android:id="@+id/btn_slidingmenu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:layout_width="50dp"
+        android:layout_height="30dp"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:background="@null"
-        android:src="@drawable/btn_menu_new" />
+        android:src="@drawable/mymenu_1" />
 
     <ImageView
-
         android:id="@+id/logo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_gravity="center"
-        android:src="@drawable/logo_new" />
+        android:src="@drawable/logo_2" />
 
     <RelativeLayout
         android:id="@+id/actionbar_gps_layout"
