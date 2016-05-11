@@ -53,7 +53,7 @@
     </style>
 
     <style name="ActionBar.Solid.Cashq" parent="@style/Widget.Sherlock.Light.ActionBar.Solid">
-        <item name="background">@drawable/ab_solid_cashq</item>
+        <item name="background">#278bd7</item>
         <item name="backgroundStacked">@drawable/bg_sub_menu</item>
         <item name="backgroundSplit">@drawable/bg_sub_menu</item>
         <item name="progressBarStyle">@style/ProgressBar.Cashq</item>

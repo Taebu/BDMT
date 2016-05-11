@@ -10,9 +10,9 @@
     <bool name="ga_autoActivityTracking">true</bool>
 
     <!-- The screen names that will appear in reports -->
-    <screenName name="com.wisepartners.dtalk.MainActivity"/>
-    <screenName name="com.wisepartners.dtalk.ShopPageActivity"/>
-    <screenName name="com.wisepartners.dtalk.ShopListFragment"/>
+    <screenName name="com.anp.ulsanfood.MainActivity"/>
+    <screenName name="com.anp.ulsanfood.ShopPageActivity"/>
+    <screenName name="com.anp.ulsanfood.ShopListFragment"/>
 
         <!-- AnalyticsSampleApp ScreenViewSampleScreen -->
     <!--<screenName name="com.google.android.gms.analytics.samples.mobileplayground.EcommerceFragment">-->

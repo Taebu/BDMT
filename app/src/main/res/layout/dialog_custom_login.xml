@@ -13,8 +13,8 @@
         android:layout_height="200dp">
 
         <ImageView
-            android:background="@drawable/bg_popup_title"
-            android:src="@drawable/logo_sub"
+            android:background="#278bd7"
+            android:src="@drawable/logo_2"
             android:scaleType="center"
             android:layout_width="match_parent"
             android:layout_height="65dp"/>

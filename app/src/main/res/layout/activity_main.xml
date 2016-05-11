@@ -15,6 +15,7 @@
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/bg_main"
+    android:background="@drawable/main_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -85,6 +86,7 @@
     </LinearLayout>
 
     <ScrollView
+        android:padding="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal">
@@ -102,22 +104,24 @@
                 android:orientation="horizontal">
 
                 <ImageView
+                    android:adjustViewBounds="true"
                     android:id="@+id/main_chicken"
                     android:layout_width="@dimen/mainimg_size"
-                    android:layout_height="@dimen/mainimg_size"
-                    android:layout_margin="20dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/mainimg_margin"
                     android:clickable="true"
                     android:onClick="mainOnClick"
-                    android:src="@drawable/btn_chicken_off" />
+                    android:src="@drawable/btn_chicken" />
 
                 <ImageView
+                    android:adjustViewBounds="true"
                     android:id="@+id/main_pizza"
                     android:layout_width="@dimen/mainimg_size"
-                    android:layout_height="@dimen/mainimg_size"
-                    android:layout_margin="20dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/mainimg_margin"
                     android:clickable="true"
                     android:onClick="mainOnClick"
-                    android:src="@drawable/btn_pizza_off" />
+                    android:src="@drawable/btn_pizza" />
 
 
             </LinearLayout>
@@ -126,28 +130,29 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="-30dp"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal">
 
 
                 <ImageView
+                    android:adjustViewBounds="true"
                     android:id="@+id/main_chinese"
                     android:layout_width="@dimen/mainimg_size"
-                    android:layout_height="@dimen/mainimg_size"
-                    android:layout_margin="20dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/mainimg_margin"
                     android:clickable="true"
                     android:onClick="mainOnClick"
-                    android:src="@drawable/btn_chinese_off" />
+                    android:src="@drawable/btn_chinese" />
 
                 <ImageView
+                    android:adjustViewBounds="true"
                     android:id="@+id/main_korean"
                     android:layout_width="@dimen/mainimg_size"
-                    android:layout_height="@dimen/mainimg_size"
-                    android:layout_margin="20dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/mainimg_margin"
                     android:clickable="true"
                     android:onClick="mainOnClick"
-                    android:src="@drawable/btn_korean_off" />
+                    android:src="@drawable/btn_korean" />
 
 
             </LinearLayout>
@@ -156,64 +161,62 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="-30dp"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal">
 
                 <ImageView
+                    android:adjustViewBounds="true"
                     android:id="@+id/main_flour"
                     android:layout_width="@dimen/mainimg_size"
-                    android:layout_height="@dimen/mainimg_size"
-                    android:layout_margin="20dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/mainimg_margin"
                     android:clickable="true"
                     android:onClick="mainOnClick"
-                    android:src="@drawable/btn_flour_off" />
+                    android:src="@drawable/btn_flour" />
 
 
                 <ImageView
+                    android:adjustViewBounds="true"
                     android:id="@+id/main_night"
                     android:layout_width="@dimen/mainimg_size"
-                    android:layout_height="@dimen/mainimg_size"
-                    android:layout_margin="20dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/mainimg_margin"
                     android:clickable="true"
                     android:onClick="mainOnClick"
-                    android:src="@drawable/btn_night_off" />
+                    android:src="@drawable/btn_night" />
 
             </LinearLayout>
 
             <LinearLayout
+                
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="-30dp"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal">
 
                 <ImageView
+                    android:adjustViewBounds="true"
                     android:id="@+id/main_jokbal"
                     android:layout_width="@dimen/mainimg_size"
-                    android:layout_height="@dimen/mainimg_size"
-                    android:layout_margin="20dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/mainimg_margin"
                     android:clickable="true"
                     android:onClick="mainOnClick"
-                    android:src="@drawable/btn_jokbal_off" />
+                    android:src="@drawable/btn_jokbal" />
 
 
                 <ImageView
+                    android:adjustViewBounds="true"
                     android:id="@+id/main_japanese"
                     android:layout_width="@dimen/mainimg_size"
-                    android:layout_height="@dimen/mainimg_size"
-                    android:layout_margin="20dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/mainimg_margin"
                     android:clickable="true"
                     android:onClick="mainOnClick"
-                    android:src="@drawable/btn_japanese_off" />
+                    android:src="@drawable/btn_japanese" />
 
 
             </LinearLayout>
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ad_bt" />
 
         </LinearLayout>
 

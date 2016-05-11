@@ -34,7 +34,7 @@
     </style>
 
     <style name="ActionBar.Solid.Cashq" parent="@style/Widget.Sherlock.Light.ActionBar.Solid">
-        <item name="android:background">@drawable/ab_solid_cashq</item>
+        <item name="android:background">#278bd7</item>
         <item name="android:backgroundStacked">@drawable/ab_stacked_solid_cashq</item>
         <item name="android:backgroundSplit">@drawable/ab_bottom_solid_cashq</item>
         <item name="android:progressBarStyle">@style/ProgressBar.Cashq</item>
