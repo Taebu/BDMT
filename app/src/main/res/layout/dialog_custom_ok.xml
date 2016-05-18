@@ -15,7 +15,7 @@
 
         <ImageView
             android:layout_marginTop="-4dp"
-            android:background="#278bd7"
+            android:background="@color/app_theme_color"
             android:src="@drawable/logo_2"
             android:scaleType="center"
             android:layout_width="match_parent"

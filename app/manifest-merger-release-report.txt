@@ -69,13 +69,13 @@ uses-permission#android.permission.VIBRATE
 ADDED from AndroidManifest.xml:22:5
 	android:name
 		ADDED from AndroidManifest.xml:22:22
-permission#com.anp.ulsanfood.permission.C2D_MESSAGE
+permission#com.anp.bdmt.permission.C2D_MESSAGE
 ADDED from AndroidManifest.xml:24:5
 	android:protectionLevel
 		ADDED from AndroidManifest.xml:26:9
 	android:name
 		ADDED from AndroidManifest.xml:25:9
-uses-permission#com.anp.ulsanfood.permission.C2D_MESSAGE
+uses-permission#com.anp.bdmt.permission.C2D_MESSAGE
 ADDED from AndroidManifest.xml:28:5
 	android:name
 		ADDED from AndroidManifest.xml:28:22
@@ -125,7 +125,7 @@ ADDED from AndroidManifest.xml:57:9
 		ADDED from AndroidManifest.xml:59:9
 	android:name
 		ADDED from AndroidManifest.xml:58:9
-activity#com.anp.ulsanfood.MainActivity
+activity#com.anp.bdmt.MainActivity
 ADDED from AndroidManifest.xml:61:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:63:13
@@ -141,7 +141,7 @@ category#android.intent.category.LAUNCHER
 ADDED from AndroidManifest.xml:67:13
 	android:name
 		ADDED from AndroidManifest.xml:67:23
-activity#com.anp.ulsanfood.PayActivity
+activity#com.anp.bdmt.PayActivity
 ADDED from AndroidManifest.xml:72:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:74:13
@@ -165,7 +165,7 @@ data
 ADDED from AndroidManifest.xml:80:17
 	android:scheme
 		ADDED from AndroidManifest.xml:80:23
-activity#com.anp.ulsanfood.IntroActivity
+activity#com.anp.bdmt.IntroActivity
 ADDED from AndroidManifest.xml:85:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:87:13
@@ -173,133 +173,133 @@ ADDED from AndroidManifest.xml:85:9
 		ADDED from AndroidManifest.xml:88:13
 	android:name
 		ADDED from AndroidManifest.xml:86:13
-activity#com.anp.ulsanfood.ShopListActivity
+activity#com.anp.bdmt.ShopListActivity
 ADDED from AndroidManifest.xml:90:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:92:13
 	android:name
 		ADDED from AndroidManifest.xml:91:13
-activity#com.anp.ulsanfood.ShopPageActivity
+activity#com.anp.bdmt.ShopPageActivity
 ADDED from AndroidManifest.xml:93:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:95:13
 	android:name
 		ADDED from AndroidManifest.xml:94:13
-activity#com.anp.ulsanfood.WebViewActivity
+activity#com.anp.bdmt.WebViewActivity
 ADDED from AndroidManifest.xml:96:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:98:13
 	android:name
 		ADDED from AndroidManifest.xml:97:13
-activity#com.anp.ulsanfood.FakeActivity
+activity#com.anp.bdmt.FakeActivity
 ADDED from AndroidManifest.xml:99:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:101:13
 	android:name
 		ADDED from AndroidManifest.xml:100:13
-activity#com.anp.ulsanfood.InfoActivity
+activity#com.anp.bdmt.InfoActivity
 ADDED from AndroidManifest.xml:102:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:104:13
 	android:name
 		ADDED from AndroidManifest.xml:103:13
-activity#com.anp.ulsanfood.LoginActivity
+activity#com.anp.bdmt.LoginActivity
 ADDED from AndroidManifest.xml:105:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:107:13
 	android:name
 		ADDED from AndroidManifest.xml:106:13
-activity#com.anp.ulsanfood.PointActivity
+activity#com.anp.bdmt.PointActivity
 ADDED from AndroidManifest.xml:108:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:110:13
 	android:name
 		ADDED from AndroidManifest.xml:109:13
-activity#com.anp.ulsanfood.JoinActivity
+activity#com.anp.bdmt.JoinActivity
 ADDED from AndroidManifest.xml:111:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:113:13
 	android:name
 		ADDED from AndroidManifest.xml:112:13
-activity#com.anp.ulsanfood.ModifyActivity
+activity#com.anp.bdmt.ModifyActivity
 ADDED from AndroidManifest.xml:114:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:116:13
 	android:name
 		ADDED from AndroidManifest.xml:115:13
-activity#com.anp.ulsanfood.MailActivity
+activity#com.anp.bdmt.MailActivity
 ADDED from AndroidManifest.xml:117:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:119:13
 	android:name
 		ADDED from AndroidManifest.xml:118:13
-activity#com.anp.ulsanfood.MapActivity
+activity#com.anp.bdmt.MapActivity
 ADDED from AndroidManifest.xml:120:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:122:13
 	android:name
 		ADDED from AndroidManifest.xml:121:13
-activity#com.anp.ulsanfood.AgencyActivity
+activity#com.anp.bdmt.AgencyActivity
 ADDED from AndroidManifest.xml:123:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:125:13
 	android:name
 		ADDED from AndroidManifest.xml:124:13
-activity#com.anp.ulsanfood.PartnershipActivity
+activity#com.anp.bdmt.PartnershipActivity
 ADDED from AndroidManifest.xml:127:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:129:13
 	android:name
 		ADDED from AndroidManifest.xml:128:13
-activity#com.anp.ulsanfood.FranchiseActivity
+activity#com.anp.bdmt.FranchiseActivity
 ADDED from AndroidManifest.xml:130:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:132:13
 	android:name
 		ADDED from AndroidManifest.xml:131:13
-activity#com.anp.ulsanfood.OrderActivity
+activity#com.anp.bdmt.OrderActivity
 ADDED from AndroidManifest.xml:133:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:135:13
 	android:name
 		ADDED from AndroidManifest.xml:134:13
-activity#com.anp.ulsanfood.CartActivity
+activity#com.anp.bdmt.CartActivity
 ADDED from AndroidManifest.xml:136:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:138:13
 	android:name
 		ADDED from AndroidManifest.xml:137:13
-activity#com.anp.ulsanfood.OrderResultActivity
+activity#com.anp.bdmt.OrderResultActivity
 ADDED from AndroidManifest.xml:139:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:141:13
 	android:name
 		ADDED from AndroidManifest.xml:140:13
-activity#com.anp.ulsanfood.ShopAdminActivity
+activity#com.anp.bdmt.ShopAdminActivity
 ADDED from AndroidManifest.xml:142:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:144:13
 	android:name
 		ADDED from AndroidManifest.xml:143:13
-activity#com.anp.ulsanfood.CallLogLoginActivity
+activity#com.anp.bdmt.CallLogLoginActivity
 ADDED from AndroidManifest.xml:145:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:147:13
 	android:name
 		ADDED from AndroidManifest.xml:146:13
-activity#com.anp.ulsanfood.CallLogActivity
+activity#com.anp.bdmt.CallLogActivity
 ADDED from AndroidManifest.xml:148:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:150:13
 	android:name
 		ADDED from AndroidManifest.xml:149:13
-activity#com.anp.ulsanfood.SPLActivity
+activity#com.anp.bdmt.SPLActivity
 ADDED from AndroidManifest.xml:151:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:153:13
 	android:name
 		ADDED from AndroidManifest.xml:152:13
-activity#com.anp.ulsanfood.SPLLoginActivity
+activity#com.anp.bdmt.SPLLoginActivity
 ADDED from AndroidManifest.xml:154:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:156:13
@@ -311,7 +311,7 @@ ADDED from AndroidManifest.xml:159:9
 		ADDED from AndroidManifest.xml:161:13
 	android:name
 		ADDED from AndroidManifest.xml:160:13
-intent-filter#com.google.android.c2dm.intent.RECEIVE+com.google.android.c2dm.intent.REGISTRATION+com.anp.ulsanfood
+intent-filter#com.google.android.c2dm.intent.RECEIVE+com.google.android.c2dm.intent.REGISTRATION+com.anp.bdmt
 ADDED from AndroidManifest.xml:162:13
 action#com.google.android.c2dm.intent.RECEIVE
 ADDED from AndroidManifest.xml:163:17
@@ -321,11 +321,11 @@ action#com.google.android.c2dm.intent.REGISTRATION
 ADDED from AndroidManifest.xml:164:17
 	android:name
 		ADDED from AndroidManifest.xml:164:25
-category#com.anp.ulsanfood
+category#com.anp.bdmt
 ADDED from AndroidManifest.xml:166:17
 	android:name
 		ADDED from AndroidManifest.xml:166:27
-activity#com.anp.ulsanfood.showMsg
+activity#com.anp.bdmt.showMsg
 ADDED from AndroidManifest.xml:170:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:173:13
@@ -341,7 +341,7 @@ action#android.intent.action.AlertDialogs
 ADDED from AndroidManifest.xml:177:17
 	android:name
 		ADDED from AndroidManifest.xml:177:25
-service#com.anp.ulsanfood.GCMIntentService
+service#com.anp.bdmt.GCMIntentService
 ADDED from AndroidManifest.xml:184:9
 	android:name
 		ADDED from AndroidManifest.xml:184:18

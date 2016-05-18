@@ -18,6 +18,21 @@
 
 <resources>
 
+    <style name="CustomCirclePageIndicator">
+        <item name="fillColor">#000000</item>
+        <item name="strokeColor">#000000</item>
+        <item name="strokeWidth">2dp</item>
+        <item name="radius">10dp</item>
+        <item name="centered">true</item>
+        <item name="gapWidth">10dp</item>
+    </style>
+
+    <style name="CustomTab">
+
+        <item name="android:background">@drawable/bg_sub_menu</item>
+
+    </style>
+
     <style name="IntroTheme" parent="android:Theme.Translucent.NoTitleBar">
         <item name="android:windowBackground">@drawable/intro</item>
         <item name="android:windowNoTitle">true</item>
@@ -37,23 +52,8 @@
 
     </style>
 
-    <style name="CustomCirclePageIndicator">
-        <item name="fillColor">#000000</item>
-        <item name="strokeColor">#000000</item>
-        <item name="strokeWidth">2dp</item>
-        <item name="radius">10dp</item>
-        <item name="centered">true</item>
-        <item name="gapWidth">10dp</item>
-    </style>
-
-    <style name="CustomTab">
-
-        <item name="android:background">@drawable/bg_sub_menu</item>
-
-    </style>
-
     <style name="ActionBar.Solid.Cashq" parent="@style/Widget.Sherlock.Light.ActionBar.Solid">
-        <item name="background">#278bd7</item>
+        <item name="background">@color/app_theme_color</item>
         <item name="backgroundStacked">@drawable/bg_sub_menu</item>
         <item name="backgroundSplit">@drawable/bg_sub_menu</item>
         <item name="progressBarStyle">@style/ProgressBar.Cashq</item>
@@ -74,35 +74,55 @@
 
     <style name="ActionBarTabStyle.Cashq" parent="@style/Widget.Sherlock.Light.ActionBar.TabView">
         <item name="android:background">@drawable/tab_indicator_ab_cashq</item>
+
+
     </style>
 
-    <style name="DropDownNav.Cashq" parent="@style/Widget.Sherlock.Light.Spinner.DropDown.ActionBar">
+    <style name="ActionBarTabTextStyle.Cashq" parent="Widget.Sherlock.Light.ActionBar.TabText">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">16sp</item>
+
+    </style>
+
+    <style name="DropDownNav.Cashq" parent="@style/Widget.Sherlock.Spinner.DropDown.ActionBar">
         <item name="android:background">@drawable/spinner_background_ab_cashq</item>
         <item name="android:popupBackground">@drawable/menu_dropdown_panel_cashq</item>
         <item name="android:dropDownSelector">@drawable/selectable_background_cashq</item>
     </style>
 
-    <style name="ProgressBar.Cashq" parent="@style/Widget.Sherlock.Light.ProgressBar.Horizontal">
+    <style name="ProgressBar.Cashq" parent="@style/Widget.Sherlock.ProgressBar.Horizontal">
         <item name="android:progressDrawable">@drawable/progress_horizontal_cashq</item>
     </style>
 
-    <style name="ActionButton.CloseMode.Cashq" parent="@style/Widget.Sherlock.Light.ActionButton.CloseMode">
+    <style name="ActionButton.CloseMode.Cashq" parent="@style/Widget.Sherlock.ActionButton.CloseMode">
         <item name="android:background">@drawable/btn_cab_done_cashq</item>
     </style>
 
     <!-- this style is only referenced in a Light.DarkActionBar based theme -->
-    <style name="Theme.Cashq.Widget" parent="@style/Theme.Sherlock">
+    <style name="Theme.Cashq.Widget" parent="@style/Theme.Sherlock.Light">
         <item name="popupMenuStyle">@style/PopupMenu.Cashq</item>
         <item name="dropDownListViewStyle">@style/DropDownListView.Cashq</item>
     </style>
 
-    <style name="starRatingBar" level3="@android:style/Widget.RatingBar">
+    <!--<style name="starRatingBar" level3="@android:style/Widget.RatingBar">-->
+        <!--<item name="android:indeterminateOnly">false</item>-->
+        <!--<item name="android:progressDrawable">@drawable/custom_ratingbar_full</item>-->
+        <!--<item name="android:minHeight">30dp</item>-->
+        <!--<item name="android:maxHeight">30dp</item>-->
+        <!--<item name="android:thumb">@null</item>-->
+    <!--</style>-->
+
+    <style name="starRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:scaleType">fitXY</item>
+        <item name="android:adjustViewBounds">true</item>
         <item name="android:indeterminateOnly">false</item>
-        <item name="android:progressDrawable">@drawable/custom_ratingbar_full</item>
-        <item name="android:minHeight">30dp</item>
-        <item name="android:maxHeight">30dp</item>
+        <item name="android:progressDrawable">@drawable/custom_ratingbar_full_new</item>
+        <item name="android:minHeight">21dip</item>
+        <item name="android:maxHeight">21dip</item>
         <item name="android:thumb">@null</item>
     </style>
+
 
     <!-- ActionBar Not Boring -->
 

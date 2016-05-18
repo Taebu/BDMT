@@ -24,19 +24,22 @@
         <item name="android:popupMenuStyle">@style/PopupMenu.Cashq</item>
         <item name="android:dropDownListViewStyle">@style/DropDownListView.Cashq</item>
         <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Cashq</item>
+        <item name="android:actionBarTabTextStyle">@style/ActionBarTabTextStyle.Cashq</item>
         <item name="android:actionDropDownStyle">@style/DropDownNav.Cashq</item>
         <item name="android:actionBarStyle">@style/ActionBar.Solid.Cashq</item>
         <item name="android:actionModeBackground">@drawable/cab_background_top_cashq</item>
         <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_cashq</item>
         <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Cashq</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:actionBarSize">60dp</item>
         
         
     </style>
 
     <style name="ActionBar.Solid.Cashq" parent="@style/Widget.Sherlock.Light.ActionBar.Solid">
-        <item name="android:background">#278bd7</item>
+        <item name="android:background">#FFFFFF</item>
         <item name="android:backgroundStacked">@drawable/ab_stacked_solid_cashq</item>
-        <item name="android:backgroundSplit">@drawable/ab_bottom_solid_cashq</item>
+        <item name="android:backgroundSplit">#FFFFFF</item>
         <item name="android:progressBarStyle">@style/ProgressBar.Cashq</item>
     </style>
 
@@ -46,7 +49,7 @@
     </style>
     
     <!-- this style is only referenced in a Light.DarkActionBar based theme -->
-    <style name="Theme.Cashq.Widget" parent="@style/Theme.Sherlock">
+    <style name="Theme.Cashq.Widget" parent="@style/Theme.Sherlock.Light">
         <item name="android:popupMenuStyle">@style/PopupMenu.Cashq</item>
         <item name="android:dropDownListViewStyle">@style/DropDownListView.Cashq</item>
     </style>

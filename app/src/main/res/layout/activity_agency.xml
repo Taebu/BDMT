@@ -70,7 +70,7 @@
             android:layout_height="22dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
-            android:src="@drawable/btn_gps" />
+            android:src="@drawable/btn_gps_off" />
 
     </RelativeLayout>
 

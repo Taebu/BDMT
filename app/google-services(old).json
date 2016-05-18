@@ -8,10 +8,10 @@
     {
       "client_info": {
         "mobilesdk_app_id": "1:849701230591:android:92f4e33d32c6e2f9",
-        "client_id": "android:com.anp.ulsanfood",
+        "client_id": "android:com.anp.bdmt",
         "client_type": 1,
         "android_client_info": {
-          "package_name": "com.anp.ulsanfood"
+          "package_name": "com.anp.bdmt"
         }
       },
       "oauth_client": [],

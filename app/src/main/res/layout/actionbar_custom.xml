@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
     android:layout_height="wrap_content">
 
     <ImageButton
         android:id="@+id/btn_slidingmenu"
-        android:scaleType="fitXY"
-        android:adjustViewBounds="true"
-        android:layout_width="50dp"
-        android:layout_height="30dp"
-        android:layout_alignParentLeft="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerVertical="true"
+        android:adjustViewBounds="true"
         android:background="@null"
+        android:scaleType="fitXY"
         android:src="@drawable/mymenu_1" />
 
     <ImageView
-        android:id="@+id/logo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
         android:layout_centerInParent="true"
-        android:layout_gravity="center"
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:src="@drawable/logo_2" />
 
     <RelativeLayout

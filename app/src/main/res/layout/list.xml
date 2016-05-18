@@ -1,5 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@android:id/list"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    android:background="#999999"
+    android:layout_height="match_parent">
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/main_list_img" />
+
+    <ImageView
+        android:padding="8dp"
+        android:id="@+id/main_list_img"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_above="@+id/main_list_banner"
+        android:src="@drawable/main_list_img_new" />
+
+    <ImageView
+        android:id="@+id/main_list_banner"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/main_list_banner" />
+
+</RelativeLayout>

@@ -4,20 +4,24 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <!--<com.hb.views.PinnedSectionListView-->
+    <!--android:divider="#00ff0000"-->
+    <!--android:layout_margin="0dp"-->
+    <!--android:background="@drawable/bg_normal"-->
+    <!--android:id="@+id/cashq_listView"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"/>-->
     <com.hb.views.PinnedSectionListView
-        android:divider="#00ff0000"
-        android:layout_margin="10dp"
-        android:background="@drawable/bg_normal"
         android:id="@+id/cashq_listView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
     <ImageView
-        android:visibility="gone"
-        android:layout_centerInParent="true"
         android:id="@+id/empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/logo_2" />
+        android:layout_centerInParent="true"
+        android:src="@drawable/logo_2"
+        android:visibility="gone" />
 
 </RelativeLayout>

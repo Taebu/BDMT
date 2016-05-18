@@ -3,218 +3,256 @@
     android:id="@+id/row_id"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#00ff0000"
-    android:paddingBottom="4dp">
+    android:background="#FFFFFF"
+    android:paddingBottom="12dp"
+    android:paddingLeft="12dp"
+    android:paddingRight="24dp"
+    android:paddingTop="12dp">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/point_info"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:layout_marginTop="4dp"
-        android:background="@drawable/list_box">
+        android:layout_alignParentRight="true"
+        android:layout_alignRight="@+id/row_shop_go"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="포인트 적립"
+            android:textColor="#afafaf"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/point_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2,000 Point"
+            android:textColor="@color/app_theme_color"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/thm_layout"
+        android:layout_width="80dp"
+        android:layout_height="120dp"
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/separator_row"
-            android:layout_width="6dp"
-            android:layout_height="125dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="2dp"
-            android:background="@drawable/list_title_red" />
+            android:id="@+id/list_thm"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:scaleType="fitXY"
+            android:src="@drawable/stub" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_toRightOf="@id/thm_layout"
+        android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/thm_layout"
-            android:layout_width="80dp"
-            android:layout_height="120dp"
-            android:layout_centerVertical="true"
-            android:layout_margin="10dp"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/list_thm"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:scaleType="fitXY"
-                android:src="@drawable/stub" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/content_layout"
-            android:layout_width="200dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@id/thm_layout"
-            android:orientation="vertical">
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/cashq_list_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:text="name"
-                android:textColor="#000"
-                android:textSize="18sp"
+                android:textColor="#656565"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <RatingBar
-                android:id="@+id/shoplist_rating"
-                style="@style/starRatingBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:isIndicator="true"
-                android:numStars="5" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="5dp"
-                    android:src="@drawable/list_money" />
-
-                <TextView
-                    android:id="@+id/min_pay"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
-                    android:text="12,000원 이상 포인트 적립 가능"
-                    android:textColor="#ed8179"
-                    android:textSize="12sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="5dp"
-                    android:adjustViewBounds="true"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/icon_clock" />
-
-                <TextView
-                    android:id="@+id/cashq_list_time1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="time1"
-                    android:textColor="#000"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:id="@+id/cashq_list_time2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="time2"
-                    android:textColor="#000"
-                    android:textSize="12sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/btn_location_1" />
-
-                <TextView
-
-                    android:id="@+id/cashq_list_distance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:text="거리"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:id="@+id/dong"
-                    android:layout_width="match_parent"
-
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:singleLine="true"
-                    android:text="동"
-                    android:textSize="12sp" />
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:orientation="horizontal">
-
-                <!--<ImageView-->
-                <!--android:id="@+id/icon_calllog"-->
-                <!--android:layout_width="15dp"-->
-                <!--android:layout_height="15dp"-->
-                <!--android:layout_gravity="center"-->
-                <!--android:src="@drawable/icon_call"-->
-                <!--android:visibility="invisible" />-->
-
-                <!--<TextView-->
-                <!--android:id="@+id/calllog"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="center"-->
-                <!--android:layout_marginLeft="4dp"-->
-                <!--android:gravity="center"-->
-                <!--android:text="11 건 주문"-->
-                <!--android:textSize="12sp"-->
-                <!--android:visibility="invisible" />-->
-
-            </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/btn_layout"
+
+        <RatingBar
+            android:id="@+id/shoplist_rating"
+            style="@style/starRatingBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="20dp"
-            android:orientation="vertical">
+            android:layout_marginTop="8dp"
+            android:isIndicator="true"
+            android:numStars="5" />
 
-
-            <Button
-                android:id="@+id/tel_btn"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="right"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/btn_list_red"
-                android:focusable="false"
-                android:gravity="center"
-                android:scaleType="fitXY"
-                android:text="캐시큐\n주문"
-                android:textColor="@android:color/white"
-                android:textSize="14sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/row_img_point"
-                android:layout_width="64dp"
-                android:layout_height="46dp"
-                android:layout_marginTop="20dp"
-                android:src="@drawable/img_2000" />
+                android:layout_width="@dimen/row_shop_ic_size"
+                android:layout_height="@dimen/row_shop_ic_size"
+                android:src="@drawable/ic_helmet" />
+
+            <TextView
+                android:id="@+id/min_pay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:text="12,000원 부터"
+                android:textColor="#656565" />
+
 
         </LinearLayout>
-    </RelativeLayout>
+
+        <!--<LinearLayout-->
+        <!--android:id="@+id/row_shop_benefit"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="4dp"-->
+        <!--android:orientation="horizontal">-->
+
+        <!--<ImageView-->
+        <!--android:layout_width="@dimen/row_shop_ic_size"-->
+        <!--android:layout_height="@dimen/row_shop_ic_size"-->
+        <!--android:src="@drawable/ic_point_new" />-->
+
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="4dp"-->
+        <!--android:text="5번 주문시 현금 10,000원 지급!" />-->
+
+        <!--</LinearLayout>-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_width="@dimen/row_shop_ic_size"
+                android:layout_height="@dimen/row_shop_ic_size"
+                android:src="@drawable/ic_gps" />
+
+            <!--<TextView-->
+            <!--android:id="@+id/cashq_list_distance"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="5dp"-->
+            <!--android:text="거리"-->
+            <!--android:visibility="gone" />-->
+
+            <TextView
+                android:id="@+id/dong"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:singleLine="true"
+                android:text="동"
+                android:textColor="#656565" />
+
+            <!--<ImageView-->
+            <!--android:layout_width="15dp"-->
+            <!--android:layout_height="15dp"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_marginRight="5dp"-->
+            <!--android:src="@drawable/list_money" />-->
+
+            <!--<TextView-->
+
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="3dp"-->
+            <!--android:text="12,000원 이상 포인트 적립 가능"-->
+            <!--android:textColor="#ed8179" />-->
+
+        </LinearLayout>
+
+
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="2dp"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:visibility="gone">-->
+
+        <!--<ImageView-->
+        <!--android:layout_width="15dp"-->
+        <!--android:layout_height="15dp"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:layout_marginRight="5dp"-->
+        <!--android:adjustViewBounds="true"-->
+        <!--android:scaleType="fitXY"-->
+        <!--android:src="@drawable/icon_clock" />-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/cashq_list_time1"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="time1"-->
+        <!--android:textColor="#000" />-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/cashq_list_time2"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="time2"-->
+        <!--android:textColor="#000" />-->
+        <!--</LinearLayout>-->
+
+    </LinearLayout>
+
+    <!--<LinearLayout-->
+    <!--android:id="@+id/btn_layout"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:layout_marginRight="20dp"-->
+    <!--android:orientation="vertical"-->
+    <!--android:visibility="gone">-->
+
+
+    <!--<Button-->
+    <!--android:id="@+id/tel_btn"-->
+    <!--android:layout_width="50dp"-->
+    <!--android:layout_height="50dp"-->
+    <!--android:layout_gravity="right"-->
+    <!--android:layout_marginTop="5dp"-->
+    <!--android:background="@drawable/btn_list_red"-->
+    <!--android:focusable="false"-->
+    <!--android:gravity="center"-->
+    <!--android:scaleType="fitXY"-->
+    <!--android:text="캐시큐\n주문"-->
+    <!--android:textColor="@android:color/white" />-->
+
+    <!--<ImageView-->
+
+    <!--android:id="@+id/row_img_point"-->
+    <!--android:layout_width="64dp"-->
+    <!--android:layout_height="46dp"-->
+    <!--android:layout_marginTop="20dp"-->
+    <!--android:src="@drawable/img_2000" />-->
+
+    <!--</LinearLayout>-->
+
+
+    <ImageView
+        android:id="@+id/row_shop_go"
+        android:layout_width="wrap_content"
+        android:layout_height="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/btn_next_new" />
+
 </RelativeLayout>

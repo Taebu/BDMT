@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:background="#278bd7"
+        android:background="@color/app_theme_color"
         android:gravity="center">
 
         <TextView

@@ -1,10 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_normal"
     android:gravity="center_horizontal"
     android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/point_top"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@color/app_theme_color"
+        android:gravity="center"
+        android:text="포인트 적립 내역"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp" />
+
+    <RelativeLayout
+        android:layout_marginBottom="-12dp"
+        android:id="@+id/point_secondtop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/point_top"
+        android:padding="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="포인트를 선택한 후 신청해주세요!"
+            android:textColor="#4b4b4b" />
+
+        <TextView
+            android:id="@+id/tv_accrue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="포인트를 선택해주세요`"
+            android:textColor="#E94320"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/point_init"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="#565656"
+            android:clickable="true"
+            android:onClick="mOnClick"
+            android:text="선택 해제"
+            android:textColor="#FFFFFF" />
+
+    </RelativeLayout>
+
 
     <!--<TextView-->
     <!--android:layout_width="wrap_content"-->
@@ -13,49 +62,16 @@
     <!--android:text="1. 포인트는 하루 한건 주문만 인정합니다.\n2. 12,000원 이상 주문이 아닐시 지급이 거절됩니다.\n3. 가맹점 등급에 따라 금액이 다릅니다."-->
     <!--android:textColor="#E94320"/>-->
 
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="9"
-        android:background="@drawable/bg_content"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/point_bottom"
+        android:layout_below="@+id/point_secondtop"
+        android:layout_margin="8dp"
+        android:background="#FFFFFF"
         android:orientation="vertical"
-        android:padding="16dp">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_centerVertical="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="포인트 적립내역"
-                android:textColor="#4b4b4b"
-                android:textSize="15sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tv_accrue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="포인트를 선택해주세요`"
-                android:textColor="#E94320"
-                android:textSize="13sp" />
-
-            <Button
-                android:id="@+id/point_init"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_alignParentRight="true"
-                android:background="@drawable/btn_black"
-                android:clickable="true"
-                android:onClick="mOnClick"
-                android:text="선택 해제"
-                android:textColor="#FFFFFF"
-                android:textSize="13sp" />
-
-        </RelativeLayout>
+        android:padding="8dp">
 
         <Button
             android:id="@+id/point_logout"
@@ -71,12 +87,12 @@
             android:visibility="gone" />
 
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_gravity="center"
-            android:layout_margin="4dp"
-            android:src="#E8E8E8" />
+        <!--<ImageView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="2dp"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:layout_margin="4dp"-->
+        <!--android:src="#E8E8E8" />-->
 
         <ListView
             android:id="@+id/list_point"
@@ -86,13 +102,14 @@
             android:divider="#d1d1d1"
             android:dividerHeight="1dp" />
 
-
     </LinearLayout>
 
+
     <LinearLayout
+        android:id="@+id/point_bottom"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
         <Button
@@ -100,7 +117,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:background="@drawable/btn_black"
+            android:background="#565656"
             android:onClick="mOnClick"
             android:text="계좌입력"
             android:textColor="#FFFFFF" />
@@ -110,11 +127,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="7"
-            android:background="@drawable/btn_red"
+            android:background="@color/app_theme_color"
             android:text="현금 신청하기"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
 
-</LinearLayout>
+</RelativeLayout>
