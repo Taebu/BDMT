@@ -2,8 +2,10 @@
 package com.anp.bdmt;
 
 import com.hb.views.PinnedSectionListView;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import android.content.Context;
@@ -115,7 +117,7 @@ public class ShopListAdapter extends BaseAdapter implements
 
         private ImageView separatorBar;
 
-        private LinearLayout thmLayout;
+        private RelativeLayout thmLayout;
 
         private LinearLayout pointInfo;
 
@@ -146,7 +148,7 @@ public class ShopListAdapter extends BaseAdapter implements
 
         private TextView separatorText;
 
-//        private ImageView separatorRow;
+        // private ImageView separatorRow;
 
         // private ImageView imgPoint;
 
@@ -174,28 +176,15 @@ public class ShopListAdapter extends BaseAdapter implements
                 v = mInflater.inflate(R.layout.row_shop, null);
 
                 h.name = (TextView)v.findViewById(R.id.cashq_list_name);
-                // h.distance =
-                // (TextView)v.findViewById(R.id.cashq_list_distance);
-                // h.time1 = (TextView)v.findViewById(R.id.cashq_list_time1);
-                // h.time2 = (TextView)v.findViewById(R.id.cashq_list_time2);
                 h.minPay = (TextView)v.findViewById(R.id.min_pay);
                 h.thumbImg = (ImageView)v.findViewById(R.id.list_thm);
-                // h.btnTel = (Button)v.findViewById(R.id.tel_btn);
                 h.dong = (TextView)v.findViewById(R.id.dong);
                 h.score = (RatingBar)v.findViewById(R.id.shoplist_rating);
 
                 h.ll = (RelativeLayout)v.findViewById(R.id.row_id);
 
-                h.thmLayout = (LinearLayout)v.findViewById(R.id.thm_layout);
+                h.thmLayout = (RelativeLayout)v.findViewById(R.id.thm_layout);
                 h.pointInfo = (LinearLayout)v.findViewById(R.id.point_info);
-                // h.btnLayout = (LinearLayout)v.findViewById(R.id.btn_layout);
-//                h.separatorRow = (ImageView)v.findViewById(R.id.separator_row);
-                // h.imgPoint = (ImageView)v.findViewById(R.id.row_img_point);
-
-                // h.pointBanner = (TextView)
-                // v.findViewById(R.id.row_shop_point);
-                // h.pointBenefit = (LinearLayout)
-                // v.findViewById(R.id.row_shop_benefit);
 
                 h.pointInfo = (LinearLayout)v.findViewById(R.id.point_info);
                 h.pointAmount = (TextView)v.findViewById(R.id.point_amount);
@@ -216,7 +205,7 @@ public class ShopListAdapter extends BaseAdapter implements
 
         if (type == TYPE_ITEM) {
 
-            ShopListData item = (ShopListData)getItem(position);
+            final ShopListData item = (ShopListData)getItem(position);
 
             // h.btnTel.setFocusable(false);
             // if (mOnClickListener != null) {
@@ -229,9 +218,7 @@ public class ShopListAdapter extends BaseAdapter implements
 
             h.name.setText(item.getName());
 
-            // h.distance.setText(item.getDistance());
-
-            h.minPay.setText(item.getMinpay() + " 이상 적립");
+            h.minPay.setText(item.getMinpay() + " 이상 주문 시 적립 인정");
 
             h.dong.setText(item.getDelivery_comment());
             h.dong.setSingleLine(true);
@@ -240,180 +227,112 @@ public class ShopListAdapter extends BaseAdapter implements
 
             h.minPay.setTag(item.getPre_pay());
 
-            // h.time1.setText(item.getTime1() + " ~");
-            // h.time2.setText(item.getTime2());
-
             h.score.setRating(Float.parseFloat(item.getReviewRating()));
 
-            String pre_pay = (String)h.minPay.getTag();
+//            String pre_pay = (String)h.minPay.getTag();
+            String pre_pay = item.getPre_pay();
 
-            if ("".equals(pre_pay)) {
+            showThumbnail(position, h);
+// 110 398 519410
+            h.pointInfo.setVisibility(View.VISIBLE);
 
-                h.thmLayout.setVisibility(View.GONE);
-                h.score.setVisibility(View.INVISIBLE);
+            if ("gl".equals(pre_pay) || "sl".equals(pre_pay)) {
+
+                h.pointAmount.setText("2,000 Point");
+
+            } else if ("on".equals(pre_pay)) {
+
+                h.pointAmount.setText("1,000 Point");
+
+            } else if ("pr".equals(pre_pay) || "".equals(pre_pay)) {
                 h.pointInfo.setVisibility(View.GONE);
-
-                // h.btnTel.setBackgroundResource(R.drawable.btn_list_gray);
-                // h.btnTel.setText("일반\n주문");
                 h.minPay.setText("포인트 적립 불가");
-                // h.separatorRow.setBackgroundResource(R.drawable.list_title_gray);
-
-                // h.imgPoint.setVisibility(View.GONE);
-
-                // h.pointBenefit.setVisibility(View.INVISIBLE);
-                // h.pointBanner.setVisibility(View.INVISIBLE);
-
-            } else {
-                // bizhour work
-
-                Log.d(TAG, "bizHour : " + item.getName());
-
-                // boolean isBizHour = item.isOpen();
-                boolean isBizHour = true;
-
-                if (isBizHour) {
-
-                    ImageLoader.getInstance().displayImage(item.makeURL(), h.thumbImg,
-                            new SimpleImageLoadingListener() {
-
-                                @Override
-                                public void onLoadingFailed(String imageUri, View view,
-                                        FailReason failReason) {
-                                    h.thumbImg.setImageResource(R.drawable.img_no_image_80x120);
-                                }
-                            });
-                } else {
-
-                    h.thumbImg.setImageResource(R.drawable.nottime);
-
-                }
-
-                // h.imgPoint.setVisibility(View.VISIBLE);
-                h.thmLayout.setVisibility(View.VISIBLE);
-                h.score.setVisibility(View.VISIBLE);
-                h.thumbImg.setVisibility(View.VISIBLE);
-                h.pointInfo.setVisibility(View.VISIBLE);
-
-                // Bitmap thumb = null, ribbon = null, thumbRibbon = null,
-                // result = null;
-
-                if ("gl".equals(pre_pay)) {
-
-                    // h.btnTel.setText("골드\n주문");
-                    // h.btnTel.setBackgroundResource(R.drawable.btn_list_gold);
-                    // h.separatorRow.setBackgroundResource(R.drawable.list_title_gold);
-
-                    // h.imgPoint.setImageResource(R.drawable.point_2000);
-                    // h.pointBenefit.setVisibility(View.VISIBLE);
-                    // h.pointBanner.setVisibility(View.VISIBLE);
-
-                    // ribbon =
-                    // BitmapFactory.decodeResource(mContext.getResources(),
-                    // R.drawable.img_ribbon_pr);
-
-                    h.pointAmount.setText("2,000 Point");
-
-                } else if ("sl".equals(pre_pay)) {
-
-                    // h.btnTel.setText("실버\n주문");
-                    // h.btnTel.setBackgroundResource(R.drawable.btn_list_silver);
-                    // h.separatorRow.setBackgroundResource(R.drawable.list_title_silver);
-
-                    // ribbon =
-                    // BitmapFactory.decodeResource(mContext.getResources(),
-                    // R.drawable.img_ribbon_po);
-
-                    // h.imgPoint.setImageResource(R.drawable.point_2000);
-                    // h.pointBenefit.setVisibility(View.VISIBLE);
-                    // h.pointBanner.setVisibility(View.VISIBLE);
-
-                    h.pointAmount.setText("2,000 Point");
-
-                } else if ("on".equals(pre_pay)) {
-
-                    // h.btnTel.setText("캐시큐\n주문");
-                    // h.btnTel.setBackgroundResource(R.drawable.btn_list_red);
-                    // h.separatorRow.setBackgroundResource(R.drawable.list_title_red);
-
-                    // ribbon =
-                    // BitmapFactory.decodeResource(mContext.getResources(),
-                    // R.drawable.img_ribbon_po);
-
-                    // h.imgPoint.setImageResource(R.drawable.point_1000);
-
-                    // h.pointBenefit.setVisibility(View.VISIBLE);
-                    // h.pointBanner.setVisibility(View.VISIBLE);
-
-                    h.pointAmount.setText("1,000 Point");
-
-                } else if ("pr".equals(pre_pay)) {
-
-                    // h.btnTel.setText("PRQ\n주문");
-                    // h.btnTel.setBackgroundResource(R.drawable.btn_list_prq);
-                    // h.separatorRow.setBackgroundResource(R.drawable.list_title_prq);
-
-                    // ribbon =
-                    // BitmapFactory.decodeResource(mContext.getResources(),
-                    // R.drawable.img_ribbon_po);
-
-                    // h.minPay.setText("포인트 적립 불가");
-
-                    // h.imgPoint.setImageResource(R.drawable.point_1000);
-                    // h.imgPoint.setVisibility(View.INVISIBLE);
-
-                    // h.pointBenefit.setVisibility(View.INVISIBLE);
-                    // h.pointBanner.setVisibility(View.INVISIBLE);
-                }
-
-                // ribbon thumbnail work
-                // if (item.getThm().isEmpty()) {
-                // thumb = BitmapFactory.decodeResource(mContext.getResources(),
-                // R.drawable.img_no_image_80x120);
-                // } else {
-                // thumb = mLazy.getBitmap(item.makeURL());
-                // }
-
-                // thumbRibbon = overlayBitmap(thumb, ribbon, 5, 5);
-
             }
 
         } else {
-            if (type == TYPE_GOLD) {
 
-                // h.separatorText.setText("골드 가맹점 - 2000 포인트 적립");
-                h.separatorText.setText("VVIP");
-                // h.separatorImage.setImageResource(R.drawable.list_title_gold);
-                h.separatorImage.setImageResource(R.drawable.gold_member);
-
-            } else if (type == TYPE_SILVER) {
-
-                // h.separatorText.setText("실버 가맹점 - 2000 포인트 적립");
-                h.separatorText.setText("RVIP");
-                // h.separatorImage.setImageResource(R.drawable.list_title_silver);
-                h.separatorImage.setImageResource(R.drawable.silver_member);
-
-            } else if (type == TYPE_CASHQ) {
-
-                // h.separatorText.setText("캐시큐 가맹점 - 1000 포인트 적립");
-                h.separatorText.setText("VIP");
-                // h.separatorImage.setImageResource(R.drawable.list_title_red);
-                h.separatorImage.setImageResource(R.drawable.cashq_member);
-
-            } else if (type == TYPE_NORMAL) {
-
-                // h.separatorText.setText("일반 가맹점 - 포인트 적립 불가");
-                h.separatorText.setText("일반");
-                // h.separatorImage.setImageResource(R.drawable.list_title_gray);
-                h.separatorImage.setImageResource(R.drawable.common_member);
-
-            } else if (type == TYPE_PRQ) {
-                // h.separatorText.setText("PRQ 가맹점 - 포인트 적립 불가");
-                h.separatorText.setText("PRQ");
-                // h.separatorImage.setImageResource(R.drawable.list_title_prq);
-                h.separatorImage.setImageResource(R.drawable.list_title_prq);
-            }
+            showSeperator(h, type);
         }
         return v;
+    }
+
+    private void showSeperator(ViewHolder h, int type) {
+
+        switch (type) {
+            case TYPE_GOLD:
+                h.separatorText.setText("VVIP");
+                h.separatorImage.setImageResource(R.drawable.gold_member);
+                break;
+            case TYPE_SILVER:
+                h.separatorText.setText("RVIP");
+                h.separatorImage.setImageResource(R.drawable.silver_member);
+                break;
+            case TYPE_CASHQ:
+                h.separatorText.setText("VIP");
+                h.separatorImage.setImageResource(R.drawable.cashq_member);
+                break;
+            case TYPE_PRQ:
+                h.separatorText.setText("PRQ");
+                h.separatorImage.setImageResource(R.drawable.prq_member);
+                break;
+            case TYPE_NORMAL:
+                h.separatorText.setText("일반");
+                h.separatorImage.setImageResource(R.drawable.common_member);
+                break;
+        }
+    }
+
+    private void showThumbnail(int position, final ViewHolder h) {
+        // bizhour work
+
+        Log.d(TAG, "bizHour : " + mData.get(position).getName());
+
+        // boolean isBizHour = item.isOpen();
+        boolean isBizHour = true;
+
+        final int typePosition = mData.get(position).getTypePosition();
+
+        if (isBizHour) {
+
+            final Integer noImgResources[] = new Integer[] {
+                    R.drawable.no_img_chicken, R.drawable.no_img_pizza, R.drawable.no_img_chinese,
+                    R.drawable.no_img_jokbal, R.drawable.no_img_night, R.drawable.no_img_soup,
+                    R.drawable.no_img_korean, R.drawable.no_img_japanese,
+                    R.drawable.no_img_boxlunch, R.drawable.no_img_fastfood
+            };
+
+            DisplayImageOptions.Builder builder = new DisplayImageOptions.Builder();
+
+            builder.displayer(new RoundedBitmapDisplayer(200));
+            builder.cacheInMemory(true);
+            builder.cacheOnDisk(true);
+            builder.showImageOnLoading(R.drawable.load_anim);
+            // builder.showImageForEmptyUri(noImgResources[typePosition]);
+            // builder.showImageOnFail(noImgResources[typePosition]);
+
+            DisplayImageOptions options = builder.build();
+
+            ImageLoader.getInstance().clearDiskCache();
+            ImageLoader.getInstance().clearMemoryCache();
+
+            Log.d(TAG, "name: " + mData.get(position).getName() + " url: "
+                    + mData.get(position).makeURL());
+
+            ImageLoader.getInstance().displayImage(mData.get(position).makeURL(), h.thumbImg,
+                    options, new SimpleImageLoadingListener() {
+                        @Override
+                        public void onLoadingFailed(String imageUri, View view,
+                                FailReason failReason) {
+                            super.onLoadingFailed(imageUri, view, failReason);
+                            h.thumbImg.setImageResource(noImgResources[typePosition]);
+                        }
+                    });
+
+        } else {
+
+            h.thumbImg.setImageResource(R.drawable.nottime);
+
+        }
     }
 
     private Bitmap overlayBitmap(Bitmap b1, Bitmap b2, int x, int y) {

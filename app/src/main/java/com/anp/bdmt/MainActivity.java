@@ -26,6 +26,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.anp.bdmt.gcm.Util;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -36,7 +37,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.rampo.updatechecker.UpdateChecker;
 import com.rampo.updatechecker.UpdateCheckerResult;
-import com.anp.bdmt.gcm.Util;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -91,8 +91,6 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
     public static MainActivity Instance = null;
 
-    private String mType = "W01";
-
     private int mPosition = 0;
 
     public static final String APP_ID = "bdmt";
@@ -124,7 +122,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
     private double mLatitude, mLongitude;
 
-//    private ImageView mManualTextView;
+    // private ImageView mManualTextView;
     private TextView mManualDistance;
 
     public static int sDistance = 3;
@@ -148,7 +146,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
         // mPhoneNum = getPhoneNumber(this);
 
-//        mLifeImageView = (ImageView)findViewById(R.id.main_life);
+        // mLifeImageView = (ImageView)findViewById(R.id.main_life);
 
         findViewById(R.id.actionbar_gps_layout).setVisibility(View.GONE);
         findViewById(R.id.logo).setVisibility(View.VISIBLE);
@@ -175,12 +173,12 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
         LinearLayout ll = (LinearLayout)findViewById(R.id.gps_layout);
         if (Build.VERSION.SDK_INT > 10) {
-//            ll.setAlpha(0.5f);
+            // ll.setAlpha(0.5f);
         }
 
-//        mManualTextView = (ImageView)findViewById(R.id.manual_location);
+        // mManualTextView = (ImageView)findViewById(R.id.manual_location);
 
-//        btnSale = (ImageView)findViewById(R.id.main_sale);
+        // btnSale = (ImageView)findViewById(R.id.main_sale);
 
         mContext = getApplicationContext();
 
@@ -245,7 +243,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
         }
 
         // if(adminFlag) {
-//        mManualTextView.setVisibility(View.VISIBLE);
+        // mManualTextView.setVisibility(View.VISIBLE);
         // } else {
         // mManualTextView.setVisibility(View.GONE);
         // }
@@ -273,7 +271,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
         mIntent = new Intent(this, ShopListActivity.class);
 
-//        mPointText = (TextView)findViewById(R.id.display);
+        // mPointText = (TextView)findViewById(R.id.display);
 
         // 적립금 파싱 타스크
         // new JSONParseTask().execute();
@@ -401,12 +399,10 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     private void goShopList() {
 
         if (mGpsFlag) {
-            mIntent.putExtra("TYPE", mType);
-            mIntent.putExtra("POSITION", mPosition);
-            mIntent.putExtra("LIFE", false);
+            mIntent.putExtra("position", mPosition);
+            mIntent.putExtra("life", false);
             mIntent.putExtra("lat", mLatitude);
             mIntent.putExtra("lng", mLongitude);
-            mIntent.putExtra("distance", sDistance);
 
             startActivity(mIntent);
             if (!mDialog.isShowing()) {
@@ -427,41 +423,40 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     }
 
     public void mainOnClick(View view) {
-//
+        //
         switch (view.getId()) {
 
             case R.id.main_chicken:
                 mPosition = 0;
-                mType = "W01";
                 break;
             case R.id.main_pizza:
                 mPosition = 1;
-                mType = "W02";
                 break;
             case R.id.main_chinese:
                 mPosition = 2;
-                mType = "W03";
                 break;
             case R.id.main_korean:
                 mPosition = 3;
-                mType = "W04";
-                break;
-            case R.id.main_flour:
-                mPosition = 4;
-                mType = "W05";
                 break;
             case R.id.main_night:
+                mPosition = 4;
+                break;
+            case R.id.main_soup:
                 mPosition = 5;
-                mType = "W06";
                 break;
             case R.id.main_jokbal:
                 mPosition = 6;
-                mType = "W07";
                 break;
             case R.id.main_japanese:
                 mPosition = 7;
-                mType = "W08";
                 break;
+            case R.id.main_boxlunch:
+                mPosition = 8;
+                break;
+            case R.id.main_fastfood:
+                mPosition = 9;
+                break;
+
         }
 
         goShopList();
@@ -512,41 +507,45 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
                 mAddress = getAddress(json);
 
-//                if (SALE_ZONE) {
-//                    btnSale.setVisibility(View.VISIBLE);
-//                    mPointText.setVisibility(View.GONE);
-//                } else {
-//                    btnSale.setVisibility(View.GONE);
-//                    mPointText.setVisibility(View.VISIBLE);
-//                }
+                // if (SALE_ZONE) {
+                // btnSale.setVisibility(View.VISIBLE);
+                // mPointText.setVisibility(View.GONE);
+                // } else {
+                // btnSale.setVisibility(View.GONE);
+                // mPointText.setVisibility(View.VISIBLE);
+                // }
 
                 tvAddress.setText(mAddress);
 
-//                if ("동두천시".equals(mSi) || "강서구".equals(mGu) || "양천구".equals(mGu)) {
-//                    sDistance = 3;
-//                    mLifeImageView.setVisibility(View.GONE);
-//                } else if ("양산시".equals(mSi)) {
-//                    mLifeImageView.setVisibility(View.GONE);
-//                    sDistance = 5;
-//                } else if ("안산시".equals(mSi) || "의정부시".equals(mSi) || "성북구".equals(mGu)) {
-//                    // mPointText.setVisibility(View.GONE);
-//                    mLifeImageView.setVisibility(View.VISIBLE);
-//                    LIFE_ZONE = true;
-//                    sDistance = 3;
+                // if ("동두천시".equals(mSi) || "강서구".equals(mGu) ||
+                // "양천구".equals(mGu)) {
+                // sDistance = 3;
+                // mLifeImageView.setVisibility(View.GONE);
+                // } else if ("양산시".equals(mSi)) {
+                // mLifeImageView.setVisibility(View.GONE);
+                // sDistance = 5;
+                // } else if ("안산시".equals(mSi) || "의정부시".equals(mSi) ||
+                // "성북구".equals(mGu)) {
+                // // mPointText.setVisibility(View.GONE);
+                // mLifeImageView.setVisibility(View.VISIBLE);
+                // LIFE_ZONE = true;
+                // sDistance = 3;
 
-//                    String uri = "drawable://" + R.drawable.bg_chicken_crop;
-//                    ImageLoader.getInstance().loadImage(uri, new SimpleImageLoadingListener() {
-//                        @Override
-//                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-//                            Drawable topImage = new BitmapDrawable(loadedImage);
-//                            mBackgroundLayout.setBackgroundDrawable(topImage);
-//                        }
-//                    });
+                // String uri = "drawable://" + R.drawable.bg_chicken_crop;
+                // ImageLoader.getInstance().loadImage(uri, new
+                // SimpleImageLoadingListener() {
+                // @Override
+                // public void onLoadingComplete(String imageUri, View view,
+                // Bitmap loadedImage) {
+                // Drawable topImage = new BitmapDrawable(loadedImage);
+                // mBackgroundLayout.setBackgroundDrawable(topImage);
+                // }
+                // });
 
-//                } else {
-//                    mLifeImageView.setVisibility(View.GONE);
-                    sDistance = 3;
-//                }
+                // } else {
+                // mLifeImageView.setVisibility(View.GONE);
+                sDistance = 3;
+                // }
 
                 mManualDistance.setText(sDistance + "km\n변경");
 
@@ -785,24 +784,24 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
         }
 
         // 레이지이미지로더 캐시 정리
-        new com.anp.bdmt.lazylist.ImageLoader(mContext).clearCache();
+//        new com.anp.bdmt.lazylist.ImageLoader(mContext).clearCache();
     }
 
     public void mOnClick(View view) {
         switch (view.getId()) {
-//            case R.id.main_sale:
-//                mPosition = 0;
-//                mType = "W00";
-//                mIntent.putExtra("TYPE", mType);
-//                mIntent.putExtra("lat", mLatitude);
-//                mIntent.putExtra("lng", mLongitude);
-//                mIntent.putExtra("distance", sDistance);
-//
-//                startActivity(mIntent);
-//                if (!mDialog.isShowing()) {
-//                    mDialog.show();
-//                }
-//                break;
+        // case R.id.main_sale:
+        // mPosition = 0;
+        // mType = "W00";
+        // mIntent.putExtra("TYPE", mType);
+        // mIntent.putExtra("lat", mLatitude);
+        // mIntent.putExtra("lng", mLongitude);
+        // mIntent.putExtra("distance", sDistance);
+        //
+        // startActivity(mIntent);
+        // if (!mDialog.isShowing()) {
+        // mDialog.show();
+        // }
+        // break;
 
             case R.id.manual_location:
                 Intent i = new Intent(this, MapActivity.class);
@@ -823,20 +822,20 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                     }
                 });
                 break;
-//            case R.id.main_life:
-//
-//                new LifeDialog(this, mOnClickListener).show();
-//
-//                // mIntent.putExtra("TYPE", mType);
-//                // mIntent.putExtra("lat", mLatitude);
-//                // mIntent.putExtra("lng", mLongitude);
-//                // mIntent.putExtra("distance", sDistance);
-//
-//                // startActivity(mIntent);
-//                // if (!mDialog.isShowing()) {
-//                // mDialog.show();
-//                // }
-//                break;
+        // case R.id.main_life:
+        //
+        // new LifeDialog(this, mOnClickListener).show();
+        //
+        // // mIntent.putExtra("TYPE", mType);
+        // // mIntent.putExtra("lat", mLatitude);
+        // // mIntent.putExtra("lng", mLongitude);
+        // // mIntent.putExtra("distance", sDistance);
+        //
+        // // startActivity(mIntent);
+        // // if (!mDialog.isShowing()) {
+        // // mDialog.show();
+        // // }
+        // break;
         }
 
     }
@@ -850,49 +849,38 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
             switch (v.getId()) {
                 case R.id.life_09:
                     mPosition = 0;
-                    mType = "W09";
                     break;
                 case R.id.life_10:
                     mPosition = 1;
-                    mType = "W10";
                     break;
                 case R.id.life_11:
-                    mType = "W11";
                     mPosition = 2;
                     break;
                 case R.id.life_12:
-                    mType = "W12";
                     mPosition = 3;
                     break;
                 case R.id.life_13:
-                    mType = "W13";
                     mPosition = 4;
                     break;
                 case R.id.life_14:
-                    mType = "W14";
                     mPosition = 5;
                     break;
                 case R.id.life_15:
-                    mType = "W15";
                     mPosition = 6;
                     break;
                 case R.id.life_16:
-                    mType = "W16";
                     mPosition = 7;
                     break;
                 case R.id.life_18:
-                    mType = "W18";
                     mPosition = 8;
                     break;
                 case R.id.life_19:
                     mPosition = 9;
-                    mType = "W19";
                     break;
             }
 
             mIntent.putExtra("LIFE", true);
             mIntent.putExtra("POSITION", mPosition);
-            mIntent.putExtra("TYPE", mType);
             mIntent.putExtra("lat", mLatitude);
             mIntent.putExtra("lng", mLongitude);
             mIntent.putExtra("distance", sDistance);
@@ -1046,7 +1034,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                     // e.printStackTrace();
                     // sDistance = 3;
                     // }
-//                    mManualTextView.setVisibility(View.VISIBLE);
+                    // mManualTextView.setVisibility(View.VISIBLE);
                 } else {
                     adminFlag = false;
                     sDistance = 3;

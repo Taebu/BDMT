@@ -1,6 +1,8 @@
 
 package com.anp.bdmt;
 
+import com.google.android.gms.gcm.GcmListenerService;
+
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -8,10 +10,9 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-
-import com.google.android.gms.gcm.GcmListenerService;
 
 /**
  * @ Jung-Hum Cho Created by anp on 2016. 1. 5..
@@ -33,7 +34,8 @@ public class MyGcmListenerService extends GcmListenerService {
         Log.d(TAG, "Message: " + message);
 
         // GCM으로 받은 메세지를 디바이스에 알려주는 sendNotification()을 호출한다.
-        sendNotification(title, message);
+         sendNotification(title, message);
+//        sendNotiDialog(message);
     }
 
     /**
@@ -58,8 +60,14 @@ public class MyGcmListenerService extends GcmListenerService {
         notificationBuilder.setSound(defaultSoundUri);
         notificationBuilder.setContentIntent(pendingIntent);
 
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.notify(0, notificationBuilder.build());
+    }
+
+    private void sendNotiDialog(final String msg) {
+
+        final CustomDialog dialog = new CustomDialog(MyGcmListenerService.this, msg);
+
     }
 }

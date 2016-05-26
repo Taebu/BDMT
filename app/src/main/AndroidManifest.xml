@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.anp.bdmt"
-    android:versionCode="1"
-    android:versionName="1.0.0.0">
+    android:versionCode="3"
+    android:versionName="1.0.2.0">
 
     <!-- [START gcm_permission] -->
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
@@ -53,7 +53,7 @@
     <application
         android:name=".CashqApplication"
         android:icon="@drawable/ic_launcher"
-        android:label="배달맛톡"
+        android:label="@string/app_name"
         android:largeHeap="true"
         android:theme="@style/Theme.Cashq">
 
@@ -97,6 +97,7 @@
         </activity>
 
         <activity
+            android:theme="@style/Theme.Sherlock.Light.NoActionBar"
             android:name=".IntroActivity"
             android:screenOrientation="portrait">
 
@@ -106,6 +107,14 @@
             </intent-filter>
 
         </activity>
+
+        <activity
+            android:theme="@style/StyledIndicators"
+            android:name=".InitializeActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
+
 
         <activity
             android:name=".ShopListActivity"
@@ -189,6 +198,7 @@
         <activity
             android:name=".PointNewActivity"
             android:screenOrientation="portrait" />
+
 
 
         <!--<receiver-->

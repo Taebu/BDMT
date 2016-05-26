@@ -10,7 +10,7 @@
         android:id="@+id/point_top"
         android:layout_width="match_parent"
         android:layout_height="44dp"
-        android:background="@color/app_theme_color"
+        android:background="@color/app_theme"
         android:gravity="center"
         android:text="포인트 적립 내역"
         android:textColor="#FFFFFF"
@@ -41,6 +41,7 @@
             android:visibility="gone" />
 
         <Button
+            android:textSize="13sp"
             android:id="@+id/point_init"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
@@ -127,7 +128,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="7"
-            android:background="@color/app_theme_color"
+            android:background="@color/app_theme"
             android:text="현금 신청하기"
             android:textColor="#FFFFFF"
             android:textStyle="bold" />

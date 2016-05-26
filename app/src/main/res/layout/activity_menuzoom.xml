@@ -30,7 +30,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="7"
-            android:background="@color/app_theme_color"
+            android:background="@color/app_theme"
             android:text="주문 전화"
             android:textColor="#FFFFFF"
             android:textStyle="bold" />

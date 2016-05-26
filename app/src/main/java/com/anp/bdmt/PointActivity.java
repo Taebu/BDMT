@@ -154,7 +154,7 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
     @Override
     protected void onStop() {
         super.onStop();
-//        killer.removeActivity(this);
+        // killer.removeActivity(this);
     }
 
     @Override
@@ -208,7 +208,7 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
                     String targetSeq = data.getStoreSeq();
 
                     if (storeSeq.equals(targetSeq)) {
-                        isDuplicate = true;
+                        // isDuplicate = true;
                     } else {
                         isDuplicate = false;
                         break;
@@ -409,7 +409,7 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
 
         calendar.set(year, month, day, hour, minute, second);
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd hh:mm", Locale.KOREAN);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd HH:mm", Locale.KOREAN);
 
         // String result = month + "-" + day + /* "\n" + */hour + ":" + minute +
         // "\n" + month
@@ -991,8 +991,8 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
                 }
 
                 // Log.e("JAYPOINT", "pos : " + position +
-                // "clickData.getPosition() : "
-                // + clickData.getPosition());
+                // "clickData.getTypePosition() : "
+                // + clickData.getTypePosition());
                 clickData.setChecked(cb.isChecked());
                 // clickData.setChecked(clickData.isChecked());
                 notifyDataSetChanged();

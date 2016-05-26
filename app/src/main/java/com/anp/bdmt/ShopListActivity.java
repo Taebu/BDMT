@@ -7,7 +7,6 @@ import com.anp.bdmt.gcm.Util;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.widget.TextView;
 
 /**
  * @author Jung-Hum Cho
@@ -20,17 +19,6 @@ public class ShopListActivity extends BaseActivity implements ActionBar.TabListe
 
     private ActionBar mActionBar;
 
-    private ActionBar.Tab mTab;
-
-    private TextView tvAddress;
-
-    private LocationUtil mLocationUtil;
-
-    // Tab titles
-    private String[] mTabs = {
-            "할인", "치킨", "피자/햄버거", "중식/냉면", "한식/분식", "닭발/오리", "야식/기타", "족발/보쌈", "일식/돈가스"
-    };
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,14 +27,6 @@ public class ShopListActivity extends BaseActivity implements ActionBar.TabListe
         // activity killer activity add.
         killer.addActivity(this);
 
-        mLocationUtil = LocationUtil.getInstance(this);
-
-        // findViewById(R.id.logo).setVisibility(View.GONE);
-
-        // findViewById(R.id.actionbar_gps_layout).setVisibility(View.VISIBLE);
-
-        tvAddress = (TextView)findViewById(R.id.actionbar_location_name1);
-
         if (!Util.isOnline(this)) {
             Util.showDialog_normal(this, "네트워크 에러", "네트워크 연결 상태를 확인해주세요");
         }
@@ -54,20 +34,31 @@ public class ShopListActivity extends BaseActivity implements ActionBar.TabListe
         double lat = getIntent().getDoubleExtra("lat", -1);
         double lng = getIntent().getDoubleExtra("lng", -1);
 
-        int distance = getIntent().getIntExtra("distance", 2);
+        boolean life = getIntent().getBooleanExtra("life", false);
 
-        boolean life = getIntent().getBooleanExtra("LIFE", false);
+        int position = getIntent().getIntExtra("position", 1);
 
-        String type = getIntent().getStringExtra("TYPE");
-        int position = getIntent().getIntExtra("POSITION", 1);
+        String[] tabs;
+        if (life) {
+            tabs = new String[] {
+                    "오락/레져", "건강/뷰티", "꽃배달", "병원/약국", "인테리어", "학원", "이사/용달/퀵", "부동산", "자동차",
+                    "컴퓨터/인터넷"
+            };
 
-        // String address = mLocationUtil.getAddressShort(lat, lng);
+        } else {
+            tabs = new String[] {
+                    "치 킨", "피 자", "중 식", "한식/분식", "야식", "찜 / 탕", "족발/보쌈", "일식/돈가스", "도시락", "패스트푸드"
+            };
 
-        // tvAddress.setText(address);
+        }
+
+        String[] types = new String[] {
+                "W01", "W02", "W03", "W04", "W05", "W06", "W07", "W08", "W22", "W23"
+        };
 
         // Initialization
         ShopListPagerAdapter pagerAdapter = new ShopListPagerAdapter(getSupportFragmentManager(),
-                lat, lng, distance, type, life);
+                lat, lng, tabs, types, life);
 
         mViewPager = (ViewPager)findViewById(R.id.pager);
         mViewPager.setAdapter(pagerAdapter);
@@ -77,66 +68,23 @@ public class ShopListActivity extends BaseActivity implements ActionBar.TabListe
         // 액션바 활성
         mActionBar = getSupportActionBar();
 
-        // TODO 액션바 아이콘
-
-        if (life) {
-            mTabs = new String[] {
-                    "오락/레져", "건강/뷰티", "꽃배달", "병원/약국", "인테리어", "학원", "이사/용달/퀵", "부동산", "자동차",
-                    "컴퓨터/인터넷"
-            };
-
-        } else {
-            mTabs = new String[] {
-                    "치 킨", "피자/버거", "중식/냉면", "한식/분식", "닭 발", "야식/찜탕", "족발/보쌈", "일식/돈가스"
-            };
-
-        }
-
-//        mTab.setIcon(R.drawable.playstore_icon);
-
-        // if (SALE_ZONE) {
-        // mTabs = new String[] {
-        // "할인", "치킨", "피자/햄버거", "중식/냉면", "한식/분식", "닭발/오리", "야식/기타", "족발/보쌈",
-        // "일식/돈가스",
-        // "생활/편의"
-        // };
-        // } else {
-        // mTabs = new String[] {
-        // "치킨", "피자/햄버거", "중식/냉면", "한식/분식", "닭발/오리", "야식/기타", "족발/보쌈", "일식/돈가스"
-        // };
-        // }
-        // if (!SALE_ZONE) {
-        // position -= 1;
-        // }
-
         if (mActionBar != null) {
             mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-            for (String tab_name : mTabs) {
+            for (String tab_name : tabs) {
                 mActionBar.addTab(mActionBar.newTab().setText(tab_name).setTabListener(this));
             }
         }
 
         mViewPager.setCurrentItem(position);
+
         mActionBar.setSelectedNavigationItem(position);
 
-        mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                mActionBar.setSelectedNavigationItem(position);
-            }
-        });
     }
 
     @Override
     protected void onRestart() {
         setCartCount(this);
         super.onRestart();
-    }
-
-    @Override
-    public void finish() {
-        super.finish();
-        activityAnimation(false);
     }
 
     @Override
@@ -154,7 +102,6 @@ public class ShopListActivity extends BaseActivity implements ActionBar.TabListe
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
     }
 
     @Override

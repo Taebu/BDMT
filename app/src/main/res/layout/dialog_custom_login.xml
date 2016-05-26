@@ -13,7 +13,7 @@
         android:layout_height="200dp">
 
         <ImageView
-            android:background="@color/app_theme_color"
+            android:background="@color/app_theme"
             android:src="@drawable/logo_2"
             android:scaleType="center"
             android:layout_width="match_parent"

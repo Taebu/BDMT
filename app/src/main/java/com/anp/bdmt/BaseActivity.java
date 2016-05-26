@@ -212,7 +212,7 @@ public class BaseActivity extends SlidingFragmentActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        new com.anp.bdmt.lazylist.ImageLoader(this).clearCache();
+//        new com.anp.bdmt.lazylist.ImageLoader(this).clearCache();
         // toggle();
         Log.e("BaseActivity", "!!! onStop !!!");
     }

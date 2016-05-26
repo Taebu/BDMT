@@ -167,7 +167,7 @@
                     android:src="@drawable/main_chicken"/>
 
                 <ImageView
-                    android:id="@+id/main_night"
+                    android:id="@+id/main_soup"
                     android:layout_width="@dimen/mainimg_size"
                     android:layout_height="@dimen/mainimg_size"
                     android:layout_margin="@dimen/mainimg_margin"

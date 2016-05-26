@@ -15,9 +15,9 @@ import com.anp.bdmt.gcm.Util;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -342,6 +342,13 @@ public class ShopPageActivity extends BaseActivity {
                 mScrollView.smoothScrollTo(0, 0);
             }
         });
+
+        findViewById(R.id.btn_shoppage_call).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                call();
+            }
+        });
     }
 
     private void setReviewView(boolean isExpanded) {
@@ -595,144 +602,85 @@ public class ShopPageActivity extends BaseActivity {
 
     private void setRowLayout() {
 
-        final ImageView thm = (ImageView)findViewById(R.id.list_thm);
-        TextView name = (TextView)findViewById(R.id.cashq_list_name);
+        TextView nameTextView = (TextView)findViewById(R.id.cashq_list_name);
+        // nameTextView.setVisibility(View.INVISIBLE);
+        nameTextView.setText(getIntent().getStringExtra("name"));
 
-        name.setVisibility(View.INVISIBLE);
-        // TextView time1 = (TextView)findViewById(R.id.cashq_list_time1);
-        // TextView time2 = (TextView)findViewById(R.id.cashq_list_time2);
-        TextView minPay = (TextView)findViewById(R.id.min_pay);
-        // TextView distance = (TextView)findViewById(R.id.cashq_list_distance);
-        TextView dong = (TextView)findViewById(R.id.dong);
-        // Button btnTel = (Button)findViewById(R.id.tel_btn);
-        TextView callcnt = (TextView)findViewById(R.id.calllog);
-        // ImageView iconCalllog = (ImageView)findViewById(R.id.icon_calllog);
-        RatingBar score = (RatingBar)findViewById(R.id.shoplist_rating);
-        // ImageView separatorRow = (ImageView)findViewById(R.id.separator_row);
-        // ImageView img2000 = (ImageView)findViewById(R.id.row_img_point);
+        TextView dongTextView = (TextView)findViewById(R.id.dong);
+        dongTextView.setText(getIntent().getStringExtra("delivery_comment_cashq"));
+        dongTextView.setSingleLine(true);
+        dongTextView.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        dongTextView.setSelected(true);
 
-        callcnt.setVisibility(View.VISIBLE);
-        // iconCalllog.setVisibility(View.VISIBLE);
+        TextView callcntTextView = (TextView)findViewById(R.id.calllog);
+        callcntTextView.setVisibility(View.INVISIBLE);
+        callcntTextView.setText(getIntent().getStringExtra("callcntTextView") + " 건 주문");
+        // String bizCode = getIntent().getStringExtra("biz_code");
+        //
+        // boolean invisibleCallCnt = bizCode.equals("a061");
+        //
+        // if (invisibleCallCnt) {
+        // callcntTextView.setVisibility(View.INVISIBLE);
+        // } else {
+        // callcntTextView.setVisibility(View.VISIBLE);
+        // }
 
-        TextView topname = (TextView)findViewById(R.id.shoppage_name);
-        topname.setText(getIntent().getStringExtra("name"));
+        RatingBar ratingBar = (RatingBar)findViewById(R.id.shoplist_rating);
+        ratingBar.setRating(Float.parseFloat(getIntent().getStringExtra("review_rating")));
 
-        // name.setText(getIntent().getStringExtra("name"));
-        // time1.setText(getIntent().getStringExtra("time1") + " ~");
-        // time2.setText(getIntent().getStringExtra("time2"));
-        minPay.setText(getIntent().getStringExtra("minpay") + " 이상 적립");
-        // distance.setText(getIntent().getStringExtra("distance"));
-        dong.setText(getIntent().getStringExtra("delivery_comment_cashq"));
-        callcnt.setText(getIntent().getStringExtra("callcnt") + " 건 주문");
+        TextView topNameTextView = (TextView)findViewById(R.id.shoppage_name);
+        topNameTextView.setText(getIntent().getStringExtra("name"));
 
-        String bizCode = getIntent().getStringExtra("biz_code");
+        String prePay = getIntent().getStringExtra("pre_pay");
 
-        boolean invisibleCallCnt = bizCode.equals("a061");
-
-        if (invisibleCallCnt) {
-            callcnt.setVisibility(View.INVISIBLE);
-        } else {
-            callcnt.setVisibility(View.VISIBLE);
+        TextView pointAmountTextView = (TextView)findViewById(R.id.point_amount);
+        if ("on".equals(prePay)) {
+            pointAmountTextView.setText("1,000 Point");
         }
 
+        String minPay = getIntent().getStringExtra("minpay") + " 이상 주문 시 적립 인정";
+
+        LinearLayout pointInfo = (LinearLayout)findViewById(R.id.point_info);
+
+        if ("".equals(prePay) || "pr".equals(prePay)) {
+            minPay = "포인트 적립 불가";
+            pointInfo.setVisibility(View.INVISIBLE);
+        }
+
+        TextView minPayTextView = (TextView)findViewById(R.id.min_pay);
+        minPayTextView.setText(minPay);
+
+        ImageView thumbnailImageView = (ImageView)findViewById(R.id.list_thm);
         mIsOpen = getIntent().getBooleanExtra("isopen", true);
-
-        score.setRating(Float.parseFloat(getIntent().getStringExtra("review_rating")));
-
-        findViewById(R.id.btn_shoppage_call).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                call();
-            }
-        });
-
-        if ("".equals(getIntent().getStringExtra("pre_pay"))) {
-            LinearLayout ll = (LinearLayout)findViewById(R.id.thm_layout);
-            ll.setVisibility(View.GONE);
-            score.setVisibility(View.GONE);
-            // btnTel.setText("전화\n주문");
-            // btnTel.setBackgroundResource(R.drawable.btn_list_gray);
-            minPay.setText("포인트 적립 불가");
-
-            // separatorRow.setBackgroundResource(R.drawable.list_title_gray);
-            // img2000.setVisibility(View.GONE);
-
-            findViewById(R.id.btn_shoppage_zoom).setVisibility(View.GONE);
-
-        } else if ("gl".equals(getIntent().getStringExtra("pre_pay"))) {
-            // separatorRow.setBackgroundResource(R.drawable.list_title_gold);
-            // btnTel.setText("전화\n주문");
-            // btnTel.setBackgroundResource(R.drawable.btn_list_gold);
-        } else if ("sl".equals(getIntent().getStringExtra("pre_pay"))) {
-            // separatorRow.setBackgroundResource(R.drawable.list_title_silver);
-            // btnTel.setBackgroundResource(R.drawable.btn_list_silver);
-            // btnTel.setText("전화\n주문");
-        } else if ("pr".equals(getIntent().getStringExtra("pre_pay"))) {
-            // separatorRow.setBackgroundResource(R.drawable.list_title_prq);
-            // btnTel.setBackgroundResource(R.drawable.btn_list_prq);
-            // btnTel.setText("전화\n주문");
-        }
-
-        dong.setSingleLine(true);
-        dong.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-        dong.setSelected(true);
-
-        // btnTel.setFocusable(true);
-        // findViewById(R.id.tel_btn).setOnClickListener(new
-        // View.OnClickListener() {
-        // @Override
-        // public void onClick(View v) {
-        //
-        // if (v.getId() == R.id.tel_btn) {
-        //
-        // Tracker t = ((CashqApplication)getApplication())
-        // .getTracker(CashqApplication.TrackerName.APP_TRACKER);
-        //
-        // t.send(new HitBuilders.EventBuilder().setCategory("ShopPageActivity")
-        // .setAction("Press Button").setLabel("App Call").build());
-        //
-        // String num = getIntent().getStringExtra("tel");
-        // String name = getIntent().getStringExtra("name");
-        //
-        // checkContact(mActivity, name, num);
-        //
-        // Intent intent = new Intent(Intent.ACTION_CALL);
-        // intent.putExtra(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME,
-        // "디스플레이 네임");
-        // intent.setData(Uri.parse("tel:" + num));
-        //
-        // startActivity(intent);
-        //
-        // Intent menu = new Intent(new Intent(mActivity, CallService.class));
-        //
-        // menu.putExtra("pre_pay", mPrePay);
-        // menu.putExtra("pay", getIntent().getStringExtra("pay"));
-        // menu.putExtra("img1", getIntent().getStringExtra("img1"));
-        // menu.putExtra("img2", getIntent().getStringExtra("img2"));
-        //
-        // startService(menu);
-        // }
-        //
-        // // mNum = "tel:" + getIntent().getStringExtra("tel");
-        // // startActivity(new Intent(Intent.ACTION_CALL,
-        // // Uri.parse("tel:010-3745-2742")));
-        // // PhoneCall.call(mNum, mActivity);
-        // }
-        // });
-
         if (mIsOpen) {
 
-            ImageLoader.getInstance().displayImage(IMG_URL + getIntent().getStringExtra("thumb"),
-                    thm, new SimpleImageLoadingListener() {
-                        @Override
-                        public void onLoadingFailed(String imageUri, View view,
-                                FailReason failReason) {
-                            thm.setImageResource(R.drawable.img_no_image_80x120);
-                        }
-                    });
+            final Integer noImgResources[] = new Integer[] {
+                    R.drawable.no_img_chicken, R.drawable.no_img_pizza, R.drawable.no_img_chinese,
+                    R.drawable.no_img_jokbal, R.drawable.no_img_night, R.drawable.no_img_soup,
+                    R.drawable.no_img_korean, R.drawable.no_img_japanese,
+                    R.drawable.no_img_boxlunch, R.drawable.no_img_fastfood
+            };
+
+            int position = noImgResources[getIntent().getIntExtra("position", 0)];
+
+            DisplayImageOptions.Builder builder = new DisplayImageOptions.Builder();
+
+            builder.displayer(new RoundedBitmapDisplayer(200));
+            builder.cacheInMemory(true);
+            builder.cacheOnDisk(true);
+            builder.showImageOnLoading(R.drawable.load_anim);
+            builder.showImageForEmptyUri(position);
+            builder.showImageOnFail(position);
+
+            DisplayImageOptions options = builder.build();
+
+            String thumbUri = IMG_URL + getIntent().getStringExtra("thumb");
+
+            ImageLoader.getInstance().displayImage(thumbUri, thumbnailImageView, options);
+
         } else {
 
-            thm.setImageResource(R.drawable.nottime);
+            thumbnailImageView.setImageResource(R.drawable.nottime);
 
         }
 

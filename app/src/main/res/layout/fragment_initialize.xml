@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ImageView
+        android:layout_above="@+id/skip"
+        android:id="@+id/initialize_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/initialize_1" />
+
+    <TextView
+        android:id="@+id/skip"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="#000"
+        android:clickable="true"
+        android:gravity="center"
+        android:onClick="mOnClick"
+        android:text="시 작 하 기"
+        android:textColor="#FFF"
+        android:textSize="17sp" />
+
+</RelativeLayout>

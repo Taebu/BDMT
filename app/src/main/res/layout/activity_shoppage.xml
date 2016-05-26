@@ -10,7 +10,7 @@
         android:id="@+id/shoppage_name"
         android:layout_width="match_parent"
         android:layout_height="44dp"
-        android:background="@color/app_theme_color"
+        android:background="@color/app_theme"
         android:gravity="center"
         android:text="name"
         android:textColor="#FFFFFF"
@@ -331,7 +331,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="7"
-            android:background="@color/app_theme_color"
+            android:background="@color/app_theme"
             android:text="주문 전화"
             android:textColor="#FFFFFF"
             android:textStyle="bold" />

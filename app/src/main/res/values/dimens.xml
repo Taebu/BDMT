@@ -15,6 +15,7 @@
     <dimen name="copyright_textsize">10sp</dimen>
     <dimen name="row_shop_ic_size">12dp</dimen>
 
-    <color name="app_theme_color">#0ecbf2</color>
+    <color name="app_theme">#0ecbf2</color>
+    <color name="app_theme_top_bottom">#f0f0f0</color>
 
 </resources>

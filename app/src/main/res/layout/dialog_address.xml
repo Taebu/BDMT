@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:background="@color/app_theme_color"
+        android:background="@color/app_theme"
         android:gravity="center">
 
         <TextView
@@ -53,7 +53,7 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="20dp"
                 android:clickable="true"
-                android:src="@drawable/btn_search_2" />
+                android:src="@drawable/btn_search_1" />
 
         </LinearLayout>
 

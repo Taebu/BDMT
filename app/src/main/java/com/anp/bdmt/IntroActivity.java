@@ -1,6 +1,21 @@
 
 package com.anp.bdmt;
 
+import static com.anp.bdmt.MainActivity.sDistance;
+import static com.anp.bdmt.gcm.Util.getPhoneNumber;
+import static com.anp.bdmt.gcm.Util.loadSharedPreferencesBoolean;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -10,16 +25,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.Window;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import android.widget.Toast;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import static com.anp.bdmt.MainActivity.sDistance;
 
 public class IntroActivity extends Activity {
 
@@ -36,6 +46,7 @@ public class IntroActivity extends Activity {
     private double mLatitude;
 
     private String mGu, mSi;
+
     private String mAddress;
 
     @Override
@@ -44,13 +55,16 @@ public class IntroActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_intro);
 
-//        newGps();
+        // saveSharedPreferences_boolean(getApplicationContext(), "init",
+        // false);
+
+        // newGps();
 
         // findLocation();
 
         // new GpsTask().execute();
 
-         loading();
+        loading();
 
         // loading2();
     }
@@ -89,16 +103,67 @@ public class IntroActivity extends Activity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(IntroActivity.this, MainActivity.class);
+
+                boolean notFirstRun = loadSharedPreferencesBoolean(getApplicationContext(), "init");
+
+                Intent intent = new Intent();
+                if (notFirstRun) {
+                    intent.setClass(getApplicationContext(), MainActivity.class);
+                } else {
+                    checkStarter();
+                    intent.setClass(getApplicationContext(), InitializeActivity.class);
+                }
+
                 intent.putExtra("gpsflag", mGpsFlag);
                 intent.putExtra("lat", mLatitude);
                 intent.putExtra("lng", mLongitude);
 
                 startActivity(intent);
                 finish();
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                // overridePendingTransition(android.R.anim.fade_in,
+                // android.R.anim.fade_out);
             }
         }, 3000);
+    }
+
+    private void checkStarter() {
+
+        final String phoneNum = getPhoneNumber(this);
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+
+        String url = "http://cashq.co.kr/m/ajax_data/set_down.php?mb_hp=" + phoneNum;
+
+        Log.i(TAG, "check starter url: " + url);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+
+                            JSONObject jsonObject = new JSONObject(response);
+                            boolean isStarter = jsonObject.getBoolean("success");
+
+                            if (isStarter) {
+                                Toast.makeText(IntroActivity.this, "다운로드 기념 2000 포인트 적립!!",
+                                        Toast.LENGTH_LONG).show();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                    }
+                });
+
+        requestQueue.add(stringRequest);
+
     }
 
     private class AddressJsonTask extends AsyncTask<Double, Void, JSONObject> {

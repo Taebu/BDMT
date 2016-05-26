@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape
+            android:innerRadius="80dp"
+            android:shape="ring"
+            android:thickness="2dp"
+            android:useLevel="false">
+
+            <!--<solid android:color="#ffffff" />-->
+
+            <stroke android:width="0.7dp" android:color="#fff" />
+
+        </shape>
+    </item>
+
+    <!--<item>-->
+    <!--<shape android:shape="oval">-->
+    <!--<stroke-->
+    <!--android:width="2dp"-->
+    <!--android:color="#f0f0f0" />-->
+    <!--</shape>-->
+    <!--</item>-->
+
+    <!--<shape xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:shape="ring" android:innerRadius="23dp" android:thickness="0dp">-->
+    <!--<stroke android:width="2dp" android:color="#ababf2" />-->
+    <!--</shape>-->
+
+</layer-list>

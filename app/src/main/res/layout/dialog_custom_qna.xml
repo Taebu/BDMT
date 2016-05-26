@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="65dp"
             android:layout_marginTop="-4dp"
-            android:background="@color/app_theme_color"
+            android:background="@color/app_theme"
             android:scaleType="center"
             android:src="@drawable/logo_2" />
 

@@ -831,8 +831,8 @@ public class PointNewActivity extends BaseActivity implements View.OnClickListen
                 }
 
                 // Log.e("JAYPOINT", "pos : " + position +
-                // "clickData.getPosition() : "
-                // + clickData.getPosition());
+                // "clickData.getTypePosition() : "
+                // + clickData.getTypePosition());
 
                 clickData.setChecked(cb.isChecked());
                 notifyDataSetChanged();

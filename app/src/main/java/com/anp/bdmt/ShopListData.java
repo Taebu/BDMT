@@ -109,6 +109,16 @@ public class ShopListData {
 
     private String distance; // 거리
 
+    public int getTypePosition() {
+        return typePosition;
+    }
+
+    public void setTypePosition(int typePosition) {
+        this.typePosition = typePosition;
+    }
+
+    private int typePosition;
+
     public boolean isOpen() {
         return isOpen;
     }

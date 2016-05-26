@@ -2,8 +2,9 @@
 package com.anp.bdmt;
 
 import static com.anp.bdmt.MainActivity.APP_ID;
-import static com.anp.bdmt.Utils.checkContact;
+import static com.anp.bdmt.MainActivity.sDistance;
 
+import com.anp.bdmt.gcm.Util;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -14,7 +15,6 @@ import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -36,8 +36,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
-
-import com.anp.bdmt.gcm.Util;
 
 /**
  * @author Jung-Hum Cho
@@ -76,8 +74,6 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
     private LinearLayout footerLayout;
 
     private int mTypeDuplicator = 0;
-
-    private int mDistance = 2;
 
     // 관리자 모드
     public static boolean adminFlag = false;
@@ -130,7 +126,7 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
         mShopListData = new ArrayList<ShopListData>();
 
         // bundle class get extra
-        mType = getArguments().getString("mType");
+        mType = getArguments().getString("type");
 
         Log.v(TAG, "mType : " + mType);
 
@@ -138,7 +134,6 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
 
         final double latitude = getArguments().getDouble("lat");
         final double longitude = getArguments().getDouble("lng");
-        final int distance = getArguments().getInt("distance");
 
         Log.v("oncreaview", "" + latitude);
         Log.e("ShopListFragment", "" + longitude);
@@ -210,8 +205,7 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
                                 Log.v(tag, "SCROLL DOWN");
                                 if (flagLoading && hasAddItem) {
                                     Log.v("Last", "WTF");
-                                    new LoadShopListTask(latitude, longitude, distance)
-                                            .execute(++mPage);
+                                    new LoadShopListTask(latitude, longitude).execute(++mPage);
                                 }
                             }
                             // 시작 Y가 끝 보다 작다면 터치가 위에서 아래로 이러우졌다는 것이고, 스크롤이 올라갔다는
@@ -297,7 +291,7 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
         });
 
         // JSONParse AsyncTask Method
-        new LoadShopListTask(latitude, longitude, distance).execute(1);
+        new LoadShopListTask(latitude, longitude).execute(1);
 
         // for (String s : FROM_COLUMNS) {
         // Log.e("contacts", "contacts :: " + s);
@@ -320,15 +314,12 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
 
     private class LoadShopListTask extends AsyncTask<Integer, Integer, String> {
 
-        public LoadShopListTask(double lat, double lng, int distance) {
+        public LoadShopListTask(double lat, double lng) {
             mLat = lat;
             mLng = lng;
-            mDistance = distance;
         }
 
         double mLat, mLng;
-
-        int mDistance;
 
         @Override
         protected void onPreExecute() {
@@ -354,23 +345,19 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
             // 본사 gps 37.636992, 126.775057
 
             // TODO 출시는 3km
-            int distance = mDistance;
             int listsize = 10;
-
-            if (adminFlag) {
-                distance = 3;
-            }
 
             int page = params[0];
 
             StringBuilder sb = new StringBuilder("http://cashq.co.kr/m/list_json.php");
             sb.append("?listsize=").append(listsize);
-            sb.append("&distance=").append(distance);
+            sb.append("&distance=").append(sDistance);
             sb.append("&lat=").append(mLat);
             sb.append("&lng=").append(mLng);
             sb.append("&type=").append(mType);
             sb.append("&page=").append(page);
             sb.append("&appid=").append(APP_ID);
+//            sb.append("&appid=").append("cashq");
 
             Log.e("ShopList", "url : " + sb.toString());
 
@@ -490,7 +477,8 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
                 hasAddItem = false;
 
                 if (mPage == 1) {
-//                    Toast.makeText(getActivity(), "가맹점이 없습니다.", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(getActivity(), "가맹점이 없습니다.",
+                    // Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getActivity(), "가맹점이 더 이상 없습니다.", Toast.LENGTH_SHORT).show();
                 }
@@ -606,6 +594,8 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
 
             shopData.setIsOpen(true);
 
+            shopData.setTypePosition(getArguments().getInt("position"));
+
             return shopData;
 
         } catch (JSONException e) {
@@ -672,6 +662,8 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
             // intent.putExtra("isopen", data.isOpen());
             intent.putExtra("isopen", true);
 
+            intent.putExtra("position", data.getTypePosition());
+
             startActivity(intent);
         }
     }
@@ -681,35 +673,37 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
         @Override
         public void onClick(View v) {
 
-//            if (v.getId() == R.id.tel_btn) {
-//
-//                Tracker t = ((CashqApplication)getActivity().getApplication())
-//                        .getTracker(CashqApplication.TrackerName.APP_TRACKER);
-//
-//                t.send(new HitBuilders.EventBuilder().setCategory("ShopListFragment")
-//                        .setAction("Press Button").setLabel("App Call").build());
-//
-//                String num = v.getTag(R.id.num).toString();
-//                String name = v.getTag(R.id.name).toString();
-//                String img1 = v.getTag(R.id.img1).toString();
-//                String img2 = v.getTag(R.id.img2).toString();
-//
-//                // PhoneCall.call(num, getActivity());
-//
-//                checkContact(getActivity(), name, num);
-//
-//                Intent call = new Intent(Intent.ACTION_CALL);
-//                call.putExtra(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME,
-//                        "디스플레이 네임");
-//                call.setData(Uri.parse("tel:" + num));
-//
-//                startActivity(call);
-//
-//                Intent menu = new Intent(new Intent(getActivity(), CallService.class));
-//                menu.putExtra("img1", img1);
-//                menu.putExtra("img2", img2);
-//                getActivity().startService(menu);
-//            }
+            // if (v.getId() == R.id.tel_btn) {
+            //
+            // Tracker t = ((CashqApplication)getActivity().getApplication())
+            // .getTracker(CashqApplication.TrackerName.APP_TRACKER);
+            //
+            // t.send(new
+            // HitBuilders.EventBuilder().setCategory("ShopListFragment")
+            // .setAction("Press Button").setLabel("App Call").build());
+            //
+            // String num = v.getTag(R.id.num).toString();
+            // String name = v.getTag(R.id.name).toString();
+            // String img1 = v.getTag(R.id.img1).toString();
+            // String img2 = v.getTag(R.id.img2).toString();
+            //
+            // // PhoneCall.call(num, getActivity());
+            //
+            // checkContact(getActivity(), name, num);
+            //
+            // Intent call = new Intent(Intent.ACTION_CALL);
+            // call.putExtra(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME,
+            // "디스플레이 네임");
+            // call.setData(Uri.parse("tel:" + num));
+            //
+            // startActivity(call);
+            //
+            // Intent menu = new Intent(new Intent(getActivity(),
+            // CallService.class));
+            // menu.putExtra("img1", img1);
+            // menu.putExtra("img2", img2);
+            // getActivity().startService(menu);
+            // }
         }
     };
 

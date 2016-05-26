@@ -17,14 +17,18 @@
 -->
 
 <resources>
+    <style name="StyledIndicators" parent="Theme.Sherlock.Light.NoActionBar">
+        <item name="vpiCirclePageIndicatorStyle">@style/CustomCirclePageIndicator</item>
+    </style>
 
     <style name="CustomCirclePageIndicator">
-        <item name="fillColor">#000000</item>
-        <item name="strokeColor">#000000</item>
-        <item name="strokeWidth">2dp</item>
-        <item name="radius">10dp</item>
-        <item name="centered">true</item>
-        <item name="gapWidth">10dp</item>
+        <item name="fillColor">#FFFFFFFF</item>
+        <item name="strokeColor">#90FFFFFF</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="radius">6dp</item>
+        <item name="pageColor">#90FFFFFF</item>
+        <item name="android:padding">4dp</item>
+        <!--<item name="centered">true</item>-->
     </style>
 
     <style name="CustomTab">
@@ -32,6 +36,8 @@
         <item name="android:background">@drawable/bg_sub_menu</item>
 
     </style>
+
+
 
     <style name="IntroTheme" parent="android:Theme.Translucent.NoTitleBar">
         <item name="android:windowBackground">@drawable/intro</item>
@@ -53,7 +59,7 @@
     </style>
 
     <style name="ActionBar.Solid.Cashq" parent="@style/Widget.Sherlock.Light.ActionBar.Solid">
-        <item name="background">@color/app_theme_color</item>
+        <item name="background">@color/app_theme</item>
         <item name="backgroundStacked">@drawable/bg_sub_menu</item>
         <item name="backgroundSplit">@drawable/bg_sub_menu</item>
         <item name="progressBarStyle">@style/ProgressBar.Cashq</item>

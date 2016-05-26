@@ -10,7 +10,7 @@
         android:id="@+id/login_top"
         android:layout_width="match_parent"
         android:layout_height="44dp"
-        android:background="@color/app_theme_color"
+        android:background="@color/app_theme"
         android:gravity="center"
         android:text="포인트 관리"
         android:textColor="#FFFFFF"
