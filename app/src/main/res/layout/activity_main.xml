@@ -407,12 +407,11 @@
 
             </LinearLayout>
 
-            <ImageView
+            <android.support.v4.view.ViewPager
+                android:id="@+id/main_viewpager"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:adjustViewBounds="true"
-                android:src="@drawable/bottom_banner" />
+                android:layout_height="60dp"
+                android:layout_marginTop="32dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -446,7 +445,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="문의전화 : 1599-9495"
+                    android:text="문의전화 : 1599-7571"
                     android:textColor="#FFFFFF"
                     android:textSize="@dimen/copyright_textsize" />
 

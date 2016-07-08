@@ -1,14 +1,10 @@
 
 package com.anp.bdmt;
 
-import static com.anp.bdmt.gcm.Util.saveSharedPreferences_boolean;
-
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,11 +16,6 @@ import android.widget.TextView;
  * @author anp Created by Jung-Hum Cho on 2016. 5. 20..
  */
 public class InitializeFragment extends Fragment {
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,6 +52,5 @@ public class InitializeFragment extends Fragment {
 
         return view;
     }
-
 
 }

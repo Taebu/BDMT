@@ -10,7 +10,7 @@ android {
     defaultConfig {
         applicationId "com.anp.bdmt"
         minSdkVersion 10
-        targetSdkVersion 19
+        targetSdkVersion 21
         multiDexEnabled false
 
     }
@@ -34,7 +34,7 @@ dependencies {
     compile 'com.github.rampo.updatechecker:library:2.1.7'
     compile project(':ViewPagerIndicator')
     compile 'com.mcxiaoke.volley:library:1.0.19'
-    //        compile 'com.android.support:appcompat-v7:23.1.1'
+//            compile 'com.android.support:appcompat-v7:23.3.0'
     compile project(':PinnedSectionListView')
 }
 

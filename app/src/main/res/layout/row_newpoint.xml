@@ -44,7 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginRight="8dp"
-        android:layout_toLeftOf="@+id/row_point_check"
+        android:layout_toLeftOf="@+id/point_checkbox_new"
         android:orientation="vertical">
 
         <TextView
@@ -66,6 +66,14 @@
             android:textStyle="bold" />
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/point_checkbox_new"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/btn_check_off" />
+
     <CheckBox
         android:id="@+id/row_point_check"
         android:layout_width="26dp"
@@ -73,7 +81,8 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:button="@drawable/btn_check"
-        android:clickable="true" />
+        android:clickable="true"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/row_point_comment"

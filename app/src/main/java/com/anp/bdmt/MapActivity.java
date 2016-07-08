@@ -1,13 +1,8 @@
 
 package com.anp.bdmt;
 
-import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
+import static com.anp.bdmt.MainActivity.sLatitude;
+import static com.anp.bdmt.MainActivity.sLongitude;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -20,6 +15,16 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import android.annotation.TargetApi;
+import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
+import android.os.AsyncTask;
+import android.os.Build;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 
 import java.io.IOException;
 import java.util.List;
@@ -57,11 +62,7 @@ public class MapActivity extends BaseActivity implements GoogleMap.OnMapClickLis
 
         // LatLng place = new LatLng(37.636992, 126.775057);
 
-        Double lat, lng;
-        lat = getIntent().getDoubleExtra("lat", -1);
-        lng = getIntent().getDoubleExtra("lng", -1);
-
-        LatLng place = new LatLng(lat, lng);
+        LatLng place = new LatLng(sLatitude, sLongitude);
 
         // mUiSettings.setMyLocationButtonEnabled(true);
         mMap.setMyLocationEnabled(true);
@@ -102,6 +103,7 @@ public class MapActivity extends BaseActivity implements GoogleMap.OnMapClickLis
         // Toast.makeText(this, ""+latLng, Toast.LENGTH_LONG).show();
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void setUpMapIfNeeded() {
         if (mMap == null) {
             mMap = ((MapFragment)getFragmentManager().findFragmentById(R.id.map)).getMap();
@@ -112,8 +114,10 @@ public class MapActivity extends BaseActivity implements GoogleMap.OnMapClickLis
     public void onInfoWindowClick(Marker marker) {
 
         Intent i = new Intent(this, MainActivity.class);
-        i.putExtra("lat", marker.getPosition().latitude);
-        i.putExtra("lng", marker.getPosition().longitude);
+        sLatitude = marker.getPosition().latitude;
+        sLongitude = marker.getPosition().longitude;
+//        i.putExtra("lat", marker.getPosition().latitude);
+//        i.putExtra("lng", marker.getPosition().longitude);
         i.putExtra("gpsflag", true);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(i);

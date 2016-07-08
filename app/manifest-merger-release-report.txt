@@ -346,7 +346,7 @@ ADDED from AndroidManifest.xml:184:9
 	android:name
 		ADDED from AndroidManifest.xml:184:18
 uses-sdk
-INJECTED from AndroidManifest.xml:0:0 reason: use-sdk injection requested
+INJECTED from AndroidManifest.xml:0:0 comment: use-sdk injection requested
 MERGED from com.actionbarsherlock:actionbarsherlock:4.4.0:3:3
 MERGED from com.android.support:support-v4:21.0.0:15:5
 MERGED from CashqNative:SlidingMenu:unspecified:7:5

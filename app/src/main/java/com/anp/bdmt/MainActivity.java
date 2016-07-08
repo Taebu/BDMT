@@ -56,10 +56,14 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -120,12 +124,14 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
     private Context mContext;
 
-    private double mLatitude, mLongitude;
+    public static double sLatitude;
+
+    public static double sLongitude;
+
+    public static int sDistance = 3;
 
     // private ImageView mManualTextView;
     private TextView mManualDistance;
-
-    public static int sDistance = 3;
 
     // google api location service
 
@@ -226,20 +232,18 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
         mLocationUtil = LocationUtil.getInstance(MainActivity.this);
 
         mGpsFlag = getIntent().getBooleanExtra("gpsflag", false);
-        mLatitude = getIntent().getDoubleExtra("lat", -1);
-        mLongitude = getIntent().getDoubleExtra("lng", -1);
 
-        mAddressText.setText("lat: " + String.valueOf(mLatitude) + "lon: "
-                + String.valueOf(mLongitude));
+        mAddressText.setText("lat: " + String.valueOf(sLatitude) + "lon: "
+                + String.valueOf(sLongitude));
 
-        if (!mGpsFlag || mLatitude == -1 || mLongitude == -1) {
+        if (!mGpsFlag) {
             findLocation();
         } else {
             mGpsFlag = true;
-            Log.e(TAG, "lat: " + String.valueOf(mLatitude) + "lon: " + String.valueOf(mLongitude));
-            new AddressJsonTask(mAddressText).execute(mLatitude, mLongitude);
-            // mAddressText.setText(mLocationUtil.getAddress(mLatitude,
-            // mLongitude));
+            Log.e(TAG, "lat: " + String.valueOf(sLatitude) + "lon: " + String.valueOf(sLongitude));
+            new AddressJsonTask(mAddressText).execute();
+            // mAddressText.setText(mLocationUtil.getAddress(sLatitude,
+            // sLongitude));
         }
 
         // if(adminFlag) {
@@ -278,6 +282,96 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
         // 네트워크 예외
 
+        initViewPager();
+
+    }
+
+    private void initViewPager() {
+
+        ViewPager viewPager = (ViewPager)findViewById(R.id.main_viewpager);
+
+        viewPager.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
+
+            @Override
+            public int getCount() {
+                return 2;
+            }
+
+            @Override
+            public Fragment getItem(final int position) {
+                return new Fragment() {
+                    @Override
+                    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                            Bundle savedInstanceState) {
+                        final View view = inflater.inflate(R.layout.fragment_banner, container,
+                                false);
+                        if (position == 0) {
+                            view.setBackgroundResource(R.drawable.bottom_banner_1);
+                        } else if (position == 1) {
+                            view.setBackgroundResource(R.drawable.bottom_banner_2);
+                        }
+
+                        return view;
+                    }
+                };
+            }
+
+        });
+        pageSwitcher(viewPager);
+        // viewPager.setAdapter(new PagerAdapter() {
+        //
+        // @Override
+        // public Object instantiateItem(ViewGroup container, int position) {
+        // View view = getLayoutInflater().inflate(R.layout.fragment_banner,
+        // container);
+        //
+        // ImageView ivBanner = (ImageView)
+        // view.findViewById(R.id.main_banner_img);
+        //
+        // if(position == 0) {
+        // ivBanner.setImageResource(R.drawable.bottom_banner_1);
+        // } else if (position == 1) {
+        // ivBanner.setImageResource(R.drawable.bottom_banner_2);
+        // }
+        //
+        // return view;
+        // }
+        //
+        // @Override
+        // public int getCount() {
+        // return 2;
+        // }
+        //
+        // @Override
+        // public boolean isViewFromObject(View view, Object object) {
+        // return false;
+        // }
+        // });
+    }
+
+    private void pageSwitcher(final ViewPager viewPager) {
+
+        int second = 2 * 1000;
+
+        final Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        int position = viewPager.getCurrentItem();
+
+                        if (position == 0) {
+                            viewPager.setCurrentItem(1);
+                        } else if (position == 1) {
+                            viewPager.setCurrentItem(0);
+                        }
+                    }
+                });
+
+            }
+        }, 0, second);
     }
 
     private void updateChecker() {
@@ -401,8 +495,6 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
         if (mGpsFlag) {
             mIntent.putExtra("position", mPosition);
             mIntent.putExtra("life", false);
-            mIntent.putExtra("lat", mLatitude);
-            mIntent.putExtra("lng", mLongitude);
 
             startActivity(mIntent);
             if (!mDialog.isShowing()) {
@@ -463,7 +555,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
     }
 
-    private class AddressJsonTask extends AsyncTask<Double, Void, JSONObject> {
+    private class AddressJsonTask extends AsyncTask<Void, Void, JSONObject> {
 
         public AddressJsonTask(TextView textView) {
             tvAddress = textView;
@@ -482,14 +574,11 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
         }
 
         @Override
-        protected JSONObject doInBackground(Double... params) {
-
-            double lat = params[0];
-            double lng = params[1];
+        protected JSONObject doInBackground(Void... params) {
 
             String url = Uri.parse("http://maps.googleapis.com/maps/api/geocode/json").buildUpon()
                     .appendQueryParameter("language", "ko")
-                    .appendQueryParameter("latlng", lat + "," + lng)
+                    .appendQueryParameter("latlng", sLatitude + "," + sLongitude)
                     .appendQueryParameter("sensor", "false").build().toString();
 
             Log.e(TAG, "URL : " + url);
@@ -689,14 +778,14 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
                         try {
 
-                            mLatitude = mLocationUtil.getLastLocation().getLatitude();
-                            mLongitude = mLocationUtil.getLastLocation().getLongitude();
+                            sLatitude = mLocationUtil.getLastLocation().getLatitude();
+                            sLongitude = mLocationUtil.getLastLocation().getLongitude();
 
-                            new AddressJsonTask(mAddressText).execute(mLatitude, mLongitude);
+                            new AddressJsonTask(mAddressText).execute();
 
                             String address;
-                            // address = mLocationUtil.getAddress(mLatitude,
-                            // mLongitude);
+                            // address = mLocationUtil.getAddress(sLatitude,
+                            // sLongitude);
 
                             mAddressText.setVisibility(View.VISIBLE);
                             // mAddressText.setText(address);
@@ -784,7 +873,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
         }
 
         // 레이지이미지로더 캐시 정리
-//        new com.anp.bdmt.lazylist.ImageLoader(mContext).clearCache();
+        // new com.anp.bdmt.lazylist.ImageLoader(mContext).clearCache();
     }
 
     public void mOnClick(View view) {
@@ -793,8 +882,8 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
         // mPosition = 0;
         // mType = "W00";
         // mIntent.putExtra("TYPE", mType);
-        // mIntent.putExtra("lat", mLatitude);
-        // mIntent.putExtra("lng", mLongitude);
+        // mIntent.putExtra("lat", sLatitude);
+        // mIntent.putExtra("lng", sLongitude);
         // mIntent.putExtra("distance", sDistance);
         //
         // startActivity(mIntent);
@@ -805,8 +894,6 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
             case R.id.manual_location:
                 Intent i = new Intent(this, MapActivity.class);
-                i.putExtra("lat", mLatitude);
-                i.putExtra("lng", mLongitude);
                 // i.addFlags()
 
                 startActivity(i);
@@ -827,8 +914,8 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
         // new LifeDialog(this, mOnClickListener).show();
         //
         // // mIntent.putExtra("TYPE", mType);
-        // // mIntent.putExtra("lat", mLatitude);
-        // // mIntent.putExtra("lng", mLongitude);
+        // // mIntent.putExtra("lat", sLatitude);
+        // // mIntent.putExtra("lng", sLongitude);
         // // mIntent.putExtra("distance", sDistance);
         //
         // // startActivity(mIntent);
@@ -881,9 +968,6 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
             mIntent.putExtra("LIFE", true);
             mIntent.putExtra("POSITION", mPosition);
-            mIntent.putExtra("lat", mLatitude);
-            mIntent.putExtra("lng", mLongitude);
-            mIntent.putExtra("distance", sDistance);
 
             startActivity(mIntent);
             if (!mDialog.isShowing()) {

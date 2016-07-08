@@ -31,12 +31,7 @@ public class ShopListActivity extends BaseActivity implements ActionBar.TabListe
             Util.showDialog_normal(this, "네트워크 에러", "네트워크 연결 상태를 확인해주세요");
         }
 
-        double lat = getIntent().getDoubleExtra("lat", -1);
-        double lng = getIntent().getDoubleExtra("lng", -1);
-
         boolean life = getIntent().getBooleanExtra("life", false);
-
-        int position = getIntent().getIntExtra("position", 1);
 
         String[] tabs;
         if (life) {
@@ -58,7 +53,7 @@ public class ShopListActivity extends BaseActivity implements ActionBar.TabListe
 
         // Initialization
         ShopListPagerAdapter pagerAdapter = new ShopListPagerAdapter(getSupportFragmentManager(),
-                lat, lng, tabs, types, life);
+                tabs, types);
 
         mViewPager = (ViewPager)findViewById(R.id.pager);
         mViewPager.setAdapter(pagerAdapter);
@@ -70,13 +65,13 @@ public class ShopListActivity extends BaseActivity implements ActionBar.TabListe
 
         if (mActionBar != null) {
             mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-            for (String tab_name : tabs) {
-                mActionBar.addTab(mActionBar.newTab().setText(tab_name).setTabListener(this));
+            for (String tabName : tabs) {
+                mActionBar.addTab(mActionBar.newTab().setText(tabName).setTabListener(this));
             }
         }
 
+        int position = getIntent().getIntExtra("position", 0);
         mViewPager.setCurrentItem(position);
-
         mActionBar.setSelectedNavigationItem(position);
 
     }

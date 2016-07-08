@@ -11,21 +11,13 @@ import android.support.v4.app.FragmentStatePagerAdapter;
  */
 public class ShopListPagerAdapter extends FragmentStatePagerAdapter {
 
-    public ShopListPagerAdapter(FragmentManager fm, double lat, double lng,
-            String[] tabs, String[] types, boolean life) {
+    public ShopListPagerAdapter(FragmentManager fm, String[] tabs, String[] types) {
         super(fm);
-        mLat = lat;
-        mLng = lng;
-        mLife = life;
         mTabs = tabs;
         mTypes = types;
     }
 
     private String[] mTabs;
-
-    private boolean mLife;
-
-    private double mLat, mLng;
 
     private String[] mTypes;
 
@@ -34,10 +26,7 @@ public class ShopListPagerAdapter extends FragmentStatePagerAdapter {
 
         Bundle args = new Bundle();
 
-        args.putInt("position", position);
         args.putString("type", mTypes[position]);
-        args.putDouble("lat", mLat);
-        args.putDouble("lng", mLng);
 
         ShopListFragment shopListFragment = new ShopListFragment();
         shopListFragment.setArguments(args);

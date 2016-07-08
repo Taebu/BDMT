@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="app_theme">#0ecbf2</color>
+    <color name="app_theme_top_bottom">#f0f0f0</color>
+
+    <color name="positive_on">#87e5f9</color>
+    <color name="negative_on">#e2e2e2</color>
+
+    <color name="border_color">#f0f0f0</color>
+
+    <color name="gray_font">#8f8f8f</color>
+
+</resources>

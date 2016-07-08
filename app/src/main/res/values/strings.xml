@@ -51,10 +51,33 @@
     <item type="id" name="content"/>
     <item type="id" name="reviewdata"/>
 
-
     <item name="zipcode" type="id"/>
     <item name="address1" type="id"/>
     <item name="address2" type="id"/>
     <item name="full_address" type="id"/>
+
+    <string name="noti_complete_saving_title">포인트 적립!</string>
+    <string name="noti_complete_saving_content">배달톡톡을 이용해 주셔서 감사합니다</string>
+
+    <string name="noti_first_title">2,000포인트 적립!</string>
+    <string name="noti_first_content">첫 방문 기념</string>
+
+    <string name="noti_complete_deposit_title">현금 지급 완료!</string>
+    <string name="noti_complete_deposit_content">플레이스토어에 별점과 리뷰로 자랑해주세요~</string>
+
+    <string name="noti_reject_deposit_title">현금 지급 반려</string>
+    <string name="noti_reject_deposit_content">적립 조건에 부합되지 않아 지급이 반려 되었습니다</string>
+
+    <string name="noti_term">평일 3~4일 정도 소요됩니다</string>
+    <string name="noti_caution">일정 주문금액 미달이거나 주문이 아닐 시 포인트 인정 불가</string>
+
+    <string name="noti_reject_duplicate_shop_title">동일 매장 지급 불가</string>
+    <string name="noti_reject_duplicate_shop_content">최소 1개 주문건은 다른 매장이어야 지급됩니다</string>
+
+    <string name="noti_account_error_title">계좌 오류 지급 불가</string>
+    <string name="noti_account_error_content">계좌 번호와 예금주를 확인하신후 다시 신청해주세요</string>
+
+    <string name="noti_system_error_title">시스템 전산 오류</string>
+    <string name="noti_system_error_content">불편드려 죄송합니다 신속히 처리하겠습니다</string>
 
 </resources>

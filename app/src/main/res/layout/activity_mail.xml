@@ -1,63 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@drawable/bg_normal"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="@android:color/transparent">
 
-    <LinearLayout
-        android:layout_gravity="center"
-        android:layout_width="350dp"
-        android:layout_height="450dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/bg_content"
-        android:orientation="vertical">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="push test" />
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal"
-            android:weightSum="10">
-            <ImageView
-                android:layout_marginLeft="28dp"
-                android:layout_gravity="center"
-                android:src="@drawable/icon_mail_1"
-                android:layout_width="20dp"
-                android:layout_height="20dp" />
-
-            <EditText
-                android:hint="이메일 주소를 입력해주세요."
-                android:background="@android:color/transparent"
-                android:layout_marginLeft="8dp"
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
-
-        <ImageView
-            android:layout_width="310dp"
-            android:layout_height="1dp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="14dp"
-            android:src="#E8E8E8" />
-        <TextView
-            android:layout_marginLeft="28dp"
-            android:textStyle="bold"
-            android:text="문의 내용"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <EditText
-            android:hint=" - 연락처를 남겨주시면 빠른처리가 가능합니다."
-            android:background="@android:color/transparent"
-            android:singleLine="false"
-            android:layout_gravity="center"
-            android:layout_width="310dp"
-            android:layout_height="300dp" />
-
-    </LinearLayout>
-
-</LinearLayout>
+</RelativeLayout>

@@ -1,28 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="#999999"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#999999">
 
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/main_list_img" />
+        android:layout_height="wrap_content" />
+
+    <!--<ImageView-->
+    <!--android:padding="8dp"-->
+    <!--android:id="@+id/main_list_img"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="200dp"-->
+    <!--android:layout_above="@+id/main_list_banner"-->
+    <!--android:src="@drawable/main_list_img_new" />-->
 
     <ImageView
-        android:padding="8dp"
-        android:id="@+id/main_list_img"
+        android:id="@+id/main_list_banner1"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_above="@+id/main_list_banner"
-        android:src="@drawable/main_list_img_new" />
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/main_list_banner2"
+        android:layout_marginBottom="1dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/main_list_banner1" />
 
     <ImageView
-        android:id="@+id/main_list_banner"
+        android:id="@+id/main_list_banner2"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/main_list_banner3"
+        android:layout_marginBottom="1dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/main_list_banner2" />
+
+    <ImageView
+        android:id="@+id/main_list_banner3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:src="@drawable/main_list_banner" />
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/main_list_banner3" />
 
 </RelativeLayout>

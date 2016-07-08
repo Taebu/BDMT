@@ -17,6 +17,7 @@
 -->
 
 <resources>
+
     <style name="StyledIndicators" parent="Theme.Sherlock.Light.NoActionBar">
         <item name="vpiCirclePageIndicatorStyle">@style/CustomCirclePageIndicator</item>
     </style>
@@ -37,6 +38,12 @@
 
     </style>
 
+    <style name="progressBarReverse" parent="Widget.Sherlock.ProgressBar.Horizontal">
+
+        <item name="android:colorAccent">#FFFFFF</item>
+        <item name="android:progressBackgroundTint">@color/app_theme</item>
+
+    </style>
 
 
     <style name="IntroTheme" parent="android:Theme.Translucent.NoTitleBar">
@@ -112,11 +119,11 @@
     </style>
 
     <!--<style name="starRatingBar" level3="@android:style/Widget.RatingBar">-->
-        <!--<item name="android:indeterminateOnly">false</item>-->
-        <!--<item name="android:progressDrawable">@drawable/custom_ratingbar_full</item>-->
-        <!--<item name="android:minHeight">30dp</item>-->
-        <!--<item name="android:maxHeight">30dp</item>-->
-        <!--<item name="android:thumb">@null</item>-->
+    <!--<item name="android:indeterminateOnly">false</item>-->
+    <!--<item name="android:progressDrawable">@drawable/custom_ratingbar_full</item>-->
+    <!--<item name="android:minHeight">30dp</item>-->
+    <!--<item name="android:maxHeight">30dp</item>-->
+    <!--<item name="android:thumb">@null</item>-->
     <!--</style>-->
 
     <style name="starRatingBar" parent="@android:style/Widget.RatingBar">

@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -366,25 +367,25 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
         String[] split = date.split("-");
 
         int year = Integer.parseInt(split[0]);
-        int month = Integer.parseInt(split[1]) - 1;
+        int month = Integer.parseInt(split[1]);
         int day = Integer.parseInt(split[2]);
 
         Log.v("cal", "year: " + year + " month: " + month + " day: " + day);
 
         Calendar calendar = Calendar.getInstance(Locale.KOREAN);
-        calendar.set(year, month, day, 0, 0, 0);
+        calendar.set(year, month - 1, day, 0, 0, 0);
 
-        long now = System.currentTimeMillis();
         long deadline = calendar.getTimeInMillis();
-        long secondOfDay = 24 * 60 * 60 * 1000;
+        long now = System.currentTimeMillis();
 
         Log.v("cal", "now: " + now + " dead: " + deadline);
 
-        long result = (deadline - now) / secondOfDay;
+        final long millisOfDay = 24 * 60 * 60 * 1000;
+        int result = (int)(((deadline - now + millisOfDay) / millisOfDay) * -1);
 
         Log.v("cal", "" + result);
 
-        return (int)(result) * -1;
+        return result;
     }
 
     private String getSimpleDate(String callDate) {
@@ -738,6 +739,8 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
 
             private RelativeLayout rowLayout;
 
+            private ImageView checkImageView;
+
         }
 
         @Override
@@ -757,6 +760,7 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
                 h.value = (TextView)convertView.findViewById(R.id.row_point_value);
                 h.pointCheck = (CheckBox)convertView.findViewById(R.id.row_point_check);
                 h.grade = (TextView)convertView.findViewById(R.id.row_point_grade);
+                h.checkImageView = (ImageView)convertView.findViewById(R.id.point_checkbox_new);
 
                 convertView.setTag(h);
 
@@ -815,6 +819,12 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
 
             h.pointCheck.setChecked(item.isChecked());
 
+            if (item.isChecked()) {
+                h.checkImageView.setImageResource(R.drawable.btn_check_on);
+            } else {
+                h.checkImageView.setImageResource(R.drawable.btn_check_off);
+            }
+
             h.pointCheck.setTag(item);
 
             boolean isInclude = true;
@@ -843,12 +853,12 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
                     h.status.setText("사용가능");
                     h.pointCheck.setOnClickListener(this);
                     convertView.setOnClickListener(this);
-                    h.pointCheck.setVisibility(View.VISIBLE);
+//                    h.pointCheck.setVisibility(View.VISIBLE);
                     h.status.setTextColor(Color.parseColor("#666666"));
                 } else {
                     h.pointCheck.setOnClickListener(null);
                     convertView.setOnClickListener(null);
-                    h.pointCheck.setVisibility(View.INVISIBLE);
+//                    h.pointCheck.setVisibility(View.INVISIBLE);
                     h.status.setTextColor(Color.RED);
                     h.status.setText("선택불가\n" + item.getStatus());
                 }
@@ -860,7 +870,7 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
                 h.status.setText("선택불가\n다른 지역");
                 h.status.setTextColor(Color.RED);
                 convertView.setBackgroundColor(Color.LTGRAY);
-                h.pointCheck.setVisibility(View.INVISIBLE);
+//                h.pointCheck.setVisibility(View.INVISIBLE);
             }
 
             return convertView;

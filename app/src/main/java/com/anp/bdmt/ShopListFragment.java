@@ -3,6 +3,8 @@ package com.anp.bdmt;
 
 import static com.anp.bdmt.MainActivity.APP_ID;
 import static com.anp.bdmt.MainActivity.sDistance;
+import static com.anp.bdmt.MainActivity.sLatitude;
+import static com.anp.bdmt.MainActivity.sLongitude;
 
 import com.anp.bdmt.gcm.Util;
 import com.google.android.gms.analytics.GoogleAnalytics;
@@ -132,12 +134,6 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
 
         // mPage = 1;
 
-        final double latitude = getArguments().getDouble("lat");
-        final double longitude = getArguments().getDouble("lng");
-
-        Log.v("oncreaview", "" + latitude);
-        Log.e("ShopListFragment", "" + longitude);
-
         // adapter init
         mAdapter = new ShopListAdapter(getActivity(), mOnClickListener);
 
@@ -205,7 +201,7 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
                                 Log.v(tag, "SCROLL DOWN");
                                 if (flagLoading && hasAddItem) {
                                     Log.v("Last", "WTF");
-                                    new LoadShopListTask(latitude, longitude).execute(++mPage);
+                                    new LoadShopListTask().execute(++mPage);
                                 }
                             }
                             // 시작 Y가 끝 보다 작다면 터치가 위에서 아래로 이러우졌다는 것이고, 스크롤이 올라갔다는
@@ -291,7 +287,7 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
         });
 
         // JSONParse AsyncTask Method
-        new LoadShopListTask(latitude, longitude).execute(1);
+        new LoadShopListTask().execute(1);
 
         // for (String s : FROM_COLUMNS) {
         // Log.e("contacts", "contacts :: " + s);
@@ -314,12 +310,8 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
 
     private class LoadShopListTask extends AsyncTask<Integer, Integer, String> {
 
-        public LoadShopListTask(double lat, double lng) {
-            mLat = lat;
-            mLng = lng;
+        public LoadShopListTask() {
         }
-
-        double mLat, mLng;
 
         @Override
         protected void onPreExecute() {
@@ -352,8 +344,8 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
             StringBuilder sb = new StringBuilder("http://cashq.co.kr/m/list_json.php");
             sb.append("?listsize=").append(listsize);
             sb.append("&distance=").append(sDistance);
-            sb.append("&lat=").append(mLat);
-            sb.append("&lng=").append(mLng);
+            sb.append("&lat=").append(sLatitude);
+            sb.append("&lng=").append(sLongitude);
             sb.append("&type=").append(mType);
             sb.append("&page=").append(page);
             sb.append("&appid=").append(APP_ID);

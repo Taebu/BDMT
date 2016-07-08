@@ -19,8 +19,6 @@ import android.view.View;
  */
 public class InitializeActivity extends FragmentActivity {
 
-    private ViewPager mViewPager;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,12 +33,12 @@ public class InitializeActivity extends FragmentActivity {
         InitializePagerAdapter pagerAdapter = new InitializePagerAdapter(
                 getSupportFragmentManager());
 
-        mViewPager = (ViewPager)findViewById(R.id.initialize_main);
-        mViewPager.setAdapter(pagerAdapter);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.initialize_main);
+        viewPager.setAdapter(pagerAdapter);
 
         CirclePageIndicator circlePageIndicator = (CirclePageIndicator)findViewById(R.id.initialize_indicator);
 
-        circlePageIndicator.setViewPager(mViewPager);
+        circlePageIndicator.setViewPager(viewPager);
 
         circlePageIndicator.bringToFront();
 
