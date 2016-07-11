@@ -71,7 +71,7 @@ public class QnaActivity extends BaseActivity {
             // String url =
             // "http://cashq.co.kr/m/ajax_data/get_board.php?board=qna_1&mb_hp="
             // + phone;
-            String url = "http://cashq.co.kr/m/ajax_data/get_board.php?board=qna_1&mb_hp=" + phone;
+            String url = "http://cashq.co.kr/m/ajax_data/get_board.php?board=qna_bdtt&mb_hp=" + phone;
 
             Log.e(TAG, "url : " + url);
 

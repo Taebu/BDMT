@@ -78,7 +78,7 @@ public class QnaDialog extends Dialog {
             ArrayList<NameValuePair> post = new ArrayList<NameValuePair>();
             post.add(new BasicNameValuePair("mobile_mode", "cashq"));
             post.add(new BasicNameValuePair("wr_name", phone));
-            post.add(new BasicNameValuePair("bo_table", "qna_1"));
+            post.add(new BasicNameValuePair("bo_table", "qna_bdtt"));
             post.add(new BasicNameValuePair("wr_subject", "문의사항"));
             post.add(new BasicNameValuePair("wr_1", phone));
             post.add(new BasicNameValuePair("wr_content", content));

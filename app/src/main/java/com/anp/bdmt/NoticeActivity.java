@@ -57,7 +57,7 @@ public class NoticeActivity extends BaseActivity {
         @Override
         protected JSONObject doInBackground(String... params) {
 
-            String url = "http://cashq.co.kr/m/ajax_data/get_board.php?board=gonggi";
+            String url = "http://cashq.co.kr/m/ajax_data/get_board.php?board=gonggi_bdtt";
 
             return new JsonParser().getJSONObjectFromUrl(url);
             // return null;
