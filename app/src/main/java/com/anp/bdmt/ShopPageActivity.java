@@ -119,6 +119,8 @@ public class ShopPageActivity extends BaseActivity {
 
     private CameraUtil mCameraUtil;
 
+    private LinearLayout mPaynowLayout;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -191,6 +193,24 @@ public class ShopPageActivity extends BaseActivity {
 
         mPrePay = getIntent().getStringExtra("pre_pay");
         Log.e("ShopPageActivity", "prepay : " + mPrePay);
+
+        LinearLayout paynowLayout = (LinearLayout)findViewById(R.id.paynow_comment);
+        ImageView paynowRibbon = (ImageView)findViewById(R.id.paynow_ribbon);
+
+        if ("gl".equals(mPrePay) || "sl".equals(mPrePay)) {
+
+            paynowLayout.setVisibility(View.VISIBLE);
+            paynowRibbon.setVisibility(View.VISIBLE);
+
+        } else if ("on".equals(mPrePay)) {
+
+            paynowLayout.setVisibility(View.GONE);
+            paynowRibbon.setVisibility(View.GONE);
+
+        } else if ("pr".equals(mPrePay) || "".equals(mPrePay)) {
+            paynowLayout.setVisibility(View.GONE);
+            paynowRibbon.setVisibility(View.GONE);
+        }
 
         // TTS_SHOP = mPrePay.equals("gl");
 
@@ -343,12 +363,34 @@ public class ShopPageActivity extends BaseActivity {
             }
         });
 
+        mPaynowLayout = (LinearLayout)findViewById(R.id.btn_shoppage_paynow);
+
+        mPaynowLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Bundle args = new Bundle();
+                args.putString("num", getIntent().getStringExtra("tel"));
+                args.putString("pre_pay", getIntent().getStringExtra("pre_pay"));
+                args.putString("pay", getIntent().getStringExtra("pay"));
+                args.putString("img1", getIntent().getStringExtra("img1"));
+                args.putString("img2", getIntent().getStringExtra("img2"));
+                args.putBoolean("has_call", true);
+
+                PaynowDialog paynowDialog = new PaynowDialog();
+                paynowDialog.setArguments(args);
+
+                paynowDialog.show(getSupportFragmentManager(), "paynow_dialog");
+            }
+        });
+
         findViewById(R.id.btn_shoppage_call).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 call();
             }
         });
+
     }
 
     private void setReviewView(boolean isExpanded) {
@@ -706,7 +748,7 @@ public class ShopPageActivity extends BaseActivity {
 
         Intent menu = new Intent(new Intent(mActivity, CallService.class));
 
-        menu.putExtra("pre_pay", mPrePay);
+        menu.putExtra("pre_pay", getIntent().getStringExtra("pre_pay"));
         menu.putExtra("pay", getIntent().getStringExtra("pay"));
         menu.putExtra("img1", getIntent().getStringExtra("img1"));
         menu.putExtra("img2", getIntent().getStringExtra("img2"));

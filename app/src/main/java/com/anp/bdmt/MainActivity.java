@@ -57,6 +57,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
@@ -149,6 +150,14 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Bundle args = new Bundle();
+        args.putBoolean("has_call", false);
+
+        PaynowDialog paynowDialog = new PaynowDialog();
+        paynowDialog.setArguments(args);
+
+        paynowDialog.show(getSupportFragmentManager(), "paynow_dialog");
 
         // mPhoneNum = getPhoneNumber(this);
 

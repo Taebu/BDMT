@@ -33,7 +33,7 @@ public class InitializeActivity extends FragmentActivity {
         InitializePagerAdapter pagerAdapter = new InitializePagerAdapter(
                 getSupportFragmentManager());
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.initialize_main);
+        ViewPager viewPager = (ViewPager)findViewById(R.id.initialize_main);
         viewPager.setAdapter(pagerAdapter);
 
         CirclePageIndicator circlePageIndicator = (CirclePageIndicator)findViewById(R.id.initialize_indicator);

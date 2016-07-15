@@ -4,9 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#FFFFFF"
-    android:paddingBottom="12dp"
     android:paddingLeft="12dp"
-    android:paddingRight="24dp"
     android:paddingTop="12dp">
 
     <LinearLayout
@@ -15,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignRight="@+id/row_shop_go"
+        android:layout_marginRight="12dp"
         android:orientation="vertical">
 
         <TextView
@@ -58,11 +57,11 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:layout_toLeftOf="@+id/point_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/point_info"
         android:layout_marginLeft="8dp"
+        android:layout_toLeftOf="@+id/point_info"
         android:layout_toRightOf="@id/thm_layout"
         android:orientation="vertical">
 
@@ -115,7 +114,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="4dp"
                 android:text="12,000원 부터"
-                android:textColor="#656565" />
+                android:textColor="#656565"
+                android:textSize="@dimen/row_shop_info_font_size" />
 
 
         </LinearLayout>
@@ -168,7 +168,8 @@
                 android:layout_marginLeft="4dp"
                 android:singleLine="true"
                 android:text="장항동, 장항동, 장항동, 장항동"
-                android:textColor="#656565" />
+                android:textColor="#656565"
+                android:textSize="@dimen/row_shop_info_font_size" />
 
             <!--<ImageView-->
             <!--android:layout_width="15dp"-->
@@ -185,6 +186,45 @@
             <!--android:text="12,000원 이상 포인트 적립 가능"-->
             <!--android:textColor="#ed8179" />-->
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/paynow_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_width="@dimen/row_shop_ic_size"
+                android:layout_height="@dimen/row_shop_ic_size"
+                android:src="@drawable/ic_paynow" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:text="12,000원 이상 최초 주문 시"
+                    android:textColor="#c01734"
+                    android:textSize="@dimen/row_shop_info_font_size" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:text="5,000원 할인!"
+                    android:textColor="#c01734"
+                    android:textSize="@dimen/row_shop_info_font_size"
+                    android:textStyle="bold" />
+            </LinearLayout>
         </LinearLayout>
 
 
@@ -265,5 +305,14 @@
         android:scaleType="fitXY"
         android:src="@drawable/btn_next_new"
         android:visibility="invisible" />
+
+    <ImageView
+        android:id="@+id/paynow_ribbon"
+        android:layout_width="72dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:adjustViewBounds="true"
+        android:src="@drawable/paynow_ribbon" />
 
 </RelativeLayout>

@@ -6,22 +6,22 @@
     android:background="#ffffff">
 
     <TextView
-        android:padding="4dp"
         android:id="@+id/shoppage_name"
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:background="@color/app_theme"
         android:gravity="center"
+        android:padding="4dp"
         android:text="name"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         android:textStyle="bold" />
 
     <ScrollView
-        android:layout_above="@+id/shoppage_bottom"
         android:id="@+id/shoppage_scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/shoppage_bottom"
         android:layout_below="@id/shoppage_name">
 
         <LinearLayout
@@ -321,16 +321,52 @@
             android:id="@+id/btn_shoppage_zoom"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:background="#656565"
+            android:layout_weight="2"
+            android:background="#b1b6be"
             android:text="확대"
             android:textColor="#FFFFFF" />
+
+        <LinearLayout
+            android:clickable="true"
+            android:id="@+id/btn_shoppage_paynow"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:background="#656565"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:textColor="#FFFFFF">
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:src="@drawable/logo_paynow" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#656565"
+                android:text="결제하기"
+                android:textColor="#FFFFFF" />
+
+        </LinearLayout>
+
+
+        <!--<Button-->
+        <!--android:id="@+id/btn_shoppage_paynow"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="3"-->
+        <!--android:background="#656565"-->
+        <!--android:text="확대"-->
+        <!--android:textColor="#FFFFFF" />-->
 
         <Button
             android:id="@+id/btn_shoppage_call"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="7"
+            android:layout_weight="5"
             android:background="@color/app_theme"
             android:text="주문 전화"
             android:textColor="#FFFFFF"

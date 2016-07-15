@@ -158,6 +158,10 @@ public class ShopListAdapter extends BaseAdapter implements
 
         private TextView pointAmount;
 
+        private LinearLayout paynowLayout;
+
+        private ImageView paynowRibbon;
+
     }
 
     @Override
@@ -188,6 +192,9 @@ public class ShopListAdapter extends BaseAdapter implements
 
                 h.pointInfo = (LinearLayout)v.findViewById(R.id.point_info);
                 h.pointAmount = (TextView)v.findViewById(R.id.point_amount);
+
+                h.paynowLayout = (LinearLayout)v.findViewById(R.id.paynow_comment);
+                h.paynowRibbon = (ImageView)v.findViewById(R.id.paynow_ribbon);
 
             } else {
                 v = mInflater.inflate(R.layout.list_header, null);
@@ -229,34 +236,49 @@ public class ShopListAdapter extends BaseAdapter implements
 
             h.score.setRating(Float.parseFloat(item.getReviewRating()));
 
-//            String pre_pay = (String)h.minPay.getTag();
+            // String pre_pay = (String)h.minPay.getTag();
             String pre_pay = item.getPre_pay();
 
             showThumbnail(position, h);
-// 110 398 519410
+            // 110 398 519410
             h.pointInfo.setVisibility(View.VISIBLE);
 
-            if ("gl".equals(pre_pay) || "sl".equals(pre_pay)) {
+            if ("gl".equals(pre_pay)) {
 
                 h.pointAmount.setText("2,000 Point");
+
+                h.paynowLayout.setVisibility(View.VISIBLE);
+                h.paynowRibbon.setVisibility(View.VISIBLE);
+
+            } else if ("sl".equals(pre_pay)) {
+
+                h.pointAmount.setText("2,000 Point");
+
+                h.paynowLayout.setVisibility(View.GONE);
+                h.paynowRibbon.setVisibility(View.GONE);
 
             } else if ("on".equals(pre_pay)) {
 
                 h.pointAmount.setText("1,000 Point");
 
+                h.paynowLayout.setVisibility(View.GONE);
+                h.paynowRibbon.setVisibility(View.GONE);
+
             } else if ("pr".equals(pre_pay) || "".equals(pre_pay)) {
                 h.pointInfo.setVisibility(View.GONE);
                 h.minPay.setText("포인트 적립 불가");
+                h.paynowLayout.setVisibility(View.GONE);
+                h.paynowRibbon.setVisibility(View.GONE);
             }
 
         } else {
 
-            showSeperator(h, type);
+            showSeparator(h, type);
         }
         return v;
     }
 
-    private void showSeperator(ViewHolder h, int type) {
+    private void showSeparator(ViewHolder h, int type) {
 
         switch (type) {
             case TYPE_GOLD:

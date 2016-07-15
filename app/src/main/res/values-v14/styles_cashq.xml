@@ -19,6 +19,19 @@
 
 <resources>
 
+    <style name="StyledIndicators" parent="Theme.Cashq">
+        <item name="vpiCirclePageIndicatorStyle">@style/CustomCirclePageIndicator</item>
+    </style>
+
+    <style name="CustomCirclePageIndicator">
+        <item name="fillColor">#FFFFFFFF</item>
+        <item name="strokeColor">#90FFFFFF</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="radius">6dp</item>
+        <item name="pageColor">#90FFFFFF</item>
+        <item name="android:padding">4dp</item>
+    </style>
+
     <style name="Theme.Cashq" parent="@style/Theme.Sherlock.Light">
         <item name="android:actionBarItemBackground">@drawable/selectable_background_cashq</item>
         <item name="android:popupMenuStyle">@style/PopupMenu.Cashq</item>

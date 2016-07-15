@@ -18,18 +18,17 @@
 
 <resources>
 
-    <style name="StyledIndicators" parent="Theme.Sherlock.Light.NoActionBar">
+    <style name="StyledIndicators" parent="Theme.Cashq">
         <item name="vpiCirclePageIndicatorStyle">@style/CustomCirclePageIndicator</item>
     </style>
 
     <style name="CustomCirclePageIndicator">
-        <item name="fillColor">#FFFFFFFF</item>
+        <item name="fillColor">@color/paynow</item>
         <item name="strokeColor">#90FFFFFF</item>
-        <item name="strokeWidth">1dp</item>
+        <item name="strokeWidth">20dp</item>
         <item name="radius">6dp</item>
         <item name="pageColor">#90FFFFFF</item>
         <item name="android:padding">4dp</item>
-        <!--<item name="centered">true</item>-->
     </style>
 
     <style name="CustomTab">
@@ -131,8 +130,8 @@
         <item name="android:adjustViewBounds">true</item>
         <item name="android:indeterminateOnly">false</item>
         <item name="android:progressDrawable">@drawable/custom_ratingbar_full_new</item>
-        <item name="android:minHeight">21dip</item>
-        <item name="android:maxHeight">21dip</item>
+        <item name="android:minHeight">14dip</item>
+        <item name="android:maxHeight">14dip</item>
         <item name="android:thumb">@null</item>
     </style>
 
