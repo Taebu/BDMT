@@ -156,7 +156,8 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
         PaynowDialog paynowDialog = new PaynowDialog();
         paynowDialog.setArguments(args);
 
-        paynowDialog.show(getSupportFragmentManager(), "paynow_dialog");
+        // 7/22 popup 안보이게
+//        paynowDialog.show(getSupportFragmentManager(), "paynow_dialog");
 
         // mPhoneNum = getPhoneNumber(this);
 
