@@ -322,7 +322,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                         view.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-//                                goUrl("http://anpr.cafe24.com/bbs/board.php?bo_table=2_1&depth_1=2&depth_2=1");
+                                goUrl("http://anpr.cafe24.com/?page_mode=sub&depth_1=6&depth_2=2");
                             }
                         });
 
