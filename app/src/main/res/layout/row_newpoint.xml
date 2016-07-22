@@ -37,7 +37,7 @@
         android:layout_centerInParent="true"
         android:gravity="right"
         android:text="3개      5,000원\n5개    10,000원\n10개    30,000원"
-        android:textSize="12sp" />
+        android:textColor="#999999" />
 
     <LinearLayout
         android:layout_width="wrap_content"

@@ -1,11 +1,14 @@
 
 package com.anp.bdmt;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -17,9 +20,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * @author Jung-Hum Cho
@@ -37,7 +37,39 @@ public class MenuListFragment extends ListFragment {
     final boolean updateFlag = true;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(com.anp.bdmt.R.layout.list, null);
+
+        View v = inflater.inflate(com.anp.bdmt.R.layout.list, null);
+
+        v.findViewById(R.id.main_list_banner1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goUrl("http://anpr.cafe24.com/?page_mode=sub&depth_1=1&depth_2=1");
+            }
+        });
+
+        v.findViewById(R.id.main_list_banner2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goUrl("http://anpr.cafe24.com/?page_mode=sub&depth_1=3&depth_2=1");
+            }
+        });
+
+        v.findViewById(R.id.main_list_banner3).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goUrl("http://anpr.cafe24.com/bbs/board.php?bo_table=2_1&depth_1=2&depth_2=1");
+            }
+        });
+
+        // return inflater.inflate(com.anp.bdmt.R.layout.list, null);
+        return v;
+    }
+
+    private void goUrl(String url) {
+        Intent i = new Intent();
+        i.setAction(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(i);
     }
 
     @Override
@@ -53,25 +85,46 @@ public class MenuListFragment extends ListFragment {
 
         Log.e(TAG, "onActivityCreated");
 
-//        String phoneNum = getPhoneNumber(getActivity());
+        // String phoneNum = getPhoneNumber(getActivity());
 
-//        if (sIsInitAdminCheck) {
-//            if (phoneNum != null)
-//                new AdminCheckTask().execute(phoneNum);
-//        } else {
+        // if (sIsInitAdminCheck) {
+        // if (phoneNum != null)
+        // new AdminCheckTask().execute(phoneNum);
+        // } else {
 
-            SampleAdapter adapter = new SampleAdapter(getActivity());
+        SampleAdapter adapter = new SampleAdapter(getActivity());
 
-            adapter.add(new SampleItem("홈", R.drawable.icon_more_1_gray));
-            adapter.add(new SampleItem("포인트 관리", R.drawable.icon_more_2_gray));
-            adapter.add(new SampleItem("문의 사항", R.drawable.icon_more_3_gray));
-            adapter.add(new SampleItem("공지 사항", R.drawable.icon_more_6_gray));
+        adapter.add(new SampleItem("홈", R.drawable.icon_more_1_gray));
+        adapter.add(new SampleItem("포인트 관리", R.drawable.icon_more_2_gray));
+        adapter.add(new SampleItem("문의 사항", R.drawable.icon_more_3_gray));
+        adapter.add(new SampleItem("공지 사항", R.drawable.icon_more_6_gray));
 
-//            if (sIsAdmin)
-                adapter.add(new SampleItem("주문 내역", R.drawable.icon_more_8_gray));
+        // if (sIsAdmin)
+        adapter.add(new SampleItem("주문 내역", R.drawable.icon_more_8_gray));
 
-            setListAdapter(adapter);
-//        }
+        setListAdapter(adapter);
+        // }
+    }
+
+    public void mOnClick(View view) {
+
+        String url = null;
+        switch (view.getId()) {
+            case R.id.main_list_banner1:
+                url = "http://http://anpr.cafe24.com/?page_mode=sub&depth_1=1&depth_2=1";
+                break;
+            case R.id.main_list_banner2:
+                url = "http://anpr.cafe24.com/?page_mode=sub&depth_1=3&depth_2=1";
+                break;
+            case R.id.main_list_banner3:
+                url = "http://anpr.cafe24.com/bbs/board.php?bo_table=2_1&depth_1=2&depth_2=1";
+                break;
+        }
+
+        Intent i = new Intent();
+        i.setAction(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(i);
     }
 
     private class AdminCheckTask extends AsyncTask<String, Void, JSONObject> {

@@ -426,6 +426,10 @@ public class PointActivity extends BaseActivity implements View.OnClickListener 
 
         try {
 
+            if(object.has("seq")) {
+                String seq = object.getString("seq");
+            }
+
             PointData datas = new PointData();
 
             datas.setStoreSeq(object.getString("store_seq"));

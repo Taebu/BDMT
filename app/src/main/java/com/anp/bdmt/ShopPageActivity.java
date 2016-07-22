@@ -119,8 +119,6 @@ public class ShopPageActivity extends BaseActivity {
 
     private CameraUtil mCameraUtil;
 
-    private LinearLayout mPaynowLayout;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -196,20 +194,40 @@ public class ShopPageActivity extends BaseActivity {
 
         LinearLayout paynowLayout = (LinearLayout)findViewById(R.id.paynow_comment);
         ImageView paynowRibbon = (ImageView)findViewById(R.id.paynow_ribbon);
+        LinearLayout btnPaynowLayout = (LinearLayout)findViewById(R.id.btn_shoppage_paynow);
 
-        if ("gl".equals(mPrePay) || "sl".equals(mPrePay)) {
+        if ("gl".equals(mPrePay)) {
 
             paynowLayout.setVisibility(View.VISIBLE);
             paynowRibbon.setVisibility(View.VISIBLE);
+            btnPaynowLayout.setVisibility(View.VISIBLE);
 
-        } else if ("on".equals(mPrePay)) {
+            btnPaynowLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Bundle args = new Bundle();
+                    args.putString("num", getIntent().getStringExtra("tel"));
+                    args.putString("pre_pay", getIntent().getStringExtra("pre_pay"));
+                    args.putString("pay", getIntent().getStringExtra("pay"));
+                    args.putString("img1", getIntent().getStringExtra("img1"));
+                    args.putString("img2", getIntent().getStringExtra("img2"));
+                    args.putBoolean("has_call", true);
+
+                    PaynowDialog paynowDialog = new PaynowDialog();
+                    paynowDialog.setArguments(args);
+
+                    paynowDialog.show(getSupportFragmentManager(), "paynow_dialog");
+                }
+            });
+
+        } else if ("on".equals(mPrePay) || "sl".equals(mPrePay) || "pr".equals(mPrePay)
+                || "".equals(mPrePay)) {
 
             paynowLayout.setVisibility(View.GONE);
             paynowRibbon.setVisibility(View.GONE);
+            btnPaynowLayout.setVisibility(View.GONE);
 
-        } else if ("pr".equals(mPrePay) || "".equals(mPrePay)) {
-            paynowLayout.setVisibility(View.GONE);
-            paynowRibbon.setVisibility(View.GONE);
         }
 
         // TTS_SHOP = mPrePay.equals("gl");
@@ -360,27 +378,6 @@ public class ShopPageActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 mScrollView.smoothScrollTo(0, 0);
-            }
-        });
-
-        mPaynowLayout = (LinearLayout)findViewById(R.id.btn_shoppage_paynow);
-
-        mPaynowLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Bundle args = new Bundle();
-                args.putString("num", getIntent().getStringExtra("tel"));
-                args.putString("pre_pay", getIntent().getStringExtra("pre_pay"));
-                args.putString("pay", getIntent().getStringExtra("pay"));
-                args.putString("img1", getIntent().getStringExtra("img1"));
-                args.putString("img2", getIntent().getStringExtra("img2"));
-                args.putBoolean("has_call", true);
-
-                PaynowDialog paynowDialog = new PaynowDialog();
-                paynowDialog.setArguments(args);
-
-                paynowDialog.show(getSupportFragmentManager(), "paynow_dialog");
             }
         });
 

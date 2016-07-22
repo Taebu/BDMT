@@ -54,12 +54,13 @@
             android:padding="8dp">
 
             <ImageView
-                android:layout_width="60dp"
+                android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:src="@drawable/logo_paynow" />
 
             <TextView
+                android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="4dp"
@@ -85,12 +86,13 @@
             android:padding="8dp">
 
             <ImageView
-                android:layout_width="60dp"
+                android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:src="@drawable/logo_paynow" />
 
             <TextView
+                android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="4dp"
@@ -107,7 +109,7 @@
         android:layout_width="30dp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="10dp"
+        android:layout_marginRight="4dp"
         android:layout_marginTop="0dp"
         android:adjustViewBounds="true"
         android:src="@drawable/popup_paynow_close" />

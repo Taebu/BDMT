@@ -409,6 +409,7 @@
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/main_viewpager"
+                android:clickable="true"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="32dp"/>

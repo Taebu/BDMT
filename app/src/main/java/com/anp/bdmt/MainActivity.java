@@ -57,7 +57,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
@@ -320,6 +319,13 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                             view.setBackgroundResource(R.drawable.bottom_banner_2);
                         }
 
+                        view.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+//                                goUrl("http://anpr.cafe24.com/bbs/board.php?bo_table=2_1&depth_1=2&depth_2=1");
+                            }
+                        });
+
                         return view;
                     }
                 };
@@ -356,6 +362,13 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
         // return false;
         // }
         // });
+    }
+
+    private void goUrl(String url) {
+        Intent i = new Intent();
+        i.setAction(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(i);
     }
 
     private void pageSwitcher(final ViewPager viewPager) {
