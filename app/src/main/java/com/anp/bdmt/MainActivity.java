@@ -157,7 +157,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
         paynowDialog.setArguments(args);
 
         // 7/22 popup 안보이게
-//        paynowDialog.show(getSupportFragmentManager(), "paynow_dialog");
+        // paynowDialog.show(getSupportFragmentManager(), "paynow_dialog");
 
         // mPhoneNum = getPhoneNumber(this);
 
@@ -628,11 +628,11 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                 // }
 
                 tvAddress.setText(mAddress);
+                sDistance = 3;
 
-                // if ("동두천시".equals(mSi) || "강서구".equals(mGu) ||
-                // "양천구".equals(mGu)) {
-                // sDistance = 3;
-                // mLifeImageView.setVisibility(View.GONE);
+                if ("부천시".equals(mSi) && "소사구".equals(mGu)) {
+                    sDistance = 2;
+                }
                 // } else if ("양산시".equals(mSi)) {
                 // mLifeImageView.setVisibility(View.GONE);
                 // sDistance = 5;
@@ -656,7 +656,6 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
                 // } else {
                 // mLifeImageView.setVisibility(View.GONE);
-                sDistance = 3;
                 // }
 
                 mManualDistance.setText(sDistance + "km\n변경");
