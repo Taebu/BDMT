@@ -1,47 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="10">
 
     <LinearLayout
-        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:gravity="center"
         android:orientation="horizontal"
         android:weightSum="10">
 
-        <EditText
+        <!--<EditText-->
+        <!--android:id="@+id/input_address"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_weight="9"-->
+        <!--android:hint="주소 입력 (예 : 서초2동)"-->
+        <!--android:inputType="text"-->
+        <!--android:singleLine="true"-->
+        <!--android:textSize="13sp"-->
+        <!--android:visibility="visible" />-->
+
+        <AutoCompleteTextView
             android:id="@+id/input_address"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="9"
+            android:layout_weight="7"
+            android:completionThreshold="200"
             android:hint="주소 입력 (예 : 서초2동)"
             android:inputType="text"
-            android:singleLine="true"
-            android:textSize="13sp"
-            android:visibility="gone" />
+            android:lines="1"
+            android:textSize="15sp"
+            android:visibility="visible" />
 
         <Button
-            android:textColor="#ffffff"
-            android:text="주소 입력"
             android:id="@+id/btn_search"
-            android:layout_width="150dp"
+            android:layout_width="0dp"
             android:layout_height="40dp"
+            android:layout_weight="3"
             android:background="@drawable/btn_black"
-            android:onClick="mOnClick"
-            android:scaleType="fitCenter" />
+            android:scaleType="fitCenter"
+            android:text="검색"
+            android:textColor="#ffffff"
+            android:visibility="visible" />
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/result_test"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.MapFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="9" />
+        android:layout_weight="9"
+        tools:layout="@layout/fragment_map" />
 
 </LinearLayout>

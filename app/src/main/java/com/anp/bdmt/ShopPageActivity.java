@@ -221,7 +221,7 @@ public class ShopPageActivity extends BaseActivity {
                 }
             });
 
-        } else if ("on".equals(mPrePay) || "sl".equals(mPrePay) || "pr".equals(mPrePay)
+        } else if ("on".equals(mPrePay) || "sl".equals(mPrePay) || "br".equals(mPrePay) || "pr".equals(mPrePay)
                 || "".equals(mPrePay)) {
 
             paynowLayout.setVisibility(View.GONE);
@@ -675,6 +675,9 @@ public class ShopPageActivity extends BaseActivity {
         TextView pointAmountTextView = (TextView)findViewById(R.id.point_amount);
         if ("on".equals(prePay)) {
             pointAmountTextView.setText("1,000 Point");
+        }
+        else if ("br".equals(prePay)) {
+            pointAmountTextView.setText("500 Point");
         }
 
         String minPay = getIntent().getStringExtra("minpay") + " 이상 주문 시 적립 인정";

@@ -349,7 +349,7 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
             sb.append("&type=").append(mType);
             sb.append("&page=").append(page);
             sb.append("&appid=").append(APP_ID);
-//            sb.append("&appid=").append("cashq");
+            // sb.append("&appid=").append("cashq");
 
             Log.e("ShopList", "url : " + sb.toString());
 
@@ -383,34 +383,52 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
                                 mTypeDuplicator = 1;
                             } else if ("on".equals(prePay)) {
                                 mTypeDuplicator = 2;
-                            } else if ("pr".equals(prePay)) {
+                            } else if ("br".equals(prePay)) {
                                 mTypeDuplicator = 3;
-                            } else if ("".equals(prePay)) {
+                            } else if ("pr".equals(prePay)) {
                                 mTypeDuplicator = 4;
+                            } else if ("".equals(prePay)) {
+                                mTypeDuplicator = 5;
                             }
                         } else if (mTypeDuplicator == 1) {
                             if ("sl".equals(prePay)) {
                                 mTypeDuplicator = 1;
                             } else if ("on".equals(prePay)) {
                                 mTypeDuplicator = 2;
-                            } else if ("pr".equals(prePay)) {
+                            } else if ("br".equals(prePay)) {
                                 mTypeDuplicator = 3;
-                            } else if ("".equals(prePay)) {
+                            } else if ("pr".equals(prePay)) {
                                 mTypeDuplicator = 4;
+                            } else if ("".equals(prePay)) {
+                                mTypeDuplicator = 5;
                             }
                         } else if (mTypeDuplicator == 2) {
                             if ("on".equals(prePay)) {
                                 mTypeDuplicator = 2;
-                            } else if ("pr".equals(prePay)) {
+                            } else if ("br".equals(prePay)) {
                                 mTypeDuplicator = 3;
-                            } else if ("".equals(prePay)) {
+                            } else if ("pr".equals(prePay)) {
                                 mTypeDuplicator = 4;
+                            } else if ("".equals(prePay)) {
+                                mTypeDuplicator = 5;
                             }
                         } else if (mTypeDuplicator == 3) {
-                            if ("pr".equals(prePay)) {
+                            if ("br".equals(prePay)) {
                                 mTypeDuplicator = 3;
-                            } else if ("".equals(prePay)) {
+                            } else if ("pr".equals(prePay)) {
                                 mTypeDuplicator = 4;
+                            } else if ("".equals(prePay)) {
+                                mTypeDuplicator = 5;
+                            }
+                        } else if (mTypeDuplicator == 4) {
+                            if ("pr".equals(prePay)) {
+                                mTypeDuplicator = 4;
+                            } else if ("".equals(prePay)) {
+                                mTypeDuplicator = 5;
+                            }
+                        } else if (mTypeDuplicator == 5) {
+                            if ("".equals(prePay)) {
+                                mTypeDuplicator = 5;
                             }
                         }
 
@@ -434,13 +452,19 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
                             mAdapter.addSeparatorItem(separator);
                             mTypeDuplicator = 3;
 
-                        } else if ("pr".equals(prePay) && mTypeDuplicator == 3) {
+                        } else if ("br".equals(prePay) && mTypeDuplicator == 3) {
+
+                            separator.setSeparatorType(ShopListAdapter.TYPE_BRONZE);
+                            mAdapter.addSeparatorItem(separator);
+                            mTypeDuplicator = 4;
+
+                        } else if ("pr".equals(prePay) && mTypeDuplicator == 4) {
 
                             separator.setSeparatorType(ShopListAdapter.TYPE_PRQ);
                             mAdapter.addSeparatorItem(separator);
                             mTypeDuplicator = 4;
 
-                        } else if ("".equals(prePay) && mTypeDuplicator == 4) {
+                        } else if ("".equals(prePay) && mTypeDuplicator == 5) {
 
                             separator.setSeparatorType(ShopListAdapter.TYPE_NORMAL);
                             mAdapter.addSeparatorItem(separator);

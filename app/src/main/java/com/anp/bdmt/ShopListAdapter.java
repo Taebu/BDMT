@@ -65,11 +65,13 @@ public class ShopListAdapter extends BaseAdapter implements
 
     public static final int TYPE_CASHQ = 3;
 
-    public static final int TYPE_PRQ = 4;
+    public static final int TYPE_BRONZE = 4;
 
-    public static final int TYPE_NORMAL = 5;
+    public static final int TYPE_PRQ = 5;
 
-    public static final int TYPE_MAX_COUNT = 6;
+    public static final int TYPE_NORMAL = 6;
+
+    public static final int TYPE_MAX_COUNT = 7;
 
     private LayoutInflater mInflater;
 
@@ -264,6 +266,13 @@ public class ShopListAdapter extends BaseAdapter implements
                 h.paynowLayout.setVisibility(View.GONE);
                 h.paynowRibbon.setVisibility(View.GONE);
 
+            } else if ("br".equals(pre_pay) || "".equals(pre_pay)) {
+
+                h.pointAmount.setText("500 Point");
+
+                h.paynowLayout.setVisibility(View.GONE);
+                h.paynowRibbon.setVisibility(View.GONE);
+
             } else if ("pr".equals(pre_pay) || "".equals(pre_pay)) {
                 h.pointInfo.setVisibility(View.GONE);
                 h.minPay.setText("포인트 적립 불가");
@@ -292,6 +301,10 @@ public class ShopListAdapter extends BaseAdapter implements
             case TYPE_CASHQ:
                 h.separatorText.setText("VIP");
                 h.separatorImage.setImageResource(R.drawable.cashq_member);
+                break;
+            case TYPE_BRONZE:
+                h.separatorText.setText("BRONZE");
+                h.separatorImage.setImageResource(R.drawable.bronze_member);
                 break;
             case TYPE_PRQ:
                 h.separatorText.setText("PRQ");

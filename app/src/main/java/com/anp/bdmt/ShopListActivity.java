@@ -42,13 +42,13 @@ public class ShopListActivity extends BaseActivity implements ActionBar.TabListe
 
         } else {
             tabs = new String[] {
-                    "치 킨", "피 자", "중 식", "한식/분식", "야식", "찜 / 탕", "족발/보쌈", "일식/돈가스", "도시락", "패스트푸드"
+                    "치 킨", "피 자", "중 식", "한식/분식", "야식", "찜 / 탕", "족발/보쌈", "일식/돈가스", "도시락", "패스트푸드", "생활편의"
             };
 
         }
 
         String[] types = new String[] {
-                "W01", "W02", "W03", "W04", "W05", "W06", "W07", "W08", "W22", "W23"
+                "W01", "W02", "W03", "W04", "W05", "W06", "W07", "W08", "W22", "W23", "W10"
         };
 
         // Initialization
