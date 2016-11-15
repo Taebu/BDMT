@@ -426,11 +426,12 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
                             } else if ("".equals(prePay)) {
                                 mTypeDuplicator = 5;
                             }
-                        } else if (mTypeDuplicator == 5) {
-                            if ("".equals(prePay)) {
-                                mTypeDuplicator = 5;
-                            }
                         }
+//                        else if (mTypeDuplicator == 5) {
+//                            if ("".equals(prePay)) {
+//                                mTypeDuplicator = 5;
+//                            }
+//                        }
 
                         ShopListData separator = new ShopListData();
 
@@ -462,13 +463,13 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
 
                             separator.setSeparatorType(ShopListAdapter.TYPE_PRQ);
                             mAdapter.addSeparatorItem(separator);
-                            mTypeDuplicator = 4;
+                            mTypeDuplicator = 5;
 
                         } else if ("".equals(prePay) && mTypeDuplicator == 5) {
 
                             separator.setSeparatorType(ShopListAdapter.TYPE_NORMAL);
                             mAdapter.addSeparatorItem(separator);
-                            mTypeDuplicator = 5;
+                            mTypeDuplicator = 6;
                         }
 
                         ShopListData data = getRowData(object);
