@@ -34,22 +34,34 @@ public class ShopListActivity extends BaseActivity implements ActionBar.TabListe
         boolean life = getIntent().getBooleanExtra("life", false);
 
         String[] tabs;
+        String[] types;
+
         if (life) {
             tabs = new String[] {
                     "오락/레져", "건강/뷰티", "꽃배달", "병원/약국", "인테리어", "학원", "이사/용달/퀵", "부동산", "자동차",
                     "컴퓨터/인터넷"
             };
 
+            types = new String[] {
+                    "W09", "W10", "W11", "W12", "W13", "W14", "W15", "W16", "W18", "W19"
+            };
+
         } else {
             tabs = new String[] {
-                    "치 킨", "피 자", "중 식", "한식/분식", "야식", "찜 / 탕", "족발/보쌈", "일식/돈가스", "도시락", "패스트푸드", "생활편의"
+                    "치 킨", "피 자", "중 식", "한식/분식", "야식", "찜 / 탕", "족발/보쌈", "일식/돈가스", "도시락", "패스트푸드",
+                    "생활편의"
+            };
+
+            types = new String[] {
+                    "W01", "W02", "W03", "W04", "W05", "W06", "W07", "W08", "W22", "W23", "W10"
             };
 
         }
 
-        String[] types = new String[] {
-                "W01", "W02", "W03", "W04", "W05", "W06", "W07", "W08", "W22", "W23", "W10"
-        };
+        // types = new String[] {
+        // "W01", "W02", "W03", "W04", "W05", "W06", "W07", "W08", "W22", "W23",
+        // "W10"
+        // };
 
         // Initialization
         ShopListPagerAdapter pagerAdapter = new ShopListPagerAdapter(getSupportFragmentManager(),

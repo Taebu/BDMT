@@ -23,6 +23,7 @@ import org.json.JSONObject;
 
 import android.content.Intent;
 import android.location.Address;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -80,14 +81,17 @@ public class MapActivity extends BaseActivity implements GoogleMap.OnInfoWindowC
 
         mMap.setOnInfoWindowClickListener(this);
 
+        if (mAddressEditText == null) {
+            mAddressEditText = (AutoCompleteTextView)findViewById(R.id.input_address);
+        }
+
         findViewById(R.id.btn_search).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mAddressEditText == null) {
-                    mAddressEditText = (AutoCompleteTextView)findViewById(R.id.input_address);
-                }
+
                 hideKeyboard();
-                geocoding(mAddressEditText.getText().toString());
+//                geocoding(mAddressEditText.getText().toString());
+                new FuckTask().execute((mAddressEditText.getText().toString()));
             }
         });
 
@@ -109,34 +113,88 @@ public class MapActivity extends BaseActivity implements GoogleMap.OnInfoWindowC
         startActivity(i);
     }
 
+    private class FuckTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            String url = "http://maps.google.com/maps/api/geocode/json?language=ko&address="
+                    + params[0];
+
+            return new JsonParser().getJSONStringFromUrl(url);
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+            mAddressList = getAddressListFromJson(s);
+            if (mAddressList == null) {
+                return;
+            }
+            List<String> addressLineList = new ArrayList<>();
+            for (Address a : mAddressList) {
+                addressLineList.add(a.getAddressLine(0).replace("대한민국 ", ""));
+            }
+            mAddressListAdapter = new ArrayAdapter<>(MapActivity.this,
+                    // android.R.layout.simple_dropdown_item_1line,
+                    // addressLineList);
+                    android.R.layout.simple_list_item_1, addressLineList);
+            // R.layout.textview_autocomplete_item,
+            // addressLineList);
+            mAddressEditText.setAdapter(mAddressListAdapter);
+
+            if (mAddressEditText.getOnItemClickListener() == null) {
+                mAddressEditText
+                        .setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view,
+                                                    int position, long id) {
+
+                                mAddressListAdapter = null;
+
+                                LatLng latLng = new LatLng(mAddressList.get(position)
+                                        .getLatitude(), mAddressList.get(position)
+                                        .getLongitude());
+
+                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                                        latLng, 15));
+
+                                reverseGeocoding(latLng);
+                            }
+                        });
+            }
+
+            mAddressEditText.showDropDown();
+
+
+        }
+    }
+
     private void geocoding(String address) {
 
         // south KR (33.06, 125.04, 38.27, 131.52)
 
         String url = "http://maps.google.com/maps/api/geocode/json?language=ko&address=" + address;
-
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
 
                         mAddressList = getAddressListFromJson(response);
-
                         if (mAddressList == null) {
                             return;
                         }
-
                         List<String> addressLineList = new ArrayList<>();
-
                         for (Address a : mAddressList) {
                             addressLineList.add(a.getAddressLine(0).replace("대한민국 ", ""));
                         }
-
                         mAddressListAdapter = new ArrayAdapter<>(MapActivity.this,
-                                android.R.layout.simple_dropdown_item_1line, addressLineList);
+                        // android.R.layout.simple_dropdown_item_1line,
+                        // addressLineList);
+                                android.R.layout.simple_list_item_1, addressLineList);
                         // R.layout.textview_autocomplete_item,
                         // addressLineList);
-
                         mAddressEditText.setAdapter(mAddressListAdapter);
 
                         if (mAddressEditText.getOnItemClickListener() == null) {
@@ -167,9 +225,7 @@ public class MapActivity extends BaseActivity implements GoogleMap.OnInfoWindowC
                     public void onErrorResponse(VolleyError error) {
                     }
                 });
-
-        Volley.newRequestQueue(this).add(stringRequest);
-
+         Volley.newRequestQueue(this).add(stringRequest);
     }
 
     private void reverseGeocoding(final LatLng latLng) {

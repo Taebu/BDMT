@@ -513,11 +513,11 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
         backPressCloseHandler.onBackPressed();
     }
 
-    private void goShopList() {
+    private void goShopList(boolean life) {
 
         if (mGpsFlag) {
             mIntent.putExtra("position", mPosition);
-            mIntent.putExtra("life", false);
+            mIntent.putExtra("life", life);
 
             startActivity(mIntent);
             if (!mDialog.isShowing()) {
@@ -574,7 +574,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
         }
 
-        goShopList();
+        goShopList(false);
 
     }
 
@@ -931,9 +931,9 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                     }
                 });
                 break;
-        // case R.id.main_life:
-        //
-        // new LifeDialog(this, mOnClickListener).show();
+            case R.id.main_life:
+                new LifeDialog(this, mOnClickListener).show();
+                break;
         //
         // // mIntent.putExtra("TYPE", mType);
         // // mIntent.putExtra("lat", sLatitude);
@@ -988,7 +988,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                     break;
             }
 
-            mIntent.putExtra("LIFE", true);
+            mIntent.putExtra("life", true);
             mIntent.putExtra("POSITION", mPosition);
 
             startActivity(mIntent);

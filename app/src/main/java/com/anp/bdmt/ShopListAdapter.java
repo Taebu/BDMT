@@ -266,7 +266,8 @@ public class ShopListAdapter extends BaseAdapter implements
                 h.paynowLayout.setVisibility(View.GONE);
                 h.paynowRibbon.setVisibility(View.GONE);
 
-            } else if ("br".equals(pre_pay) || "".equals(pre_pay)) {
+//            } else if ("br".equals(pre_pay) || "".equals(pre_pay)) {
+            } else if ("br".equals(pre_pay)) {
 
                 h.pointAmount.setText("500 Point");
 
