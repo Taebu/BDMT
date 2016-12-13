@@ -417,7 +417,7 @@
                 android:onClick="mOnClick"
                 android:scaleType="fitXY"
                 android:src="@drawable/banner_life"
-                android:visibility="gone" />
+                android:visibility="visible" />
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/main_viewpager"

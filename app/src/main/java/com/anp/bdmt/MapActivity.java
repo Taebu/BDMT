@@ -90,8 +90,8 @@ public class MapActivity extends BaseActivity implements GoogleMap.OnInfoWindowC
             public void onClick(View v) {
 
                 hideKeyboard();
-//                geocoding(mAddressEditText.getText().toString());
-                new FuckTask().execute((mAddressEditText.getText().toString()));
+                 geocoding(mAddressEditText.getText().toString());
+//                new FuckTask().execute((mAddressEditText.getText().toString()));
             }
         });
 
@@ -132,41 +132,59 @@ public class MapActivity extends BaseActivity implements GoogleMap.OnInfoWindowC
             if (mAddressList == null) {
                 return;
             }
+
             List<String> addressLineList = new ArrayList<>();
             for (Address a : mAddressList) {
                 addressLineList.add(a.getAddressLine(0).replace("대한민국 ", ""));
+
+                // try {
+                // String address = a.getAddressLine(0).replace("대한민국 ", "");
+                // address = new String(address.getBytes("utf-8"));
+                // address = new String(address.getBytes("euc-kr"));
+                // success
+                // address = new String(address.getBytes("iso-8859-1"));
+                // address = new String(address.getBytes("x-windows-949"));
+                // addressLineList.add(address);
+                // } catch (UnsupportedEncodingException e) {
+                // e.printStackTrace();
+                // }
+
+                // try {
+                // addressLineList.add(URLDecoder.decode(a.getAddressLine(0).replace("대한민국 ",
+                // ""), "utf-8"));
+                // addressLineList.add(URLDecoder.decode(URLEncoder.encode(a.getAddressLine(0).replace("대한민국 ",
+                // ""), "euc-kr"), "euc-kr"));
+                // } catch (UnsupportedEncodingException e) {
+                // e.printStackTrace();
+                // }
             }
+
             mAddressListAdapter = new ArrayAdapter<>(MapActivity.this,
-                    // android.R.layout.simple_dropdown_item_1line,
-                    // addressLineList);
+            // android.R.layout.simple_dropdown_item_1line,
+            // addressLineList);
                     android.R.layout.simple_list_item_1, addressLineList);
             // R.layout.textview_autocomplete_item,
             // addressLineList);
             mAddressEditText.setAdapter(mAddressListAdapter);
 
             if (mAddressEditText.getOnItemClickListener() == null) {
-                mAddressEditText
-                        .setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view,
-                                                    int position, long id) {
+                mAddressEditText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                                mAddressListAdapter = null;
+                        mAddressListAdapter = null;
 
-                                LatLng latLng = new LatLng(mAddressList.get(position)
-                                        .getLatitude(), mAddressList.get(position)
-                                        .getLongitude());
+                        LatLng latLng = new LatLng(mAddressList.get(position).getLatitude(),
+                                mAddressList.get(position).getLongitude());
 
-                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                        latLng, 15));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
 
-                                reverseGeocoding(latLng);
-                            }
-                        });
+                        reverseGeocoding(latLng);
+                    }
+                });
             }
 
             mAddressEditText.showDropDown();
-
 
         }
     }
@@ -225,7 +243,7 @@ public class MapActivity extends BaseActivity implements GoogleMap.OnInfoWindowC
                     public void onErrorResponse(VolleyError error) {
                     }
                 });
-         Volley.newRequestQueue(this).add(stringRequest);
+        Volley.newRequestQueue(this).add(stringRequest);
     }
 
     private void reverseGeocoding(final LatLng latLng) {

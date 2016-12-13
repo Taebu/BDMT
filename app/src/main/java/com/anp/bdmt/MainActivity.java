@@ -989,7 +989,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
             }
 
             mIntent.putExtra("life", true);
-            mIntent.putExtra("POSITION", mPosition);
+            mIntent.putExtra("position", mPosition);
 
             startActivity(mIntent);
             if (!mDialog.isShowing()) {
