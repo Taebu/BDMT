@@ -613,6 +613,9 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
 
             shopData.setTypePosition(getArguments().getInt("position"));
 
+            // 160104 원산지
+            shopData.setOrigin(object.getString("origin"));
+
             return shopData;
 
         } catch (JSONException e) {
@@ -680,6 +683,9 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
             intent.putExtra("isopen", true);
 
             intent.putExtra("position", data.getTypePosition());
+
+            // 160104 원산지
+            intent.putExtra("origin", data.getOrigin());
 
             startActivity(intent);
         }

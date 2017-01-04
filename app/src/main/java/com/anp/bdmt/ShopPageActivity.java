@@ -221,8 +221,8 @@ public class ShopPageActivity extends BaseActivity {
                 }
             });
 
-        } else if ("on".equals(mPrePay) || "sl".equals(mPrePay) || "br".equals(mPrePay) || "pr".equals(mPrePay)
-                || "".equals(mPrePay)) {
+        } else if ("on".equals(mPrePay) || "sl".equals(mPrePay) || "br".equals(mPrePay)
+                || "pr".equals(mPrePay) || "".equals(mPrePay)) {
 
             paynowLayout.setVisibility(View.GONE);
             paynowRibbon.setVisibility(View.GONE);
@@ -256,6 +256,16 @@ public class ShopPageActivity extends BaseActivity {
         }
 
         isVisibilityWebView(isWeb);
+
+        // 160104 원산지 표시
+        String origin = getIntent().getStringExtra("origin");
+
+        if ("".equals(origin)) {
+            mWebView.setVisibility(View.GONE);
+        } else {
+            TextView originTextView = (TextView)findViewById(R.id.text_shoppage_origin);
+            originTextView.setText(origin);
+        }
 
     }
 
@@ -675,8 +685,7 @@ public class ShopPageActivity extends BaseActivity {
         TextView pointAmountTextView = (TextView)findViewById(R.id.point_amount);
         if ("on".equals(prePay)) {
             pointAmountTextView.setText("1,000 Point");
-        }
-        else if ("br".equals(prePay)) {
+        } else if ("br".equals(prePay)) {
             pointAmountTextView.setText("500 Point");
         }
 
