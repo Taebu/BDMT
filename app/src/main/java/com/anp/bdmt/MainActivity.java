@@ -128,7 +128,8 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
     public static double sLongitude;
 
-    public static int sDistance = 3;
+    // 170131 2km로 변경
+    public static int sDistance = 2;
 
     // private ImageView mManualTextView;
     private TextView mManualDistance;
