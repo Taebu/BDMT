@@ -292,7 +292,21 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
         // 네트워크 예외
 
-        initViewPager();
+//        initViewPager();
+
+        findViewById(R.id.left_banner).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goUrl("http://anpr.cafe24.com/?page_mode=sub&depth_1=6&depth_2=2");
+            }
+        });
+
+        findViewById(R.id.right_banner).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goUrl("http://anpr.cafe24.com/?page_mode=sub&depth_1=6&depth_2=2");
+            }
+        });
 
     }
 
@@ -571,6 +585,12 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                 break;
             case R.id.main_fastfood:
                 mPosition = 9;
+                break;
+            case R.id.main_driver:
+                mPosition = 11;
+                break;
+            case R.id.main_quick:
+                mPosition = 12;
                 break;
 
         }

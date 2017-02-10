@@ -427,11 +427,11 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
                                 mTypeDuplicator = 5;
                             }
                         }
-//                        else if (mTypeDuplicator == 5) {
-//                            if ("".equals(prePay)) {
-//                                mTypeDuplicator = 5;
-//                            }
-//                        }
+                        // else if (mTypeDuplicator == 5) {
+                        // if ("".equals(prePay)) {
+                        // mTypeDuplicator = 5;
+                        // }
+                        // }
 
                         ShopListData separator = new ShopListData();
 
@@ -595,7 +595,13 @@ public class ShopListFragment extends Fragment implements AdapterView.OnItemClic
             }
 
             if (object.has("minpay")) {
-                shopData.setMinpay(object.getString("minpay"));
+                if ("W26".equals(mType)) {
+                    shopData.setMinpay("W26");
+                } else if ("W27".equals(mType)) {
+                    shopData.setMinpay("W27");
+                } else {
+                    shopData.setMinpay(object.getString("minpay"));
+                }
             }
 
             shopData.setSeq(object.getString("seq"));

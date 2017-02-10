@@ -218,7 +218,7 @@ public class MapActivity extends BaseActivity implements GoogleMap.OnInfoWindowC
 
         // south KR (33.06, 125.04, 38.27, 131.52)
 
-        String url = "http://maps.google.com/maps/api/geocode/json?language=ko&region=kr&address=" + address;
+        String url = "http://maps.google.com/maps/api/geocode/json?language=ko&region=kr&sensor=true&address=" + address;
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {

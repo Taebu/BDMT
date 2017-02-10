@@ -225,6 +225,8 @@ public class ShopListAdapter extends BaseAdapter implements
             // h.btnTel.setOnClickListener(mOnClickListener);
             // }
 
+
+
             h.name.setText(item.getName());
 
             h.minPay.setText(item.getMinpay() + " 이상 주문 시 적립 인정");
@@ -279,6 +281,10 @@ public class ShopListAdapter extends BaseAdapter implements
                 h.minPay.setText("포인트 적립 불가");
                 h.paynowLayout.setVisibility(View.GONE);
                 h.paynowRibbon.setVisibility(View.GONE);
+            }
+
+            if(item.getMinpay().equals("W26") || item.getMinpay().equals("W27")) {
+                h.minPay.setText("마일리지 1,000원 적립");
             }
 
         } else {
