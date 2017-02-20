@@ -16,5 +16,6 @@
     <dimen name="row_shop_ic_size">12dp</dimen>
     <dimen name="row_shop_info_font_size">12sp</dimen>
     <dimen name="dialog_paynow_side_margin">16dp</dimen>
+    <dimen name="smart_menu_font_size">20sp</dimen>
 
 </resources>

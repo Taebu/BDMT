@@ -48,6 +48,8 @@
             <!--android:layout_height="wrap_content" />-->
 
             <TextView
+                android:onClick="mOnClick"
+                android:clickable="true"
                 android:id="@+id/location_name1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -428,7 +430,6 @@
 
                 <ImageView
                     android:id="@+id/main_quick"
-                    android:visibility="visible"
                     android:layout_width="@dimen/mainimg_size"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/mainimg_margin"
@@ -436,7 +437,8 @@
                     android:adjustViewBounds="true"
                     android:clickable="true"
                     android:onClick="mainOnClick"
-                    android:src="@drawable/btn_quick" />
+                    android:src="@drawable/btn_quick"
+                    android:visibility="visible" />
 
 
             </LinearLayout>
@@ -456,12 +458,12 @@
 
 
                 <ImageView
-                    android:visibility="visible"
+                    android:id="@+id/imageView"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/maintext_height"
                     android:layout_weight="5"
                     android:src="@drawable/main_text_quick"
-                    android:id="@+id/imageView" />
+                    android:visibility="visible" />
 
             </LinearLayout>
 
@@ -478,39 +480,39 @@
                 android:visibility="visible" />
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_margin="4dp"
-                    android:clickable="true"
-                    android:adjustViewBounds="true"
                     android:id="@+id/left_banner"
-                    android:src="@drawable/bn1"
-                    android:layout_weight="5"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:layout_weight="5"
+                    android:adjustViewBounds="true"
+                    android:clickable="true"
+                    android:src="@drawable/bn1" />
 
                 <ImageView
-                    android:layout_margin="4dp"
-                    android:clickable="true"
-                    android:adjustViewBounds="true"
-                    android:src="@drawable/bn2"
                     android:id="@+id/right_banner"
-                    android:layout_weight="5"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:layout_weight="5"
+                    android:adjustViewBounds="true"
+                    android:clickable="true"
+                    android:src="@drawable/bn2" />
 
             </LinearLayout>
 
             <android.support.v4.view.ViewPager
-                android:visibility="gone"
                 android:id="@+id/main_viewpager"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="0dp"
-                android:clickable="true" />
+                android:clickable="true"
+                android:visibility="gone" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -617,11 +619,48 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/darker_gray"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <TextView
+                    android:textSize="12sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="배달톡톡"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_marginTop="4dp"
+                    android:textSize="11sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="에이앤피알 대표:김옥란 tel. 1599-9495\n통신판매업:제2012-고양일산동-0008호 사업자번호:476-11-00222\n주소:서울특별시 강서구 마곡서로 175, 404동 804"
+                    android:textColor="@android:color/white" />
+
+                <TextView
+                    android:layout_marginTop="4dp"
+                    android:textSize="12sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="(c) ANPR. All Rights Reserved."
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                android:src="@drawable/bdtt_company" />
+                android:src="@drawable/bdtt_company"
+                android:visibility="gone" />
 
 
         </LinearLayout>

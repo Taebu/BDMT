@@ -292,7 +292,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
         // 네트워크 예외
 
-//        initViewPager();
+        // initViewPager();
 
         findViewById(R.id.left_banner).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -649,10 +649,12 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                 // }
 
                 tvAddress.setText(mAddress);
-                sDistance = 3;
+//                sDistance = 3;
 
                 if ("부천시".equals(mSi) && "소사구".equals(mGu)) {
                     sDistance = 2;
+                } else if ("제천시".equals(mSi)) {
+                    sDistance = 3;
                 }
                 // } else if ("양산시".equals(mSi)) {
                 // mLifeImageView.setVisibility(View.GONE);
@@ -936,10 +938,11 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
         // break;
 
             case R.id.manual_location:
-                Intent i = new Intent(this, MapActivity.class);
-                // i.addFlags()
+                startActivity(new Intent(this, MapActivity.class));
+                break;
 
-                startActivity(i);
+            case R.id.location_name1:
+                startActivity(new Intent(this, MapActivity.class));
                 break;
 
             case R.id.manual_distance:

@@ -97,7 +97,7 @@ public class ShopPageActivity extends BaseActivity {
 
     private WebView mWebView;
 
-    private RelativeLayout mMenuImgLayout;
+    private LinearLayout mMenuImgLayout;
 
     private String mPrePay;
 
@@ -251,6 +251,7 @@ public class ShopPageActivity extends BaseActivity {
 
                 }
             });
+            isWeb = false;
         } else {
             switcher.setVisibility(View.GONE);
         }
@@ -373,7 +374,9 @@ public class ShopPageActivity extends BaseActivity {
 
         mWebView = (WebView)findViewById(R.id.shoppage_webview);
         mListView = (ExpandableListView)findViewById(R.id.shoppage_listview);
-        mMenuImgLayout = (RelativeLayout)findViewById(R.id.shoppage_menulist);
+
+
+        mMenuImgLayout = (LinearLayout) findViewById(R.id.shoppage_menulist);
         mScrollView = (ScrollView)findViewById(R.id.shoppage_scrollview);
 
         mRatingBar = (RatingBar)findViewById(R.id.shoppage_rating);

@@ -37,5 +37,6 @@ dependencies {
     //            compile 'com.android.support:appcompat-v7:23.3.0'
     compile project(':PinnedSectionListView')
     compile project(':ViewPagerIndicator')
+    compile files('libs/libDaumMapAndroid.jar')
 }
 

@@ -125,8 +125,9 @@ public class ShopMenuAdapter extends BaseExpandableListAdapter {
                     dialog.setOnDismissListener(mOnDismissListener);
 
                 } else {
-                    insertMenuLevel2(inflater.getContext(), mData, groupPosition, childPosition);
-                    setCartCount(mActivity);
+                    // 170220 장바구니 기능 막음
+//                    insertMenuLevel2(inflater.getContext(), mData, groupPosition, childPosition);
+//                    setCartCount(mActivity);
                 }
 
                 // Toast.makeText(inflater.getContext(),

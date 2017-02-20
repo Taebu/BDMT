@@ -9,6 +9,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.anp.bdmt.search.Item;
+import com.anp.bdmt.search.OnFinishSearchListener;
+import com.anp.bdmt.search.Searcher;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -36,14 +39,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +53,8 @@ import java.util.Locale;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+
+import net.daum.mf.map.api.MapView;
 
 /**
  * @author Jung-Hum Cho Created by anp on 14. 12. 5..
@@ -69,7 +73,9 @@ public class MapActivity extends BaseActivity implements GoogleMap.OnInfoWindowC
 
     private ArrayAdapter<String> mAddressListAdapter;
 
-    private List<Address> mAddressList;
+    // private List<Address> mAddressList;
+
+//    private MapView mMapView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -96,29 +102,121 @@ public class MapActivity extends BaseActivity implements GoogleMap.OnInfoWindowC
 
         mMap.setOnInfoWindowClickListener(this);
 
-        if (mAddressEditText == null) {
-            mAddressEditText = (AutoCompleteTextView)findViewById(R.id.input_address);
-        }
+        mAddressEditText = (AutoCompleteTextView)findViewById(R.id.input_address);
+
+//        mMapView = new MapView(this);
+//        mMapView.setDaumMapApiKey("c52759d127552cff1250445aeccdf711");
 
         findViewById(R.id.btn_search).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                mAddressEditText.clearListSelection();
+
+                if (mAddressListAdapter != null) {
+                    mAddressListAdapter.clear();
+                }
+
                 hideKeyboard();
 
                 String keyword = mAddressEditText.getText().toString().trim();
 
-                if (keyword.endsWith("동") && keyword.length() > 2) {
-                    keyword = keyword.substring(0, keyword.length() - 1);
+                if (!"".equals(keyword)) {
+                    daumSearch(keyword);
                 }
 
-                geocoding(keyword);
+                // if (keyword.endsWith("동") && keyword.length() > 2) {
+                // keyword = keyword.substring(0, keyword.length() - 1);
+                // }
+
+                // geocoding(keyword);
                 // newGeocoding(mAddressEditText.getText().toString());
                 // new
                 // FuckTask().execute((mAddressEditText.getText().toString()));
             }
         });
 
+    }
+
+    private void showToast(final String text) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void daumSearch(String keyword) {
+
+        // MapPoint.GeoCoordinate geoCoordinate =
+        // mMapView.getMapCenterPoint().getMapPointGeoCoord();
+        double latitude = 0; // 위도
+        double longitude = 0; // 경도
+        // double latitude = sLatitude;
+        // double longitude = sLongitude;
+        int radius = 0; // 중심 좌표부터의 반경거리. 특정 지역을 중심으로 검색하려고 할 경우 사용. meter
+        // 단위 (0 ~ 10000)
+        int page = 1; // 페이지 번호 (1 ~ 3). 한페이지에 15개
+        String apikey = "c52759d127552cff1250445aeccdf711";
+        // String apikey = "DAUM_MMAPS_ANDROID_DEMO_APIKEY";
+
+        Searcher searcher = new Searcher(); // net.daum.android.map.openapi.search.Searcher
+        searcher.searchKeyword(getApplicationContext(), keyword, latitude, longitude, radius, page,
+        // searcher.searchKeyword(getApplicationContext(), keyword, 0, 0, 0,
+        // page,
+                apikey, new OnFinishSearchListener() {
+
+                    @Override
+                    public void onSuccess(final List<Item> itemList) {
+
+                        // Handler mHandler = new
+                        // Handler(Looper.getMainLooper());
+                        // mHandler.postDelayed(new Runnable() {
+                        // @Override
+                        // public void run() {
+                        showResult(itemList);
+                        // }
+                        // }, 0);
+
+                    }
+
+                    @Override
+                    public void onFail() {
+                        showToast("API_KEY의 제한 트래픽이 초과되었습니다.");
+                    }
+                });
+    }
+
+    private void showResult(final List<Item> itemList) {
+
+        if (itemList == null) {
+            return;
+        }
+
+        List<String> addressLineList = new ArrayList<>();
+        for (Item i : itemList) {
+            addressLineList.add(i.address);
+        }
+
+        mAddressListAdapter = new ArrayAdapter<>(MapActivity.this,
+        // android.R.layout.simple_dropdown_item_1line,
+        // addressLineList);
+                android.R.layout.simple_list_item_1, addressLineList);
+        // R.layout.textview_autocomplete_item,
+        // addressLineList);
+        mAddressEditText.setAdapter(mAddressListAdapter);
+
+        mAddressEditText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                geocoding2(itemList.get(position).address);
+
+            }
+        });
+
+        mAddressEditText.showDropDown();
     }
 
     @Override
@@ -137,132 +235,180 @@ public class MapActivity extends BaseActivity implements GoogleMap.OnInfoWindowC
         startActivity(i);
     }
 
-    private class FuckTask extends AsyncTask<String, Void, String> {
+    // private class FuckTask extends AsyncTask<String, Void, String> {
+    //
+    // @Override
+    // protected String doInBackground(String... params) {
+    //
+    // String url =
+    // "http://maps.google.com/maps/api/geocode/json?language=ko&address="
+    // + params[0];
+    //
+    // return new JsonParser().getJSONStringFromUrl(url);
+    // }
+    //
+    // @Override
+    // protected void onPostExecute(String s) {
+    // super.onPostExecute(s);
+    //
+    // mAddressList = getAddressListFromJson(s);
+    // if (mAddressList == null) {
+    // return;
+    // }
+    //
+    // List<String> addressLineList = new ArrayList<>();
+    // for (Address a : mAddressList) {
+    // addressLineList.add(a.getAddressLine(0).replace("대한민국 ", ""));
+    //
+    // // try {
+    // // String address = a.getAddressLine(0).replace("대한민국 ", "");
+    // // address = new String(address.getBytes("utf-8"));
+    // // address = new String(address.getBytes("euc-kr"));
+    // // success
+    // // address = new String(address.getBytes("iso-8859-1"));
+    // // address = new String(address.getBytes("x-windows-949"));
+    // // addressLineList.add(address);
+    // // } catch (UnsupportedEncodingException e) {
+    // // e.printStackTrace();
+    // // }
+    //
+    // try {
+    // //
+    // addressLineList.add(URLDecoder.decode(a.getAddressLine(0).replace("대한민국 ",
+    // // ""), "utf-8"));
+    // addressLineList.add(URLDecoder.decode(
+    // URLEncoder.encode(a.getAddressLine(0).replace("대한민국 ", ""), "euc-kr"),
+    // "euc-kr"));
+    // } catch (UnsupportedEncodingException e) {
+    // e.printStackTrace();
+    // }
+    // }
+    //
+    // mAddressListAdapter = new ArrayAdapter<>(MapActivity.this,
+    // // android.R.layout.simple_dropdown_item_1line,
+    // // addressLineList);
+    // android.R.layout.simple_list_item_1, addressLineList);
+    // // R.layout.textview_autocomplete_item,
+    // // addressLineList);
+    // mAddressEditText.setAdapter(mAddressListAdapter);
+    //
+    // if (mAddressEditText.getOnItemClickListener() == null) {
+    // mAddressEditText.setOnItemClickListener(new
+    // AdapterView.OnItemClickListener() {
+    // @Override
+    // public void onItemClick(AdapterView<?> parent, View view, int position,
+    // long id) {
+    //
+    // mAddressListAdapter = null;
+    //
+    // LatLng latLng = new LatLng(mAddressList.get(position).getLatitude(),
+    // mAddressList.get(position).getLongitude());
+    //
+    // mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+    //
+    // reverseGeocoding(latLng);
+    // }
+    // });
+    // }
+    //
+    // mAddressEditText.showDropDown();
+    //
+    // }
+    // }
 
-        @Override
-        protected String doInBackground(String... params) {
+    // private void geocoding(String address) {
+    //
+    // // south KR (33.06, 125.04, 38.27, 131.52)
+    //
+    // String url =
+    // "http://maps.google.com/maps/api/geocode/json?language=ko&region=kr&sensor=true&address="
+    // + address;
+    //
+    // StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+    // new Response.Listener<String>() {
+    // @Override
+    // public void onResponse(String response) {
+    //
+    // mAddressList = getAddressListFromJson(response);
+    // if (mAddressList == null) {
+    // return;
+    // }
+    // List<String> addressLineList = new ArrayList<>();
+    // for (Address a : mAddressList) {
+    // addressLineList.add(a.getAddressLine(0).replace("대한민국 ", ""));
+    // }
+    // mAddressListAdapter = new ArrayAdapter<>(MapActivity.this,
+    // // android.R.layout.simple_dropdown_item_1line,
+    // // addressLineList);
+    // android.R.layout.simple_list_item_1, addressLineList);
+    // // R.layout.textview_autocomplete_item,
+    // // addressLineList);
+    // mAddressEditText.setAdapter(mAddressListAdapter);
+    //
+    // if (mAddressEditText.getOnItemClickListener() == null) {
+    // mAddressEditText
+    // .setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    // @Override
+    // public void onItemClick(AdapterView<?> parent, View view,
+    // int position, long id) {
+    //
+    // mAddressListAdapter = null;
+    //
+    // LatLng latLng = new LatLng(mAddressList.get(position)
+    // .getLatitude(), mAddressList.get(position)
+    // .getLongitude());
+    //
+    // mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+    // latLng, 15));
+    //
+    // reverseGeocoding(latLng);
+    // }
+    // });
+    // }
+    //
+    // mAddressEditText.showDropDown();
+    // }
+    // }, new Response.ErrorListener() {
+    // @Override
+    // public void onErrorResponse(VolleyError error) {
+    // }
+    // });
+    // Volley.newRequestQueue(this).add(stringRequest);
+    // }
 
-            String url = "http://maps.google.com/maps/api/geocode/json?language=ko&address="
-                    + params[0];
-
-            return new JsonParser().getJSONStringFromUrl(url);
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-
-            mAddressList = getAddressListFromJson(s);
-            if (mAddressList == null) {
-                return;
-            }
-
-            List<String> addressLineList = new ArrayList<>();
-            for (Address a : mAddressList) {
-                addressLineList.add(a.getAddressLine(0).replace("대한민국 ", ""));
-
-                // try {
-                // String address = a.getAddressLine(0).replace("대한민국 ", "");
-                // address = new String(address.getBytes("utf-8"));
-                // address = new String(address.getBytes("euc-kr"));
-                // success
-                // address = new String(address.getBytes("iso-8859-1"));
-                // address = new String(address.getBytes("x-windows-949"));
-                // addressLineList.add(address);
-                // } catch (UnsupportedEncodingException e) {
-                // e.printStackTrace();
-                // }
-
-                try {
-                    // addressLineList.add(URLDecoder.decode(a.getAddressLine(0).replace("대한민국 ",
-                    // ""), "utf-8"));
-                    addressLineList.add(URLDecoder.decode(
-                            URLEncoder.encode(a.getAddressLine(0).replace("대한민국 ", ""), "euc-kr"),
-                            "euc-kr"));
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            mAddressListAdapter = new ArrayAdapter<>(MapActivity.this,
-            // android.R.layout.simple_dropdown_item_1line,
-            // addressLineList);
-                    android.R.layout.simple_list_item_1, addressLineList);
-            // R.layout.textview_autocomplete_item,
-            // addressLineList);
-            mAddressEditText.setAdapter(mAddressListAdapter);
-
-            if (mAddressEditText.getOnItemClickListener() == null) {
-                mAddressEditText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                        mAddressListAdapter = null;
-
-                        LatLng latLng = new LatLng(mAddressList.get(position).getLatitude(),
-                                mAddressList.get(position).getLongitude());
-
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-
-                        reverseGeocoding(latLng);
-                    }
-                });
-            }
-
-            mAddressEditText.showDropDown();
-
-        }
-    }
-
-    private void geocoding(String address) {
+    private void geocoding2(String address) {
 
         // south KR (33.06, 125.04, 38.27, 131.52)
 
-        String url = "http://maps.google.com/maps/api/geocode/json?language=ko&region=kr&sensor=true&address=" + address;
+        String url = "http://maps.google.com/maps/api/geocode/json?language=ko&region=kr&sensor=true&address="
+                + address.trim().replace(" ", "%20");
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
 
-                        mAddressList = getAddressListFromJson(response);
-                        if (mAddressList == null) {
-                            return;
-                        }
-                        List<String> addressLineList = new ArrayList<>();
-                        for (Address a : mAddressList) {
-                            addressLineList.add(a.getAddressLine(0).replace("대한민국 ", ""));
-                        }
-                        mAddressListAdapter = new ArrayAdapter<>(MapActivity.this,
-                        // android.R.layout.simple_dropdown_item_1line,
-                        // addressLineList);
-                                android.R.layout.simple_list_item_1, addressLineList);
-                        // R.layout.textview_autocomplete_item,
-                        // addressLineList);
-                        mAddressEditText.setAdapter(mAddressListAdapter);
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("results");
 
-                        if (mAddressEditText.getOnItemClickListener() == null) {
-                            mAddressEditText
-                                    .setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                        @Override
-                                        public void onItemClick(AdapterView<?> parent, View view,
-                                                int position, long id) {
+                            Double lon = array.getJSONObject(0).getJSONObject("geometry")
+                                    .getJSONObject("location").getDouble("lng");
 
-                                            mAddressListAdapter = null;
+                            Double lat = array.getJSONObject(0).getJSONObject("geometry")
+                                    .getJSONObject("location").getDouble("lat");
 
-                                            LatLng latLng = new LatLng(mAddressList.get(position)
-                                                    .getLatitude(), mAddressList.get(position)
-                                                    .getLongitude());
+                            LatLng latLng = new LatLng(lat, lon);
 
-                                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                                    latLng, 15));
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
 
-                                            reverseGeocoding(latLng);
-                                        }
-                                    });
+                            reverseGeocoding(latLng);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+
                         }
 
-                        mAddressEditText.showDropDown();
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -272,118 +418,119 @@ public class MapActivity extends BaseActivity implements GoogleMap.OnInfoWindowC
         Volley.newRequestQueue(this).add(stringRequest);
     }
 
-    private void newGeocoding(String dong) {
+    // private void newGeocoding(String dong) {
+    //
+    // // south KR (33.06, 125.04, 38.27, 131.52)
+    // dong = dong.trim();
+    //
+    // final String myApiKey = "a314996f3c4a87fb71420174091437";
+    //
+    // String apiUrl = "http://biz.epost.go.kr/KpostPortal/openapi";
+    // apiUrl += ("?regkey=");
+    // apiUrl += myApiKey;
+    // // &target=post !! DEPRICATED !!
+    // // &target=postNew !! USE THIS !!
+    // apiUrl += ("&target=");
+    // apiUrl += "postNew";
+    // apiUrl += ("&query=");
+    // try {
+    // apiUrl += URLEncoder.encode(dong, "euc-kr");
+    // } catch (UnsupportedEncodingException e) {
+    // e.printStackTrace();
+    // }
+    //
+    // StringRequest stringRequest = new StringRequest(Request.Method.GET,
+    // apiUrl,
+    // new Response.Listener<String>() {
+    // @Override
+    // public void onResponse(String response) {
+    //
+    // // mAddressList = getAddressListFromJson(response);
+    // mAddressList = getAddressListFromXml(response);
+    //
+    // if (mAddressList == null) {
+    // return;
+    // }
+    //
+    // List<String> addressLineList = new ArrayList<>();
+    // for (Address a : mAddressList) {
+    // addressLineList.add(a.getAddressLine(0).replace("대한민국 ", ""));
+    // }
+    //
+    // mAddressListAdapter = new ArrayAdapter<>(MapActivity.this,
+    // // android.R.layout.simple_dropdown_item_1line,
+    // // addressLineList);
+    // android.R.layout.simple_list_item_1, addressLineList);
+    // // R.layout.textview_autocomplete_item,
+    // // addressLineList);
+    // mAddressEditText.setAdapter(mAddressListAdapter);
+    //
+    // if (mAddressEditText.getOnItemClickListener() == null) {
+    // mAddressEditText
+    // .setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    // @Override
+    // public void onItemClick(AdapterView<?> parent, View view,
+    // int position, long id) {
+    //
+    // mAddressListAdapter = null;
+    //
+    // LatLng latLng = new LatLng(mAddressList.get(position)
+    // .getLatitude(), mAddressList.get(position)
+    // .getLongitude());
+    //
+    // mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+    // latLng, 15));
+    //
+    // reverseGeocoding(latLng);
+    // }
+    // });
+    // }
+    //
+    // mAddressEditText.showDropDown();
+    // }
+    // }, new Response.ErrorListener() {
+    // @Override
+    // public void onErrorResponse(VolleyError error) {
+    // }
+    // });
+    // Volley.newRequestQueue(this).add(stringRequest);
+    // }
 
-        // south KR (33.06, 125.04, 38.27, 131.52)
-        dong = dong.trim();
-
-        final String myApiKey = "a314996f3c4a87fb71420174091437";
-
-        String apiUrl = "http://biz.epost.go.kr/KpostPortal/openapi";
-        apiUrl += ("?regkey=");
-        apiUrl += myApiKey;
-        // &target=post !! DEPRICATED !!
-        // &target=postNew !! USE THIS !!
-        apiUrl += ("&target=");
-        apiUrl += "postNew";
-        apiUrl += ("&query=");
-        try {
-            apiUrl += URLEncoder.encode(dong, "euc-kr");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, apiUrl,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-                        // mAddressList = getAddressListFromJson(response);
-                        mAddressList = getAddressListFromXml(response);
-
-                        if (mAddressList == null) {
-                            return;
-                        }
-
-                        List<String> addressLineList = new ArrayList<>();
-                        for (Address a : mAddressList) {
-                            addressLineList.add(a.getAddressLine(0).replace("대한민국 ", ""));
-                        }
-
-                        mAddressListAdapter = new ArrayAdapter<>(MapActivity.this,
-                        // android.R.layout.simple_dropdown_item_1line,
-                        // addressLineList);
-                                android.R.layout.simple_list_item_1, addressLineList);
-                        // R.layout.textview_autocomplete_item,
-                        // addressLineList);
-                        mAddressEditText.setAdapter(mAddressListAdapter);
-
-                        if (mAddressEditText.getOnItemClickListener() == null) {
-                            mAddressEditText
-                                    .setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                        @Override
-                                        public void onItemClick(AdapterView<?> parent, View view,
-                                                int position, long id) {
-
-                                            mAddressListAdapter = null;
-
-                                            LatLng latLng = new LatLng(mAddressList.get(position)
-                                                    .getLatitude(), mAddressList.get(position)
-                                                    .getLongitude());
-
-                                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                                    latLng, 15));
-
-                                            reverseGeocoding(latLng);
-                                        }
-                                    });
-                        }
-
-                        mAddressEditText.showDropDown();
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                    }
-                });
-        Volley.newRequestQueue(this).add(stringRequest);
-    }
-
-    private List<Address> getAddressListFromXml(String response) {
-
-        try {
-            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-                    .parse(new InputSource(new StringReader(response)));
-            Element el = (Element)doc.getElementsByTagName("itemlist").item(0);
-
-            List<Address> addressList = new ArrayList<>();
-
-            for (int i = 0; i < el.getChildNodes().getLength(); i++) {
-
-                Node node = el.getChildNodes().item(i);
-
-                if (!node.getNodeName().equals("item")) {
-                    continue;
-                }
-
-                Address address = new Address(Locale.getDefault());
-                // address.setLatitude(lat);
-                // address.setLongitude(lon);
-                address.setAddressLine(0, node.getChildNodes().item(1).getFirstChild()
-                        .getNodeValue());
-
-                addressList.add(address);
-
-            }
-
-            return addressList;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
+    // private List<Address> getAddressListFromXml(String response) {
+    //
+    // try {
+    // Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
+    // .parse(new InputSource(new StringReader(response)));
+    // Element el = (Element)doc.getElementsByTagName("itemlist").item(0);
+    //
+    // List<Address> addressList = new ArrayList<>();
+    //
+    // for (int i = 0; i < el.getChildNodes().getLength(); i++) {
+    //
+    // Node node = el.getChildNodes().item(i);
+    //
+    // if (!node.getNodeName().equals("item")) {
+    // continue;
+    // }
+    //
+    // Address address = new Address(Locale.getDefault());
+    // // address.setLatitude(lat);
+    // // address.setLongitude(lon);
+    // address.setAddressLine(0, node.getChildNodes().item(1).getFirstChild()
+    // .getNodeValue());
+    //
+    // addressList.add(address);
+    //
+    // }
+    //
+    // return addressList;
+    //
+    // } catch (Exception e) {
+    // e.printStackTrace();
+    // }
+    //
+    // return null;
+    // }
 
     private void reverseGeocoding(final LatLng latLng) {
 
@@ -403,7 +550,7 @@ public class MapActivity extends BaseActivity implements GoogleMap.OnInfoWindowC
                             Log.e("LocationUtil", "\naddress : " + address);
 
                             mMarker.setPosition(latLng);
-                            mMarker.setTitle("클릭하여 현재 위치 지정하기");
+                            mMarker.setTitle("클릭하여 현재 위치 지정하기\n");
                             mMarker.setSnippet(address);
                             mMarker.showInfoWindow();
                         }
@@ -428,11 +575,7 @@ public class MapActivity extends BaseActivity implements GoogleMap.OnInfoWindowC
         // InputMethodManager.HIDE_IMPLICIT_ONLY);
         // }
 
-        if (mAddressEditText == null) {
-            return;
-        }
-
-        if (mAddressEditText.hasFocus()) {
+        if (mAddressEditText.hasFocus() && mAddressEditText != null) {
             InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(mAddressEditText.getWindowToken(), 0);
         }
