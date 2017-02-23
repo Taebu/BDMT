@@ -52,7 +52,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -375,8 +374,7 @@ public class ShopPageActivity extends BaseActivity {
         mWebView = (WebView)findViewById(R.id.shoppage_webview);
         mListView = (ExpandableListView)findViewById(R.id.shoppage_listview);
 
-
-        mMenuImgLayout = (LinearLayout) findViewById(R.id.shoppage_menulist);
+        mMenuImgLayout = (LinearLayout)findViewById(R.id.shoppage_menulist);
         mScrollView = (ScrollView)findViewById(R.id.shoppage_scrollview);
 
         mRatingBar = (RatingBar)findViewById(R.id.shoppage_rating);
@@ -664,18 +662,27 @@ public class ShopPageActivity extends BaseActivity {
         dongTextView.setEllipsize(TextUtils.TruncateAt.MARQUEE);
         dongTextView.setSelected(true);
 
-        TextView callcntTextView = (TextView)findViewById(R.id.calllog);
-        callcntTextView.setVisibility(View.INVISIBLE);
-        callcntTextView.setText(getIntent().getStringExtra("callcntTextView") + " 건 주문");
+        TextView callCntTextView = (TextView)findViewById(R.id.calllog);
+        callCntTextView.setVisibility(View.INVISIBLE);
+        callCntTextView.setText(getIntent().getStringExtra("callcnt") + " 건 주문");
         // String bizCode = getIntent().getStringExtra("biz_code");
         //
-        // boolean invisibleCallCnt = bizCode.equals("a061");
-        //
-        // if (invisibleCallCnt) {
-        // callcntTextView.setVisibility(View.INVISIBLE);
-        // } else {
-        // callcntTextView.setVisibility(View.VISIBLE);
-        // }
+
+        callCntTextView.setVisibility(View.INVISIBLE);
+
+        String admin = getPhoneNumber(this);
+
+        String[] admins = new String[] {
+                "01077430009", "01043391517", "01056560848", "01094186824", "01066893139",
+                "01090545766"
+        };
+
+        for (String s : admins) {
+            if (s.equals(admin)) {
+                callCntTextView.setVisibility(View.VISIBLE);
+                break;
+            }
+        }
 
         RatingBar ratingBar = (RatingBar)findViewById(R.id.shoplist_rating);
         ratingBar.setRating(Float.parseFloat(getIntent().getStringExtra("review_rating")));

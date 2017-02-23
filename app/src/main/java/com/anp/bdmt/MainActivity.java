@@ -654,7 +654,7 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
                 if ("부천시".equals(mSi) && "소사구".equals(mGu)) {
                     sDistance = 2;
                 } else if ("제천시".equals(mSi)) {
-                    sDistance = 3;
+                    sDistance = 5;
                 }
                 // } else if ("양산시".equals(mSi)) {
                 // mLifeImageView.setVisibility(View.GONE);
