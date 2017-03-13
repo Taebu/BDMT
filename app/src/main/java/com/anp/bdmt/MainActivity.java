@@ -599,6 +599,10 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
     }
 
+    public void infoClick(View view) {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://cashq.co.kr/policy/privacy.html")));
+    }
+
     private class AddressJsonTask extends AsyncTask<Void, Void, JSONObject> {
 
         public AddressJsonTask(TextView textView) {

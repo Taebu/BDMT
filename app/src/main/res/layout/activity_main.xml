@@ -48,8 +48,6 @@
             <!--android:layout_height="wrap_content" />-->
 
             <TextView
-                android:onClick="mOnClick"
-                android:clickable="true"
                 android:id="@+id/location_name1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -57,7 +55,9 @@
                 android:layout_marginRight="8dp"
                 android:layout_toLeftOf="@+id/manual_location"
                 android:background="@drawable/text_box_new"
+                android:clickable="true"
                 android:gravity="center_vertical"
+                android:onClick="mOnClick"
                 android:paddingLeft="8dp"
                 android:text="위치" />
 
@@ -628,30 +628,50 @@
                 android:padding="8dp">
 
                 <TextView
-                    android:textSize="12sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="배달톡톡"
                     android:textColor="@android:color/white"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:layout_marginTop="4dp"
-                    android:textSize="11sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
                     android:gravity="center"
                     android:text="에이앤피알 대표:김옥란 tel. 1599-9495\n통신판매업:제2012-고양일산동-0008호 사업자번호:476-11-00222\n주소:서울특별시 강서구 마곡서로 175, 404동 804"
-                    android:textColor="@android:color/white" />
-
-                <TextView
-                    android:layout_marginTop="4dp"
-                    android:textSize="12sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="(c) ANPR. All Rights Reserved."
                     android:textColor="@android:color/white"
-                    android:textStyle="bold" />
+                    android:textSize="11sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="(c) ANPR. All Rights Reserved."
+                        android:textColor="@android:color/white"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/person_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:onClick="infoClick"
+                        android:text="개인정보 처리방침"
+                        android:textColor="#ffffff"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
 
             </LinearLayout>
 
