@@ -310,75 +310,75 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
 
     }
 
-    private void initViewPager() {
-
-        ViewPager viewPager = (ViewPager)findViewById(R.id.main_viewpager);
-
-        viewPager.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
-
-            @Override
-            public int getCount() {
-                return 2;
-            }
-
-            @Override
-            public Fragment getItem(final int position) {
-                return new Fragment() {
-                    @Override
-                    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                            Bundle savedInstanceState) {
-                        final View view = inflater.inflate(R.layout.fragment_banner, container,
-                                false);
-                        if (position == 0) {
-                            view.setBackgroundResource(R.drawable.bottom_banner_1);
-                        } else if (position == 1) {
-                            view.setBackgroundResource(R.drawable.bottom_banner_2);
-                        }
-
-                        view.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                goUrl("http://anpr.cafe24.com/?page_mode=sub&depth_1=6&depth_2=2");
-                            }
-                        });
-
-                        return view;
-                    }
-                };
-            }
-
-        });
-        pageSwitcher(viewPager);
-        // viewPager.setAdapter(new PagerAdapter() {
-        //
-        // @Override
-        // public Object instantiateItem(ViewGroup container, int position) {
-        // View view = getLayoutInflater().inflate(R.layout.fragment_banner,
-        // container);
-        //
-        // ImageView ivBanner = (ImageView)
-        // view.findViewById(R.id.main_banner_img);
-        //
-        // if(position == 0) {
-        // ivBanner.setImageResource(R.drawable.bottom_banner_1);
-        // } else if (position == 1) {
-        // ivBanner.setImageResource(R.drawable.bottom_banner_2);
-        // }
-        //
-        // return view;
-        // }
-        //
-        // @Override
-        // public int getCount() {
-        // return 2;
-        // }
-        //
-        // @Override
-        // public boolean isViewFromObject(View view, Object object) {
-        // return false;
-        // }
-        // });
-    }
+//    private void initViewPager() {
+//
+//        ViewPager viewPager = (ViewPager)findViewById(R.id.main_viewpager);
+//
+//        viewPager.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
+//
+//            @Override
+//            public int getCount() {
+//                return 2;
+//            }
+//
+//            @Override
+//            public Fragment getItem(final int position) {
+//                return new Fragment() {
+//                    @Override
+//                    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+//                            Bundle savedInstanceState) {
+//                        final View view = inflater.inflate(R.layout.fragment_banner, container,
+//                                false);
+//                        if (position == 0) {
+//                            view.setBackgroundResource(R.drawable.bottom_banner_1);
+//                        } else if (position == 1) {
+//                            view.setBackgroundResource(R.drawable.bottom_banner_2);
+//                        }
+//
+//                        view.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//                                goUrl("http://anpr.cafe24.com/?page_mode=sub&depth_1=6&depth_2=2");
+//                            }
+//                        });
+//
+//                        return view;
+//                    }
+//                };
+//            }
+//
+//        });
+//        pageSwitcher(viewPager);
+//        // viewPager.setAdapter(new PagerAdapter() {
+//        //
+//        // @Override
+//        // public Object instantiateItem(ViewGroup container, int position) {
+//        // View view = getLayoutInflater().inflate(R.layout.fragment_banner,
+//        // container);
+//        //
+//        // ImageView ivBanner = (ImageView)
+//        // view.findViewById(R.id.main_banner_img);
+//        //
+//        // if(position == 0) {
+//        // ivBanner.setImageResource(R.drawable.bottom_banner_1);
+//        // } else if (position == 1) {
+//        // ivBanner.setImageResource(R.drawable.bottom_banner_2);
+//        // }
+//        //
+//        // return view;
+//        // }
+//        //
+//        // @Override
+//        // public int getCount() {
+//        // return 2;
+//        // }
+//        //
+//        // @Override
+//        // public boolean isViewFromObject(View view, Object object) {
+//        // return false;
+//        // }
+//        // });
+//    }
 
     private void goUrl(String url) {
         Intent i = new Intent();
