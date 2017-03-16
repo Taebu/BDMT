@@ -468,6 +468,18 @@
             </LinearLayout>
 
             <ImageView
+                android:id="@+id/btn_main_driver"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:adjustViewBounds="true"
+                android:clickable="true"
+                android:onClick="mOnClick"
+                android:scaleType="fitXY"
+                android:src="@drawable/btn_call_driver"
+                android:visibility="visible" />
+
+            <ImageView
                 android:id="@+id/main_life"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -962,6 +962,10 @@ public class MainActivity extends BaseActivity implements GoogleApiClient.Connec
             case R.id.main_life:
                 new LifeDialog(this, mOnClickListener).show();
                 break;
+
+            case R.id.btn_main_driver:
+                startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:05041114111")));
+                break;
         //
         // // mIntent.putExtra("TYPE", mType);
         // // mIntent.putExtra("lat", sLatitude);

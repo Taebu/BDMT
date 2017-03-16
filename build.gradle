@@ -9,7 +9,7 @@ buildscript {
 
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.2'
+        classpath 'com.android.tools.build:gradle:2.2.0'
         classpath 'com.google.gms:google-services:1.3.0-beta1'
         classpath 'net.rdrei.android.buildtimetracker:gradle-plugin:0.5.+'
 
