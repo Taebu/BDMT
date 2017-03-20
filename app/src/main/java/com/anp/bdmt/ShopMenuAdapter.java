@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -155,6 +156,8 @@ public class ShopMenuAdapter extends BaseExpandableListAdapter {
         } else {
             h = (ViewHolder)v.getTag();
         }
+
+        ((ExpandableListView) parent).expandGroup(groupPosition);
 
         if (isExpanded) {
             // h.ivImage.setBackgroundColor(Color.GREEN);

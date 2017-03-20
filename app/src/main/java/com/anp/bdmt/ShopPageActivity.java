@@ -5,9 +5,7 @@ import static com.anp.bdmt.CameraUtil.TAKE_ALBUM;
 import static com.anp.bdmt.CameraUtil.TAKE_CAMERA;
 import static com.anp.bdmt.MainActivity.TOKEN_ID;
 import static com.anp.bdmt.Utils.IMG_URL;
-import static com.anp.bdmt.Utils.initExpandableListViewHeight;
 import static com.anp.bdmt.Utils.insertMenuLevel2;
-import static com.anp.bdmt.Utils.setExpandableListViewHeight;
 import static com.anp.bdmt.Utils.setListViewHeightBasedOnChildren;
 import static com.anp.bdmt.gcm.Util.getPhoneNumber;
 
@@ -42,11 +40,13 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -987,20 +987,34 @@ public class ShopPageActivity extends BaseActivity {
 
                 mListView.setAdapter(adapter);
 
+                // mListView.expandGroup(0);
+
                 for (int i = 0; i < adapter.getGroupCount(); i++) {
-                    mListView.expandGroup(i);
+                    // mListView.expandGroup(i);
                 }
 
-                initExpandableListViewHeight(mListView);
+                setListViewHeight1(mListView);
 
-                mListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+                mListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
                     @Override
-                    public boolean onGroupClick(ExpandableListView parent, View v,
-                            int groupPosition, long id) {
-                        setExpandableListViewHeight(parent, groupPosition);
-                        return false;
+                    public void onGroupExpand(int groupPosition) {
+                        // setListViewHeight(mListView, groupPosition);
                     }
                 });
+
+                // mListView.setOnGroupClickListener(new
+                // ExpandableListView.OnGroupClickListener() {
+                // @Override
+                // public boolean onGroupClick(ExpandableListView parent, View
+                // v,
+                // int groupPosition, long id) {
+                // // setExpandableListViewHeight(parent, groupPosition);
+                // setListViewHeight(parent, groupPosition);
+                // return false;
+                // }
+                // });
+
+                // initExpandableListViewHeight(mListView);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1011,6 +1025,100 @@ public class ShopPageActivity extends BaseActivity {
             }
 
         }
+    }
+
+    private void setListViewHeight1(ExpandableListView listView) {
+
+        ExpandableListAdapter listAdapter = listView.getExpandableListAdapter();
+
+        int totalHeight = 0;
+
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(),
+                View.MeasureSpec.EXACTLY);
+
+        for (int i = 0; i < listAdapter.getGroupCount(); i++) {
+
+            View groupItem = listAdapter.getGroupView(i, false, null, listView);
+
+            groupItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+
+            totalHeight += groupItem.getMeasuredHeight();
+
+            for (int j = 0; j < listAdapter.getChildrenCount(i); j++) {
+
+                View listItem = listAdapter.getChildView(i, j, false, null, listView);
+
+                listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+
+                totalHeight += listItem.getMeasuredHeight();
+
+            }
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+
+        int height = totalHeight
+                + (listView.getDividerHeight() * (listAdapter.getGroupCount() - 1));
+
+        if (height < 10) {
+            height = 200;
+        }
+
+        params.height = height;
+
+        listView.setLayoutParams(params);
+
+        listView.requestLayout();
+
+    }
+
+    private void setListViewHeight(ExpandableListView listView, int group) {
+
+        ExpandableListAdapter listAdapter = listView.getExpandableListAdapter();
+
+        int totalHeight = 0;
+
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(),
+                View.MeasureSpec.EXACTLY);
+
+        for (int i = 0; i < listAdapter.getGroupCount(); i++) {
+
+            View groupItem = listAdapter.getGroupView(i, false, null, listView);
+
+            groupItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+
+            totalHeight += groupItem.getMeasuredHeight();
+
+            if (((listView.isGroupExpanded(i)) && (i != group))
+                    || ((!listView.isGroupExpanded(i)) && (i == group))) {
+
+                for (int j = 0; j < listAdapter.getChildrenCount(i); j++) {
+
+                    View listItem = listAdapter.getChildView(i, j, false, null, listView);
+
+                    listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+
+                    totalHeight += listItem.getMeasuredHeight();
+
+                }
+            }
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+
+        int height = totalHeight
+                + (listView.getDividerHeight() * (listAdapter.getGroupCount() - 1));
+
+        if (height < 10) {
+            height = 200;
+        }
+
+        params.height = height;
+
+        listView.setLayoutParams(params);
+
+        listView.requestLayout();
+
     }
 
     private ShopMenuData makeShopMenuData(JSONObject jsonObject) {

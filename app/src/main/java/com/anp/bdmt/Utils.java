@@ -221,9 +221,9 @@ public class Utils {
         View groupview = null;
         int childrenCount = 0;
 
-        for (int i = 0; i < adapter.getGroupCount(); i++) {
+        Log.e("Utils.setExpandableListViewHeight", "set groupCount : " + adapter.getGroupCount());
 
-            Log.e("Utils.setExpandableListViewHeight", "groupCount : " + adapter.getGroupCount());
+        for (int i = 0; i < adapter.getGroupCount(); i++) {
 
             groupview = adapter.getGroupView(i, false, groupview, listView);
 
@@ -278,23 +278,28 @@ public class Utils {
 
         int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(),
                 View.MeasureSpec.UNSPECIFIED);
+
         int totalHeight = 0;
-        View groupview = null;
+
+        View groupView = null;
+
+        int groupCount = adapter.getGroupCount();
+
         int childrenCount = 0;
 
-        for (int i = 0; i < adapter.getGroupCount(); i++) {
+        Log.e("Utils.setExpandableListViewHeight", "init groupCount : " + groupCount);
 
-            Log.e("Utils.setExpandableListViewHeight", "groupCount : " + adapter.getGroupCount());
+        for (int i = 0; i < groupCount; i++) {
 
-            groupview = adapter.getGroupView(i, false, groupview, listView);
+            groupView = adapter.getGroupView(i, false, groupView, listView);
 
             if (i == 0) {
-                groupview.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth,
+                groupView.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth,
                         ViewGroup.LayoutParams.WRAP_CONTENT));
             }
 
-            groupview.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
-            totalHeight += groupview.getMeasuredHeight();
+            groupView.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += groupView.getMeasuredHeight();
 
             View childView = null;
 
@@ -315,8 +320,12 @@ public class Utils {
                 totalHeight += childView.getMeasuredHeight();
                 childrenCount += adapter.getChildrenCount(i);
 
+                Log.e("Utils.setExpandableListViewHeight", "child th: "+ totalHeight);
             }
+
         }
+
+
 
         ViewGroup.LayoutParams params = listView.getLayoutParams();
         params.height = totalHeight
@@ -327,7 +336,7 @@ public class Utils {
     }
 
     public static void insertMenuLevel2(Context context, ShopMenuData data, int groupPos,
-                                        int childPos) {
+            int childPos) {
 
         DataBaseOpenHelper helper = new DataBaseOpenHelper(context);
 
@@ -386,7 +395,7 @@ public class Utils {
 
             int price2;
 
-            if(level2.isDeal()) {
+            if (level2.isDeal()) {
                 price2 = level2.getDiscountPrice();
             } else {
                 price2 = level2.getPrice();
@@ -413,6 +422,7 @@ public class Utils {
         }
 
     }
+
     // public static void
 
     public static int getDisplayHeightSize(Activity activity) {
